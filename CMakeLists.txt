@@ -22,3 +22,6 @@ if(CONFIG_HAS_STLIB)
     zephyr_sources(audio/microphone/OpenPDMFilter.c)
   endif()
 endif()
+
+# STMEMSC - Hardware Abstraction Layer for ST sensor
+add_subdirectory_ifdef(CONFIG_HAS_STMEMSC sensor/stmemsc)
