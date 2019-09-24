@@ -6,33 +6,17 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; COPYRIGHT(c) 2018 STMicroelectronics</center></h2>
+ * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+ * All rights reserved.</center></h2>
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *   1. Redistributions of source code must retain the above copyright notice,
- *      this list of conditions and the following disclaimer.
- *   2. Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *   3. Neither the name of STMicroelectronics nor the names of its
- *      contributors may be used to endorse or promote products derived from
- *      this software without specific prior written permission.
+ * This software component is licensed by ST under BSD 3-Clause license,
+ * the "License"; You may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at:
+ *                        opensource.org/licenses/BSD-3-Clause
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
-*/
+ ******************************************************************************
+ */
+
 #include "lis2mdl_reg.h"
 
 /**
@@ -62,7 +46,7 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_read_reg(lis2mdl_ctx_t* ctx, uint8_t reg, uint8_t* data,
+int32_t lis2mdl_read_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
                          uint16_t len)
 {
   int32_t ret;
@@ -80,7 +64,7 @@ int32_t lis2mdl_read_reg(lis2mdl_ctx_t* ctx, uint8_t reg, uint8_t* data,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_write_reg(lis2mdl_ctx_t* ctx, uint8_t reg, uint8_t* data,
+int32_t lis2mdl_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
                           uint16_t len)
 {
   int32_t ret;
@@ -134,7 +118,7 @@ float_t lis2mdl_from_lsb_to_celsius(int16_t lsb)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_mag_user_offset_set(lis2mdl_ctx_t *ctx, uint8_t *buff)
+int32_t lis2mdl_mag_user_offset_set(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
   ret = lis2mdl_write_reg(ctx, LIS2MDL_OFFSET_X_REG_L, buff, 6);
@@ -153,7 +137,7 @@ int32_t lis2mdl_mag_user_offset_set(lis2mdl_ctx_t *ctx, uint8_t *buff)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_mag_user_offset_get(lis2mdl_ctx_t *ctx, uint8_t *buff)
+int32_t lis2mdl_mag_user_offset_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
   ret = lis2mdl_read_reg(ctx, LIS2MDL_OFFSET_X_REG_L, buff, 6);
@@ -168,18 +152,18 @@ int32_t lis2mdl_mag_user_offset_get(lis2mdl_ctx_t *ctx, uint8_t *buff)
   * @retval        interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_operating_mode_set(lis2mdl_ctx_t *ctx, lis2mdl_md_t val)
+int32_t lis2mdl_operating_mode_set(stmdev_ctx_t *ctx, lis2mdl_md_t val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.md = (uint8_t)val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -191,7 +175,7 @@ int32_t lis2mdl_operating_mode_set(lis2mdl_ctx_t *ctx, lis2mdl_md_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_operating_mode_get(lis2mdl_ctx_t *ctx, lis2mdl_md_t *val)
+int32_t lis2mdl_operating_mode_get(stmdev_ctx_t *ctx, lis2mdl_md_t *val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
@@ -210,43 +194,43 @@ int32_t lis2mdl_operating_mode_get(lis2mdl_ctx_t *ctx, lis2mdl_md_t *val)
     default:
       *val = LIS2MDL_POWER_DOWN;
       break;
-  }  
+  }
 
   return ret;
 }
 
 /**
-  * @brief  Output data rate selection.[set] 
+  * @brief  Output data rate selection.[set]
   *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   change the values of odr in reg CFG_REG_A
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_data_rate_set(lis2mdl_ctx_t *ctx, lis2mdl_odr_t val)
+int32_t lis2mdl_data_rate_set(stmdev_ctx_t *ctx, lis2mdl_odr_t val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.odr = (uint8_t)val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
 /**
-  * @brief  Output data rate selection.[get] 
+  * @brief  Output data rate selection.[get]
   *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   Get the values of odr in reg CFG_REG_A.(ptr)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_data_rate_get(lis2mdl_ctx_t *ctx, lis2mdl_odr_t *val)
+int32_t lis2mdl_data_rate_get(stmdev_ctx_t *ctx, lis2mdl_odr_t *val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
@@ -280,18 +264,18 @@ int32_t lis2mdl_data_rate_get(lis2mdl_ctx_t *ctx, lis2mdl_odr_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_power_mode_set(lis2mdl_ctx_t *ctx, lis2mdl_lp_t val)
+int32_t lis2mdl_power_mode_set(stmdev_ctx_t *ctx, lis2mdl_lp_t val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.lp = (uint8_t)val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -303,7 +287,7 @@ int32_t lis2mdl_power_mode_set(lis2mdl_ctx_t *ctx, lis2mdl_lp_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_power_mode_get(lis2mdl_ctx_t *ctx, lis2mdl_lp_t *val)
+int32_t lis2mdl_power_mode_get(stmdev_ctx_t *ctx, lis2mdl_lp_t *val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
@@ -324,25 +308,25 @@ int32_t lis2mdl_power_mode_get(lis2mdl_ctx_t *ctx, lis2mdl_lp_t *val)
 }
 
 /**
-  * @brief  Enables the magnetometer temperature compensation.[set] 
+  * @brief  Enables the magnetometer temperature compensation.[set]
   *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   change the values of comp_temp_en in reg CFG_REG_A
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_offset_temp_comp_set(lis2mdl_ctx_t *ctx, uint8_t val)
+int32_t lis2mdl_offset_temp_comp_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.comp_temp_en = val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -354,7 +338,7 @@ int32_t lis2mdl_offset_temp_comp_set(lis2mdl_ctx_t *ctx, uint8_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_offset_temp_comp_get(lis2mdl_ctx_t *ctx, uint8_t *val)
+int32_t lis2mdl_offset_temp_comp_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
@@ -373,19 +357,19 @@ int32_t lis2mdl_offset_temp_comp_get(lis2mdl_ctx_t *ctx, uint8_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_low_pass_bandwidth_set(lis2mdl_ctx_t *ctx,
+int32_t lis2mdl_low_pass_bandwidth_set(stmdev_ctx_t *ctx,
                                        lis2mdl_lpf_t val)
 {
   lis2mdl_cfg_reg_b_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.lpf = (uint8_t)val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -397,7 +381,7 @@ int32_t lis2mdl_low_pass_bandwidth_set(lis2mdl_ctx_t *ctx,
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_low_pass_bandwidth_get(lis2mdl_ctx_t *ctx,
+int32_t lis2mdl_low_pass_bandwidth_get(stmdev_ctx_t *ctx,
                                        lis2mdl_lpf_t *val)
 {
   lis2mdl_cfg_reg_b_t reg;
@@ -426,18 +410,18 @@ int32_t lis2mdl_low_pass_bandwidth_get(lis2mdl_ctx_t *ctx,
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_set_rst_mode_set(lis2mdl_ctx_t *ctx, lis2mdl_set_rst_t val)
+int32_t lis2mdl_set_rst_mode_set(stmdev_ctx_t *ctx, lis2mdl_set_rst_t val)
 {
   lis2mdl_cfg_reg_b_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.set_rst = (uint8_t)val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -449,7 +433,7 @@ int32_t lis2mdl_set_rst_mode_set(lis2mdl_ctx_t *ctx, lis2mdl_set_rst_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_set_rst_mode_get(lis2mdl_ctx_t *ctx, lis2mdl_set_rst_t *val)
+int32_t lis2mdl_set_rst_mode_get(stmdev_ctx_t *ctx, lis2mdl_set_rst_t *val)
 {
   lis2mdl_cfg_reg_b_t reg;
   int32_t ret;
@@ -473,7 +457,7 @@ int32_t lis2mdl_set_rst_mode_get(lis2mdl_ctx_t *ctx, lis2mdl_set_rst_t *val)
 }
 
 /**
-  * @brief  Enables offset cancellation in single measurement mode. 
+  * @brief  Enables offset cancellation in single measurement mode.
   *         The OFF_CANC bit must be set to 1 when enabling offset
   *         cancellation in single measurement mode this means a
   *         call function: set_rst_mode(SENS_OFF_CANC_EVERY_ODR)
@@ -484,23 +468,23 @@ int32_t lis2mdl_set_rst_mode_get(lis2mdl_ctx_t *ctx, lis2mdl_set_rst_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_set_rst_sensor_single_set(lis2mdl_ctx_t *ctx, uint8_t val)
+int32_t lis2mdl_set_rst_sensor_single_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2mdl_cfg_reg_b_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.off_canc_one_shot = val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
 /**
-  * @brief  Enables offset cancellation in single measurement mode. 
+  * @brief  Enables offset cancellation in single measurement mode.
   *         The OFF_CANC bit must be set to 1 when enabling offset
   *         cancellation in single measurement mode this means a
   *         call function: set_rst_mode(SENS_OFF_CANC_EVERY_ODR)
@@ -511,7 +495,7 @@ int32_t lis2mdl_set_rst_sensor_single_set(lis2mdl_ctx_t *ctx, uint8_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_set_rst_sensor_single_get(lis2mdl_ctx_t *ctx, uint8_t *val)
+int32_t lis2mdl_set_rst_sensor_single_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2mdl_cfg_reg_b_t reg;
   int32_t ret;
@@ -530,18 +514,18 @@ int32_t lis2mdl_set_rst_sensor_single_get(lis2mdl_ctx_t *ctx, uint8_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_block_data_update_set(lis2mdl_ctx_t *ctx, uint8_t val)
+int32_t lis2mdl_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.bdu = val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -553,7 +537,7 @@ int32_t lis2mdl_block_data_update_set(lis2mdl_ctx_t *ctx, uint8_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_block_data_update_get(lis2mdl_ctx_t *ctx, uint8_t *val)
+int32_t lis2mdl_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
@@ -572,7 +556,7 @@ int32_t lis2mdl_block_data_update_get(lis2mdl_ctx_t *ctx, uint8_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_mag_data_ready_get(lis2mdl_ctx_t *ctx, uint8_t *val)
+int32_t lis2mdl_mag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2mdl_status_reg_t reg;
   int32_t ret;
@@ -591,7 +575,7 @@ int32_t lis2mdl_mag_data_ready_get(lis2mdl_ctx_t *ctx, uint8_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_mag_data_ovr_get(lis2mdl_ctx_t *ctx, uint8_t *val)
+int32_t lis2mdl_mag_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2mdl_status_reg_t reg;
   int32_t ret;
@@ -610,7 +594,7 @@ int32_t lis2mdl_mag_data_ovr_get(lis2mdl_ctx_t *ctx, uint8_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_magnetic_raw_get(lis2mdl_ctx_t *ctx, uint8_t *buff)
+int32_t lis2mdl_magnetic_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
   ret = lis2mdl_read_reg(ctx, LIS2MDL_OUTX_L_REG, buff, 6);
@@ -625,7 +609,7 @@ int32_t lis2mdl_magnetic_raw_get(lis2mdl_ctx_t *ctx, uint8_t *buff)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_temperature_raw_get(lis2mdl_ctx_t *ctx, uint8_t *buff)
+int32_t lis2mdl_temperature_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
   ret = lis2mdl_read_reg(ctx, LIS2MDL_TEMP_OUT_L_REG, buff, 2);
@@ -652,7 +636,7 @@ int32_t lis2mdl_temperature_raw_get(lis2mdl_ctx_t *ctx, uint8_t *buff)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_device_id_get(lis2mdl_ctx_t *ctx, uint8_t *buff)
+int32_t lis2mdl_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
   ret = lis2mdl_read_reg(ctx, LIS2MDL_WHO_AM_I, buff, 1);
@@ -667,18 +651,18 @@ int32_t lis2mdl_device_id_get(lis2mdl_ctx_t *ctx, uint8_t *buff)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_reset_set(lis2mdl_ctx_t *ctx, uint8_t val)
+int32_t lis2mdl_reset_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.soft_rst = val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -690,7 +674,7 @@ int32_t lis2mdl_reset_set(lis2mdl_ctx_t *ctx, uint8_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_reset_get(lis2mdl_ctx_t *ctx, uint8_t *val)
+int32_t lis2mdl_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
@@ -702,25 +686,25 @@ int32_t lis2mdl_reset_get(lis2mdl_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Reboot memory content. Reload the calibration parameters.[set] 
+  * @brief  Reboot memory content. Reload the calibration parameters.[set]
   *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   change the values of reboot in reg CFG_REG_A
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_boot_set(lis2mdl_ctx_t *ctx, uint8_t val)
+int32_t lis2mdl_boot_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.reboot = val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -732,7 +716,7 @@ int32_t lis2mdl_boot_set(lis2mdl_ctx_t *ctx, uint8_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_boot_get(lis2mdl_ctx_t *ctx, uint8_t *val)
+int32_t lis2mdl_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2mdl_cfg_reg_a_t reg;
   int32_t ret;
@@ -751,18 +735,18 @@ int32_t lis2mdl_boot_get(lis2mdl_ctx_t *ctx, uint8_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_self_test_set(lis2mdl_ctx_t *ctx, uint8_t val)
+int32_t lis2mdl_self_test_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.self_test = val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -774,7 +758,7 @@ int32_t lis2mdl_self_test_set(lis2mdl_ctx_t *ctx, uint8_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_self_test_get(lis2mdl_ctx_t *ctx, uint8_t *val)
+int32_t lis2mdl_self_test_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
@@ -793,18 +777,18 @@ int32_t lis2mdl_self_test_get(lis2mdl_ctx_t *ctx, uint8_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_data_format_set(lis2mdl_ctx_t *ctx, lis2mdl_ble_t val)
+int32_t lis2mdl_data_format_set(stmdev_ctx_t *ctx, lis2mdl_ble_t val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.ble = (uint8_t)val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -816,7 +800,7 @@ int32_t lis2mdl_data_format_set(lis2mdl_ctx_t *ctx, lis2mdl_ble_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_data_format_get(lis2mdl_ctx_t *ctx, lis2mdl_ble_t *val)
+int32_t lis2mdl_data_format_get(stmdev_ctx_t *ctx, lis2mdl_ble_t *val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
@@ -844,7 +828,7 @@ int32_t lis2mdl_data_format_get(lis2mdl_ctx_t *ctx, lis2mdl_ble_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_status_get(lis2mdl_ctx_t *ctx, lis2mdl_status_reg_t *val)
+int32_t lis2mdl_status_get(stmdev_ctx_t *ctx, lis2mdl_status_reg_t *val)
 {
   int32_t ret;
   ret = lis2mdl_read_reg(ctx, LIS2MDL_STATUS_REG, (uint8_t*) val, 1);
@@ -872,19 +856,19 @@ int32_t lis2mdl_status_get(lis2mdl_ctx_t *ctx, lis2mdl_status_reg_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_offset_int_conf_set(lis2mdl_ctx_t *ctx,
+int32_t lis2mdl_offset_int_conf_set(stmdev_ctx_t *ctx,
                                     lis2mdl_int_on_dataoff_t val)
 {
   lis2mdl_cfg_reg_b_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.int_on_dataoff = (uint8_t)val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -897,7 +881,7 @@ int32_t lis2mdl_offset_int_conf_set(lis2mdl_ctx_t *ctx,
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_offset_int_conf_get(lis2mdl_ctx_t *ctx,
+int32_t lis2mdl_offset_int_conf_get(stmdev_ctx_t *ctx,
                                     lis2mdl_int_on_dataoff_t *val)
 {
   lis2mdl_cfg_reg_b_t reg;
@@ -926,18 +910,18 @@ int32_t lis2mdl_offset_int_conf_get(lis2mdl_ctx_t *ctx,
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_drdy_on_pin_set(lis2mdl_ctx_t *ctx, uint8_t val)
+int32_t lis2mdl_drdy_on_pin_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.drdy_on_pin = val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -949,7 +933,7 @@ int32_t lis2mdl_drdy_on_pin_set(lis2mdl_ctx_t *ctx, uint8_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_drdy_on_pin_get(lis2mdl_ctx_t *ctx, uint8_t *val)
+int32_t lis2mdl_drdy_on_pin_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
@@ -968,18 +952,18 @@ int32_t lis2mdl_drdy_on_pin_get(lis2mdl_ctx_t *ctx, uint8_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_int_on_pin_set(lis2mdl_ctx_t *ctx, uint8_t val)
+int32_t lis2mdl_int_on_pin_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.int_on_pin = val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -991,7 +975,7 @@ int32_t lis2mdl_int_on_pin_set(lis2mdl_ctx_t *ctx, uint8_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_int_on_pin_get(lis2mdl_ctx_t *ctx, uint8_t *val)
+int32_t lis2mdl_int_on_pin_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
@@ -1010,7 +994,7 @@ int32_t lis2mdl_int_on_pin_get(lis2mdl_ctx_t *ctx, uint8_t *val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_int_gen_conf_set(lis2mdl_ctx_t *ctx,
+int32_t lis2mdl_int_gen_conf_set(stmdev_ctx_t *ctx,
                                  lis2mdl_int_crtl_reg_t *val)
 {
   int32_t ret;
@@ -1026,7 +1010,7 @@ int32_t lis2mdl_int_gen_conf_set(lis2mdl_ctx_t *ctx,
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_int_gen_conf_get(lis2mdl_ctx_t *ctx,
+int32_t lis2mdl_int_gen_conf_get(stmdev_ctx_t *ctx,
                                  lis2mdl_int_crtl_reg_t *val)
 {
   int32_t ret;
@@ -1042,7 +1026,7 @@ int32_t lis2mdl_int_gen_conf_get(lis2mdl_ctx_t *ctx,
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_int_gen_source_get(lis2mdl_ctx_t *ctx,
+int32_t lis2mdl_int_gen_source_get(stmdev_ctx_t *ctx,
                                    lis2mdl_int_source_reg_t *val)
 {
   int32_t ret;
@@ -1060,7 +1044,7 @@ int32_t lis2mdl_int_gen_source_get(lis2mdl_ctx_t *ctx,
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_int_gen_treshold_set(lis2mdl_ctx_t *ctx, uint8_t *buff)
+int32_t lis2mdl_int_gen_treshold_set(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
   ret = lis2mdl_write_reg(ctx, LIS2MDL_INT_THS_L_REG, buff, 2);
@@ -1077,7 +1061,7 @@ int32_t lis2mdl_int_gen_treshold_set(lis2mdl_ctx_t *ctx, uint8_t *buff)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_int_gen_treshold_get(lis2mdl_ctx_t *ctx, uint8_t *buff)
+int32_t lis2mdl_int_gen_treshold_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
   ret = lis2mdl_read_reg(ctx, LIS2MDL_INT_THS_L_REG, buff, 2);
@@ -1098,6 +1082,57 @@ int32_t lis2mdl_int_gen_treshold_get(lis2mdl_ctx_t *ctx, uint8_t *buff)
   */
 
 /**
+  * @brief  SPI Serial Interface Mode selection.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      change the values of 4wspi in reg CFG_REG_C
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lis2mdl_spi_mode_set(stmdev_ctx_t *ctx, lis2mdl_sim_t val)
+{
+  lis2mdl_cfg_reg_c_t reg;
+  int32_t ret;
+
+  ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
+
+  if(ret == 0){
+    reg._4wspi = (uint8_t)val;
+    ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  SPI Serial Interface Mode selection.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Get the values of 4wspi in reg CFG_REG_C
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lis2mdl_spi_mode_get(stmdev_ctx_t *ctx, lis2mdl_sim_t *val)
+{
+  lis2mdl_cfg_reg_c_t reg;
+  int32_t ret;
+
+  ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
+  switch (reg._4wspi){
+    case LIS2MDL_SPI_4_WIRE:
+      *val = LIS2MDL_SPI_4_WIRE;
+      break;
+    case LIS2MDL_SPI_3_WIRE:
+      *val = LIS2MDL_SPI_3_WIRE;
+      break;
+    default:
+      *val = LIS2MDL_SPI_3_WIRE;
+      break;
+  }
+  return ret;
+}
+
+/**
   * @brief  Enable/Disable I2C interface.[set]
   *
   * @param  ctx   read / write interface definitions.(ptr)
@@ -1105,18 +1140,18 @@ int32_t lis2mdl_int_gen_treshold_get(lis2mdl_ctx_t *ctx, uint8_t *buff)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_i2c_interface_set(lis2mdl_ctx_t *ctx, lis2mdl_i2c_dis_t val)
+int32_t lis2mdl_i2c_interface_set(stmdev_ctx_t *ctx, lis2mdl_i2c_dis_t val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
-  
+
   if(ret == 0){
     reg.i2c_dis = (uint8_t)val;
     ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t*)&reg, 1);
   }
-  
+
   return ret;
 }
 
@@ -1128,7 +1163,7 @@ int32_t lis2mdl_i2c_interface_set(lis2mdl_ctx_t *ctx, lis2mdl_i2c_dis_t val)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2mdl_i2c_interface_get(lis2mdl_ctx_t *ctx, lis2mdl_i2c_dis_t *val)
+int32_t lis2mdl_i2c_interface_get(stmdev_ctx_t *ctx, lis2mdl_i2c_dis_t *val)
 {
   lis2mdl_cfg_reg_c_t reg;
   int32_t ret;
