@@ -6,7 +6,7 @@ Origin:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 Status:
-   version v1.00
+   version v1.02
 
 Purpose:
    ST Microelectronics standard C platform-independent drivers for MEMS
@@ -34,9 +34,9 @@ Description:
    int platform_wr(void *handle, u8_t reg, u8_t *bufp, u16_t len);
    int platform_rd(void *handle, u8_t reg, u8_t *bufp, u16_t len);
 
-   xyz_ctx_t xyz_ctx = {
-       .read_reg = (xyz_read_ptr) platform_rd,
-       .write_reg = (xyz_write_ptr) platform_wr,
+   stmdev_ctx_t stmdev_ctx = {
+       .read_reg = (stmdev_read_ptr) platform_rd,
+       .write_reg = (stmdev_write_ptr) platform_wr,
    };
 
 Dependencies:
@@ -46,7 +46,7 @@ URL:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 commit:
-   version v1.00
+   version v1.02
 
 Maintained-by:
    ST Microelectronics
