@@ -5,17 +5,20 @@
 # SPDX-License-Identifier: Apache-2.0
 
 if(CONFIG_HAS_STLIB)
+
+  zephyr_library()
+
   if(CONFIG_VL53L0X)
     zephyr_include_directories(
 	sensor/vl53l0x/api/core/inc
 	${PROJECT_SOURCE_DIR}/drivers/sensor/vl53l0x
     )
 
-    zephyr_sources(sensor/vl53l0x/api/core/src/vl53l0x_api.c)
-    zephyr_sources(sensor/vl53l0x/api/core/src/vl53l0x_api_ranging.c)
-    zephyr_sources(sensor/vl53l0x/api/core/src/vl53l0x_api_calibration.c)
-    zephyr_sources(sensor/vl53l0x/api/core/src/vl53l0x_api_core.c)
-    zephyr_sources(sensor/vl53l0x/api/core/src/vl53l0x_api_strings.c)
+    zephyr_library_sources(sensor/vl53l0x/api/core/src/vl53l0x_api.c)
+    zephyr_library_sources(sensor/vl53l0x/api/core/src/vl53l0x_api_ranging.c)
+    zephyr_library_sources(sensor/vl53l0x/api/core/src/vl53l0x_api_calibration.c)
+    zephyr_library_sources(sensor/vl53l0x/api/core/src/vl53l0x_api_core.c)
+    zephyr_library_sources(sensor/vl53l0x/api/core/src/vl53l0x_api_strings.c)
   endif()
   if(CONFIG_VL53L1X)
     zephyr_include_directories(
@@ -23,18 +26,18 @@ if(CONFIG_HAS_STLIB)
             ${PROJECT_SOURCE_DIR}/drivers/sensor/vl53l1x
     )
 
-    zephyr_sources(sensor/vl53l1x/api/core/src/vl53l1_api.c)
-    zephyr_sources(sensor/vl53l1x/api/core/src/vl53l1_api_calibration.c)
-    zephyr_sources(sensor/vl53l1x/api/core/src/vl53l1_wait.c)
-    zephyr_sources(sensor/vl53l1x/api/core/src/vl53l1_core.c)
-    zephyr_sources(sensor/vl53l1x/api/core/src/vl53l1_api_core.c)
-    zephyr_sources(sensor/vl53l1x/api/core/src/vl53l1_api_preset_modes.c)
-    zephyr_sources(sensor/vl53l1x/api/core/src/vl53l1_core_support.c)
-    zephyr_sources(sensor/vl53l1x/api/core/src/vl53l1_register_funcs.c)
+    zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_api.c)
+    zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_api_calibration.c)
+    zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_wait.c)
+    zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_core.c)
+    zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_api_core.c)
+    zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_api_preset_modes.c)
+    zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_core_support.c)
+    zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_register_funcs.c)
   endif()
   if(CONFIG_AUDIO_MPXXDTYY)
     zephyr_include_directories(audio/microphone)
-    zephyr_sources(audio/microphone/OpenPDMFilter.c)
+    zephyr_library_sources(audio/microphone/OpenPDMFilter.c)
   endif()
 endif()
 
