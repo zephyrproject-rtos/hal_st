@@ -61,7 +61,7 @@ foreach(stmems_pid ${stmems_pids})
     zephyr_include_directories(
         ${stmems_pid}_STdC/driver/
         )
-    zephyr_sources(
+    zephyr_library_sources(
         ${stmems_pid}_STdC/driver/${stmems_pid}_reg.c
         )
   endif()
