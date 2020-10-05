@@ -612,6 +612,20 @@ int32_t iis3dwb_xl_usr_offset_z_get(stmdev_ctx_t *ctx, uint8_t *buff)
   */
 
 /**
+  * @brief  Reset timestamp counter.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
+int32_t iis3dwb_timestamp_rst(stmdev_ctx_t *ctx)
+{
+  uint8_t rst_val = 0xAA;
+
+  return iis3dwb_write_reg(ctx, IIS3DWB_TIMESTAMP2, &rst_val, 1);
+}
+
+/**
   * @brief  Enables timestamp counter.[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
@@ -662,10 +676,17 @@ int32_t iis3dwb_timestamp_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t iis3dwb_timestamp_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t iis3dwb_timestamp_raw_get(stmdev_ctx_t *ctx, uint32_t *val)
 {
+  uint8_t buff[4];
   int32_t ret;
+
   ret = iis3dwb_read_reg(ctx, IIS3DWB_TIMESTAMP0, buff, 4);
+  *val = buff[3];
+  *val = (*val * 256U) +  buff[2];
+  *val = (*val * 256U) +  buff[1];
+  *val = (*val * 256U) +  buff[0];
+
   return ret;
 }
 
@@ -742,10 +763,15 @@ int32_t iis3dwb_rounding_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t iis3dwb_temperature_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t iis3dwb_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 {
+  uint8_t buff[2];
   int32_t ret;
+
   ret = iis3dwb_read_reg(ctx, IIS3DWB_OUT_TEMP_L, buff, 2);
+  *val = (int16_t)buff[1];
+  *val = (*val * 256) +  (int16_t)buff[0];
+
   return ret;
 }
 
@@ -758,10 +784,20 @@ int32_t iis3dwb_temperature_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t iis3dwb_acceleration_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t iis3dwb_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 {
+  uint8_t buff[6];
   int32_t ret;
+
   ret = iis3dwb_read_reg(ctx, IIS3DWB_OUTX_L_A, buff, 6);
+
+  val[0] = (int16_t)buff[1];
+  val[0] = (val[0] * 256) +  (int16_t)buff[0];
+  val[1] = (int16_t)buff[3];
+  val[1] = (val[1] * 256) +  (int16_t)buff[2];
+  val[2] = (int16_t)buff[5];
+  val[2] = (val[2] * 256) +  (int16_t)buff[4];
+
   return ret;
 }
 
@@ -1271,8 +1307,8 @@ int32_t iis3dwb_xl_hp_path_on_out_get(stmdev_ctx_t *ctx,
     case IIS3DWB_LP_ODR_DIV_4:
       *val = IIS3DWB_LP_ODR_DIV_4;
       break;
-    case IIS3DWB_LP_5kHz:
-      *val = IIS3DWB_LP_5kHz;
+    case IIS3DWB_LP_6k3Hz:
+      *val = IIS3DWB_LP_6k3Hz;
       break;
     case IIS3DWB_LP_ODR_DIV_10:
       *val = IIS3DWB_LP_ODR_DIV_10;
@@ -1569,57 +1605,6 @@ int32_t iis3dwb_i2c_interface_get(stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  I3C Enable/Disable communication protocol.[set]
-  *
-  * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of i3c_disable in reg CTRL9_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
-int32_t iis3dwb_i3c_disable_set(stmdev_ctx_t *ctx, iis3dwb_i3c_disable_t val)
-{
-  iis3dwb_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
-
-  ret = iis3dwb_read_reg(ctx, IIS3DWB_CTRL9_XL, (uint8_t*)&ctrl9_xl, 1);
-  if(ret == 0){
-    ctrl9_xl.i3c_disable = ((uint8_t)val & 0x80U) >> 7;
-    ret = iis3dwb_write_reg(ctx, IIS3DWB_CTRL9_XL, (uint8_t*)&ctrl9_xl, 1);
-  }
-
-  return ret;
-}
-
-/**
-  * @brief  I3C Enable/Disable communication protocol[get]
-  *
-  * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Get the values of i3c_disable in reg CTRL9_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
-int32_t iis3dwb_i3c_disable_get(stmdev_ctx_t *ctx, iis3dwb_i3c_disable_t *val)
-{
-  iis3dwb_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
-
-  ret = iis3dwb_read_reg(ctx, IIS3DWB_CTRL9_XL, (uint8_t*)&ctrl9_xl, 1);
-
-  switch (ctrl9_xl.i3c_disable){
-    case IIS3DWB_I3C_DISABLE:
-      *val = IIS3DWB_I3C_DISABLE;
-      break;
-    case IIS3DWB_I3C_ENABLE:
-      *val = IIS3DWB_I3C_ENABLE;
-      break;
-    default:
-      *val = IIS3DWB_I3C_ENABLE;
-      break;
-  }
-  return ret;
-}
-
-/**
   * @}
   *
   */
@@ -1636,21 +1621,45 @@ int32_t iis3dwb_i3c_disable_get(stmdev_ctx_t *ctx, iis3dwb_i3c_disable_t *val)
   * @brief   Select the signal that need to route on int1 pad[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Structure of registers: INT1_CTRL,MD1_CFG,
-  *                EMB_FUNC_INT1, FSM_INT1_A, FSM_INT1_B
+  * @param  val    the signals to route on int1 pin.
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t iis3dwb_pin_int1_route_set(stmdev_ctx_t *ctx,
-                                     iis3dwb_pin_int1_route_t *val)
+                                   iis3dwb_pin_int1_route_t *val)
 {
+  iis3dwb_int1_ctrl_t          int1_ctrl;
+  iis3dwb_slope_en_t           slope_en;
+  iis3dwb_md1_cfg_t            md1_cfg;
   int32_t ret;
-  
-  ret = iis3dwb_write_reg(ctx, IIS3DWB_INT1_CTRL,
-                            (uint8_t*)&val->int1_ctrl, 1);
+
+  ret = iis3dwb_read_reg(ctx, IIS3DWB_INT1_CTRL, (uint8_t*)&int1_ctrl, 1);
   if(ret == 0){
-    ret = iis3dwb_write_reg(ctx, IIS3DWB_MD1_CFG,
-                              (uint8_t*)&val->md1_cfg, 1);
+    ret = iis3dwb_read_reg(ctx, IIS3DWB_MD1_CFG, (uint8_t*)&md1_cfg, 1);
+  }
+  if(ret == 0){
+    ret = iis3dwb_read_reg(ctx, IIS3DWB_SLOPE_EN, (uint8_t*)&slope_en, 1);
+  }
+
+  int1_ctrl.int1_drdy_xl       = val->drdy_xl;
+  int1_ctrl.int1_boot          = val->boot;
+  int1_ctrl.int1_fifo_th       = val->fifo_th;
+  int1_ctrl.int1_fifo_ovr      = val->fifo_ovr;
+  int1_ctrl.int1_fifo_full     = val->fifo_full;
+  int1_ctrl.int1_cnt_bdr       = val->fifo_bdr;
+  md1_cfg.int1_wu              = val->wake_up;
+  md1_cfg.int1_sleep_change    = val->sleep_change | val->sleep_status;
+  slope_en.sleep_status_on_int = val->sleep_status;
+
+
+  if(ret == 0){
+    ret = iis3dwb_write_reg(ctx, IIS3DWB_INT1_CTRL, (uint8_t*)&int1_ctrl, 1);
+  }
+  if(ret == 0){
+    ret = iis3dwb_write_reg(ctx, IIS3DWB_MD1_CFG, (uint8_t*)&md1_cfg, 1);
+  }
+  if(ret == 0){
+    ret = iis3dwb_write_reg(ctx, IIS3DWB_SLOPE_EN, (uint8_t*)&slope_en, 1);
   }
   return ret;
 }
@@ -1659,22 +1668,42 @@ int32_t iis3dwb_pin_int1_route_set(stmdev_ctx_t *ctx,
   * @brief  Select the signal that need to route on int1 pad.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Structure of registers: INT1_CTRL, MD1_CFG,
-  *                EMB_FUNC_INT1, FSM_INT1_A, FSM_INT1_B.(ptr)
+  * @param  val    the signals that are routed on int1 pin.(ptr)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t iis3dwb_pin_int1_route_get(stmdev_ctx_t *ctx,
-                                     iis3dwb_pin_int1_route_t *val)
+                                   iis3dwb_pin_int1_route_t *val)
 {
+  iis3dwb_int1_ctrl_t          int1_ctrl;
+  iis3dwb_slope_en_t           slope_en;
+  iis3dwb_md1_cfg_t            md1_cfg;
   int32_t ret;
   
-  ret = iis3dwb_read_reg(ctx, IIS3DWB_INT1_CTRL,
-                           (uint8_t*)&val->int1_ctrl, 1);
+  ret = iis3dwb_read_reg(ctx, IIS3DWB_INT1_CTRL, (uint8_t*)&int1_ctrl, 1);
   if(ret == 0){
-    ret = iis3dwb_read_reg(ctx, IIS3DWB_MD1_CFG,
-                             (uint8_t*)&val->md1_cfg, 1);
+    ret = iis3dwb_read_reg(ctx, IIS3DWB_MD1_CFG, (uint8_t*)&md1_cfg, 1);
   }
+  if(ret == 0){
+    ret = iis3dwb_read_reg(ctx, IIS3DWB_SLOPE_EN, (uint8_t*)&slope_en, 1);
+  }
+
+  val->drdy_xl   = int1_ctrl.int1_drdy_xl;
+  val->boot      = int1_ctrl.int1_boot;
+  val->fifo_th   = int1_ctrl.int1_fifo_th;
+  val->fifo_ovr  = int1_ctrl.int1_fifo_ovr;
+  val->fifo_full = int1_ctrl.int1_fifo_full;
+  val->fifo_bdr  = int1_ctrl.int1_cnt_bdr;
+  val->wake_up      = md1_cfg.int1_wu;
+
+  if (slope_en.sleep_status_on_int == PROPERTY_ENABLE) {
+    val->sleep_status = PROPERTY_ENABLE;
+    val->sleep_change = PROPERTY_DISABLE;
+  }
+  else {
+    val->sleep_change = md1_cfg.int1_sleep_change;
+  }
+
   return ret;
 }
 
@@ -1682,23 +1711,45 @@ int32_t iis3dwb_pin_int1_route_get(stmdev_ctx_t *ctx,
   * @brief  Select the signal that need to route on int2 pad[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Structure of registers INT2_CTRL,  MD2_CFG,
-  *                EMB_FUNC_INT2, FSM_INT2_A, FSM_INT2_B
+  * @param  val    the signals to route on int2 pin.
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t iis3dwb_pin_int2_route_set(stmdev_ctx_t *ctx,
                                      iis3dwb_pin_int2_route_t *val)
 {
+  iis3dwb_int2_ctrl_t          int2_ctrl;
+  iis3dwb_slope_en_t           slope_en;
+  iis3dwb_md2_cfg_t            md2_cfg;
   int32_t ret;
 
+  ret = iis3dwb_read_reg(ctx, IIS3DWB_INT2_CTRL, (uint8_t*)&int2_ctrl, 1);
+  if(ret == 0){
+    ret = iis3dwb_read_reg(ctx, IIS3DWB_MD2_CFG, (uint8_t*)&md2_cfg, 1);
+  }
+  if(ret == 0){
+    ret = iis3dwb_read_reg(ctx, IIS3DWB_SLOPE_EN, (uint8_t*)&slope_en, 1);
+  }
 
-  ret = iis3dwb_write_reg(ctx, IIS3DWB_INT2_CTRL,
-                            (uint8_t*)&val->int2_ctrl, 1);
+  int2_ctrl.int2_drdy_xl       = val->drdy_xl;
+  int2_ctrl.int2_drdy_temp     = val->drdy_temp;
+  int2_ctrl.int2_fifo_th       = val->fifo_th;
+  int2_ctrl.int2_fifo_ovr      = val->fifo_ovr;
+  int2_ctrl.int2_fifo_full     = val->fifo_full;
+  int2_ctrl.int2_cnt_bdr       = val->fifo_bdr;
+  md2_cfg.int2_timestamp       = val->timestamp;
+  md2_cfg.int2_wu              = val->wake_up;
+  md2_cfg.int2_sleep_change    = val->sleep_change | val->sleep_status;
+  slope_en.sleep_status_on_int = val->sleep_status;
 
   if(ret == 0){
-    ret = iis3dwb_write_reg(ctx, IIS3DWB_MD2_CFG,
-                              (uint8_t*)&val->md2_cfg, 1);
+    ret = iis3dwb_write_reg(ctx, IIS3DWB_INT2_CTRL, (uint8_t*)&int2_ctrl, 1);
+  }
+  if(ret == 0){
+    ret = iis3dwb_write_reg(ctx, IIS3DWB_MD2_CFG, (uint8_t*)&md2_cfg, 1);
+  }
+  if(ret == 0){
+    ret = iis3dwb_write_reg(ctx, IIS3DWB_SLOPE_EN, (uint8_t*)&slope_en, 1);
   }
   return ret;
 }
@@ -1707,22 +1758,44 @@ int32_t iis3dwb_pin_int2_route_set(stmdev_ctx_t *ctx,
   * @brief  Select the signal that need to route on int2 pad.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Structure of registers INT2_CTRL,  MD2_CFG,
-  *                EMB_FUNC_INT2, FSM_INT2_A, FSM_INT2_B.[get]
+  * @param  val    the signals that are routed on int2 pin.(ptr)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t iis3dwb_pin_int2_route_get(stmdev_ctx_t *ctx,
                                      iis3dwb_pin_int2_route_t *val)
 {
+  iis3dwb_int2_ctrl_t          int2_ctrl;
+  iis3dwb_slope_en_t           slope_en;
+  iis3dwb_md2_cfg_t            md2_cfg;
   int32_t ret;
 
-    ret = iis3dwb_read_reg(ctx, IIS3DWB_INT2_CTRL,
-                             (uint8_t*)&val->int2_ctrl, 1);
+  ret = iis3dwb_read_reg(ctx, IIS3DWB_INT2_CTRL, (uint8_t*)&int2_ctrl, 1);
   if(ret == 0){
-    ret = iis3dwb_read_reg(ctx, IIS3DWB_MD2_CFG,
-                             (uint8_t*)&val->md2_cfg, 1);
+    ret = iis3dwb_read_reg(ctx, IIS3DWB_MD2_CFG, (uint8_t*)&md2_cfg, 1);
   }
+  if(ret == 0){
+    ret = iis3dwb_read_reg(ctx, IIS3DWB_SLOPE_EN, (uint8_t*)&slope_en, 1);
+  }
+
+  val->drdy_xl   = int2_ctrl.int2_drdy_xl;
+  val->drdy_temp = int2_ctrl.int2_drdy_temp;
+  val->fifo_th   = int2_ctrl.int2_fifo_th;
+  val->fifo_ovr  = int2_ctrl.int2_fifo_ovr;
+  val->fifo_full = int2_ctrl.int2_fifo_full;
+  val->fifo_bdr  = int2_ctrl.int2_cnt_bdr;
+
+  val->timestamp  = md2_cfg.int2_timestamp;
+  val->wake_up   = md2_cfg.int2_wu;
+
+  if (slope_en.sleep_status_on_int == PROPERTY_ENABLE) {
+    val->sleep_status = PROPERTY_ENABLE;
+    val->sleep_change = PROPERTY_DISABLE;
+  }
+  else {
+    val->sleep_change = md2_cfg.int2_sleep_change;
+  }
+
   return ret;
 }
 
@@ -1869,6 +1942,56 @@ int32_t iis3dwb_all_on_int1_get(stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
+  * @brief  All interrupt signals notification mode.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the values of lir in reg SLOPE_EN
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
+int32_t iis3dwb_int_notification_set(stmdev_ctx_t *ctx, iis3dwb_lir_t val)
+{
+  iis3dwb_slope_en_t slope_en;
+  int32_t ret;
+
+  ret = iis3dwb_read_reg(ctx, IIS3DWB_SLOPE_EN, (uint8_t*)&slope_en, 1);
+  if(ret == 0){
+    slope_en.lir = (uint8_t)val;
+    ret = iis3dwb_write_reg(ctx, IIS3DWB_SLOPE_EN, (uint8_t*)&slope_en, 1);
+  }
+  return ret;
+}
+
+/**
+  * @brief  All interrupt signals notification mode.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Get the values of lir in reg SLOPE_EN
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
+int32_t iis3dwb_int_notification_get(stmdev_ctx_t *ctx, iis3dwb_lir_t *val)
+{
+  iis3dwb_slope_en_t slope_en;
+  int32_t ret;
+
+  ret = iis3dwb_read_reg(ctx, IIS3DWB_SLOPE_EN, (uint8_t*)&slope_en, 1);
+  
+  switch (slope_en.lir){
+    case IIS3DWB_INT_PULSED:
+      *val = IIS3DWB_INT_PULSED;
+      break;
+    case IIS3DWB_INT_LATCHED:
+      *val = IIS3DWB_INT_LATCHED;
+      break;
+    default:
+      *val = IIS3DWB_INT_PULSED;
+      break;
+  }
+  return ret;
+}
+
+/**
   * @}
   *
   */
@@ -1942,7 +2065,8 @@ int32_t iis3dwb_wkup_ths_weight_get(stmdev_ctx_t *ctx,
 
 /**
   * @brief  Threshold for wakeup: 1 LSB weight depends on WAKE_THS_W in
-  *         WAKE_UP_DUR.[set]
+  *         WAKE_UP_DUR. This function is mandatory for activate the
+  *         wake up (and activity/inactivity) logic.[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  val    Change the values of wk_ths in reg WAKE_UP_THS
@@ -1951,6 +2075,7 @@ int32_t iis3dwb_wkup_ths_weight_get(stmdev_ctx_t *ctx,
   */
 int32_t iis3dwb_wkup_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
 {
+  iis3dwb_interrupts_en_t interrupts_en;
   iis3dwb_wake_up_ths_t wake_up_ths;
   int32_t ret;
 
@@ -1960,6 +2085,15 @@ int32_t iis3dwb_wkup_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
     wake_up_ths.wk_ths= (uint8_t)val;
     ret = iis3dwb_write_reg(ctx, IIS3DWB_WAKE_UP_THS,
                               (uint8_t*)&wake_up_ths, 1);
+  }
+  if (ret == 0){
+  ret = iis3dwb_read_reg(ctx, IIS3DWB_INTERRUPTS_EN,
+                           (uint8_t*)&interrupts_en, 1);
+  }
+  if(ret == 0){
+    interrupts_en.interrupts_enable = PROPERTY_ENABLE;
+    ret = iis3dwb_write_reg(ctx, IIS3DWB_INTERRUPTS_EN,
+                              (uint8_t*)&interrupts_en, 1);
   }
   return ret;
 }
@@ -2713,8 +2847,8 @@ int32_t iis3dwb_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
                            (uint8_t*)&fifo_data_out_tag, 1);
 
   switch (fifo_data_out_tag.tag_sensor){
-    case IIS3DWB_XL_NC_TAG:
-      *val = IIS3DWB_XL_NC_TAG;
+    case IIS3DWB_XL_TAG:
+      *val = IIS3DWB_XL_TAG;
       break;
     case IIS3DWB_TEMPERATURE_TAG:
       *val = IIS3DWB_TEMPERATURE_TAG;
@@ -2722,11 +2856,8 @@ int32_t iis3dwb_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
     case IIS3DWB_TIMESTAMP_TAG:
       *val = IIS3DWB_TIMESTAMP_TAG;
       break;
-    case IIS3DWB_CFG_CHANGE_TAG:
-      *val = IIS3DWB_CFG_CHANGE_TAG;
-      break;
     default:
-      *val = IIS3DWB_CFG_CHANGE_TAG;
+      *val = IIS3DWB_XL_TAG;
       break;
   }
   return ret;
