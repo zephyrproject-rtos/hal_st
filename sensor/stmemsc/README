@@ -6,7 +6,7 @@ Origin:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 Status:
-   version v1.02
+   version v1.03
 
 Purpose:
    ST Microelectronics standard C platform-independent drivers for MEMS
@@ -46,7 +46,7 @@ URL:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 commit:
-   version v1.02
+   version v1.03
 
 Maintained-by:
    ST Microelectronics

@@ -6,7 +6,7 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+ * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
  * All rights reserved.</center></h2>
  *
  * This software component is licensed by ST under BSD 3-Clause license,
@@ -490,13 +490,13 @@ int32_t asm330lhh_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
 int32_t asm330lhh_xl_offset_weight_set(stmdev_ctx_t *ctx,
                                      asm330lhh_usr_off_w_t val)
 {
-  asm330lhh_ctrl6_g_t ctrl6_c;
+  asm330lhh_ctrl6_c_t ctrl6_c;
   int32_t ret;
 
-  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_G, (uint8_t*)&ctrl6_c, 1);
+  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_C, (uint8_t*)&ctrl6_c, 1);
   if(ret == 0){
     ctrl6_c.usr_off_w= (uint8_t)val;
-    ret = asm330lhh_write_reg(ctx, ASM330LHH_CTRL6_G, (uint8_t*)&ctrl6_c, 1);
+    ret = asm330lhh_write_reg(ctx, ASM330LHH_CTRL6_C, (uint8_t*)&ctrl6_c, 1);
   }
   return ret;
 }
@@ -513,10 +513,10 @@ int32_t asm330lhh_xl_offset_weight_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_xl_offset_weight_get(stmdev_ctx_t *ctx,
                                        asm330lhh_usr_off_w_t *val)
 {
-  asm330lhh_ctrl6_g_t ctrl6_c;
+  asm330lhh_ctrl6_c_t ctrl6_c;
   int32_t ret;
 
-  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_G, (uint8_t*)&ctrl6_c, 1);
+  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_C, (uint8_t*)&ctrl6_c, 1);
 
   switch (ctrl6_c.usr_off_w){
     case ASM330LHH_LSb_1mg:
@@ -552,10 +552,6 @@ int32_t asm330lhh_all_sources_get(stmdev_ctx_t *ctx,
   if(ret == 0){
     ret = asm330lhh_read_reg(ctx, ASM330LHH_WAKE_UP_SRC,
                              (uint8_t*)&val->wake_up_src, 1);
-  }
-  if(ret == 0){
-    ret = asm330lhh_read_reg(ctx, ASM330LHH_TAP_SRC,
-                             (uint8_t*)&val->tap_src, 1);
   }
   if(ret == 0){
     ret = asm330lhh_read_reg(ctx, ASM330LHH_D6D_SRC,
@@ -801,6 +797,20 @@ int32_t asm330lhh_xl_usr_offset_get(stmdev_ctx_t *ctx, uint8_t *val)
   */
 
 /**
+  * @brief  Reset timestamp counter.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
+int32_t asm330lhh_timestamp_rst(stmdev_ctx_t *ctx)
+{
+  uint8_t rst_val = 0xAA;
+
+  return asm330lhh_write_reg(ctx, ASM330LHH_TIMESTAMP2, &rst_val, 1);
+}
+
+/**
   * @brief  Enables timestamp counter.[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
@@ -851,10 +861,17 @@ int32_t asm330lhh_timestamp_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t asm330lhh_timestamp_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t asm330lhh_timestamp_raw_get(stmdev_ctx_t *ctx, uint32_t *val)
 {
+  uint8_t buff[4];
   int32_t ret;
+
   ret = asm330lhh_read_reg(ctx, ASM330LHH_TIMESTAMP0, buff, 4);
+  *val = buff[3];
+  *val = (*val * 256U) +  buff[2];
+  *val = (*val * 256U) +  buff[1];
+  *val = (*val * 256U) +  buff[0];
+
   return ret;
 }
 
@@ -937,10 +954,15 @@ int32_t asm330lhh_rounding_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t asm330lhh_temperature_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t asm330lhh_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 {
+  uint8_t buff[2];
   int32_t ret;
+
   ret = asm330lhh_read_reg(ctx, ASM330LHH_OUT_TEMP_L, buff, 2);
+  *val = (int16_t)buff[1];
+  *val = (*val * 256) + (int16_t)buff[0];
+
   return ret;
 }
 
@@ -953,10 +975,19 @@ int32_t asm330lhh_temperature_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t asm330lhh_angular_rate_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t asm330lhh_angular_rate_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 {
+  uint8_t buff[6];
   int32_t ret;
   ret = asm330lhh_read_reg(ctx, ASM330LHH_OUTX_L_G, buff, 6);
+
+  val[0] = (int16_t)buff[1];
+  val[0] = (val[0] * 256) + (int16_t)buff[0];
+  val[1] = (int16_t)buff[3];
+  val[1] = (val[1] * 256) + (int16_t)buff[2];
+  val[2] = (int16_t)buff[5];
+  val[2] = (val[2] * 256) + (int16_t)buff[4];
+
   return ret;
 }
 
@@ -969,10 +1000,19 @@ int32_t asm330lhh_angular_rate_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t asm330lhh_acceleration_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t asm330lhh_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 {
+  uint8_t buff[6];
   int32_t ret;
   ret = asm330lhh_read_reg(ctx, ASM330LHH_OUTX_L_A, buff, 6);
+
+  val[0] = (int16_t)buff[1];
+  val[0] = (val[0] * 256) + (int16_t)buff[0];
+  val[1] = (int16_t)buff[3];
+  val[1] = (val[1] * 256) + (int16_t)buff[2];
+  val[2] = (int16_t)buff[5];
+  val[2] = (val[2] * 256) + (int16_t)buff[4];
+
   return ret;
 }
 
@@ -984,10 +1024,10 @@ int32_t asm330lhh_acceleration_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t asm330lhh_fifo_out_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t asm330lhh_fifo_out_raw_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
-  ret = asm330lhh_read_reg(ctx, ASM330LHH_FIFO_DATA_OUT_X_L, buff, 6);
+  ret = asm330lhh_read_reg(ctx, ASM330LHH_FIFO_DATA_OUT_X_L, val, 6);
   return ret;
 }
 
@@ -1002,6 +1042,46 @@ int32_t asm330lhh_fifo_out_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @{
   *
   */
+
+/**
+  * @brief  DEVICE_CONF bit configuration[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the values of device_conf in reg CTRL9_XL
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
+int32_t asm330lhh_device_conf_set(stmdev_ctx_t *ctx, uint8_t val)
+{
+  asm330lhh_ctrl9_xl_t ctrl9_xl;
+  int32_t ret;
+
+  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL9_XL, (uint8_t*)&ctrl9_xl, 1);
+  if(ret == 0){
+    ctrl9_xl.device_conf = (uint8_t)val;
+    ret = asm330lhh_write_reg(ctx, ASM330LHH_CTRL9_XL, (uint8_t*)&ctrl9_xl, 1);
+  }
+  return ret;
+}
+
+/**
+  * @brief  DEVICE_CONF bit configuration[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Get the values of device_conf in reg CTRL9_XL
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
+int32_t asm330lhh_device_conf_get(stmdev_ctx_t *ctx, uint8_t *val)
+{
+  asm330lhh_ctrl9_xl_t ctrl9_xl;
+  int32_t ret;
+
+  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL9_XL, (uint8_t*)&ctrl9_xl, 1);
+  *val = ctrl9_xl.device_conf;
+
+  return ret;
+}
 
 /**
   * @brief  Difference in percentage of the effective ODR (and timestamp rate)
@@ -1505,13 +1585,13 @@ int32_t asm330lhh_filter_settling_mask_get(stmdev_ctx_t *ctx,
 int32_t asm330lhh_gy_lp1_bandwidth_set(stmdev_ctx_t *ctx,
                                        asm330lhh_ftype_t val)
 {
-  asm330lhh_ctrl6_g_t ctrl6_c;
+  asm330lhh_ctrl6_c_t ctrl6_c;
   int32_t ret;
 
-  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_G, (uint8_t*)&ctrl6_c, 1);
+  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_C, (uint8_t*)&ctrl6_c, 1);
   if(ret == 0){
     ctrl6_c.ftype= (uint8_t)val;
-    ret = asm330lhh_write_reg(ctx, ASM330LHH_CTRL6_G, (uint8_t*)&ctrl6_c, 1);
+    ret = asm330lhh_write_reg(ctx, ASM330LHH_CTRL6_C, (uint8_t*)&ctrl6_c, 1);
   }
   return ret;
 }
@@ -1527,10 +1607,10 @@ int32_t asm330lhh_gy_lp1_bandwidth_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_gy_lp1_bandwidth_get(stmdev_ctx_t *ctx,
                                        asm330lhh_ftype_t *val)
 {
-  asm330lhh_ctrl6_g_t ctrl6_c;
+  asm330lhh_ctrl6_c_t ctrl6_c;
   int32_t ret;
 
-  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_G, (uint8_t*)&ctrl6_c, 1);
+  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_C, (uint8_t*)&ctrl6_c, 1);
 
   switch (ctrl6_c.ftype){
     case ASM330LHH_ULTRA_LIGHT:
@@ -1775,7 +1855,7 @@ int32_t asm330lhh_xl_fast_settling_get(stmdev_ctx_t *ctx, uint8_t *val)
   *         functions.[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of slope_fds in reg TAP_CFG0
+  * @param  val    Change the values of slope_fds in reg INT_CFG0
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
@@ -1799,7 +1879,7 @@ int32_t asm330lhh_xl_hp_path_internal_set(stmdev_ctx_t *ctx,
   *         functions.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Get the values of slope_fds in reg TAP_CFG0
+  * @param  val    Get the values of slope_fds in reg INT_CFG0
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
@@ -1894,7 +1974,7 @@ int32_t asm330lhh_gy_hp_path_internal_get(stmdev_ctx_t *ctx,
   */
 
 /**
-  * @defgroup   ASM330LHH_ main_serial_interface
+  * @defgroup   ASM330LHH_ serial_interface
   * @brief      This section groups all the functions concerning main
   *             serial interface management (not auxiliary)
   * @{
@@ -2069,7 +2149,7 @@ int32_t asm330lhh_i2c_interface_get(stmdev_ctx_t *ctx,
   */
 
 /**
-  * @brief   Select the signal that need to route on int1 pad[set]
+  * @brief  Select the signal that need to route on int1 pad.[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  val    Structure of registers: INT1_CTRL,MD1_CFG,
@@ -2360,7 +2440,7 @@ int32_t asm330lhh_all_on_int1_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  All interrupt signals notification mode.[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of lir in reg TAP_CFG0
+  * @param  val    Change the values of lir in reg INT_CFG0
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
@@ -2384,7 +2464,7 @@ int32_t asm330lhh_int_notification_set(stmdev_ctx_t *ctx,
   * @brief  All interrupt signals notification mode.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Get the values of lir in reg TAP_CFG0
+  * @param  val    Get the values of lir in reg INT_CFG0
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
@@ -2674,7 +2754,7 @@ int32_t asm330lhh_gy_sleep_mode_get(stmdev_ctx_t *ctx, uint8_t *val)
   *         are enabled).[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of sleep_status_on_int in reg TAP_CFG0
+  * @param  val    Change the values of sleep_status_on_int in reg INT_CFG0
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
@@ -2699,7 +2779,7 @@ int32_t asm330lhh_act_pin_notification_set(stmdev_ctx_t *ctx,
   *         are enabled).[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Get the values of sleep_status_on_int in reg TAP_CFG0
+  * @param  val    Get the values of sleep_status_on_int in reg INT_CFG0
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
@@ -2728,19 +2808,19 @@ int32_t asm330lhh_act_pin_notification_get(stmdev_ctx_t *ctx,
   * @brief  Enable inactivity function.[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of inact_en in reg TAP_CFG2
+  * @param  val    Change the values of inact_en in reg INT_CFG1
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t asm330lhh_act_mode_set(stmdev_ctx_t *ctx, asm330lhh_inact_en_t val)
 {
-  asm330lhh_int_cfg1_t tap_cfg2;
+  asm330lhh_int_cfg1_t int_cfg1;
   int32_t ret;
 
-  ret = asm330lhh_read_reg(ctx, ASM330LHH_INT_CFG1, (uint8_t*)&tap_cfg2, 1);
+  ret = asm330lhh_read_reg(ctx, ASM330LHH_INT_CFG1, (uint8_t*)&int_cfg1, 1);
   if(ret == 0){
-    tap_cfg2.inact_en= (uint8_t)val;
-    ret = asm330lhh_write_reg(ctx, ASM330LHH_INT_CFG1, (uint8_t*)&tap_cfg2, 1);
+    int_cfg1.inact_en= (uint8_t)val;
+    ret = asm330lhh_write_reg(ctx, ASM330LHH_INT_CFG1, (uint8_t*)&int_cfg1, 1);
   }
   return ret;
 }
@@ -2749,19 +2829,19 @@ int32_t asm330lhh_act_mode_set(stmdev_ctx_t *ctx, asm330lhh_inact_en_t val)
   * @brief  Enable inactivity function.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Get the values of inact_en in reg TAP_CFG2
+  * @param  val    Get the values of inact_en in reg INT_CFG1
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t asm330lhh_act_mode_get(stmdev_ctx_t *ctx,
                                asm330lhh_inact_en_t *val)
 {
-  asm330lhh_int_cfg1_t tap_cfg2;
+  asm330lhh_int_cfg1_t int_cfg1;
   int32_t ret;
 
-  ret = asm330lhh_read_reg(ctx, ASM330LHH_INT_CFG1, (uint8_t*)&tap_cfg2, 1);
+  ret = asm330lhh_read_reg(ctx, ASM330LHH_INT_CFG1, (uint8_t*)&int_cfg1, 1);
 
-  switch (tap_cfg2.inact_en){
+  switch (int_cfg1.inact_en){
     case ASM330LHH_XL_AND_GY_NOT_AFFECTED:
       *val = ASM330LHH_XL_AND_GY_NOT_AFFECTED;
       break;
@@ -2848,15 +2928,15 @@ int32_t asm330lhh_act_sleep_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
 int32_t asm330lhh_6d_threshold_set(stmdev_ctx_t *ctx,
                                    asm330lhh_sixd_ths_t val)
 {
-  asm330lhh_ths_6d_t tap_ths_6d;
+  asm330lhh_ths_6d_t ths_6d;
   int32_t ret;
 
   ret = asm330lhh_read_reg(ctx, ASM330LHH_THS_6D,
-                           (uint8_t*)&tap_ths_6d, 1);
+                           (uint8_t*)&ths_6d, 1);
   if(ret == 0){
-    tap_ths_6d.sixd_ths= (uint8_t)val;
+    ths_6d.sixd_ths= (uint8_t)val;
     ret = asm330lhh_write_reg(ctx, ASM330LHH_THS_6D,
-                              (uint8_t*)&tap_ths_6d, 1);
+                              (uint8_t*)&ths_6d, 1);
   }
   return ret;
 }
@@ -2872,13 +2952,13 @@ int32_t asm330lhh_6d_threshold_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_6d_threshold_get(stmdev_ctx_t *ctx,
                                    asm330lhh_sixd_ths_t *val)
 {
-  asm330lhh_ths_6d_t tap_ths_6d;
+  asm330lhh_ths_6d_t ths_6d;
   int32_t ret;
 
   ret = asm330lhh_read_reg(ctx, ASM330LHH_THS_6D,
-                           (uint8_t*)&tap_ths_6d, 1);
+                           (uint8_t*)&ths_6d, 1);
 
-  switch (tap_ths_6d.sixd_ths){
+  switch (ths_6d.sixd_ths){
     case ASM330LHH_DEG_80:
       *val = ASM330LHH_DEG_80;
       break;
@@ -2908,15 +2988,15 @@ int32_t asm330lhh_6d_threshold_get(stmdev_ctx_t *ctx,
   */
 int32_t asm330lhh_4d_mode_set(stmdev_ctx_t *ctx, uint8_t val)
 {
-  asm330lhh_ths_6d_t tap_ths_6d;
+  asm330lhh_ths_6d_t ths_6d;
   int32_t ret;
 
   ret = asm330lhh_read_reg(ctx, ASM330LHH_THS_6D,
-                           (uint8_t*)&tap_ths_6d, 1);
+                           (uint8_t*)&ths_6d, 1);
   if(ret == 0){
-    tap_ths_6d.d4d_en= (uint8_t)val;
+    ths_6d.d4d_en= (uint8_t)val;
     ret = asm330lhh_write_reg(ctx, ASM330LHH_THS_6D,
-                              (uint8_t*)&tap_ths_6d, 1);
+                              (uint8_t*)&ths_6d, 1);
   }
   return ret;
 }
@@ -2931,12 +3011,12 @@ int32_t asm330lhh_4d_mode_set(stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t asm330lhh_4d_mode_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
-  asm330lhh_ths_6d_t tap_ths_6d;
+  asm330lhh_ths_6d_t ths_6d;
   int32_t ret;
 
   ret = asm330lhh_read_reg(ctx, ASM330LHH_THS_6D,
-                           (uint8_t*)&tap_ths_6d, 1);
-  *val = tap_ths_6d.d4d_en;
+                           (uint8_t*)&ths_6d, 1);
+  *val = ths_6d.d4d_en;
 
   return ret;
 }
@@ -3114,15 +3194,16 @@ int32_t asm330lhh_fifo_watermark_set(stmdev_ctx_t *ctx, uint16_t val)
   ret = asm330lhh_read_reg(ctx, ASM330LHH_FIFO_CTRL2,
                            (uint8_t*)&fifo_ctrl2, 1);
   if(ret == 0){
-    fifo_ctrl1.wtm = (uint8_t)(0x00FFU & val);
-    ret = asm330lhh_write_reg(ctx, ASM330LHH_FIFO_CTRL1,
-                              (uint8_t*)&fifo_ctrl1, 1);
-  }
-  if(ret == 0){
-    fifo_ctrl2.wtm = (uint8_t)(( 0x0100U & val ) >> 8);
+    fifo_ctrl2.wtm = (uint8_t)((val / 256U) & 0x01U);
     ret = asm330lhh_write_reg(ctx, ASM330LHH_FIFO_CTRL2,
                               (uint8_t*)&fifo_ctrl2, 1);
   }
+  if(ret == 0){
+    fifo_ctrl1.wtm = (uint8_t)(val - (fifo_ctrl2.wtm * 256U));
+    ret = asm330lhh_write_reg(ctx, ASM330LHH_FIFO_CTRL1,
+                              (uint8_t*)&fifo_ctrl1, 1);
+  }
+
   return ret;
 }
 
@@ -3147,11 +3228,9 @@ int32_t asm330lhh_fifo_watermark_get(stmdev_ctx_t *ctx, uint16_t *val)
                              (uint8_t*)&fifo_ctrl1, 1);
   }
   *val = fifo_ctrl2.wtm;
-  *val = *val << 8;
-  *val += fifo_ctrl1.wtm;
+  *val = (*val * 256U) +  fifo_ctrl1.wtm;
   return ret;
 }
-
 /**
   * @brief  Enables ODR CHANGE virtual sensor to be batched in FIFO.[set]
   *
@@ -3736,11 +3815,12 @@ int32_t asm330lhh_batch_counter_threshold_set(stmdev_ctx_t *ctx,
   ret = asm330lhh_read_reg(ctx, ASM330LHH_COUNTER_BDR_REG1,
                            (uint8_t*)&counter_bdr_reg1, 1);
   if (ret == 0){
-    counter_bdr_reg1.cnt_bdr_th = (uint8_t)((0x0700U & val) >> 8);
-    ret = asm330lhh_write_reg(ctx, ASM330LHH_COUNTER_BDR_REG1, (uint8_t*)&counter_bdr_reg1, 1);
+    counter_bdr_reg1.cnt_bdr_th = (uint8_t)((val / 256U) & 0x07U);
+    ret = asm330lhh_write_reg(ctx, ASM330LHH_COUNTER_BDR_REG1,
+                             (uint8_t*)&counter_bdr_reg1, 1);
   }
   if (ret == 0){
-    counter_bdr_reg2.cnt_bdr_th = (uint8_t)(0x00FFU & val);
+    counter_bdr_reg2.cnt_bdr_th = (uint8_t)(val - (counter_bdr_reg1.cnt_bdr_th * 256U));
     ret = asm330lhh_write_reg(ctx, ASM330LHH_COUNTER_BDR_REG2,
                               (uint8_t*)&counter_bdr_reg2, 1);
   }
@@ -3771,8 +3851,7 @@ int32_t asm330lhh_batch_counter_threshold_get(stmdev_ctx_t *ctx,
   }
 
   *val = counter_bdr_reg1.cnt_bdr_th;
-  *val = *val << 8;
-  *val += counter_bdr_reg2.cnt_bdr_th;
+  *val = (*val * 256U) +  counter_bdr_reg2.cnt_bdr_th;
   return ret;
 }
 
@@ -3795,9 +3874,9 @@ int32_t asm330lhh_fifo_data_level_get(stmdev_ctx_t *ctx, uint16_t *val)
   if (ret == 0){
     ret = asm330lhh_read_reg(ctx, ASM330LHH_FIFO_STATUS2,
                              (uint8_t*)&fifo_status2, 1);
+
     *val = fifo_status2.diff_fifo;
-    *val = *val << 8;
-    *val += fifo_status1.diff_fifo;
+    *val = (*val * 256U) + fifo_status1.diff_fifo;
   }
   return ret;
 }
@@ -3942,13 +4021,13 @@ int32_t asm330lhh_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
   */
 int32_t asm330lhh_den_mode_set(stmdev_ctx_t *ctx, asm330lhh_den_mode_t val)
 {
-  asm330lhh_ctrl6_g_t ctrl6_c;
+  asm330lhh_ctrl6_c_t ctrl6_c;
   int32_t ret;
 
-  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_G, (uint8_t*)&ctrl6_c, 1);
+  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_C, (uint8_t*)&ctrl6_c, 1);
   if(ret == 0){
     ctrl6_c.den_mode= (uint8_t)val;
-    ret = asm330lhh_write_reg(ctx, ASM330LHH_CTRL6_G, (uint8_t*)&ctrl6_c, 1);
+    ret = asm330lhh_write_reg(ctx, ASM330LHH_CTRL6_C, (uint8_t*)&ctrl6_c, 1);
   }
   return ret;
 }
@@ -3964,10 +4043,10 @@ int32_t asm330lhh_den_mode_set(stmdev_ctx_t *ctx, asm330lhh_den_mode_t val)
 int32_t asm330lhh_den_mode_get(stmdev_ctx_t *ctx,
                                asm330lhh_den_mode_t *val)
 {
-  asm330lhh_ctrl6_g_t ctrl6_c;
+  asm330lhh_ctrl6_c_t ctrl6_c;
   int32_t ret;
 
-  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_G, (uint8_t*)&ctrl6_c, 1);
+  ret = asm330lhh_read_reg(ctx, ASM330LHH_CTRL6_C, (uint8_t*)&ctrl6_c, 1);
 
   switch (ctrl6_c.den_mode){
     case ASM330LHH_DEN_DISABLE:
