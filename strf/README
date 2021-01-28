@@ -1,0 +1,37 @@
+STM32CubeSUBG1
+##############
+
+Origin:
+   ST Microelectronics
+   https://www.st.com/en/embedded-software/x-cube-subg1.html
+
+Status:
+   version 3.2.0
+
+Purpose:
+   ST Microelectronics official software package for SUBG1 radio series.
+
+Description:
+   This package is an extract of the official STM32CubeSUBG1 expansion package
+   written by ST Microelectronics. It contains the software library for the
+   s2-lp 802.15.4 radio.
+
+Dependencies:
+    None.
+
+URL:
+   https://www.st.com/en/embedded-software/x-cube-subg1.html
+
+commit:
+   version 3.2.0
+
+Maintained-by:
+   External
+
+License:
+   BSD-3-Clause
+
+License Link:
+   https://opensource.org/licenses/BSD-3-Clause
+
+Patch List:
