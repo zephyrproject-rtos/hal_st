@@ -35,3 +35,10 @@ License Link:
    https://opensource.org/licenses/BSD-3-Clause
 
 Patch List:
+
+   *Removed unneeded S2LP_Util.h include from s2lp MCU_Interface.h file and Config_RangeExt
+   calls from s2lp S2LPCmdStrobeRx/S2LPCmdStrobeTx of S2LP_Commands.h.
+
+   *Fixed warnings for parentheses around arithmetic operation.
+      Impacted files:
+         s2lp/S2LP_Library/Src/S2LP_PacketHandler.c

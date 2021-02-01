@@ -134,7 +134,6 @@ typedef enum
  */
 
 #define S2LPCmdStrobeTx()         {uint8_t tmp=0x9C;\
-                                    Config_RangeExt(PA_TX,S2LPManagementGetRangeExtender());\
                                      S2LPSpiWriteRegisters(0x76,1,&tmp);\
                                      S2LPCmdStrobeCommand(CMD_TX);}
 
@@ -146,7 +145,6 @@ typedef enum
  */
 
 #define S2LPCmdStrobeRx()         {uint8_t tmp=0x90;\
-                                    Config_RangeExt(PA_RX,S2LPManagementGetRangeExtender());\
                                     S2LPSpiWriteRegisters(0x76,1,&tmp);\
                                     S2LPCmdStrobeCommand(CMD_RX);}
 

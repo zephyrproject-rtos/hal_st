@@ -65,7 +65,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "S2LP_Config.h"
-#include "S2LP_Util.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -185,7 +185,7 @@ uint16_t S2LPGetPreambleLength(void)
   g_xStatus = S2LPSpiReadRegisters(PCKTCTRL6_ADDR, 2, tmpBuffer);
 
   /* Rebuild and return value */
-  return ( ((((uint16_t)tmpBuffer[0])&PREAMBLE_LEN_9_8_REGMASK)<<8) | ((uint16_t)tmpBuffer[1]) + 1);
+  return ( (((((uint16_t)tmpBuffer[0])&PREAMBLE_LEN_9_8_REGMASK)<<8) | ((uint16_t)tmpBuffer[1])) + 1);
 
 }
 
