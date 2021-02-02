@@ -267,11 +267,10 @@ OutputLevel S2LPGpioGetLevel(S2LPGpioPin xGpioX)
 void S2LPGpioIrqDeInit(S2LPIrqs* pxIrqInit)
 {
   uint8_t tmp[4] = {0x00,0x00,0x00,0x00};
+  S2LPIrqs empty = {0};
 
   if(pxIrqInit!=NULL) {
-    uint32_t tempValue = 0x00000000;
-    
-    *pxIrqInit = (*(S2LPIrqs*)&tempValue);
+    *pxIrqInit = empty;
   }
 
   g_xStatus = S2LPSpiWriteRegisters(IRQ_MASK3_ADDR, 4, tmp);

@@ -42,3 +42,7 @@ Patch List:
    *Fixed warnings for parentheses around arithmetic operation.
       Impacted files:
          s2lp/S2LP_Library/Src/S2LP_PacketHandler.c
+
+   *Fixed warnings for dereferencing type-punned pointer
+      Impacted files:
+         s2lp/S2LP_Library/Src/S2LP_Gpio.c
