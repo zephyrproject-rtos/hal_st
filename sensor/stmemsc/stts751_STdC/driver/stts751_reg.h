@@ -1,37 +1,69 @@
-/*
- ******************************************************************************
- * @file    stts751_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          stts751_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    stts751_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          stts751_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef STTS751_REGS_H
 #define STTS751_REGS_H
 
 #ifdef __cplusplus
-  extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stddef.h>
 #include <math.h>
 
 /** @addtogroup STTS751
   * @{
+  *
+  */
+
+/** @defgroup  Endianness definitions
+  * @{
+  *
+  */
+
+#ifndef DRV_BYTE_ORDER
+#ifndef __BYTE_ORDER__
+
+#define DRV_LITTLE_ENDIAN 1234
+#define DRV_BIG_ENDIAN    4321
+
+/** if _BYTE_ORDER is not defined, choose the endianness of your architecture
+  * by uncommenting the define which fits your platform endianness
+  */
+//#define DRV_BYTE_ORDER    DRV_BIG_ENDIAN
+#define DRV_BYTE_ORDER    DRV_LITTLE_ENDIAN
+
+#else /* defined __BYTE_ORDER__ */
+
+#define DRV_LITTLE_ENDIAN  __ORDER_LITTLE_ENDIAN__
+#define DRV_BIG_ENDIAN     __ORDER_BIG_ENDIAN__
+#define DRV_BYTE_ORDER     __BYTE_ORDER__
+
+#endif /* __BYTE_ORDER__*/
+#endif /* DRV_BYTE_ORDER */
+
+/**
+  * @}
   *
   */
 
@@ -43,7 +75,9 @@
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct{
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
   uint8_t bit2       : 1;
@@ -52,6 +86,16 @@ typedef struct{
   uint8_t bit5       : 1;
   uint8_t bit6       : 1;
   uint8_t bit7       : 1;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t bit7       : 1;
+  uint8_t bit6       : 1;
+  uint8_t bit5       : 1;
+  uint8_t bit4       : 1;
+  uint8_t bit3       : 1;
+  uint8_t bit2       : 1;
+  uint8_t bit1       : 1;
+  uint8_t bit0       : 1;
+#endif /* DRV_BYTE_ORDER */
 } bitwise_t;
 
 #define PROPERTY_DISABLE                (0U)
@@ -65,10 +109,11 @@ typedef struct{
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t*, uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t*, uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, const uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -89,15 +134,16 @@ typedef struct {
 /** @defgroup    Generic address-data structure definition
   * @brief       This structure is useful to load a predefined configuration
   *              of a sensor.
-	*              You can create a sensor configuration by your own or using 
-	*              Unico / Unicleo tools available on STMicroelectronics
-	*              web site.
+  *              You can create a sensor configuration by your own or using
+  *              Unico / Unicleo tools available on STMicroelectronics
+  *              web site.
   *
   * @{
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -146,28 +192,52 @@ typedef struct {
 
 #define STTS751_TEMPERATURE_HIGH            0x00U
 #define STTS751_STATUS                      0x01U
-typedef struct {
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t thrm                       : 1;
   uint8_t not_used_01                : 4;
   uint8_t t_low                      : 1;
   uint8_t t_high                     : 1;
   uint8_t busy                       : 1;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t busy                       : 1;
+  uint8_t t_high                     : 1;
+  uint8_t t_low                      : 1;
+  uint8_t not_used_01                : 4;
+  uint8_t thrm                       : 1;
+#endif /* DRV_BYTE_ORDER */
 } stts751_status_t;
 
 #define STTS751_TEMPERATURE_LOW             0x02U
 #define STTS751_CONFIGURATION               0x03U
-typedef struct {
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01                : 2;
   uint8_t tres                       : 2;
   uint8_t not_used_02                : 2;
   uint8_t stop                       : 1;
   uint8_t mask1                      : 1;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t mask1                      : 1;
+  uint8_t stop                       : 1;
+  uint8_t not_used_02                : 2;
+  uint8_t tres                       : 2;
+  uint8_t not_used_01                : 2;
+#endif /* DRV_BYTE_ORDER */
 } stts751_configuration_t;
 
 #define STTS751_CONVERSION_RATE             0x04U
-typedef struct {
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t conv                       : 4;
   uint8_t not_used_01                : 4;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t not_used_01                : 4;
+  uint8_t conv                       : 4;
+#endif /* DRV_BYTE_ORDER */
 } stts751_conversion_rate_t;
 
 #define STTS751_TEMPERATURE_HIGH_LIMIT_HIGH 0x05U
@@ -178,9 +248,15 @@ typedef struct {
 #define STTS751_THERM_LIMIT                 0x20U
 #define STTS751_THERM_HYSTERESIS            0x21U
 #define STTS751_SMBUS_TIMEOUT               0x22U
-typedef struct {
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01                : 7;
   uint8_t timeout                    : 1;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t timeout                    : 1;
+  uint8_t not_used_01                : 7;
+#endif /* DRV_BYTE_ORDER */
 } stts751_smbus_timeout_t;
 
 #define STTS751_PRODUCT_ID                  0xFDU
@@ -189,9 +265,9 @@ typedef struct {
 
 /**
   * @defgroup STTS751_Register_Union
-  * @brief    This union group all the registers that has a bitfield
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -199,7 +275,8 @@ typedef struct {
   * @{
   *
   */
-typedef union{
+typedef union
+{
   stts751_status_t                       status;
   stts751_configuration_t                configuration;
   stts751_conversion_rate_t              conversion_rate;
@@ -213,15 +290,18 @@ typedef union{
   *
   */
 
-int32_t stts751_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t* data,
+int32_t stts751_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                         uint8_t *data,
+                         uint16_t len);
+int32_t stts751_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                          uint8_t *data,
                           uint16_t len);
-int32_t stts751_write_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t* data,
-                           uint16_t len);
 
-extern float stts751_from_lsb_to_celsius(int16_t lsb);
-extern int16_t stts751_from_celsius_to_lsb(float celsius);
+float_t stts751_from_lsb_to_celsius(int16_t lsb);
+int16_t stts751_from_celsius_to_lsb(float_t celsius);
 
-typedef enum {
+typedef enum
+{
   STTS751_TEMP_ODR_OFF        = 0x80,
   STTS751_TEMP_ODR_ONE_SHOT   = 0x90,
   STTS751_TEMP_ODR_62mHz5     = 0x00,
@@ -235,37 +315,42 @@ typedef enum {
   STTS751_TEMP_ODR_16Hz       = 0x08, /* 9, 10, or 11-bit resolutions only */
   STTS751_TEMP_ODR_32Hz       = 0x09, /* 9 or 10-bit resolutions only */
 } stts751_odr_t;
-int32_t stts751_temp_data_rate_set(stmdev_ctx_t *ctx, stts751_odr_t val);
-int32_t stts751_temp_data_rate_get(stmdev_ctx_t *ctx, stts751_odr_t *val);
+int32_t stts751_temp_data_rate_set(stmdev_ctx_t *ctx,
+                                   stts751_odr_t val);
+int32_t stts751_temp_data_rate_get(stmdev_ctx_t *ctx,
+                                   stts751_odr_t *val);
 
-typedef enum {
+typedef enum
+{
   STTS751_9bit      = 2,
   STTS751_10bit     = 0,
   STTS751_11bit     = 1,
   STTS751_12bit     = 3,
 } stts751_tres_t;
 int32_t stts751_resolution_set(stmdev_ctx_t *ctx, stts751_tres_t val);
-int32_t stts751_resolution_get(stmdev_ctx_t *ctx, stts751_tres_t *val);
+int32_t stts751_resolution_get(stmdev_ctx_t *ctx,
+                               stts751_tres_t *val);
 
-int32_t stts751_status_reg_get(stmdev_ctx_t *ctx, stts751_status_t *val);
+int32_t stts751_status_reg_get(stmdev_ctx_t *ctx,
+                               stts751_status_t *val);
 
 int32_t stts751_flag_busy_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t stts751_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *buff);
+int32_t stts751_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val);
 
 int32_t stts751_pin_event_route_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t stts751_pin_event_route_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 
 int32_t stts751_high_temperature_threshold_set(stmdev_ctx_t *ctx,
-                                               int16_t buff);
+                                               int16_t val);
 int32_t stts751_high_temperature_threshold_get(stmdev_ctx_t *ctx,
-                                               int16_t *buff);
+                                               int16_t *val);
 
 int32_t stts751_low_temperature_threshold_set(stmdev_ctx_t *ctx,
-                                              int16_t buff);
+                                              int16_t val);
 int32_t stts751_low_temperature_threshold_get(stmdev_ctx_t *ctx,
-                                              int16_t *buff);
+                                              int16_t *val);
 
 int32_t stts751_ota_thermal_limit_set(stmdev_ctx_t *ctx, int8_t val);
 int32_t stts751_ota_thermal_limit_get(stmdev_ctx_t *ctx, int8_t *val);
@@ -276,7 +361,8 @@ int32_t stts751_ota_thermal_hyst_get(stmdev_ctx_t *ctx, int8_t *val);
 int32_t stts751_smbus_timeout_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t stts751_smbus_timeout_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef struct {
+typedef struct
+{
   uint8_t product_id;
   uint8_t manufacturer_id;
   uint8_t revision_id;

@@ -1,21 +1,21 @@
-/*
- ******************************************************************************
- * @file    ais328dq_reg.c
- * @author  Sensors Software Solution Team
- * @brief   AIS328DQ driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    ais328dq_reg.c
+  * @author  Sensors Software Solution Team
+  * @brief   AIS328DQ driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 #include "ais328dq_reg.h"
 
@@ -46,11 +46,14 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais328dq_read_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
-                           uint16_t len)
+int32_t ais328dq_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                          uint8_t *data,
+                          uint16_t len)
 {
   int32_t ret;
+
   ret = ctx->read_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -64,11 +67,14 @@ int32_t ais328dq_read_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais328dq_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
-                            uint16_t len)
+int32_t ais328dq_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                           uint8_t *data,
+                           uint16_t len)
 {
   int32_t ret;
+
   ret = ctx->write_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -77,7 +83,7 @@ int32_t ais328dq_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
   *
   */
 
-  /**
+/**
   * @defgroup    AIS328DQ_Sensitivity
   * @brief       These functions convert raw-data into engineering units.
   * @{
@@ -117,6 +123,7 @@ float_t ais328dq_from_fs8_to_mg(int16_t lsb)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of xen in reg CTRL_REG1
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_axis_x_data_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -124,12 +131,16 @@ int32_t ais328dq_axis_x_data_set(stmdev_ctx_t *ctx, uint8_t val)
   ais328dq_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1,
+                          (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg1.xen = val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG1,
-                              (uint8_t*)&ctrl_reg1, 1);
+                             (uint8_t *)&ctrl_reg1, 1);
   }
+
   return ret;
 }
 
@@ -138,6 +149,7 @@ int32_t ais328dq_axis_x_data_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of xen in reg CTRL_REG1
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_axis_x_data_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -145,7 +157,8 @@ int32_t ais328dq_axis_x_data_get(stmdev_ctx_t *ctx, uint8_t *val)
   ais328dq_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1,
+                          (uint8_t *)&ctrl_reg1, 1);
   *val = ctrl_reg1.xen;
 
   return ret;
@@ -156,6 +169,7 @@ int32_t ais328dq_axis_x_data_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of yen in reg CTRL_REG1
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_axis_y_data_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -163,12 +177,16 @@ int32_t ais328dq_axis_y_data_set(stmdev_ctx_t *ctx, uint8_t val)
   ais328dq_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1,
+                          (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg1.yen = val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG1,
-                              (uint8_t*)&ctrl_reg1, 1);
+                             (uint8_t *)&ctrl_reg1, 1);
   }
+
   return ret;
 }
 
@@ -177,6 +195,7 @@ int32_t ais328dq_axis_y_data_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of yen in reg CTRL_REG1
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_axis_y_data_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -184,7 +203,8 @@ int32_t ais328dq_axis_y_data_get(stmdev_ctx_t *ctx, uint8_t *val)
   ais328dq_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1,
+                          (uint8_t *)&ctrl_reg1, 1);
   *val = ctrl_reg1.yen;
 
   return ret;
@@ -195,6 +215,7 @@ int32_t ais328dq_axis_y_data_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of zen in reg CTRL_REG1
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_axis_z_data_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -202,12 +223,16 @@ int32_t ais328dq_axis_z_data_set(stmdev_ctx_t *ctx, uint8_t val)
   ais328dq_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1,
+                          (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg1.zen = val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG1,
-                              (uint8_t*)&ctrl_reg1, 1);
+                             (uint8_t *)&ctrl_reg1, 1);
   }
+
   return ret;
 }
 
@@ -216,6 +241,7 @@ int32_t ais328dq_axis_z_data_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of zen in reg CTRL_REG1
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_axis_z_data_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -223,7 +249,8 @@ int32_t ais328dq_axis_z_data_get(stmdev_ctx_t *ctx, uint8_t *val)
   ais328dq_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1,
+                          (uint8_t *)&ctrl_reg1, 1);
   *val = ctrl_reg1.zen;
 
   return ret;
@@ -234,6 +261,7 @@ int32_t ais328dq_axis_z_data_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of dr in reg CTRL_REG1
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_data_rate_set(stmdev_ctx_t *ctx, ais328dq_dr_t val)
@@ -242,13 +270,16 @@ int32_t ais328dq_data_rate_set(stmdev_ctx_t *ctx, ais328dq_dr_t val)
   int32_t ret;
 
   ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1,
-                           (uint8_t*)&ctrl_reg1, 1);
-  if(ret == 0) {
+                          (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg1.pm = (uint8_t)val & 0x07U;
-    ctrl_reg1.dr = ( (uint8_t)val & 0x30U ) >> 4;
+    ctrl_reg1.dr = ((uint8_t)val & 0x30U) >> 4;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG1,
-                              (uint8_t*)&ctrl_reg1, 1);
+                             (uint8_t *)&ctrl_reg1, 1);
   }
+
   return ret;
 }
 
@@ -257,6 +288,7 @@ int32_t ais328dq_data_rate_set(stmdev_ctx_t *ctx, ais328dq_dr_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of dr in reg CTRL_REG1
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_data_rate_get(stmdev_ctx_t *ctx, ais328dq_dr_t *val)
@@ -265,40 +297,50 @@ int32_t ais328dq_data_rate_get(stmdev_ctx_t *ctx, ais328dq_dr_t *val)
   int32_t ret;
 
   ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG1,
-                           (uint8_t*)&ctrl_reg1, 1);
+                          (uint8_t *)&ctrl_reg1, 1);
 
   switch ((ctrl_reg1.dr << 4) + ctrl_reg1.pm)
   {
     case AIS328DQ_ODR_OFF:
       *val = AIS328DQ_ODR_OFF;
       break;
+
     case AIS328DQ_ODR_Hz5:
       *val = AIS328DQ_ODR_Hz5;
       break;
+
     case AIS328DQ_ODR_1Hz:
       *val = AIS328DQ_ODR_1Hz;
       break;
+
     case AIS328DQ_ODR_5Hz2:
       *val = AIS328DQ_ODR_5Hz2;
       break;
+
     case AIS328DQ_ODR_5Hz:
       *val = AIS328DQ_ODR_5Hz;
       break;
+
     case AIS328DQ_ODR_10Hz:
       *val = AIS328DQ_ODR_10Hz;
       break;
+
     case AIS328DQ_ODR_50Hz:
       *val = AIS328DQ_ODR_50Hz;
       break;
+
     case AIS328DQ_ODR_100Hz:
       *val = AIS328DQ_ODR_100Hz;
       break;
+
     case AIS328DQ_ODR_400Hz:
       *val = AIS328DQ_ODR_400Hz;
       break;
+
     case AIS328DQ_ODR_1kHz:
       *val = AIS328DQ_ODR_1kHz;
       break;
+
     default:
       *val = AIS328DQ_ODR_OFF;
       break;
@@ -312,20 +354,25 @@ int32_t ais328dq_data_rate_get(stmdev_ctx_t *ctx, ais328dq_dr_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of hpm in reg CTRL_REG2
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_reference_mode_set(stmdev_ctx_t *ctx,
-                                     ais328dq_hpm_t val)
+                                    ais328dq_hpm_t val)
 {
   ais328dq_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2,
+                          (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.hpm = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG2,
-                              (uint8_t*)&ctrl_reg2, 1);
+                             (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -334,29 +381,33 @@ int32_t ais328dq_reference_mode_set(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of hpm in reg CTRL_REG2
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_reference_mode_get(stmdev_ctx_t *ctx,
-                                     ais328dq_hpm_t *val)
+                                    ais328dq_hpm_t *val)
 {
   ais328dq_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
   ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2,
-                           (uint8_t*)&ctrl_reg2, 1);
+                          (uint8_t *)&ctrl_reg2, 1);
 
   switch (ctrl_reg2.hpm)
   {
     case AIS328DQ_NORMAL_MODE:
       *val = AIS328DQ_NORMAL_MODE;
       break;
+
     case AIS328DQ_REF_MODE_ENABLE:
       *val = AIS328DQ_REF_MODE_ENABLE;
       break;
+
     default:
       *val = AIS328DQ_NORMAL_MODE;
       break;
   }
+
   return ret;
 }
 
@@ -365,6 +416,7 @@ int32_t ais328dq_reference_mode_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of fs in reg CTRL_REG4
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_full_scale_set(stmdev_ctx_t *ctx, ais328dq_fs_t val)
@@ -372,12 +424,16 @@ int32_t ais328dq_full_scale_set(stmdev_ctx_t *ctx, ais328dq_fs_t val)
   ais328dq_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4,
+                          (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.fs = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG4,
-                              (uint8_t*)&ctrl_reg4, 1);
+                             (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -386,6 +442,7 @@ int32_t ais328dq_full_scale_set(stmdev_ctx_t *ctx, ais328dq_fs_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of fs in reg CTRL_REG4
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_full_scale_get(stmdev_ctx_t *ctx, ais328dq_fs_t *val)
@@ -393,19 +450,23 @@ int32_t ais328dq_full_scale_get(stmdev_ctx_t *ctx, ais328dq_fs_t *val)
   ais328dq_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4,
+                          (uint8_t *)&ctrl_reg4, 1);
 
   switch (ctrl_reg4.fs)
   {
     case AIS328DQ_2g:
       *val = AIS328DQ_2g;
       break;
+
     case AIS328DQ_4g:
       *val = AIS328DQ_4g;
       break;
+
     case AIS328DQ_8g:
       *val = AIS328DQ_8g;
       break;
+
     default:
       *val = AIS328DQ_2g;
       break;
@@ -419,6 +480,7 @@ int32_t ais328dq_full_scale_get(stmdev_ctx_t *ctx, ais328dq_fs_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of bdu in reg CTRL_REG4
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -426,12 +488,16 @@ int32_t ais328dq_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   ais328dq_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4,
+                          (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.bdu = val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG4,
-                              (uint8_t*)&ctrl_reg4, 1);
+                             (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -440,14 +506,17 @@ int32_t ais328dq_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of bdu in reg CTRL_REG4
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais328dq_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais328dq_block_data_update_get(stmdev_ctx_t *ctx,
+                                       uint8_t *val)
 {
   ais328dq_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4,
+                          (uint8_t *)&ctrl_reg4, 1);
   *val = ctrl_reg4.bdu;
 
   return ret;
@@ -458,13 +527,16 @@ int32_t ais328dq_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         registers STATUS_REG
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_status_reg_get(stmdev_ctx_t *ctx,
-                                 ais328dq_status_reg_t *val)
+                                ais328dq_status_reg_t *val)
 {
   int32_t ret;
-  ret = ais328dq_read_reg(ctx, AIS328DQ_STATUS_REG, (uint8_t*) val, 1);
+
+  ret = ais328dq_read_reg(ctx, AIS328DQ_STATUS_REG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -473,6 +545,7 @@ int32_t ais328dq_status_reg_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of zyxda in reg STATUS_REG
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_flag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -481,7 +554,7 @@ int32_t ais328dq_flag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais328dq_read_reg(ctx, AIS328DQ_STATUS_REG,
-                           (uint8_t*)&status_reg, 1);
+                          (uint8_t *)&status_reg, 1);
   *val = status_reg.zyxda;
 
   return ret;
@@ -505,6 +578,7 @@ int32_t ais328dq_flag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  buff        buffer that stores data read
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
@@ -540,12 +614,15 @@ int32_t ais328dq_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  buff        buffer that stores data read
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret = ais328dq_read_reg(ctx, AIS328DQ_WHO_AM_I, buff, 1);
+
   return ret;
 }
 
@@ -554,6 +631,7 @@ int32_t ais328dq_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of boot in reg CTRL_REG2
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_boot_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -561,12 +639,16 @@ int32_t ais328dq_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   ais328dq_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2,
+                          (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.boot = val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG2,
-                              (uint8_t*)&ctrl_reg2, 1);
+                             (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -575,6 +657,7 @@ int32_t ais328dq_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of boot in reg CTRL_REG2
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -582,7 +665,8 @@ int32_t ais328dq_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   ais328dq_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2,
+                          (uint8_t *)&ctrl_reg2, 1);
   *val = ctrl_reg2.boot;
 
   return ret;
@@ -593,6 +677,7 @@ int32_t ais328dq_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of st in reg CTRL_REG4
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_self_test_set(stmdev_ctx_t *ctx, ais328dq_st_t val)
@@ -600,12 +685,16 @@ int32_t ais328dq_self_test_set(stmdev_ctx_t *ctx, ais328dq_st_t val)
   ais328dq_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4,
+                          (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.st = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG4,
-                              (uint8_t*)&ctrl_reg4, 1);
+                             (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -614,6 +703,7 @@ int32_t ais328dq_self_test_set(stmdev_ctx_t *ctx, ais328dq_st_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of st in reg CTRL_REG4
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_self_test_get(stmdev_ctx_t *ctx, ais328dq_st_t *val)
@@ -621,19 +711,23 @@ int32_t ais328dq_self_test_get(stmdev_ctx_t *ctx, ais328dq_st_t *val)
   ais328dq_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4,
+                          (uint8_t *)&ctrl_reg4, 1);
 
   switch (ctrl_reg4.st)
   {
     case AIS328DQ_ST_DISABLE:
       *val = AIS328DQ_ST_DISABLE;
       break;
+
     case AIS328DQ_ST_POSITIVE:
       *val = AIS328DQ_ST_POSITIVE;
       break;
+
     case AIS328DQ_ST_NEGATIVE:
       *val = AIS328DQ_ST_NEGATIVE;
       break;
+
     default:
       *val = AIS328DQ_ST_DISABLE;
       break;
@@ -647,19 +741,25 @@ int32_t ais328dq_self_test_get(stmdev_ctx_t *ctx, ais328dq_st_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ble in reg CTRL_REG4
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais328dq_data_format_set(stmdev_ctx_t *ctx, ais328dq_ble_t val)
+int32_t ais328dq_data_format_set(stmdev_ctx_t *ctx,
+                                 ais328dq_ble_t val)
 {
   ais328dq_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4,
+                          (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.ble = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG4,
-                              (uint8_t*)&ctrl_reg4, 1);
+                             (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -668,23 +768,28 @@ int32_t ais328dq_data_format_set(stmdev_ctx_t *ctx, ais328dq_ble_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of ble in reg CTRL_REG4
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais328dq_data_format_get(stmdev_ctx_t *ctx, ais328dq_ble_t *val)
+int32_t ais328dq_data_format_get(stmdev_ctx_t *ctx,
+                                 ais328dq_ble_t *val)
 {
   ais328dq_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4,
+                          (uint8_t *)&ctrl_reg4, 1);
 
   switch (ctrl_reg4.ble)
   {
     case AIS328DQ_LSB_AT_LOW_ADD:
       *val = AIS328DQ_LSB_AT_LOW_ADD;
       break;
+
     case AIS328DQ_MSB_AT_LOW_ADD:
       *val = AIS328DQ_MSB_AT_LOW_ADD;
       break;
+
     default:
       *val = AIS328DQ_LSB_AT_LOW_ADD;
       break;
@@ -711,19 +816,25 @@ int32_t ais328dq_data_format_get(stmdev_ctx_t *ctx, ais328dq_ble_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of hpcf in reg CTRL_REG2
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais328dq_hp_bandwidth_set(stmdev_ctx_t *ctx, ais328dq_hpcf_t val)
+int32_t ais328dq_hp_bandwidth_set(stmdev_ctx_t *ctx,
+                                  ais328dq_hpcf_t val)
 {
   ais328dq_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2,
+                          (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.hpcf = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG2,
-                              (uint8_t*)&ctrl_reg2, 1);
+                             (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -732,30 +843,36 @@ int32_t ais328dq_hp_bandwidth_set(stmdev_ctx_t *ctx, ais328dq_hpcf_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of hpcf in reg CTRL_REG2
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_hp_bandwidth_get(stmdev_ctx_t *ctx,
-                                   ais328dq_hpcf_t *val)
+                                  ais328dq_hpcf_t *val)
 {
   ais328dq_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2,
+                          (uint8_t *)&ctrl_reg2, 1);
 
   switch (ctrl_reg2.hpcf)
   {
     case AIS328DQ_CUT_OFF_8Hz:
       *val = AIS328DQ_CUT_OFF_8Hz;
       break;
+
     case AIS328DQ_CUT_OFF_16Hz:
       *val = AIS328DQ_CUT_OFF_16Hz;
       break;
+
     case AIS328DQ_CUT_OFF_32Hz:
       *val = AIS328DQ_CUT_OFF_32Hz;
       break;
+
     case AIS328DQ_CUT_OFF_64Hz:
       *val = AIS328DQ_CUT_OFF_64Hz;
       break;
+
     default:
       *val = AIS328DQ_CUT_OFF_8Hz;
       break;
@@ -769,6 +886,7 @@ int32_t ais328dq_hp_bandwidth_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of hpen in reg CTRL_REG2
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_hp_path_set(stmdev_ctx_t *ctx, ais328dq_hpen_t val)
@@ -776,13 +894,17 @@ int32_t ais328dq_hp_path_set(stmdev_ctx_t *ctx, ais328dq_hpen_t val)
   ais328dq_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2,
+                          (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.hpen = (uint8_t)val & 0x03U;
     ctrl_reg2.fds = ((uint8_t)val & 0x04U) >> 2;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG2,
-                              (uint8_t*)&ctrl_reg2, 1);
+                             (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -791,6 +913,7 @@ int32_t ais328dq_hp_path_set(stmdev_ctx_t *ctx, ais328dq_hpen_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of hpen in reg CTRL_REG2
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_hp_path_get(stmdev_ctx_t *ctx, ais328dq_hpen_t *val)
@@ -798,38 +921,48 @@ int32_t ais328dq_hp_path_get(stmdev_ctx_t *ctx, ais328dq_hpen_t *val)
   ais328dq_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG2,
+                          (uint8_t *)&ctrl_reg2, 1);
 
-  switch ( (ctrl_reg2.fds << 2) + ctrl_reg2.hpen )
+  switch ((ctrl_reg2.fds << 2) + ctrl_reg2.hpen)
   {
     case AIS328DQ_HP_DISABLE:
       *val = AIS328DQ_HP_DISABLE;
       break;
+
     case AIS328DQ_HP_ON_OUT:
       *val = AIS328DQ_HP_ON_OUT;
       break;
+
     case AIS328DQ_HP_ON_INT1:
       *val = AIS328DQ_HP_ON_INT1;
       break;
+
     case AIS328DQ_HP_ON_INT2:
       *val = AIS328DQ_HP_ON_INT2;
       break;
+
     case AIS328DQ_HP_ON_INT1_INT2:
       *val = AIS328DQ_HP_ON_INT1_INT2;
       break;
+
     case AIS328DQ_HP_ON_INT1_INT2_OUT:
       *val = AIS328DQ_HP_ON_INT1_INT2_OUT;
       break;
+
     case AIS328DQ_HP_ON_INT2_OUT:
       *val = AIS328DQ_HP_ON_INT2_OUT;
       break;
+
     case AIS328DQ_HP_ON_INT1_OUT:
       *val = AIS328DQ_HP_ON_INT1_OUT;
       break;
+
     default:
       *val = AIS328DQ_HP_DISABLE;
       break;
   }
+
   return ret;
 }
 
@@ -842,14 +975,17 @@ int32_t ais328dq_hp_path_get(stmdev_ctx_t *ctx, ais328dq_hpen_t *val)
   *         filter.[get]
   *
   * @param  ctx         read / write interface definitions(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_hp_reset_get(stmdev_ctx_t *ctx)
 {
   uint8_t dummy;
   int32_t ret;
+
   ret = ais328dq_read_reg(ctx, AIS328DQ_HP_FILTER_RESET,
-                           (uint8_t*)&dummy, 1);
+                          (uint8_t *)&dummy, 1);
+
   return ret;
 }
 
@@ -858,12 +994,16 @@ int32_t ais328dq_hp_reset_get(stmdev_ctx_t *ctx)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ref in reg REFERENCE
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais328dq_hp_reference_value_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais328dq_hp_reference_value_set(stmdev_ctx_t *ctx,
+                                        uint8_t val)
 {
   int32_t ret;
-  ret = ais328dq_write_reg(ctx, AIS328DQ_REFERENCE, (uint8_t*)&val, 1);
+
+  ret = ais328dq_write_reg(ctx, AIS328DQ_REFERENCE, (uint8_t *)&val, 1);
+
   return ret;
 }
 
@@ -872,12 +1012,16 @@ int32_t ais328dq_hp_reference_value_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ref in reg REFERENCE
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais328dq_hp_reference_value_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais328dq_hp_reference_value_get(stmdev_ctx_t *ctx,
+                                        uint8_t *val)
 {
   int32_t ret;
+
   ret = ais328dq_read_reg(ctx, AIS328DQ_REFERENCE, val, 1);
+
   return ret;
 }
 
@@ -899,6 +1043,7 @@ int32_t ais328dq_hp_reference_value_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of sim in reg CTRL_REG4
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_spi_mode_set(stmdev_ctx_t *ctx, ais328dq_sim_t val)
@@ -906,12 +1051,16 @@ int32_t ais328dq_spi_mode_set(stmdev_ctx_t *ctx, ais328dq_sim_t val)
   ais328dq_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4,
+                          (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.sim = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG4,
-                              (uint8_t*)&ctrl_reg4, 1);
+                             (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -920,6 +1069,7 @@ int32_t ais328dq_spi_mode_set(stmdev_ctx_t *ctx, ais328dq_sim_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of sim in reg CTRL_REG4
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_spi_mode_get(stmdev_ctx_t *ctx, ais328dq_sim_t *val)
@@ -927,16 +1077,19 @@ int32_t ais328dq_spi_mode_get(stmdev_ctx_t *ctx, ais328dq_sim_t *val)
   ais328dq_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG4,
+                          (uint8_t *)&ctrl_reg4, 1);
 
-  switch ( ctrl_reg4.sim )
+  switch (ctrl_reg4.sim)
   {
     case AIS328DQ_SPI_4_WIRE:
       *val = AIS328DQ_SPI_4_WIRE;
       break;
+
     case AIS328DQ_SPI_3_WIRE:
       *val = AIS328DQ_SPI_3_WIRE;
       break;
+
     default:
       *val = AIS328DQ_SPI_4_WIRE;
       break;
@@ -963,20 +1116,25 @@ int32_t ais328dq_spi_mode_get(stmdev_ctx_t *ctx, ais328dq_sim_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of i1_cfg in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_pin_int1_route_set(stmdev_ctx_t *ctx,
-                                     ais328dq_i1_cfg_t val)
+                                    ais328dq_i1_cfg_t val)
 {
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg3.i1_cfg = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG3,
-                              (uint8_t*)&ctrl_reg3, 1);
+                             (uint8_t *)&ctrl_reg3, 1);
   }
+
   return ret;
 }
 
@@ -985,30 +1143,36 @@ int32_t ais328dq_pin_int1_route_set(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of i1_cfg in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_pin_int1_route_get(stmdev_ctx_t *ctx,
-                                     ais328dq_i1_cfg_t *val)
+                                    ais328dq_i1_cfg_t *val)
 {
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
 
-  switch ( ctrl_reg3.i1_cfg )
+  switch (ctrl_reg3.i1_cfg)
   {
     case AIS328DQ_PAD1_INT1_SRC:
       *val = AIS328DQ_PAD1_INT1_SRC;
       break;
+
     case AIS328DQ_PAD1_INT1_OR_INT2_SRC:
       *val = AIS328DQ_PAD1_INT1_OR_INT2_SRC;
       break;
+
     case AIS328DQ_PAD1_DRDY:
       *val = AIS328DQ_PAD1_DRDY;
       break;
+
     case AIS328DQ_PAD1_BOOT:
       *val = AIS328DQ_PAD1_BOOT;
       break;
+
     default:
       *val = AIS328DQ_PAD1_INT1_SRC;
       break;
@@ -1023,20 +1187,25 @@ int32_t ais328dq_pin_int1_route_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of lir1 in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_notification_set(stmdev_ctx_t *ctx,
-                                        ais328dq_lir1_t val)
+                                       ais328dq_lir1_t val)
 {
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg3.lir1 = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG3,
-                              (uint8_t*)&ctrl_reg3, 1);
+                             (uint8_t *)&ctrl_reg3, 1);
   }
+
   return ret;
 }
 
@@ -1046,24 +1215,28 @@ int32_t ais328dq_int1_notification_set(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of lir1 in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_notification_get(stmdev_ctx_t *ctx,
-                                        ais328dq_lir1_t *val)
+                                       ais328dq_lir1_t *val)
 {
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
 
-  switch ( ctrl_reg3.lir1 )
+  switch (ctrl_reg3.lir1)
   {
     case AIS328DQ_INT1_PULSED:
       *val = AIS328DQ_INT1_PULSED;
       break;
+
     case AIS328DQ_INT1_LATCHED:
       *val = AIS328DQ_INT1_LATCHED;
       break;
+
     default:
       *val = AIS328DQ_INT1_PULSED;
       break;
@@ -1077,20 +1250,25 @@ int32_t ais328dq_int1_notification_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of i2_cfg in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_pin_int2_route_set(stmdev_ctx_t *ctx,
-                                     ais328dq_i2_cfg_t val)
+                                    ais328dq_i2_cfg_t val)
 {
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg3.i2_cfg = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG3,
-                              (uint8_t*)&ctrl_reg3, 1);
+                             (uint8_t *)&ctrl_reg3, 1);
   }
+
   return ret;
 }
 
@@ -1099,30 +1277,36 @@ int32_t ais328dq_pin_int2_route_set(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of i2_cfg in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_pin_int2_route_get(stmdev_ctx_t *ctx,
-                                     ais328dq_i2_cfg_t *val)
+                                    ais328dq_i2_cfg_t *val)
 {
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
 
-  switch ( ctrl_reg3.i2_cfg )
+  switch (ctrl_reg3.i2_cfg)
   {
     case AIS328DQ_PAD2_INT2_SRC:
       *val = AIS328DQ_PAD2_INT2_SRC;
       break;
+
     case AIS328DQ_PAD2_INT1_OR_INT2_SRC:
       *val = AIS328DQ_PAD2_INT1_OR_INT2_SRC;
       break;
+
     case AIS328DQ_PAD2_DRDY:
       *val = AIS328DQ_PAD2_DRDY;
       break;
+
     case AIS328DQ_PAD2_BOOT:
       *val = AIS328DQ_PAD2_BOOT;
       break;
+
     default:
       *val = AIS328DQ_PAD2_INT2_SRC;
       break;
@@ -1137,20 +1321,25 @@ int32_t ais328dq_pin_int2_route_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of lir2 in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_notification_set(stmdev_ctx_t *ctx,
-                                        ais328dq_lir2_t val)
+                                       ais328dq_lir2_t val)
 {
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg3.lir2 = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG3,
-                              (uint8_t*)&ctrl_reg3, 1);
+                             (uint8_t *)&ctrl_reg3, 1);
   }
+
   return ret;
 }
 
@@ -1160,24 +1349,28 @@ int32_t ais328dq_int2_notification_set(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of lir2 in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_notification_get(stmdev_ctx_t *ctx,
-                                        ais328dq_lir2_t *val)
+                                       ais328dq_lir2_t *val)
 {
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
 
-  switch ( ctrl_reg3.lir2 )
+  switch (ctrl_reg3.lir2)
   {
     case AIS328DQ_INT2_PULSED:
       *val = AIS328DQ_INT2_PULSED;
       break;
+
     case AIS328DQ_INT2_LATCHED:
       *val = AIS328DQ_INT2_LATCHED;
       break;
+
     default:
       *val = AIS328DQ_INT2_PULSED;
       break;
@@ -1191,6 +1384,7 @@ int32_t ais328dq_int2_notification_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of pp_od in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_pin_mode_set(stmdev_ctx_t *ctx, ais328dq_pp_od_t val)
@@ -1198,12 +1392,16 @@ int32_t ais328dq_pin_mode_set(stmdev_ctx_t *ctx, ais328dq_pp_od_t val)
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg3.pp_od = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG3,
-                              (uint8_t*)&ctrl_reg3, 1);
+                             (uint8_t *)&ctrl_reg3, 1);
   }
+
   return ret;
 }
 
@@ -1212,23 +1410,28 @@ int32_t ais328dq_pin_mode_set(stmdev_ctx_t *ctx, ais328dq_pp_od_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of pp_od in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais328dq_pin_mode_get(stmdev_ctx_t *ctx, ais328dq_pp_od_t *val)
+int32_t ais328dq_pin_mode_get(stmdev_ctx_t *ctx,
+                              ais328dq_pp_od_t *val)
 {
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
 
-  switch ( ctrl_reg3.pp_od )
+  switch (ctrl_reg3.pp_od)
   {
     case AIS328DQ_PUSH_PULL:
       *val = AIS328DQ_PUSH_PULL;
       break;
+
     case AIS328DQ_OPEN_DRAIN:
       *val = AIS328DQ_OPEN_DRAIN;
       break;
+
     default:
       *val = AIS328DQ_PUSH_PULL;
       break;
@@ -1242,19 +1445,25 @@ int32_t ais328dq_pin_mode_get(stmdev_ctx_t *ctx, ais328dq_pp_od_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ihl in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais328dq_pin_polarity_set(stmdev_ctx_t *ctx, ais328dq_ihl_t val)
+int32_t ais328dq_pin_polarity_set(stmdev_ctx_t *ctx,
+                                  ais328dq_ihl_t val)
 {
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg3.ihl = (uint8_t)val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG3,
-                              (uint8_t*)&ctrl_reg3, 1);
+                             (uint8_t *)&ctrl_reg3, 1);
   }
+
   return ret;
 }
 
@@ -1263,23 +1472,28 @@ int32_t ais328dq_pin_polarity_set(stmdev_ctx_t *ctx, ais328dq_ihl_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of ihl in reg CTRL_REG3
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais328dq_pin_polarity_get(stmdev_ctx_t *ctx, ais328dq_ihl_t *val)
+int32_t ais328dq_pin_polarity_get(stmdev_ctx_t *ctx,
+                                  ais328dq_ihl_t *val)
 {
   ais328dq_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3, (uint8_t*)&ctrl_reg3, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG3,
+                          (uint8_t *)&ctrl_reg3, 1);
 
-  switch ( ctrl_reg3.ihl )
+  switch (ctrl_reg3.ihl)
   {
     case AIS328DQ_ACTIVE_HIGH:
       *val = AIS328DQ_ACTIVE_HIGH;
       break;
+
     case AIS328DQ_ACTIVE_LOW:
       *val = AIS328DQ_ACTIVE_LOW;
       break;
+
     default:
       *val = AIS328DQ_ACTIVE_HIGH;
       break;
@@ -1306,16 +1520,19 @@ int32_t ais328dq_pin_polarity_get(stmdev_ctx_t *ctx, ais328dq_ihl_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         enable sign and axis for interrupt on threshold
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_on_threshold_conf_set(stmdev_ctx_t *ctx,
-                                              ais328dq_int1_on_th_conf_t val)
+                                            ais328dq_int1_on_th_conf_t val)
 {
   ais328dq_int1_cfg_t int1_cfg;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t*)&int1_cfg, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t *)&int1_cfg, 1);
+
+  if (ret == 0)
+  {
     int1_cfg.xlie  = val.int1_xlie;
     int1_cfg.xhie  = val.int1_xhie;
     int1_cfg.ylie  = val.int1_ylie;
@@ -1323,8 +1540,9 @@ int32_t ais328dq_int1_on_threshold_conf_set(stmdev_ctx_t *ctx,
     int1_cfg.zlie  = val.int1_zlie;
     int1_cfg.zhie  = val.int1_zhie;
     ret = ais328dq_write_reg(ctx, AIS328DQ_INT1_CFG,
-                              (uint8_t*)&int1_cfg, 1);
+                             (uint8_t *)&int1_cfg, 1);
   }
+
   return ret;
 }
 
@@ -1333,15 +1551,16 @@ int32_t ais328dq_int1_on_threshold_conf_set(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         enable sign and axis for interrupt on threshold
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_on_threshold_conf_get(stmdev_ctx_t *ctx,
-                                             ais328dq_int1_on_th_conf_t *val)
+                                            ais328dq_int1_on_th_conf_t *val)
 {
   ais328dq_int1_cfg_t int1_cfg;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t*)&int1_cfg, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t *)&int1_cfg, 1);
   val->int1_xlie = int1_cfg.xlie;
   val->int1_xhie = int1_cfg.xhie;
   val->int1_ylie = int1_cfg.ylie;
@@ -1357,20 +1576,24 @@ int32_t ais328dq_int1_on_threshold_conf_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of aoi in reg INT1_CFG
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_on_threshold_mode_set(stmdev_ctx_t *ctx,
-                                             ais328dq_int1_aoi_t val)
+                                            ais328dq_int1_aoi_t val)
 {
   ais328dq_int1_cfg_t int1_cfg;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t*)&int1_cfg, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t *)&int1_cfg, 1);
+
+  if (ret == 0)
+  {
     int1_cfg.aoi = (uint8_t) val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_INT1_CFG,
-                              (uint8_t*)&int1_cfg, 1);
+                             (uint8_t *)&int1_cfg, 1);
   }
+
   return ret;
 }
 
@@ -1379,24 +1602,27 @@ int32_t ais328dq_int1_on_threshold_mode_set(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of aoi in reg INT1_CFG
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_on_threshold_mode_get(stmdev_ctx_t *ctx,
-                                             ais328dq_int1_aoi_t *val)
+                                            ais328dq_int1_aoi_t *val)
 {
   ais328dq_int1_cfg_t int1_cfg;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t*)&int1_cfg, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t *)&int1_cfg, 1);
 
-  switch ( int1_cfg.aoi )
+  switch (int1_cfg.aoi)
   {
     case AIS328DQ_INT1_ON_THRESHOLD_OR:
       *val = AIS328DQ_INT1_ON_THRESHOLD_OR;
       break;
+
     case AIS328DQ_INT1_ON_THRESHOLD_AND:
       *val = AIS328DQ_INT1_ON_THRESHOLD_AND;
       break;
+
     default:
       *val = AIS328DQ_INT1_ON_THRESHOLD_OR;
       break;
@@ -1410,13 +1636,16 @@ int32_t ais328dq_int1_on_threshold_mode_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         registers INT1_SRC
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_src_get(stmdev_ctx_t *ctx,
-                               ais328dq_int1_src_t *val)
+                              ais328dq_int1_src_t *val)
 {
   int32_t ret;
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_SRC, (uint8_t*) val, 1);
+
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_SRC, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1425,6 +1654,7 @@ int32_t ais328dq_int1_src_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ths in reg INT1_THS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -1432,12 +1662,15 @@ int32_t ais328dq_int1_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   ais328dq_int1_ths_t int1_ths;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_THS, (uint8_t*)&int1_ths, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_THS, (uint8_t *)&int1_ths, 1);
+
+  if (ret == 0)
+  {
     int1_ths.ths = val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_INT1_THS,
-                              (uint8_t*)&int1_ths, 1);
+                             (uint8_t *)&int1_ths, 1);
   }
+
   return ret;
 }
 
@@ -1446,6 +1679,7 @@ int32_t ais328dq_int1_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ths in reg INT1_THS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -1453,7 +1687,7 @@ int32_t ais328dq_int1_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   ais328dq_int1_ths_t int1_ths;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_THS, (uint8_t*)&int1_ths, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_THS, (uint8_t *)&int1_ths, 1);
   *val = int1_ths.ths;
 
   return ret;
@@ -1464,6 +1698,7 @@ int32_t ais328dq_int1_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of d in reg INT1_DURATION
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_dur_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -1472,12 +1707,15 @@ int32_t ais328dq_int1_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_DURATION,
-                           (uint8_t*)&int1_duration, 1);
-  if(ret == 0) {
+                          (uint8_t *)&int1_duration, 1);
+
+  if (ret == 0)
+  {
     int1_duration.d = val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_INT1_DURATION,
-                              (uint8_t*)&int1_duration, 1);
+                             (uint8_t *)&int1_duration, 1);
   }
+
   return ret;
 }
 
@@ -1486,6 +1724,7 @@ int32_t ais328dq_int1_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of d in reg INT1_DURATION
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -1494,7 +1733,7 @@ int32_t ais328dq_int1_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_DURATION,
-                           (uint8_t*)&int1_duration, 1);
+                          (uint8_t *)&int1_duration, 1);
   *val = int1_duration.d;
 
   return ret;
@@ -1505,17 +1744,20 @@ int32_t ais328dq_int1_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         enable sign and axis for interrupt on threshold
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_on_threshold_conf_set(stmdev_ctx_t *ctx,
-                                              ais328dq_int2_on_th_conf_t val)
+                                            ais328dq_int2_on_th_conf_t val)
 {
   ais328dq_int2_cfg_t int2_cfg;
   int32_t ret;
 
   ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_CFG,
-                           (uint8_t*)&int2_cfg, 1);
-  if(ret == 0) {
+                          (uint8_t *)&int2_cfg, 1);
+
+  if (ret == 0)
+  {
     int2_cfg.xlie  = val.int2_xlie;
     int2_cfg.xhie  = val.int2_xhie;
     int2_cfg.ylie  = val.int2_ylie;
@@ -1523,8 +1765,9 @@ int32_t ais328dq_int2_on_threshold_conf_set(stmdev_ctx_t *ctx,
     int2_cfg.zlie  = val.int2_zlie;
     int2_cfg.zhie  = val.int2_zhie;
     ret = ais328dq_write_reg(ctx, AIS328DQ_INT2_CFG,
-                              (uint8_t*)&int2_cfg, 1);
+                             (uint8_t *)&int2_cfg, 1);
   }
+
   return ret;
 }
 
@@ -1533,15 +1776,16 @@ int32_t ais328dq_int2_on_threshold_conf_set(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         enable sign and axis for interrupt on threshold
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_on_threshold_conf_get(stmdev_ctx_t *ctx,
-                                              ais328dq_int2_on_th_conf_t *val)
+                                            ais328dq_int2_on_th_conf_t *val)
 {
   ais328dq_int2_cfg_t int2_cfg;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_CFG, (uint8_t*)&int2_cfg, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_CFG, (uint8_t *)&int2_cfg, 1);
   val->int2_xlie = int2_cfg.xlie;
   val->int2_xhie = int2_cfg.xhie;
   val->int2_ylie = int2_cfg.ylie;
@@ -1557,20 +1801,24 @@ int32_t ais328dq_int2_on_threshold_conf_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of aoi in reg INT2_CFG
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_on_threshold_mode_set(stmdev_ctx_t *ctx,
-                                             ais328dq_int2_aoi_t val)
+                                            ais328dq_int2_aoi_t val)
 {
   ais328dq_int2_cfg_t int2_cfg;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_CFG, (uint8_t*)&int2_cfg, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_CFG, (uint8_t *)&int2_cfg, 1);
+
+  if (ret == 0)
+  {
     int2_cfg.aoi = (uint8_t) val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_INT2_CFG,
-                              (uint8_t*)&int2_cfg, 1);
+                             (uint8_t *)&int2_cfg, 1);
   }
+
   return ret;
 }
 
@@ -1579,24 +1827,27 @@ int32_t ais328dq_int2_on_threshold_mode_set(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of aoi in reg INT2_CFG
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_on_threshold_mode_get(stmdev_ctx_t *ctx,
-                                             ais328dq_int2_aoi_t *val)
+                                            ais328dq_int2_aoi_t *val)
 {
   ais328dq_int2_cfg_t int2_cfg;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_CFG, (uint8_t*)&int2_cfg, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_CFG, (uint8_t *)&int2_cfg, 1);
 
-  switch ( int2_cfg.aoi )
+  switch (int2_cfg.aoi)
   {
     case AIS328DQ_INT2_ON_THRESHOLD_OR:
       *val = AIS328DQ_INT2_ON_THRESHOLD_OR;
       break;
+
     case AIS328DQ_INT2_ON_THRESHOLD_AND:
       *val = AIS328DQ_INT2_ON_THRESHOLD_AND;
       break;
+
     default:
       *val = AIS328DQ_INT2_ON_THRESHOLD_OR;
       break;
@@ -1610,13 +1861,16 @@ int32_t ais328dq_int2_on_threshold_mode_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         registers INT2_SRC
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_src_get(stmdev_ctx_t *ctx,
-                               ais328dq_int2_src_t *val)
+                              ais328dq_int2_src_t *val)
 {
   int32_t ret;
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_SRC, (uint8_t*) val, 1);
+
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_SRC, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1625,6 +1879,7 @@ int32_t ais328dq_int2_src_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ths in reg INT2_THS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -1632,12 +1887,15 @@ int32_t ais328dq_int2_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   ais328dq_int2_ths_t int2_ths;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_THS, (uint8_t*)&int2_ths, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_THS, (uint8_t *)&int2_ths, 1);
+
+  if (ret == 0)
+  {
     int2_ths.ths = val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_INT2_THS,
-                              (uint8_t*)&int2_ths, 1);
+                             (uint8_t *)&int2_ths, 1);
   }
+
   return ret;
 }
 
@@ -1646,6 +1904,7 @@ int32_t ais328dq_int2_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ths in reg INT2_THS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -1653,7 +1912,7 @@ int32_t ais328dq_int2_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   ais328dq_int2_ths_t int2_ths;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_THS, (uint8_t*)&int2_ths, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_THS, (uint8_t *)&int2_ths, 1);
   *val = int2_ths.ths;
 
   return ret;
@@ -1664,6 +1923,7 @@ int32_t ais328dq_int2_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of d in reg INT2_DURATION
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_dur_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -1672,12 +1932,15 @@ int32_t ais328dq_int2_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_DURATION,
-                           (uint8_t*)&int2_duration, 1);
-  if(ret == 0) {
+                          (uint8_t *)&int2_duration, 1);
+
+  if (ret == 0)
+  {
     int2_duration.d = val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_INT2_DURATION,
-                              (uint8_t*)&int2_duration, 1);
+                             (uint8_t *)&int2_duration, 1);
   }
+
   return ret;
 }
 
@@ -1686,6 +1949,7 @@ int32_t ais328dq_int2_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of d in reg INT2_DURATION
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -1694,7 +1958,7 @@ int32_t ais328dq_int2_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_DURATION,
-                           (uint8_t*)&int2_duration, 1);
+                          (uint8_t *)&int2_duration, 1);
   *val = int2_duration.d;
 
   return ret;
@@ -1718,6 +1982,7 @@ int32_t ais328dq_int2_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of turnon in reg CTRL_REG5
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_wkup_to_sleep_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -1725,12 +1990,16 @@ int32_t ais328dq_wkup_to_sleep_set(stmdev_ctx_t *ctx, uint8_t val)
   ais328dq_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG5,
+                          (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.turnon = val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_CTRL_REG5,
-                              (uint8_t*)&ctrl_reg5, 1);
+                             (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -1739,6 +2008,7 @@ int32_t ais328dq_wkup_to_sleep_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of turnon in reg CTRL_REG5
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_wkup_to_sleep_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -1746,7 +2016,8 @@ int32_t ais328dq_wkup_to_sleep_get(stmdev_ctx_t *ctx, uint8_t *val)
   ais328dq_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_CTRL_REG5,
+                          (uint8_t *)&ctrl_reg5, 1);
   *val = ctrl_reg5.turnon;
 
   return ret;
@@ -1770,20 +2041,24 @@ int32_t ais328dq_wkup_to_sleep_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of 6d in reg INT1_CFG
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_6d_mode_set(stmdev_ctx_t *ctx,
-                                   ais328dq_int1_6d_t val)
+                                  ais328dq_int1_6d_t val)
 {
   ais328dq_int1_cfg_t int1_cfg;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t*)&int1_cfg, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t *)&int1_cfg, 1);
+
+  if (ret == 0)
+  {
     int1_cfg._6d = (uint8_t)val & 0x01U;
     int1_cfg.aoi = ((uint8_t)val & 0x02U) >> 1;
-    ret = ais328dq_write_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t*)&int1_cfg, 1);
+    ret = ais328dq_write_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t *)&int1_cfg, 1);
   }
+
   return ret;
 }
 
@@ -1792,27 +2067,31 @@ int32_t ais328dq_int1_6d_mode_set(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of 6d in reg INT1_CFG
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_6d_mode_get(stmdev_ctx_t *ctx,
-                                   ais328dq_int1_6d_t *val)
+                                  ais328dq_int1_6d_t *val)
 {
   ais328dq_int1_cfg_t int1_cfg;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t*)&int1_cfg, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_CFG, (uint8_t *)&int1_cfg, 1);
 
   switch ((int1_cfg.aoi << 1) + int1_cfg._6d)
   {
     case AIS328DQ_6D_INT1_DISABLE:
       *val = AIS328DQ_6D_INT1_DISABLE;
       break;
+
     case AIS328DQ_6D_INT1_MOVEMENT:
       *val = AIS328DQ_6D_INT1_MOVEMENT;
       break;
-     case AIS328DQ_6D_INT1_POSITION:
+
+    case AIS328DQ_6D_INT1_POSITION:
       *val = AIS328DQ_6D_INT1_POSITION;
       break;
+
     default:
       *val = AIS328DQ_6D_INT1_DISABLE;
       break;
@@ -1826,13 +2105,16 @@ int32_t ais328dq_int1_6d_mode_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         registers INT1_SRC
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_6d_src_get(stmdev_ctx_t *ctx,
-                                  ais328dq_int1_src_t *val)
+                                 ais328dq_int1_src_t *val)
 {
   int32_t ret;
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_SRC, (uint8_t*) val, 1);
+
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_SRC, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1841,6 +2123,7 @@ int32_t ais328dq_int1_6d_src_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ths in reg INT1_THS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_6d_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -1848,11 +2131,14 @@ int32_t ais328dq_int1_6d_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   ais328dq_int1_ths_t int1_ths;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_THS, (uint8_t*)&int1_ths, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_THS, (uint8_t *)&int1_ths, 1);
+
+  if (ret == 0)
+  {
     int1_ths.ths = val;
-    ret = ais328dq_write_reg(ctx, AIS328DQ_INT1_THS, (uint8_t*)&int1_ths, 1);
+    ret = ais328dq_write_reg(ctx, AIS328DQ_INT1_THS, (uint8_t *)&int1_ths, 1);
   }
+
   return ret;
 }
 
@@ -1861,6 +2147,7 @@ int32_t ais328dq_int1_6d_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ths in reg INT1_THS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int1_6d_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -1868,7 +2155,7 @@ int32_t ais328dq_int1_6d_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   ais328dq_int1_ths_t int1_ths;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_THS, (uint8_t*)&int1_ths, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT1_THS, (uint8_t *)&int1_ths, 1);
   *val = int1_ths.ths;
 
   return ret;
@@ -1879,21 +2166,25 @@ int32_t ais328dq_int1_6d_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of 6d in reg INT2_CFG
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_6d_mode_set(stmdev_ctx_t *ctx,
-                                   ais328dq_int2_6d_t val)
+                                  ais328dq_int2_6d_t val)
 {
   ais328dq_int2_cfg_t int2_cfg;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_CFG, (uint8_t*)&int2_cfg, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_CFG, (uint8_t *)&int2_cfg, 1);
+
+  if (ret == 0)
+  {
     int2_cfg._6d = (uint8_t)val & 0x01U;
     int2_cfg.aoi = ((uint8_t)val & 0x02U) >> 1;
     ret = ais328dq_write_reg(ctx, AIS328DQ_INT2_CFG,
-                              (uint8_t*)&int2_cfg, 1);
+                             (uint8_t *)&int2_cfg, 1);
   }
+
   return ret;
 }
 
@@ -1902,27 +2193,31 @@ int32_t ais328dq_int2_6d_mode_set(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         Get the values of 6d in reg INT2_CFG
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_6d_mode_get(stmdev_ctx_t *ctx,
-                                   ais328dq_int2_6d_t *val)
+                                  ais328dq_int2_6d_t *val)
 {
   ais328dq_int2_cfg_t int2_cfg;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_CFG, (uint8_t*)&int2_cfg, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_CFG, (uint8_t *)&int2_cfg, 1);
 
   switch ((int2_cfg.aoi << 1) + int2_cfg._6d)
   {
     case AIS328DQ_6D_INT2_DISABLE:
       *val = AIS328DQ_6D_INT2_DISABLE;
       break;
+
     case AIS328DQ_6D_INT2_MOVEMENT:
       *val = AIS328DQ_6D_INT2_MOVEMENT;
       break;
-     case AIS328DQ_6D_INT2_POSITION:
+
+    case AIS328DQ_6D_INT2_POSITION:
       *val = AIS328DQ_6D_INT2_POSITION;
       break;
+
     default:
       *val = AIS328DQ_6D_INT2_DISABLE;
       break;
@@ -1936,13 +2231,16 @@ int32_t ais328dq_int2_6d_mode_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         registers INT2_SRC
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_6d_src_get(stmdev_ctx_t *ctx,
-                                  ais328dq_int2_src_t *val)
+                                 ais328dq_int2_src_t *val)
 {
   int32_t ret;
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_SRC, (uint8_t*) val, 1);
+
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_SRC, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1951,6 +2249,7 @@ int32_t ais328dq_int2_6d_src_get(stmdev_ctx_t *ctx,
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ths in reg INT2_THS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_6d_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
@@ -1958,12 +2257,15 @@ int32_t ais328dq_int2_6d_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   ais328dq_int2_ths_t int2_ths;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_THS, (uint8_t*)&int2_ths, 1);
-  if(ret == 0) {
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_THS, (uint8_t *)&int2_ths, 1);
+
+  if (ret == 0)
+  {
     int2_ths.ths = val;
     ret = ais328dq_write_reg(ctx, AIS328DQ_INT2_THS,
-                              (uint8_t*)&int2_ths, 1);
+                             (uint8_t *)&int2_ths, 1);
   }
+
   return ret;
 }
 
@@ -1972,6 +2274,7 @@ int32_t ais328dq_int2_6d_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   *
   * @param  ctx         read / write interface definitions(ptr)
   * @param  val         change the values of ths in reg INT2_THS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t ais328dq_int2_6d_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
@@ -1979,7 +2282,7 @@ int32_t ais328dq_int2_6d_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   ais328dq_int2_ths_t int2_ths;
   int32_t ret;
 
-  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_THS, (uint8_t*)&int2_ths, 1);
+  ret = ais328dq_read_reg(ctx, AIS328DQ_INT2_THS, (uint8_t *)&int2_ths, 1);
   *val = int2_ths.ths;
 
   return ret;

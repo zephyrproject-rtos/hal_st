@@ -1,21 +1,21 @@
-/*
- ******************************************************************************
- * @file    lis3de_reg.c
- * @author  Sensors Software Solution Team
- * @brief   LIS3DE driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    lis3de_reg.c
+  * @author  Sensors Software Solution Team
+  * @brief   LIS3DE driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 #include "lis3de_reg.h"
 
@@ -46,11 +46,13 @@
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3de_read_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
-                          uint16_t len)
+int32_t lis3de_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
+                        uint16_t len)
 {
   int32_t ret;
+
   ret = ctx->read_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -64,11 +66,14 @@ int32_t lis3de_read_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3de_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
-                           uint16_t len)
+int32_t lis3de_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                         uint8_t *data,
+                         uint16_t len)
 {
   int32_t ret;
+
   ret = ctx->write_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -77,36 +82,36 @@ int32_t lis3de_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
   *
   */
 
-  /**
+/**
   * @defgroup    LIS3DE_Sensitivity
   * @brief       These functions convert raw-data into engineering units.
   * @{
   *
   */
 
-float lis3de_from_fs2_to_mg(int16_t lsb)
+float_t lis3de_from_fs2_to_mg(int16_t lsb)
 {
-  return ( (float)lsb ) * 15.6f;
+  return ((float_t)lsb) * 15.6f;
 }
 
-float lis3de_from_fs4_to_mg(int16_t lsb)
+float_t lis3de_from_fs4_to_mg(int16_t lsb)
 {
-  return ( (float)lsb ) * 31.2f;
+  return ((float_t)lsb) * 31.2f;
 }
 
-float lis3de_from_fs8_to_mg(int16_t lsb)
+float_t lis3de_from_fs8_to_mg(int16_t lsb)
 {
-  return ( (float)lsb ) * 62.5f;
+  return ((float_t)lsb) * 62.5f;
 }
 
-float lis3de_from_fs16_to_mg(int16_t lsb)
+float_t lis3de_from_fs16_to_mg(int16_t lsb)
 {
-  return ( (float)lsb ) * 187.5f;
+  return ((float_t)lsb) * 187.5f;
 }
 
-float lis3de_from_lsb_to_celsius(int16_t lsb)
+float_t lis3de_from_lsb_to_celsius(int16_t lsb)
 {
-  return ( ( (float)lsb ) * 1.0f ) + 25.0f;
+  return (((float_t)lsb) * 1.0f) + 25.0f;
 }
 
 /**
@@ -132,7 +137,9 @@ float lis3de_from_lsb_to_celsius(int16_t lsb)
 int32_t lis3de_temp_status_reg_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG_AUX, buff, 1);
+
   return ret;
 }
 /**
@@ -149,7 +156,7 @@ int32_t lis3de_temp_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG_AUX,
-                          (uint8_t*)&status_reg_aux, 1);
+                        (uint8_t *)&status_reg_aux, 1);
   *val = status_reg_aux._3da;
 
   return ret;
@@ -168,7 +175,7 @@ int32_t lis3de_temp_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG_AUX,
-                          (uint8_t*)&status_reg_aux, 1);
+                        (uint8_t *)&status_reg_aux, 1);
   *val = status_reg_aux._3or;
 
   return ret;
@@ -184,7 +191,9 @@ int32_t lis3de_temp_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
 int32_t lis3de_temperature_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret = lis3de_read_reg(ctx, LIS3DE_OUT_ADC1_H, buff, 1);
+
   return ret;
 }
 
@@ -208,10 +217,19 @@ int32_t lis3de_temperature_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3de_adc_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lis3de_adc_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 {
+  uint8_t buff[6];
   int32_t ret;
+
   ret = lis3de_read_reg(ctx, LIS3DE_OUT_ADC1_L, buff, 6);
+  val[0] = (int16_t)buff[1];
+  val[0] = (val[0] * 256) + (int16_t)buff[0];
+  val[1] = (int16_t)buff[3];
+  val[1] = (val[1] * 256) + (int16_t)buff[2];
+  val[2] = (int16_t)buff[5];
+  val[2] = (val[2] * 256) + (int16_t)buff[4];
+
   return ret;
 }
 
@@ -228,19 +246,26 @@ int32_t lis3de_aux_adc_set(stmdev_ctx_t *ctx, lis3de_temp_en_t val)
   lis3de_temp_cfg_reg_t temp_cfg_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_TEMP_CFG_REG, (uint8_t*)&temp_cfg_reg, 1);
-  if (ret == 0) {
-    if (val != LIS3DE_AUX_DISABLE){
+  ret = lis3de_read_reg(ctx, LIS3DE_TEMP_CFG_REG,
+                        (uint8_t *)&temp_cfg_reg, 1);
+
+  if (ret == 0)
+  {
+    if (val != LIS3DE_AUX_DISABLE)
+    {
       /* Required in order to use auxiliary adc */
       ret = lis3de_block_data_update_set(ctx, PROPERTY_ENABLE);
     }
-  } 
-  if (ret == 0) {
-    temp_cfg_reg.temp_en = ( (uint8_t) val & 0x02U) >> 1;
+  }
+
+  if (ret == 0)
+  {
+    temp_cfg_reg.temp_en = ((uint8_t) val & 0x02U) >> 1;
     temp_cfg_reg.adc_pd  = (uint8_t) val &  0x01U;
     ret = lis3de_write_reg(ctx, LIS3DE_TEMP_CFG_REG,
-                           (uint8_t*)&temp_cfg_reg, 1);
+                           (uint8_t *)&temp_cfg_reg, 1);
   }
+
   return ret;
 }
 
@@ -257,16 +282,26 @@ int32_t lis3de_aux_adc_get(stmdev_ctx_t *ctx, lis3de_temp_en_t *val)
   lis3de_temp_cfg_reg_t temp_cfg_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_TEMP_CFG_REG, (uint8_t*)&temp_cfg_reg, 1);
-  if ( ( temp_cfg_reg.temp_en & temp_cfg_reg.adc_pd ) == PROPERTY_ENABLE ){
+  ret = lis3de_read_reg(ctx, LIS3DE_TEMP_CFG_REG,
+                        (uint8_t *)&temp_cfg_reg, 1);
+
+  if ((temp_cfg_reg.temp_en & temp_cfg_reg.adc_pd) ==
+      PROPERTY_ENABLE)
+  {
     *val = LIS3DE_AUX_ON_TEMPERATURE;
-  } 
-  if ( ( temp_cfg_reg.temp_en  == PROPERTY_DISABLE ) &&
-              ( temp_cfg_reg.adc_pd == PROPERTY_ENABLE ) ) {
+  }
+
+  if ((temp_cfg_reg.temp_en  == PROPERTY_DISABLE) &&
+      (temp_cfg_reg.adc_pd == PROPERTY_ENABLE))
+  {
     *val = LIS3DE_AUX_ON_PADS;
-  } else {
+  }
+
+  else
+  {
     *val = LIS3DE_AUX_DISABLE;
   }
+
   return ret;
 }
 
@@ -278,16 +313,20 @@ int32_t lis3de_aux_adc_get(stmdev_ctx_t *ctx, lis3de_temp_en_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3de_operating_mode_set(stmdev_ctx_t *ctx, lis3de_op_md_t val)
+int32_t lis3de_operating_mode_set(stmdev_ctx_t *ctx,
+                                  lis3de_op_md_t val)
 {
   lis3de_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg1.lpen = (uint8_t) val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
   }
+
   return ret;
 }
 
@@ -299,21 +338,27 @@ int32_t lis3de_operating_mode_set(stmdev_ctx_t *ctx, lis3de_op_md_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3de_operating_mode_get(stmdev_ctx_t *ctx, lis3de_op_md_t *val)
+int32_t lis3de_operating_mode_get(stmdev_ctx_t *ctx,
+                                  lis3de_op_md_t *val)
 {
   lis3de_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
 
-    if ( ctrl_reg1.lpen == PROPERTY_ENABLE ) {
+  if (ret == 0)
+  {
+    if (ctrl_reg1.lpen == PROPERTY_ENABLE)
+    {
       *val = LIS3DE_LP;
     }
-    else {
+
+    else
+    {
       *val = LIS3DE_NM;
     }
   }
+
   return ret;
 }
 
@@ -330,11 +375,14 @@ int32_t lis3de_data_rate_set(stmdev_ctx_t *ctx, lis3de_odr_t val)
   lis3de_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg1.odr = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
   }
+
   return ret;
 }
 
@@ -351,42 +399,55 @@ int32_t lis3de_data_rate_get(stmdev_ctx_t *ctx, lis3de_odr_t *val)
   lis3de_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  switch (ctrl_reg1.odr) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  switch (ctrl_reg1.odr)
+  {
     case LIS3DE_POWER_DOWN:
       *val = LIS3DE_POWER_DOWN;
       break;
+
     case LIS3DE_ODR_1Hz:
       *val = LIS3DE_ODR_1Hz;
       break;
+
     case LIS3DE_ODR_10Hz:
       *val = LIS3DE_ODR_10Hz;
       break;
+
     case LIS3DE_ODR_25Hz:
       *val = LIS3DE_ODR_25Hz;
       break;
+
     case LIS3DE_ODR_50Hz:
       *val = LIS3DE_ODR_50Hz;
       break;
+
     case LIS3DE_ODR_100Hz:
       *val = LIS3DE_ODR_100Hz;
       break;
+
     case LIS3DE_ODR_200Hz:
       *val = LIS3DE_ODR_200Hz;
       break;
+
     case LIS3DE_ODR_400Hz:
       *val = LIS3DE_ODR_400Hz;
       break;
+
     case LIS3DE_ODR_1kHz6:
       *val = LIS3DE_ODR_1kHz6;
       break;
+
     case LIS3DE_ODR_5kHz376_LP_1kHz344_NM:
       *val = LIS3DE_ODR_5kHz376_LP_1kHz344_NM;
       break;
+
     default:
       *val = LIS3DE_POWER_DOWN;
       break;
   }
+
   return ret;
 }
 
@@ -399,16 +460,20 @@ int32_t lis3de_data_rate_get(stmdev_ctx_t *ctx, lis3de_odr_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3de_high_pass_on_outputs_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3de_high_pass_on_outputs_set(stmdev_ctx_t *ctx,
+                                        uint8_t val)
 {
   lis3de_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.fds = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -421,12 +486,13 @@ int32_t lis3de_high_pass_on_outputs_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3de_high_pass_on_outputs_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3de_high_pass_on_outputs_get(stmdev_ctx_t *ctx,
+                                        uint8_t *val)
 {
   lis3de_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
   *val = (uint8_t)ctrl_reg2.fds;
 
   return ret;
@@ -447,16 +513,19 @@ int32_t lis3de_high_pass_on_outputs_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   */
 int32_t lis3de_high_pass_bandwidth_set(stmdev_ctx_t *ctx,
-                                         lis3de_hpcf_t val)
+                                       lis3de_hpcf_t val)
 {
   lis3de_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.hpcf = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -475,29 +544,36 @@ int32_t lis3de_high_pass_bandwidth_set(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_high_pass_bandwidth_get(stmdev_ctx_t *ctx,
-                                         lis3de_hpcf_t *val)
+                                       lis3de_hpcf_t *val)
 {
   lis3de_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  switch (ctrl_reg2.hpcf) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  switch (ctrl_reg2.hpcf)
+  {
     case LIS3DE_AGGRESSIVE:
       *val = LIS3DE_AGGRESSIVE;
       break;
+
     case LIS3DE_STRONG:
       *val = LIS3DE_STRONG;
       break;
+
     case LIS3DE_MEDIUM:
       *val = LIS3DE_MEDIUM;
       break;
+
     case LIS3DE_LIGHT:
       *val = LIS3DE_LIGHT;
       break;
+
     default:
       *val = LIS3DE_LIGHT;
       break;
   }
+
   return ret;
 }
 
@@ -514,11 +590,14 @@ int32_t lis3de_high_pass_mode_set(stmdev_ctx_t *ctx, lis3de_hpm_t val)
   lis3de_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.hpm = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -530,29 +609,37 @@ int32_t lis3de_high_pass_mode_set(stmdev_ctx_t *ctx, lis3de_hpm_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3de_high_pass_mode_get(stmdev_ctx_t *ctx, lis3de_hpm_t *val)
+int32_t lis3de_high_pass_mode_get(stmdev_ctx_t *ctx,
+                                  lis3de_hpm_t *val)
 {
   lis3de_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  switch (ctrl_reg2.hpm) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  switch (ctrl_reg2.hpm)
+  {
     case LIS3DE_NORMAL_WITH_RST:
       *val = LIS3DE_NORMAL_WITH_RST;
       break;
+
     case LIS3DE_REFERENCE_MODE:
       *val = LIS3DE_REFERENCE_MODE;
       break;
+
     case LIS3DE_NORMAL:
       *val = LIS3DE_NORMAL;
       break;
+
     case LIS3DE_AUTORST_ON_INT:
       *val = LIS3DE_AUTORST_ON_INT;
       break;
+
     default:
       *val = LIS3DE_NORMAL_WITH_RST;
       break;
   }
+
   return ret;
 }
 
@@ -569,11 +656,14 @@ int32_t lis3de_full_scale_set(stmdev_ctx_t *ctx, lis3de_fs_t val)
   lis3de_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.fs = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -590,24 +680,31 @@ int32_t lis3de_full_scale_get(stmdev_ctx_t *ctx, lis3de_fs_t *val)
   lis3de_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  switch (ctrl_reg4.fs) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  switch (ctrl_reg4.fs)
+  {
     case LIS3DE_2g:
       *val = LIS3DE_2g;
       break;
+
     case LIS3DE_4g:
       *val = LIS3DE_4g;
       break;
+
     case LIS3DE_8g:
       *val = LIS3DE_8g;
       break;
+
     case LIS3DE_16g:
       *val = LIS3DE_16g;
       break;
+
     default:
       *val = LIS3DE_2g;
       break;
   }
+
   return ret;
 }
 
@@ -624,11 +721,14 @@ int32_t lis3de_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.bdu = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -645,7 +745,7 @@ int32_t lis3de_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   *val = (uint8_t)ctrl_reg4.bdu;
 
   return ret;
@@ -663,7 +763,9 @@ int32_t lis3de_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
 int32_t lis3de_filter_reference_set(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret = lis3de_write_reg(ctx, LIS3DE_REFERENCE, buff, 1);
+
   return ret;
 }
 
@@ -679,7 +781,9 @@ int32_t lis3de_filter_reference_set(stmdev_ctx_t *ctx, uint8_t *buff)
 int32_t lis3de_filter_reference_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret = lis3de_read_reg(ctx, LIS3DE_REFERENCE, buff, 1);
+
   return ret;
 }
 /**
@@ -695,7 +799,7 @@ int32_t lis3de_xl_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_status_reg_t status_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG, (uint8_t*)&status_reg, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG, (uint8_t *)&status_reg, 1);
   *val = status_reg.zyxda;
 
   return ret;
@@ -713,7 +817,7 @@ int32_t lis3de_xl_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_status_reg_t status_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG, (uint8_t*)&status_reg, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG, (uint8_t *)&status_reg, 1);
   *val = status_reg.zyxor;
 
   return ret;
@@ -729,17 +833,23 @@ int32_t lis3de_xl_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
 int32_t lis3de_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *buff)
 {
   int32_t ret;
+
   int8_t dummy;
-  ret = lis3de_read_reg(ctx, LIS3DE_OUT_X, (uint8_t*)&dummy  , 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_OUT_X, (uint8_t *)&dummy, 1);
   buff[0] = dummy;
-  if (ret == 0) {
-    ret = lis3de_read_reg(ctx, LIS3DE_OUT_Y, (uint8_t*)&dummy, 1);
+
+  if (ret == 0)
+  {
+    ret = lis3de_read_reg(ctx, LIS3DE_OUT_Y, (uint8_t *)&dummy, 1);
     buff[1] = dummy;
-  } 
-  if (ret == 0) {
-    ret = lis3de_read_reg(ctx, LIS3DE_OUT_Z, (uint8_t*)&dummy, 1);
+  }
+
+  if (ret == 0)
+  {
+    ret = lis3de_read_reg(ctx, LIS3DE_OUT_Z, (uint8_t *)&dummy, 1);
     buff[2] = dummy;
   }
+
   return ret;
 }
 
@@ -750,7 +860,7 @@ int32_t lis3de_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *buff)
 
 /**
   * @defgroup  LIS3DE_Common
-  * @brief     This section group common usefull functions
+  * @brief     This section group common useful functions
   * @{
   *
   */
@@ -766,7 +876,9 @@ int32_t lis3de_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *buff)
 int32_t lis3de_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret = lis3de_read_reg(ctx, LIS3DE_WHO_AM_I, buff, 1);
+
   return ret;
 }
 /**
@@ -782,11 +894,14 @@ int32_t lis3de_self_test_set(stmdev_ctx_t *ctx, lis3de_st_t val)
   lis3de_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.st = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -803,21 +918,27 @@ int32_t lis3de_self_test_get(stmdev_ctx_t *ctx, lis3de_st_t *val)
   lis3de_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  switch (ctrl_reg4.st) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  switch (ctrl_reg4.st)
+  {
     case LIS3DE_ST_DISABLE:
       *val = LIS3DE_ST_DISABLE;
       break;
+
     case LIS3DE_ST_POSITIVE:
       *val = LIS3DE_ST_POSITIVE;
       break;
+
     case LIS3DE_ST_NEGATIVE:
       *val = LIS3DE_ST_NEGATIVE;
       break;
+
     default:
       *val = LIS3DE_ST_DISABLE;
       break;
   }
+
   return ret;
 }
 
@@ -834,11 +955,14 @@ int32_t lis3de_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.boot = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -855,7 +979,7 @@ int32_t lis3de_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   *val = (uint8_t)ctrl_reg5.boot;
 
   return ret;
@@ -872,7 +996,9 @@ int32_t lis3de_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
 int32_t lis3de_status_get(stmdev_ctx_t *ctx, lis3de_status_reg_t *val)
 {
   int32_t ret;
-  ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG, (uint8_t*) val, 1);
+
+  ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -897,10 +1023,12 @@ int32_t lis3de_status_get(stmdev_ctx_t *ctx, lis3de_status_reg_t *val)
   *
   */
 int32_t lis3de_int1_gen_conf_set(stmdev_ctx_t *ctx,
-                                   lis3de_ig1_cfg_t *val)
+                                 lis3de_ig1_cfg_t *val)
 {
   int32_t ret;
-  ret = lis3de_write_reg(ctx, LIS3DE_IG1_CFG, (uint8_t*) val, 1);
+
+  ret = lis3de_write_reg(ctx, LIS3DE_IG1_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -913,10 +1041,12 @@ int32_t lis3de_int1_gen_conf_set(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_int1_gen_conf_get(stmdev_ctx_t *ctx,
-                                   lis3de_ig1_cfg_t *val)
+                                 lis3de_ig1_cfg_t *val)
 {
   int32_t ret;
-  ret = lis3de_read_reg(ctx, LIS3DE_IG1_CFG, (uint8_t*) val, 1);
+
+  ret = lis3de_read_reg(ctx, LIS3DE_IG1_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -929,10 +1059,12 @@ int32_t lis3de_int1_gen_conf_get(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_int1_gen_source_get(stmdev_ctx_t *ctx,
-                                     lis3de_ig1_source_t *val)
+                                   lis3de_ig1_source_t *val)
 {
   int32_t ret;
-  ret = lis3de_read_reg(ctx, LIS3DE_IG1_SOURCE, (uint8_t*) val, 1);
+
+  ret = lis3de_read_reg(ctx, LIS3DE_IG1_SOURCE, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -950,11 +1082,14 @@ int32_t lis3de_int1_gen_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_ig1_ths_t int1_ths;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_IG1_THS, (uint8_t*)&int1_ths, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_IG1_THS, (uint8_t *)&int1_ths, 1);
+
+  if (ret == 0)
+  {
     int1_ths.ths = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_IG1_THS, (uint8_t*)&int1_ths, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_IG1_THS, (uint8_t *)&int1_ths, 1);
   }
+
   return ret;
 }
 
@@ -973,7 +1108,7 @@ int32_t lis3de_int1_gen_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_ig1_ths_t int1_ths;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_IG1_THS, (uint8_t*)&int1_ths, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_IG1_THS, (uint8_t *)&int1_ths, 1);
   *val = (uint8_t)int1_ths.ths;
 
   return ret;
@@ -993,11 +1128,16 @@ int32_t lis3de_int1_gen_duration_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_ig1_duration_t int1_duration;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_IG1_DURATION, (uint8_t*)&int1_duration, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_IG1_DURATION,
+                        (uint8_t *)&int1_duration, 1);
+
+  if (ret == 0)
+  {
     int1_duration.d = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_IG1_DURATION, (uint8_t*)&int1_duration, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_IG1_DURATION,
+                           (uint8_t *)&int1_duration, 1);
   }
+
   return ret;
 }
 
@@ -1015,7 +1155,8 @@ int32_t lis3de_int1_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_ig1_duration_t int1_duration;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_IG1_DURATION, (uint8_t*)&int1_duration, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_IG1_DURATION,
+                        (uint8_t *)&int1_duration, 1);
   *val = (uint8_t)int1_duration.d;
 
   return ret;
@@ -1043,10 +1184,12 @@ int32_t lis3de_int1_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   */
 int32_t lis3de_int2_gen_conf_set(stmdev_ctx_t *ctx,
-                                   lis3de_ig2_cfg_t *val)
+                                 lis3de_ig2_cfg_t *val)
 {
   int32_t ret;
-  ret = lis3de_write_reg(ctx, LIS3DE_IG2_CFG, (uint8_t*) val, 1);
+
+  ret = lis3de_write_reg(ctx, LIS3DE_IG2_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1059,10 +1202,12 @@ int32_t lis3de_int2_gen_conf_set(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_int2_gen_conf_get(stmdev_ctx_t *ctx,
-                                   lis3de_ig2_cfg_t *val)
+                                 lis3de_ig2_cfg_t *val)
 {
   int32_t ret;
-  ret = lis3de_read_reg(ctx, LIS3DE_IG2_CFG, (uint8_t*) val, 1);
+
+  ret = lis3de_read_reg(ctx, LIS3DE_IG2_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1074,10 +1219,12 @@ int32_t lis3de_int2_gen_conf_get(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_int2_gen_source_get(stmdev_ctx_t *ctx,
-                                     lis3de_ig2_source_t *val)
+                                   lis3de_ig2_source_t *val)
 {
   int32_t ret;
-  ret = lis3de_read_reg(ctx, LIS3DE_IG2_SOURCE, (uint8_t*) val, 1);
+
+  ret = lis3de_read_reg(ctx, LIS3DE_IG2_SOURCE, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1095,11 +1242,14 @@ int32_t lis3de_int2_gen_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_ig2_ths_t int2_ths;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_IG2_THS, (uint8_t*)&int2_ths, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_IG2_THS, (uint8_t *)&int2_ths, 1);
+
+  if (ret == 0)
+  {
     int2_ths.ths = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_IG2_THS, (uint8_t*)&int2_ths, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_IG2_THS, (uint8_t *)&int2_ths, 1);
   }
+
   return ret;
 }
 
@@ -1118,7 +1268,7 @@ int32_t lis3de_int2_gen_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_ig2_ths_t int2_ths;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_IG2_THS, (uint8_t*)&int2_ths, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_IG2_THS, (uint8_t *)&int2_ths, 1);
   *val = (uint8_t)int2_ths.ths;
 
   return ret;
@@ -1138,11 +1288,16 @@ int32_t lis3de_int2_gen_duration_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_ig2_duration_t int2_duration;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_IG2_DURATION, (uint8_t*)&int2_duration, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_IG2_DURATION,
+                        (uint8_t *)&int2_duration, 1);
+
+  if (ret == 0)
+  {
     int2_duration.d = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_IG2_DURATION, (uint8_t*)&int2_duration, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_IG2_DURATION,
+                           (uint8_t *)&int2_duration, 1);
   }
+
   return ret;
 }
 
@@ -1160,7 +1315,8 @@ int32_t lis3de_int2_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_ig2_duration_t int2_duration;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_IG2_DURATION, (uint8_t*)&int2_duration, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_IG2_DURATION,
+                        (uint8_t *)&int2_duration, 1);
   *val = (uint8_t)int2_duration.d;
 
   return ret;
@@ -1173,7 +1329,7 @@ int32_t lis3de_int2_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
 
 /**
   * @defgroup  LIS3DE_Interrupt_pins
-  * @brief     This section group all the functions that manage interrup pins
+  * @brief     This section group all the functions that manage interrupt pins
   * @{
   *
   */
@@ -1187,16 +1343,19 @@ int32_t lis3de_int2_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   */
 int32_t lis3de_high_pass_int_conf_set(stmdev_ctx_t *ctx,
-                                        lis3de_hp_t val)
+                                      lis3de_hp_t val)
 {
   lis3de_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.hp = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -1209,41 +1368,52 @@ int32_t lis3de_high_pass_int_conf_set(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_high_pass_int_conf_get(stmdev_ctx_t *ctx,
-                                        lis3de_hp_t *val)
+                                      lis3de_hp_t *val)
 {
   lis3de_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  switch (ctrl_reg2.hp) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  switch (ctrl_reg2.hp)
+  {
     case LIS3DE_DISC_FROM_INT_GENERATOR:
       *val = LIS3DE_DISC_FROM_INT_GENERATOR;
       break;
+
     case LIS3DE_ON_INT1_GEN:
       *val = LIS3DE_ON_INT1_GEN;
       break;
+
     case LIS3DE_ON_INT2_GEN:
       *val = LIS3DE_ON_INT2_GEN;
       break;
+
     case LIS3DE_ON_TAP_GEN:
       *val = LIS3DE_ON_TAP_GEN;
       break;
+
     case LIS3DE_ON_INT1_INT2_GEN:
       *val = LIS3DE_ON_INT1_INT2_GEN;
       break;
+
     case LIS3DE_ON_INT1_TAP_GEN:
       *val = LIS3DE_ON_INT1_TAP_GEN;
       break;
+
     case LIS3DE_ON_INT2_TAP_GEN:
       *val = LIS3DE_ON_INT2_TAP_GEN;
       break;
+
     case LIS3DE_ON_INT1_INT2_TAP_GEN:
       *val = LIS3DE_ON_INT1_INT2_TAP_GEN;
       break;
+
     default:
       *val = LIS3DE_DISC_FROM_INT_GENERATOR;
       break;
   }
+
   return ret;
 }
 
@@ -1256,10 +1426,12 @@ int32_t lis3de_high_pass_int_conf_get(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_pin_int1_config_set(stmdev_ctx_t *ctx,
-                                     lis3de_ctrl_reg3_t *val)
+                                   lis3de_ctrl_reg3_t *val)
 {
   int32_t ret;
-  ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG3, (uint8_t*) val, 1);
+
+  ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG3, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1272,10 +1444,12 @@ int32_t lis3de_pin_int1_config_set(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_pin_int1_config_get(stmdev_ctx_t *ctx,
-                                     lis3de_ctrl_reg3_t *val)
+                                   lis3de_ctrl_reg3_t *val)
 {
   int32_t ret;
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG3, (uint8_t*) val, 1);
+
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG3, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1293,11 +1467,14 @@ int32_t lis3de_int2_pin_detect_4d_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.d4d_ig2 = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -1315,7 +1492,7 @@ int32_t lis3de_int2_pin_detect_4d_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   *val = (uint8_t)ctrl_reg5.d4d_ig2;
 
   return ret;
@@ -1332,16 +1509,19 @@ int32_t lis3de_int2_pin_detect_4d_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   */
 int32_t lis3de_int2_pin_notification_mode_set(stmdev_ctx_t *ctx,
-                                                lis3de_lir_int2_t val)
+                                              lis3de_lir_int2_t val)
 {
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.lir_ig2 = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -1356,23 +1536,28 @@ int32_t lis3de_int2_pin_notification_mode_set(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_int2_pin_notification_mode_get(stmdev_ctx_t *ctx,
-                                                lis3de_lir_int2_t *val)
+                                              lis3de_lir_int2_t *val)
 {
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  switch (ctrl_reg5.lir_ig2) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  switch (ctrl_reg5.lir_ig2)
+  {
     case LIS3DE_INT2_PULSED:
       *val = LIS3DE_INT2_PULSED;
       break;
+
     case LIS3DE_INT2_LATCHED:
       *val = LIS3DE_INT2_LATCHED;
       break;
+
     default:
       *val = LIS3DE_INT2_PULSED;
       break;
   }
+
   return ret;
 }
 
@@ -1390,11 +1575,14 @@ int32_t lis3de_int1_pin_detect_4d_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.d4d_ig1 = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -1412,7 +1600,7 @@ int32_t lis3de_int1_pin_detect_4d_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   *val = (uint8_t)ctrl_reg5.d4d_ig1;
 
   return ret;
@@ -1428,16 +1616,19 @@ int32_t lis3de_int1_pin_detect_4d_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   */
 int32_t lis3de_int1_pin_notification_mode_set(stmdev_ctx_t *ctx,
-                                                lis3de_lir_int1_t val)
+                                              lis3de_lir_int1_t val)
 {
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.lir_ig1 = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -1451,23 +1642,28 @@ int32_t lis3de_int1_pin_notification_mode_set(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_int1_pin_notification_mode_get(stmdev_ctx_t *ctx,
-                                                lis3de_lir_int1_t *val)
+                                              lis3de_lir_int1_t *val)
 {
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  switch (ctrl_reg5.lir_ig1) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  switch (ctrl_reg5.lir_ig1)
+  {
     case LIS3DE_INT1_PULSED:
       *val = LIS3DE_INT1_PULSED;
       break;
+
     case LIS3DE_INT1_LATCHED:
       *val = LIS3DE_INT1_LATCHED;
       break;
+
     default:
       *val = LIS3DE_INT1_PULSED;
       break;
   }
+
   return ret;
 }
 
@@ -1480,10 +1676,12 @@ int32_t lis3de_int1_pin_notification_mode_get(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_pin_int2_config_set(stmdev_ctx_t *ctx,
-                                     lis3de_ctrl_reg6_t *val)
+                                   lis3de_ctrl_reg6_t *val)
 {
   int32_t ret;
-  ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG6, (uint8_t*) val, 1);
+
+  ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG6, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1496,10 +1694,12 @@ int32_t lis3de_pin_int2_config_set(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_pin_int2_config_get(stmdev_ctx_t *ctx,
-                                     lis3de_ctrl_reg6_t *val)
+                                   lis3de_ctrl_reg6_t *val)
 {
   int32_t ret;
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG6, (uint8_t*) val, 1);
+
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG6, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1527,11 +1727,14 @@ int32_t lis3de_fifo_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.fifo_en = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -1548,7 +1751,7 @@ int32_t lis3de_fifo_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   *val = (uint8_t)ctrl_reg5.fifo_en;
 
   return ret;
@@ -1567,11 +1770,16 @@ int32_t lis3de_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_fifo_ctrl_reg_t fifo_ctrl_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG, (uint8_t*)&fifo_ctrl_reg, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG,
+                        (uint8_t *)&fifo_ctrl_reg, 1);
+
+  if (ret == 0)
+  {
     fifo_ctrl_reg.fth = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_FIFO_CTRL_REG, (uint8_t*)&fifo_ctrl_reg, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_FIFO_CTRL_REG,
+                           (uint8_t *)&fifo_ctrl_reg, 1);
   }
+
   return ret;
 }
 
@@ -1588,7 +1796,8 @@ int32_t lis3de_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_fifo_ctrl_reg_t fifo_ctrl_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG, (uint8_t*)&fifo_ctrl_reg, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG,
+                        (uint8_t *)&fifo_ctrl_reg, 1);
   *val = (uint8_t)fifo_ctrl_reg.fth;
 
   return ret;
@@ -1603,16 +1812,21 @@ int32_t lis3de_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   */
 int32_t lis3de_fifo_trigger_event_set(stmdev_ctx_t *ctx,
-                                        lis3de_tr_t val)
+                                      lis3de_tr_t val)
 {
   lis3de_fifo_ctrl_reg_t fifo_ctrl_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG, (uint8_t*)&fifo_ctrl_reg, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG,
+                        (uint8_t *)&fifo_ctrl_reg, 1);
+
+  if (ret == 0)
+  {
     fifo_ctrl_reg.tr = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_FIFO_CTRL_REG, (uint8_t*)&fifo_ctrl_reg, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_FIFO_CTRL_REG,
+                           (uint8_t *)&fifo_ctrl_reg, 1);
   }
+
   return ret;
 }
 
@@ -1625,23 +1839,29 @@ int32_t lis3de_fifo_trigger_event_set(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_fifo_trigger_event_get(stmdev_ctx_t *ctx,
-                                        lis3de_tr_t *val)
+                                      lis3de_tr_t *val)
 {
   lis3de_fifo_ctrl_reg_t fifo_ctrl_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG, (uint8_t*)&fifo_ctrl_reg, 1);
-  switch (fifo_ctrl_reg.tr) {
+  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG,
+                        (uint8_t *)&fifo_ctrl_reg, 1);
+
+  switch (fifo_ctrl_reg.tr)
+  {
     case LIS3DE_INT1_GEN:
       *val = LIS3DE_INT1_GEN;
       break;
+
     case LIS3DE_INT2_GEN:
       *val = LIS3DE_INT2_GEN;
       break;
+
     default:
       *val = LIS3DE_INT1_GEN;
       break;
   }
+
   return ret;
 }
 
@@ -1658,11 +1878,16 @@ int32_t lis3de_fifo_mode_set(stmdev_ctx_t *ctx, lis3de_fm_t val)
   lis3de_fifo_ctrl_reg_t fifo_ctrl_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG, (uint8_t*)&fifo_ctrl_reg, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG,
+                        (uint8_t *)&fifo_ctrl_reg, 1);
+
+  if (ret == 0)
+  {
     fifo_ctrl_reg.fm = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_FIFO_CTRL_REG, (uint8_t*)&fifo_ctrl_reg, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_FIFO_CTRL_REG,
+                           (uint8_t *)&fifo_ctrl_reg, 1);
   }
+
   return ret;
 }
 
@@ -1679,24 +1904,32 @@ int32_t lis3de_fifo_mode_get(stmdev_ctx_t *ctx, lis3de_fm_t *val)
   lis3de_fifo_ctrl_reg_t fifo_ctrl_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG, (uint8_t*)&fifo_ctrl_reg, 1);
-  switch (fifo_ctrl_reg.fm) {
+  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG,
+                        (uint8_t *)&fifo_ctrl_reg, 1);
+
+  switch (fifo_ctrl_reg.fm)
+  {
     case LIS3DE_BYPASS_MODE:
       *val = LIS3DE_BYPASS_MODE;
       break;
+
     case LIS3DE_FIFO_MODE:
       *val = LIS3DE_FIFO_MODE;
       break;
+
     case LIS3DE_DYNAMIC_STREAM_MODE:
       *val = LIS3DE_DYNAMIC_STREAM_MODE;
       break;
+
     case LIS3DE_STREAM_TO_FIFO_MODE:
       *val = LIS3DE_STREAM_TO_FIFO_MODE;
       break;
+
     default:
       *val = LIS3DE_BYPASS_MODE;
       break;
   }
+
   return ret;
 }
 
@@ -1709,10 +1942,12 @@ int32_t lis3de_fifo_mode_get(stmdev_ctx_t *ctx, lis3de_fm_t *val)
   *
   */
 int32_t lis3de_fifo_status_get(stmdev_ctx_t *ctx,
-                                 lis3de_fifo_src_reg_t *val)
+                               lis3de_fifo_src_reg_t *val)
 {
   int32_t ret;
-  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG, (uint8_t*) val, 1);
+
+  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1728,7 +1963,8 @@ int32_t lis3de_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG, (uint8_t*)&fifo_src_reg, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG,
+                        (uint8_t *)&fifo_src_reg, 1);
   *val = (uint8_t)fifo_src_reg.fss;
 
   return ret;
@@ -1746,7 +1982,8 @@ int32_t lis3de_fifo_empty_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG, (uint8_t*)&fifo_src_reg, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG,
+                        (uint8_t *)&fifo_src_reg, 1);
   *val = (uint8_t)fifo_src_reg.empty;
 
   return ret;
@@ -1764,7 +2001,8 @@ int32_t lis3de_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG, (uint8_t*)&fifo_src_reg, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG,
+                        (uint8_t *)&fifo_src_reg, 1);
   *val = (uint8_t)fifo_src_reg.ovrn_fifo;
 
   return ret;
@@ -1782,7 +2020,8 @@ int32_t lis3de_fifo_fth_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG, (uint8_t*)&fifo_src_reg, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG,
+                        (uint8_t *)&fifo_src_reg, 1);
   *val = (uint8_t)fifo_src_reg.wtm;
 
   return ret;
@@ -1808,10 +2047,13 @@ int32_t lis3de_fifo_fth_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3de_tap_conf_set(stmdev_ctx_t *ctx, lis3de_click_cfg_t *val)
+int32_t lis3de_tap_conf_set(stmdev_ctx_t *ctx,
+                            lis3de_click_cfg_t *val)
 {
   int32_t ret;
-  ret = lis3de_write_reg(ctx, LIS3DE_CLICK_CFG, (uint8_t*) val, 1);
+
+  ret = lis3de_write_reg(ctx, LIS3DE_CLICK_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1823,10 +2065,13 @@ int32_t lis3de_tap_conf_set(stmdev_ctx_t *ctx, lis3de_click_cfg_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3de_tap_conf_get(stmdev_ctx_t *ctx, lis3de_click_cfg_t *val)
+int32_t lis3de_tap_conf_get(stmdev_ctx_t *ctx,
+                            lis3de_click_cfg_t *val)
 {
   int32_t ret;
-  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_CFG, (uint8_t*) val, 1);
+
+  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1837,10 +2082,13 @@ int32_t lis3de_tap_conf_get(stmdev_ctx_t *ctx, lis3de_click_cfg_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3de_tap_source_get(stmdev_ctx_t *ctx, lis3de_click_src_t *val)
+int32_t lis3de_tap_source_get(stmdev_ctx_t *ctx,
+                              lis3de_click_src_t *val)
 {
   int32_t ret;
-  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_SRC, (uint8_t*) val, 1);
+
+  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_SRC, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1857,11 +2105,14 @@ int32_t lis3de_tap_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_click_ths_t click_ths;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_THS, (uint8_t*)&click_ths, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_THS, (uint8_t *)&click_ths, 1);
+
+  if (ret == 0)
+  {
     click_ths.ths = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CLICK_THS, (uint8_t*)&click_ths, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CLICK_THS, (uint8_t *)&click_ths, 1);
   }
+
   return ret;
 }
 
@@ -1879,7 +2130,7 @@ int32_t lis3de_tap_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_click_ths_t click_ths;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_THS, (uint8_t*)&click_ths, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_THS, (uint8_t *)&click_ths, 1);
   *val = (uint8_t)click_ths.ths;
 
   return ret;
@@ -1897,16 +2148,19 @@ int32_t lis3de_tap_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   */
 int32_t lis3de_tap_notification_mode_set(stmdev_ctx_t *ctx,
-                                           lis3de_lir_t val)
+                                         lis3de_lir_t val)
 {
   lis3de_click_ths_t click_ths;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_THS, (uint8_t*)&click_ths, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_THS, (uint8_t *)&click_ths, 1);
+
+  if (ret == 0)
+  {
     click_ths.lir = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CLICK_THS, (uint8_t*)&click_ths, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CLICK_THS, (uint8_t *)&click_ths, 1);
   }
+
   return ret;
 }
 
@@ -1922,23 +2176,28 @@ int32_t lis3de_tap_notification_mode_set(stmdev_ctx_t *ctx,
   *
   */
 int32_t lis3de_tap_notification_mode_get(stmdev_ctx_t *ctx,
-                                           lis3de_lir_t *val)
+                                         lis3de_lir_t *val)
 {
   lis3de_click_ths_t click_ths;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_THS, (uint8_t*)&click_ths, 1);
-  switch (click_ths.lir) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CLICK_THS, (uint8_t *)&click_ths, 1);
+
+  switch (click_ths.lir)
+  {
     case LIS3DE_TAP_PULSED:
       *val = LIS3DE_TAP_PULSED;
       break;
+
     case LIS3DE_TAP_LATCHED:
       *val = LIS3DE_TAP_LATCHED;
       break;
+
     default:
       *val = LIS3DE_TAP_PULSED;
       break;
   }
+
   return ret;
 }
 
@@ -1957,11 +2216,14 @@ int32_t lis3de_shock_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_time_limit_t time_limit;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_TIME_LIMIT, (uint8_t*)&time_limit, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_TIME_LIMIT, (uint8_t *)&time_limit, 1);
+
+  if (ret == 0)
+  {
     time_limit.tli = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_TIME_LIMIT, (uint8_t*)&time_limit, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_TIME_LIMIT, (uint8_t *)&time_limit, 1);
   }
+
   return ret;
 }
 
@@ -1980,7 +2242,7 @@ int32_t lis3de_shock_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_time_limit_t time_limit;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_TIME_LIMIT, (uint8_t*)&time_limit, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_TIME_LIMIT, (uint8_t *)&time_limit, 1);
   *val = (uint8_t)time_limit.tli;
 
   return ret;
@@ -2002,11 +2264,16 @@ int32_t lis3de_quiet_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_time_latency_t time_latency;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_TIME_LATENCY, (uint8_t*)&time_latency, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_TIME_LATENCY,
+                        (uint8_t *)&time_latency, 1);
+
+  if (ret == 0)
+  {
     time_latency.tla = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_TIME_LATENCY, (uint8_t*)&time_latency, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_TIME_LATENCY,
+                           (uint8_t *)&time_latency, 1);
   }
+
   return ret;
 }
 
@@ -2026,7 +2293,8 @@ int32_t lis3de_quiet_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_time_latency_t time_latency;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_TIME_LATENCY, (uint8_t*)&time_latency, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_TIME_LATENCY,
+                        (uint8_t *)&time_latency, 1);
   *val = (uint8_t)time_latency.tla;
 
   return ret;
@@ -2048,11 +2316,16 @@ int32_t lis3de_double_tap_timeout_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_time_window_t time_window;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_TIME_WINDOW, (uint8_t*)&time_window, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_TIME_WINDOW,
+                        (uint8_t *)&time_window, 1);
+
+  if (ret == 0)
+  {
     time_window.tw = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_TIME_WINDOW, (uint8_t*)&time_window, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_TIME_WINDOW,
+                           (uint8_t *)&time_window, 1);
   }
+
   return ret;
 }
 
@@ -2072,7 +2345,8 @@ int32_t lis3de_double_tap_timeout_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_time_window_t time_window;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_TIME_WINDOW, (uint8_t*)&time_window, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_TIME_WINDOW,
+                        (uint8_t *)&time_window, 1);
   *val = (uint8_t)time_window.tw;
 
   return ret;
@@ -2106,11 +2380,14 @@ int32_t lis3de_act_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_act_ths_t act_ths;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_ACT_THS, (uint8_t*)&act_ths, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_ACT_THS, (uint8_t *)&act_ths, 1);
+
+  if (ret == 0)
+  {
     act_ths.acth = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_ACT_THS, (uint8_t*)&act_ths, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_ACT_THS, (uint8_t *)&act_ths, 1);
   }
+
   return ret;
 }
 
@@ -2129,7 +2406,7 @@ int32_t lis3de_act_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_act_ths_t act_ths;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_ACT_THS, (uint8_t*)&act_ths, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_ACT_THS, (uint8_t *)&act_ths, 1);
   *val = (uint8_t)act_ths.acth;
 
   return ret;
@@ -2149,11 +2426,14 @@ int32_t lis3de_act_timeout_set(stmdev_ctx_t *ctx, uint8_t val)
   lis3de_act_dur_t act_dur;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_ACT_DUR, (uint8_t*)&act_dur, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_ACT_DUR, (uint8_t *)&act_dur, 1);
+
+  if (ret == 0)
+  {
     act_dur.actd = val;
-    ret = lis3de_write_reg(ctx, LIS3DE_ACT_DUR, (uint8_t*)&act_dur, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_ACT_DUR, (uint8_t *)&act_dur, 1);
   }
+
   return ret;
 }
 
@@ -2171,7 +2451,7 @@ int32_t lis3de_act_timeout_get(stmdev_ctx_t *ctx, uint8_t *val)
   lis3de_act_dur_t act_dur;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_ACT_DUR, (uint8_t*)&act_dur, 1);
+  ret = lis3de_read_reg(ctx, LIS3DE_ACT_DUR, (uint8_t *)&act_dur, 1);
   *val = (uint8_t)act_dur.actd;
 
   return ret;
@@ -2203,11 +2483,14 @@ int32_t lis3de_spi_mode_set(stmdev_ctx_t *ctx, lis3de_sim_t val)
   lis3de_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if (ret == 0) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.sim = (uint8_t)val;
-    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+    ret = lis3de_write_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -2224,18 +2507,23 @@ int32_t lis3de_spi_mode_get(stmdev_ctx_t *ctx, lis3de_sim_t *val)
   lis3de_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  switch (ctrl_reg4.sim) {
+  ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  switch (ctrl_reg4.sim)
+  {
     case LIS3DE_SPI_4_WIRE:
       *val = LIS3DE_SPI_4_WIRE;
       break;
+
     case LIS3DE_SPI_3_WIRE:
       *val = LIS3DE_SPI_3_WIRE;
       break;
+
     default:
       *val = LIS3DE_SPI_4_WIRE;
       break;
   }
+
   return ret;
 }
 

@@ -1,29 +1,29 @@
-/*
- ******************************************************************************
- * @file    lis25ba_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          lis25ba_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    lis25ba_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          lis25ba_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LIS25BA_REGS_H
 #define LIS25BA_REGS_H
 
 #ifdef __cplusplus
-  extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -75,7 +75,8 @@
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct{
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -108,10 +109,11 @@ typedef struct{
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t*, uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t*, uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, const uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -140,7 +142,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -175,7 +178,8 @@ typedef struct {
   */
 
 #define LIS25BA_TEST_REG                   0x0BU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01    : 3;
   uint8_t st             : 1;
@@ -190,7 +194,8 @@ typedef struct {
 #define LIS25BA_WHO_AM_I                   0x0FU
 
 #define LIS25BA_TDM_CMAX_H                 0x24U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t tdm_cmax                      : 4;
   uint8_t not_used_01                   : 4;
@@ -201,12 +206,14 @@ typedef struct {
 } lis25ba_tdm_cmax_h_t;
 
 #define LIS25BA_TDM_CMAX_L                 0x25U
-typedef struct {
+typedef struct
+{
   uint8_t tdm_cmax       : 8;
 } lis25ba_tdm_cmax_l_t;
 
 #define LIS25BA_CTRL_REG                   0x26U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01    : 5;
   uint8_t pd             : 1;
@@ -219,7 +226,8 @@ typedef struct {
 } lis25ba_ctrl_reg_t;
 
 #define LIS25BA_TDM_CTRL_REG               0x2EU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01    : 1;
   uint8_t wclk_fq        : 2;
@@ -240,7 +248,8 @@ typedef struct {
 } lis25ba_tdm_ctrl_reg_t;
 
 #define LIS25BA_AXES_CTRL_REG              0x2FU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t odr_auto_en    : 1;
   uint8_t not_used_01    : 4;
@@ -268,7 +277,8 @@ typedef struct {
   * @{
   *
   */
-typedef union{
+typedef union
+{
   lis25ba_test_reg_t           test_reg;
   lis25ba_tdm_cmax_h_t         tdm_cmax_h;
   lis25ba_tdm_cmax_l_t         tdm_cmax_l;
@@ -284,20 +294,25 @@ typedef union{
   *
   */
 
-int32_t lis25ba_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t* data,
+int32_t lis25ba_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                         uint8_t *data,
                          uint16_t len);
-int32_t lis25ba_write_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t* data,
+int32_t lis25ba_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                          uint8_t *data,
                           uint16_t len);
 
 extern float_t lis25ba_from_raw_to_mg(int16_t lsb);
 
-typedef struct {
+typedef struct
+{
   uint8_t id;
 } lis25ba_id_t;
 int32_t lis25ba_id_get(stmdev_ctx_t *ctx, lis25ba_id_t *val);
 
-typedef struct {
-  struct {
+typedef struct
+{
+  struct
+  {
     uint8_t en       : 1; /* TDM interface 1=on / 0=off) */
     uint8_t clk_pol  : 1; /* data valid on 0=rise/1=falling edge of BCLK */
     uint8_t clk_edge : 1; /* data on 0=first / 1=second valid edge of BCLK */
@@ -305,17 +320,23 @@ typedef struct {
     uint16_t cmax    : 1; /* BCLK in a WCLK (unused if odr=_XL_HW_SEL) */
   } tdm;
 } lis25ba_bus_mode_t;
-int32_t lis25ba_bus_mode_set(stmdev_ctx_t *ctx, lis25ba_bus_mode_t *val);
-int32_t lis25ba_bus_mode_get(stmdev_ctx_t *ctx, lis25ba_bus_mode_t *val);
+int32_t lis25ba_bus_mode_set(stmdev_ctx_t *ctx,
+                             lis25ba_bus_mode_t *val);
+int32_t lis25ba_bus_mode_get(stmdev_ctx_t *ctx,
+                             lis25ba_bus_mode_t *val);
 
-typedef struct {
-  struct {
-    struct {
+typedef struct
+{
+  struct
+  {
+    struct
+    {
       uint8_t x : 1; /* X-axis: 0=disabled / 1=enabled */
       uint8_t y : 1; /* Y-axis: 0=disabled / 1=enabled */
       uint8_t z : 1; /* Z-axis: 0=disabled / 1=enabled */
     } axis;
-    enum {
+    enum
+    {
       LIS25BA_XL_OFF    = 0x01, /* in power down */
       LIS25BA_XL_8kHz   = 0x00, /* sampling rate equal to 8 kHz */
       LIS25BA_XL_16kHz  = 0x02, /* sampling rate equal to 16 kHz */
@@ -327,11 +348,13 @@ typedef struct {
 int32_t lis25ba_mode_set(stmdev_ctx_t *ctx, lis25ba_md_t *val);
 int32_t lis25ba_mode_get(stmdev_ctx_t *ctx, lis25ba_md_t *val);
 
-typedef struct {
-  struct {
-    float mg[3];
+typedef struct
+{
+  struct
+  {
+    float_t mg[3];
     int16_t raw[3];
-  }xl;
+  } xl;
 } lis25ba_data_t;
 int32_t lis25ba_data_get(uint16_t *tdm_stream, lis25ba_bus_mode_t *md,
                          lis25ba_data_t *data);
