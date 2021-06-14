@@ -1,21 +1,21 @@
-/*
- ******************************************************************************
- * @file    iis2dh_reg.c
- * @author  Sensors Software Solution Team
- * @brief   IIS2DH driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    iis2dh_reg.c
+  * @author  Sensors Software Solution Team
+  * @brief   IIS2DH driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 #include "iis2dh_reg.h"
 
@@ -46,11 +46,13 @@
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_read_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
+int32_t iis2dh_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
                         uint16_t len)
 {
   int32_t ret;
+
   ret = ctx->read_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -64,11 +66,14 @@ int32_t iis2dh_read_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
+int32_t iis2dh_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                         uint8_t *data,
                          uint16_t len)
 {
   int32_t ret;
+
   ret = ctx->write_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -77,7 +82,7 @@ int32_t iis2dh_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
   *
   */
 
-  /**
+/**
   * @defgroup    IIS2DH_Sensitivity
   * @brief       These functions convert raw-data into engineering units.
   * @{
@@ -86,77 +91,77 @@ int32_t iis2dh_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
 
 float_t iis2dh_from_fs2_hr_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 16.0f ) * 0.98f;
+  return ((float_t)lsb / 16.0f) * 0.98f;
 }
 
 float_t iis2dh_from_fs4_hr_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 16.0f ) *  1.95f;
+  return ((float_t)lsb / 16.0f) *  1.95f;
 }
 
 float_t iis2dh_from_fs8_hr_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 16.0f ) * 3.91f;
+  return ((float_t)lsb / 16.0f) * 3.91f;
 }
 
 float_t iis2dh_from_fs16_hr_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 16.0f ) * 11.72f;
+  return ((float_t)lsb / 16.0f) * 11.72f;
 }
 
 float_t iis2dh_from_lsb_hr_to_celsius(int16_t lsb)
 {
-  return ( ( (float_t)lsb / 64.0f ) / 4.0f ) + 25.0f;
+  return (((float_t)lsb / 64.0f) / 4.0f) + 25.0f;
 }
 
 float_t iis2dh_from_fs2_nm_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 64.0f ) *  3.91f;
+  return ((float_t)lsb / 64.0f) *  3.91f;
 }
 
 float_t iis2dh_from_fs4_nm_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 64.0f ) *  7.81f;
+  return ((float_t)lsb / 64.0f) *  7.81f;
 }
 
 float_t iis2dh_from_fs8_nm_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 64.0f ) * 15.63f;
+  return ((float_t)lsb / 64.0f) * 15.63f;
 }
 
 float_t iis2dh_from_fs16_nm_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 64.0f ) * 46.95f;
+  return ((float_t)lsb / 64.0f) * 46.95f;
 }
 
 float_t iis2dh_from_lsb_nm_to_celsius(int16_t lsb)
 {
-  return ( ( (float_t)lsb / 64.0f ) / 4.0f ) + 25.0f;
+  return (((float_t)lsb / 64.0f) / 4.0f) + 25.0f;
 }
 
 float_t iis2dh_from_fs2_lp_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 256.0f ) * 15.63f;
+  return ((float_t)lsb / 256.0f) * 15.63f;
 }
 
 float_t iis2dh_from_fs4_lp_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 256.0f ) * 31.25f;
+  return ((float_t)lsb / 256.0f) * 31.25f;
 }
 
 float_t iis2dh_from_fs8_lp_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 256.0f ) * 62.5f;
+  return ((float_t)lsb / 256.0f) * 62.5f;
 }
 
 float_t iis2dh_from_fs16_lp_to_mg(int16_t lsb)
 {
-  return ( (float_t)lsb / 256.0f ) * 188.68f;
+  return ((float_t)lsb / 256.0f) * 188.68f;
 }
 
 float_t iis2dh_from_lsb_lp_to_celsius(int16_t lsb)
 {
-  return ( ( (float_t)lsb / 256.0f ) * 1.0f ) + 25.0f;
+  return (((float_t)lsb / 256.0f) * 1.0f) + 25.0f;
 }
 
 /**
@@ -182,7 +187,9 @@ float_t iis2dh_from_lsb_lp_to_celsius(int16_t lsb)
 int32_t iis2dh_temp_status_reg_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret = iis2dh_read_reg(ctx, IIS2DH_STATUS_REG_AUX, buff, 1);
+
   return ret;
 }
 /**
@@ -199,7 +206,7 @@ int32_t iis2dh_temp_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_STATUS_REG_AUX,
-                        (uint8_t*)&status_reg_aux, 1);
+                        (uint8_t *)&status_reg_aux, 1);
   *val = status_reg_aux.tda;
 
   return ret;
@@ -218,7 +225,7 @@ int32_t iis2dh_temp_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_STATUS_REG_AUX,
-                        (uint8_t*)&status_reg_aux, 1);
+                        (uint8_t *)&status_reg_aux, 1);
   *val = status_reg_aux.tor;
 
   return ret;
@@ -238,7 +245,7 @@ int32_t iis2dh_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 
   ret = iis2dh_read_reg(ctx, IIS2DH_OUT_TEMP_L, buff, 2);
   *val = (int16_t)buff[1];
-  *val = (*val * 256) +  (int16_t)buff[0];
+  *val = (*val * 256) + (int16_t)buff[0];
 
   return ret;
 }
@@ -250,17 +257,22 @@ int32_t iis2dh_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_temperature_meas_set(stmdev_ctx_t *ctx, iis2dh_temp_en_t val)
+int32_t iis2dh_temperature_meas_set(stmdev_ctx_t *ctx,
+                                    iis2dh_temp_en_t val)
 {
   iis2dh_temp_cfg_reg_t temp_cfg_reg;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_TEMP_CFG_REG, (uint8_t*)&temp_cfg_reg, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_TEMP_CFG_REG,
+                        (uint8_t *)&temp_cfg_reg, 1);
+
+  if (ret == 0)
+  {
     temp_cfg_reg.temp_en = (uint8_t) val;
     ret = iis2dh_write_reg(ctx, IIS2DH_TEMP_CFG_REG,
-                           (uint8_t*)&temp_cfg_reg, 1);
+                           (uint8_t *)&temp_cfg_reg, 1);
   }
+
   return ret;
 }
 
@@ -272,23 +284,30 @@ int32_t iis2dh_temperature_meas_set(stmdev_ctx_t *ctx, iis2dh_temp_en_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_temperature_meas_get(stmdev_ctx_t *ctx, iis2dh_temp_en_t *val)
+int32_t iis2dh_temperature_meas_get(stmdev_ctx_t *ctx,
+                                    iis2dh_temp_en_t *val)
 {
   iis2dh_temp_cfg_reg_t temp_cfg_reg;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_TEMP_CFG_REG, (uint8_t*)&temp_cfg_reg, 1);
-  switch (temp_cfg_reg.temp_en) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_TEMP_CFG_REG,
+                        (uint8_t *)&temp_cfg_reg, 1);
+
+  switch (temp_cfg_reg.temp_en)
+  {
     case IIS2DH_TEMP_DISABLE:
       *val = IIS2DH_TEMP_DISABLE;
       break;
+
     case IIS2DH_TEMP_ENABLE:
       *val = IIS2DH_TEMP_ENABLE;
       break;
+
     default:
       *val = IIS2DH_TEMP_DISABLE;
       break;
   }
+
   return ret;
 }
 
@@ -301,34 +320,48 @@ int32_t iis2dh_temperature_meas_get(stmdev_ctx_t *ctx, iis2dh_temp_en_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_operating_mode_set(stmdev_ctx_t *ctx, iis2dh_op_md_t val)
+int32_t iis2dh_operating_mode_set(stmdev_ctx_t *ctx,
+                                  iis2dh_op_md_t val)
 {
   iis2dh_ctrl_reg1_t ctrl_reg1;
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  if (ret == 0) {
-    ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret == 0)
+  {
+    ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
-  if (ret == 0) {
-    if ( val == IIS2DH_HR_12bit ) {
+
+  if (ret == 0)
+  {
+    if (val == IIS2DH_HR_12bit)
+    {
       ctrl_reg1.lpen = 0;
       ctrl_reg4.hr   = 1;
     }
-    if (val == IIS2DH_NM_10bit) {
+
+    if (val == IIS2DH_NM_10bit)
+    {
       ctrl_reg1.lpen = 0;
       ctrl_reg4.hr   = 0;
     }
-    if (val == IIS2DH_LP_8bit) {
+
+    if (val == IIS2DH_LP_8bit)
+    {
       ctrl_reg1.lpen = 1;
       ctrl_reg4.hr   = 0;
     }
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
+
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
   }
-  if (ret == 0) {
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -340,23 +373,35 @@ int32_t iis2dh_operating_mode_set(stmdev_ctx_t *ctx, iis2dh_op_md_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_operating_mode_get(stmdev_ctx_t *ctx, iis2dh_op_md_t *val)
+int32_t iis2dh_operating_mode_get(stmdev_ctx_t *ctx,
+                                  iis2dh_op_md_t *val)
 {
   iis2dh_ctrl_reg1_t ctrl_reg1;
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  if (ret == 0) {
-    ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-    if ( ctrl_reg1.lpen == PROPERTY_ENABLE ) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret == 0)
+  {
+    ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+    if (ctrl_reg1.lpen == PROPERTY_ENABLE)
+    {
       *val = IIS2DH_LP_8bit;
-    } else if (ctrl_reg4.hr == PROPERTY_ENABLE ) {
+    }
+
+    else if (ctrl_reg4.hr == PROPERTY_ENABLE)
+    {
       *val = IIS2DH_HR_12bit;
-    } else {
+    }
+
+    else
+    {
       *val = IIS2DH_NM_10bit;
     }
   }
+
   return ret;
 }
 
@@ -373,11 +418,14 @@ int32_t iis2dh_data_rate_set(stmdev_ctx_t *ctx, iis2dh_odr_t val)
   iis2dh_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg1.odr = (uint8_t)val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
   }
+
   return ret;
 }
 
@@ -394,42 +442,55 @@ int32_t iis2dh_data_rate_get(stmdev_ctx_t *ctx, iis2dh_odr_t *val)
   iis2dh_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  switch (ctrl_reg1.odr) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  switch (ctrl_reg1.odr)
+  {
     case IIS2DH_POWER_DOWN:
       *val = IIS2DH_POWER_DOWN;
       break;
+
     case IIS2DH_ODR_1Hz:
       *val = IIS2DH_ODR_1Hz;
       break;
+
     case IIS2DH_ODR_10Hz:
       *val = IIS2DH_ODR_10Hz;
       break;
+
     case IIS2DH_ODR_25Hz:
       *val = IIS2DH_ODR_25Hz;
       break;
+
     case IIS2DH_ODR_50Hz:
       *val = IIS2DH_ODR_50Hz;
       break;
+
     case IIS2DH_ODR_100Hz:
       *val = IIS2DH_ODR_100Hz;
       break;
+
     case IIS2DH_ODR_200Hz:
       *val = IIS2DH_ODR_200Hz;
       break;
+
     case IIS2DH_ODR_400Hz:
       *val = IIS2DH_ODR_400Hz;
       break;
+
     case IIS2DH_ODR_1kHz620_LP:
       *val = IIS2DH_ODR_1kHz620_LP;
       break;
+
     case IIS2DH_ODR_5kHz376_LP_1kHz344_NM_HP:
       *val = IIS2DH_ODR_5kHz376_LP_1kHz344_NM_HP;
       break;
+
     default:
       *val = IIS2DH_POWER_DOWN;
       break;
   }
+
   return ret;
 }
 
@@ -442,16 +503,20 @@ int32_t iis2dh_data_rate_get(stmdev_ctx_t *ctx, iis2dh_odr_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_high_pass_on_outputs_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t iis2dh_high_pass_on_outputs_set(stmdev_ctx_t *ctx,
+                                        uint8_t val)
 {
   iis2dh_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.fds = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -464,12 +529,13 @@ int32_t iis2dh_high_pass_on_outputs_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_high_pass_on_outputs_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t iis2dh_high_pass_on_outputs_get(stmdev_ctx_t *ctx,
+                                        uint8_t *val)
 {
   iis2dh_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
   *val = (uint8_t)ctrl_reg2.fds;
 
   return ret;
@@ -489,16 +555,20 @@ int32_t iis2dh_high_pass_on_outputs_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_high_pass_bandwidth_set(stmdev_ctx_t *ctx, iis2dh_hpcf_t val)
+int32_t iis2dh_high_pass_bandwidth_set(stmdev_ctx_t *ctx,
+                                       iis2dh_hpcf_t val)
 {
   iis2dh_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.hpcf = (uint8_t)val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -516,29 +586,37 @@ int32_t iis2dh_high_pass_bandwidth_set(stmdev_ctx_t *ctx, iis2dh_hpcf_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_high_pass_bandwidth_get(stmdev_ctx_t *ctx, iis2dh_hpcf_t *val)
+int32_t iis2dh_high_pass_bandwidth_get(stmdev_ctx_t *ctx,
+                                       iis2dh_hpcf_t *val)
 {
   iis2dh_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  switch (ctrl_reg2.hpcf) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  switch (ctrl_reg2.hpcf)
+  {
     case IIS2DH_AGGRESSIVE:
       *val = IIS2DH_AGGRESSIVE;
       break;
+
     case IIS2DH_STRONG:
       *val = IIS2DH_STRONG;
       break;
+
     case IIS2DH_MEDIUM:
       *val = IIS2DH_MEDIUM;
       break;
+
     case IIS2DH_LIGHT:
       *val = IIS2DH_LIGHT;
       break;
+
     default:
       *val = IIS2DH_LIGHT;
       break;
   }
+
   return ret;
 }
 
@@ -555,11 +633,14 @@ int32_t iis2dh_high_pass_mode_set(stmdev_ctx_t *ctx, iis2dh_hpm_t val)
   iis2dh_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.hpm = (uint8_t)val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -571,29 +652,37 @@ int32_t iis2dh_high_pass_mode_set(stmdev_ctx_t *ctx, iis2dh_hpm_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_high_pass_mode_get(stmdev_ctx_t *ctx, iis2dh_hpm_t *val)
+int32_t iis2dh_high_pass_mode_get(stmdev_ctx_t *ctx,
+                                  iis2dh_hpm_t *val)
 {
   iis2dh_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  switch (ctrl_reg2.hpm) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  switch (ctrl_reg2.hpm)
+  {
     case IIS2DH_NORMAL_WITH_RST:
       *val = IIS2DH_NORMAL_WITH_RST;
       break;
+
     case IIS2DH_REFERENCE_MODE:
       *val = IIS2DH_REFERENCE_MODE;
       break;
+
     case IIS2DH_NORMAL:
       *val = IIS2DH_NORMAL;
       break;
+
     case IIS2DH_AUTORST_ON_INT:
       *val = IIS2DH_AUTORST_ON_INT;
       break;
+
     default:
       *val = IIS2DH_NORMAL_WITH_RST;
       break;
   }
+
   return ret;
 }
 
@@ -610,11 +699,14 @@ int32_t iis2dh_full_scale_set(stmdev_ctx_t *ctx, iis2dh_fs_t val)
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.fs = (uint8_t)val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -631,24 +723,31 @@ int32_t iis2dh_full_scale_get(stmdev_ctx_t *ctx, iis2dh_fs_t *val)
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  switch (ctrl_reg4.fs) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  switch (ctrl_reg4.fs)
+  {
     case IIS2DH_2g:
       *val = IIS2DH_2g;
       break;
+
     case IIS2DH_4g:
       *val = IIS2DH_4g;
       break;
+
     case IIS2DH_8g:
       *val = IIS2DH_8g;
       break;
+
     case IIS2DH_16g:
       *val = IIS2DH_16g;
       break;
+
     default:
       *val = IIS2DH_2g;
       break;
   }
+
   return ret;
 }
 
@@ -665,11 +764,14 @@ int32_t iis2dh_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.bdu = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -686,7 +788,7 @@ int32_t iis2dh_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   *val = (uint8_t)ctrl_reg4.bdu;
 
   return ret;
@@ -704,7 +806,9 @@ int32_t iis2dh_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2dh_filter_reference_set(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret = iis2dh_write_reg(ctx, IIS2DH_REFERENCE, buff, 1);
+
   return ret;
 }
 
@@ -720,7 +824,9 @@ int32_t iis2dh_filter_reference_set(stmdev_ctx_t *ctx, uint8_t *buff)
 int32_t iis2dh_filter_reference_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret = iis2dh_read_reg(ctx, IIS2DH_REFERENCE, buff, 1);
+
   return ret;
 }
 /**
@@ -736,7 +842,7 @@ int32_t iis2dh_xl_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_status_reg_t status_reg;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_STATUS_REG, (uint8_t*)&status_reg, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_STATUS_REG, (uint8_t *)&status_reg, 1);
   *val = status_reg.zyxda;
 
   return ret;
@@ -754,7 +860,7 @@ int32_t iis2dh_xl_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_status_reg_t status_reg;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_STATUS_REG, (uint8_t*)&status_reg, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_STATUS_REG, (uint8_t *)&status_reg, 1);
   *val = status_reg.zyxor;
 
   return ret;
@@ -774,11 +880,12 @@ int32_t iis2dh_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 
   ret = iis2dh_read_reg(ctx, IIS2DH_OUT_X_L, buff, 6);
   val[0] = (int16_t)buff[1];
-  val[0] = (val[0] * 256) +  (int16_t)buff[0];
+  val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
-  val[1] = (val[1] * 256) +  (int16_t)buff[2];
+  val[1] = (val[1] * 256) + (int16_t)buff[2];
   val[2] = (int16_t)buff[5];
-  val[2] = (val[2] * 256) +  (int16_t)buff[4];
+  val[2] = (val[2] * 256) + (int16_t)buff[4];
+
   return ret;
 }
 /**
@@ -788,7 +895,7 @@ int32_t iis2dh_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 
 /**
   * @defgroup  IIS2DH_Common
-  * @brief     This section group common usefull functions
+  * @brief     This section group common useful functions
   * @{
   *
   */
@@ -804,7 +911,9 @@ int32_t iis2dh_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 int32_t iis2dh_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret = iis2dh_read_reg(ctx, IIS2DH_WHO_AM_I, buff, 1);
+
   return ret;
 }
 /**
@@ -820,11 +929,14 @@ int32_t iis2dh_self_test_set(stmdev_ctx_t *ctx, iis2dh_st_t val)
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.st = (uint8_t)val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -841,21 +953,27 @@ int32_t iis2dh_self_test_get(stmdev_ctx_t *ctx, iis2dh_st_t *val)
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  switch (ctrl_reg4.st) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  switch (ctrl_reg4.st)
+  {
     case IIS2DH_ST_DISABLE:
       *val = IIS2DH_ST_DISABLE;
       break;
+
     case IIS2DH_ST_POSITIVE:
       *val = IIS2DH_ST_POSITIVE;
       break;
+
     case IIS2DH_ST_NEGATIVE:
       *val = IIS2DH_ST_NEGATIVE;
       break;
+
     default:
       *val = IIS2DH_ST_DISABLE;
       break;
   }
+
   return ret;
 }
 
@@ -872,11 +990,14 @@ int32_t iis2dh_data_format_set(stmdev_ctx_t *ctx, iis2dh_ble_t val)
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.ble = (uint8_t)val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -893,18 +1014,23 @@ int32_t iis2dh_data_format_get(stmdev_ctx_t *ctx, iis2dh_ble_t *val)
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  switch (ctrl_reg4.ble) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  switch (ctrl_reg4.ble)
+  {
     case IIS2DH_LSB_AT_LOW_ADD:
       *val = IIS2DH_LSB_AT_LOW_ADD;
       break;
+
     case IIS2DH_MSB_AT_LOW_ADD:
       *val = IIS2DH_MSB_AT_LOW_ADD;
       break;
+
     default:
       *val = IIS2DH_LSB_AT_LOW_ADD;
       break;
   }
+
   return ret;
 }
 
@@ -921,11 +1047,14 @@ int32_t iis2dh_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.boot = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -942,7 +1071,7 @@ int32_t iis2dh_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   *val = (uint8_t)ctrl_reg5.boot;
 
   return ret;
@@ -959,7 +1088,9 @@ int32_t iis2dh_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2dh_int_occurrencies_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
-  ret = iis2dh_read_reg(ctx, IIS2DH_INT_COUNTER_REG, (uint8_t*) val, 1);
+
+  ret = iis2dh_read_reg(ctx, IIS2DH_INT_COUNTER_REG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -974,7 +1105,9 @@ int32_t iis2dh_int_occurrencies_get(stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2dh_status_get(stmdev_ctx_t *ctx, iis2dh_status_reg_t *val)
 {
   int32_t ret;
-  ret = iis2dh_read_reg(ctx, IIS2DH_STATUS_REG, (uint8_t*) val, 1);
+
+  ret = iis2dh_read_reg(ctx, IIS2DH_STATUS_REG, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -998,10 +1131,13 @@ int32_t iis2dh_status_get(stmdev_ctx_t *ctx, iis2dh_status_reg_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_int1_gen_conf_set(stmdev_ctx_t *ctx, iis2dh_int1_cfg_t *val)
+int32_t iis2dh_int1_gen_conf_set(stmdev_ctx_t *ctx,
+                                 iis2dh_int1_cfg_t *val)
 {
   int32_t ret;
-  ret = iis2dh_write_reg(ctx, IIS2DH_INT1_CFG, (uint8_t*) val, 1);
+
+  ret = iis2dh_write_reg(ctx, IIS2DH_INT1_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1013,10 +1149,13 @@ int32_t iis2dh_int1_gen_conf_set(stmdev_ctx_t *ctx, iis2dh_int1_cfg_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_int1_gen_conf_get(stmdev_ctx_t *ctx, iis2dh_int1_cfg_t *val)
+int32_t iis2dh_int1_gen_conf_get(stmdev_ctx_t *ctx,
+                                 iis2dh_int1_cfg_t *val)
 {
   int32_t ret;
-  ret = iis2dh_read_reg(ctx, IIS2DH_INT1_CFG, (uint8_t*) val, 1);
+
+  ret = iis2dh_read_reg(ctx, IIS2DH_INT1_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1028,10 +1167,13 @@ int32_t iis2dh_int1_gen_conf_get(stmdev_ctx_t *ctx, iis2dh_int1_cfg_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_int1_gen_source_get(stmdev_ctx_t *ctx, iis2dh_int1_src_t *val)
+int32_t iis2dh_int1_gen_source_get(stmdev_ctx_t *ctx,
+                                   iis2dh_int1_src_t *val)
 {
   int32_t ret;
-  ret = iis2dh_read_reg(ctx, IIS2DH_INT1_SRC, (uint8_t*) val, 1);
+
+  ret = iis2dh_read_reg(ctx, IIS2DH_INT1_SRC, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1049,11 +1191,14 @@ int32_t iis2dh_int1_gen_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_int1_ths_t int1_ths;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_INT1_THS, (uint8_t*)&int1_ths, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_INT1_THS, (uint8_t *)&int1_ths, 1);
+
+  if (ret == 0)
+  {
     int1_ths.ths = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_INT1_THS, (uint8_t*)&int1_ths, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_INT1_THS, (uint8_t *)&int1_ths, 1);
   }
+
   return ret;
 }
 
@@ -1072,7 +1217,7 @@ int32_t iis2dh_int1_gen_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_int1_ths_t int1_ths;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_INT1_THS, (uint8_t*)&int1_ths, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_INT1_THS, (uint8_t *)&int1_ths, 1);
   *val = (uint8_t)int1_ths.ths;
 
   return ret;
@@ -1093,12 +1238,15 @@ int32_t iis2dh_int1_gen_duration_set(stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_INT1_DURATION,
-                        (uint8_t*)&int1_duration, 1);
-  if (ret == 0) {
+                        (uint8_t *)&int1_duration, 1);
+
+  if (ret == 0)
+  {
     int1_duration.d = val;
     ret = iis2dh_write_reg(ctx, IIS2DH_INT1_DURATION,
-                           (uint8_t*)&int1_duration, 1);
+                           (uint8_t *)&int1_duration, 1);
   }
+
   return ret;
 }
 
@@ -1117,7 +1265,7 @@ int32_t iis2dh_int1_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_INT1_DURATION,
-                        (uint8_t*)&int1_duration, 1);
+                        (uint8_t *)&int1_duration, 1);
   *val = (uint8_t)int1_duration.d;
 
   return ret;
@@ -1144,10 +1292,13 @@ int32_t iis2dh_int1_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_int2_gen_conf_set(stmdev_ctx_t *ctx, iis2dh_int2_cfg_t *val)
+int32_t iis2dh_int2_gen_conf_set(stmdev_ctx_t *ctx,
+                                 iis2dh_int2_cfg_t *val)
 {
   int32_t ret;
-  ret = iis2dh_write_reg(ctx, IIS2DH_INT2_CFG, (uint8_t*) val, 1);
+
+  ret = iis2dh_write_reg(ctx, IIS2DH_INT2_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1159,10 +1310,13 @@ int32_t iis2dh_int2_gen_conf_set(stmdev_ctx_t *ctx, iis2dh_int2_cfg_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_int2_gen_conf_get(stmdev_ctx_t *ctx, iis2dh_int2_cfg_t *val)
+int32_t iis2dh_int2_gen_conf_get(stmdev_ctx_t *ctx,
+                                 iis2dh_int2_cfg_t *val)
 {
   int32_t ret;
-  ret = iis2dh_read_reg(ctx, IIS2DH_INT2_CFG, (uint8_t*) val, 1);
+
+  ret = iis2dh_read_reg(ctx, IIS2DH_INT2_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1173,10 +1327,13 @@ int32_t iis2dh_int2_gen_conf_get(stmdev_ctx_t *ctx, iis2dh_int2_cfg_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_int2_gen_source_get(stmdev_ctx_t *ctx, iis2dh_int2_src_t *val)
+int32_t iis2dh_int2_gen_source_get(stmdev_ctx_t *ctx,
+                                   iis2dh_int2_src_t *val)
 {
   int32_t ret;
-  ret = iis2dh_read_reg(ctx, IIS2DH_INT2_SRC, (uint8_t*) val, 1);
+
+  ret = iis2dh_read_reg(ctx, IIS2DH_INT2_SRC, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1194,11 +1351,14 @@ int32_t iis2dh_int2_gen_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_int2_ths_t int2_ths;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_INT2_THS, (uint8_t*)&int2_ths, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_INT2_THS, (uint8_t *)&int2_ths, 1);
+
+  if (ret == 0)
+  {
     int2_ths.ths = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_INT2_THS, (uint8_t*)&int2_ths, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_INT2_THS, (uint8_t *)&int2_ths, 1);
   }
+
   return ret;
 }
 
@@ -1217,7 +1377,7 @@ int32_t iis2dh_int2_gen_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_int2_ths_t int2_ths;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_INT2_THS, (uint8_t*)&int2_ths, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_INT2_THS, (uint8_t *)&int2_ths, 1);
   *val = (uint8_t)int2_ths.ths;
 
   return ret;
@@ -1238,12 +1398,15 @@ int32_t iis2dh_int2_gen_duration_set(stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_INT2_DURATION,
-                        (uint8_t*)&int2_duration, 1);
-  if (ret == 0) {
+                        (uint8_t *)&int2_duration, 1);
+
+  if (ret == 0)
+  {
     int2_duration.d = val;
     ret = iis2dh_write_reg(ctx, IIS2DH_INT2_DURATION,
-                           (uint8_t*)&int2_duration, 1);
+                           (uint8_t *)&int2_duration, 1);
   }
+
   return ret;
 }
 
@@ -1262,7 +1425,7 @@ int32_t iis2dh_int2_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_INT2_DURATION,
-                        (uint8_t*)&int2_duration, 1);
+                        (uint8_t *)&int2_duration, 1);
   *val = (uint8_t)int2_duration.d;
 
   return ret;
@@ -1275,7 +1438,7 @@ int32_t iis2dh_int2_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
 
 /**
   * @defgroup  IIS2DH_Interrupt_pins
-  * @brief     This section group all the functions that manage interrup pins
+  * @brief     This section group all the functions that manage interrupt pins
   * @{
   *
   */
@@ -1288,16 +1451,20 @@ int32_t iis2dh_int2_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_high_pass_int_conf_set(stmdev_ctx_t *ctx, iis2dh_hp_t val)
+int32_t iis2dh_high_pass_int_conf_set(stmdev_ctx_t *ctx,
+                                      iis2dh_hp_t val)
 {
   iis2dh_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg2.hp = (uint8_t)val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
   }
+
   return ret;
 }
 
@@ -1309,41 +1476,53 @@ int32_t iis2dh_high_pass_int_conf_set(stmdev_ctx_t *ctx, iis2dh_hp_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_high_pass_int_conf_get(stmdev_ctx_t *ctx, iis2dh_hp_t *val)
+int32_t iis2dh_high_pass_int_conf_get(stmdev_ctx_t *ctx,
+                                      iis2dh_hp_t *val)
 {
   iis2dh_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t*)&ctrl_reg2, 1);
-  switch (ctrl_reg2.hp) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  switch (ctrl_reg2.hp)
+  {
     case IIS2DH_DISC_FROM_INT_GENERATOR:
       *val = IIS2DH_DISC_FROM_INT_GENERATOR;
       break;
+
     case IIS2DH_ON_INT1_GEN:
       *val = IIS2DH_ON_INT1_GEN;
       break;
+
     case IIS2DH_ON_INT2_GEN:
       *val = IIS2DH_ON_INT2_GEN;
       break;
+
     case IIS2DH_ON_TAP_GEN:
       *val = IIS2DH_ON_TAP_GEN;
       break;
+
     case IIS2DH_ON_INT1_INT2_GEN:
       *val = IIS2DH_ON_INT1_INT2_GEN;
       break;
+
     case IIS2DH_ON_INT1_TAP_GEN:
       *val = IIS2DH_ON_INT1_TAP_GEN;
       break;
+
     case IIS2DH_ON_INT2_TAP_GEN:
       *val = IIS2DH_ON_INT2_TAP_GEN;
       break;
+
     case IIS2DH_ON_INT1_INT2_TAP_GEN:
       *val = IIS2DH_ON_INT1_INT2_TAP_GEN;
       break;
+
     default:
       *val = IIS2DH_DISC_FROM_INT_GENERATOR;
       break;
   }
+
   return ret;
 }
 
@@ -1355,10 +1534,13 @@ int32_t iis2dh_high_pass_int_conf_get(stmdev_ctx_t *ctx, iis2dh_hp_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_pin_int1_config_set(stmdev_ctx_t *ctx, iis2dh_ctrl_reg3_t *val)
+int32_t iis2dh_pin_int1_config_set(stmdev_ctx_t *ctx,
+                                   iis2dh_ctrl_reg3_t *val)
 {
   int32_t ret;
-  ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG3, (uint8_t*) val, 1);
+
+  ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG3, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1370,10 +1552,13 @@ int32_t iis2dh_pin_int1_config_set(stmdev_ctx_t *ctx, iis2dh_ctrl_reg3_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_pin_int1_config_get(stmdev_ctx_t *ctx, iis2dh_ctrl_reg3_t *val)
+int32_t iis2dh_pin_int1_config_get(stmdev_ctx_t *ctx,
+                                   iis2dh_ctrl_reg3_t *val)
 {
   int32_t ret;
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG3, (uint8_t*) val, 1);
+
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG3, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1391,11 +1576,14 @@ int32_t iis2dh_int2_pin_detect_4d_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.d4d_int2 = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -1413,7 +1601,7 @@ int32_t iis2dh_int2_pin_detect_4d_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   *val = (uint8_t)ctrl_reg5.d4d_int2;
 
   return ret;
@@ -1435,11 +1623,14 @@ int32_t iis2dh_int2_pin_notification_mode_set(stmdev_ctx_t *ctx,
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.lir_int2 = (uint8_t)val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -1459,18 +1650,23 @@ int32_t iis2dh_int2_pin_notification_mode_get(stmdev_ctx_t *ctx,
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  switch (ctrl_reg5.lir_int2) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  switch (ctrl_reg5.lir_int2)
+  {
     case IIS2DH_INT2_PULSED:
       *val = IIS2DH_INT2_PULSED;
       break;
+
     case IIS2DH_INT2_LATCHED:
       *val = IIS2DH_INT2_LATCHED;
       break;
+
     default:
       *val = IIS2DH_INT2_PULSED;
       break;
   }
+
   return ret;
 }
 
@@ -1488,11 +1684,14 @@ int32_t iis2dh_int1_pin_detect_4d_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.d4d_int1 = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -1510,7 +1709,7 @@ int32_t iis2dh_int1_pin_detect_4d_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   *val = (uint8_t)ctrl_reg5.d4d_int1;
 
   return ret;
@@ -1531,11 +1730,14 @@ int32_t iis2dh_int1_pin_notification_mode_set(stmdev_ctx_t *ctx,
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.lir_int1 = (uint8_t)val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -1554,18 +1756,23 @@ int32_t iis2dh_int1_pin_notification_mode_get(stmdev_ctx_t *ctx,
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  switch (ctrl_reg5.lir_int1) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  switch (ctrl_reg5.lir_int1)
+  {
     case IIS2DH_INT1_PULSED:
       *val = IIS2DH_INT1_PULSED;
       break;
+
     case IIS2DH_INT1_LATCHED:
       *val = IIS2DH_INT1_LATCHED;
       break;
+
     default:
       *val = IIS2DH_INT1_PULSED;
       break;
   }
+
   return ret;
 }
 
@@ -1577,10 +1784,13 @@ int32_t iis2dh_int1_pin_notification_mode_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_pin_int2_config_set(stmdev_ctx_t *ctx, iis2dh_ctrl_reg6_t *val)
+int32_t iis2dh_pin_int2_config_set(stmdev_ctx_t *ctx,
+                                   iis2dh_ctrl_reg6_t *val)
 {
   int32_t ret;
-  ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG6, (uint8_t*) val, 1);
+
+  ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG6, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1592,10 +1802,13 @@ int32_t iis2dh_pin_int2_config_set(stmdev_ctx_t *ctx, iis2dh_ctrl_reg6_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_pin_int2_config_get(stmdev_ctx_t *ctx, iis2dh_ctrl_reg6_t *val)
+int32_t iis2dh_pin_int2_config_get(stmdev_ctx_t *ctx,
+                                   iis2dh_ctrl_reg6_t *val)
 {
   int32_t ret;
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG6, (uint8_t*) val, 1);
+
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG6, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1624,11 +1837,14 @@ int32_t iis2dh_fifo_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg5.fifo_en = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   }
+
   return ret;
 }
 
@@ -1645,7 +1861,7 @@ int32_t iis2dh_fifo_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t*)&ctrl_reg5, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
   *val = (uint8_t)ctrl_reg5.fifo_en;
 
   return ret;
@@ -1665,12 +1881,15 @@ int32_t iis2dh_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_CTRL_REG,
-                        (uint8_t*)&fifo_ctrl_reg, 1);
-  if (ret == 0) {
+                        (uint8_t *)&fifo_ctrl_reg, 1);
+
+  if (ret == 0)
+  {
     fifo_ctrl_reg.fth = val;
     ret = iis2dh_write_reg(ctx, IIS2DH_FIFO_CTRL_REG,
-                           (uint8_t*)&fifo_ctrl_reg, 1);
+                           (uint8_t *)&fifo_ctrl_reg, 1);
   }
+
   return ret;
 }
 
@@ -1688,7 +1907,7 @@ int32_t iis2dh_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_CTRL_REG,
-                        (uint8_t*)&fifo_ctrl_reg, 1);
+                        (uint8_t *)&fifo_ctrl_reg, 1);
   *val = (uint8_t)fifo_ctrl_reg.fth;
 
   return ret;
@@ -1702,18 +1921,22 @@ int32_t iis2dh_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_fifo_trigger_event_set(stmdev_ctx_t *ctx, iis2dh_tr_t val)
+int32_t iis2dh_fifo_trigger_event_set(stmdev_ctx_t *ctx,
+                                      iis2dh_tr_t val)
 {
   iis2dh_fifo_ctrl_reg_t fifo_ctrl_reg;
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_CTRL_REG,
-                        (uint8_t*)&fifo_ctrl_reg, 1);
-  if (ret == 0) {
+                        (uint8_t *)&fifo_ctrl_reg, 1);
+
+  if (ret == 0)
+  {
     fifo_ctrl_reg.tr = (uint8_t)val;
     ret = iis2dh_write_reg(ctx, IIS2DH_FIFO_CTRL_REG,
-                           (uint8_t*)&fifo_ctrl_reg, 1);
+                           (uint8_t *)&fifo_ctrl_reg, 1);
   }
+
   return ret;
 }
 
@@ -1725,24 +1948,30 @@ int32_t iis2dh_fifo_trigger_event_set(stmdev_ctx_t *ctx, iis2dh_tr_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_fifo_trigger_event_get(stmdev_ctx_t *ctx, iis2dh_tr_t *val)
+int32_t iis2dh_fifo_trigger_event_get(stmdev_ctx_t *ctx,
+                                      iis2dh_tr_t *val)
 {
   iis2dh_fifo_ctrl_reg_t fifo_ctrl_reg;
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_CTRL_REG,
-                        (uint8_t*)&fifo_ctrl_reg, 1);
-  switch (fifo_ctrl_reg.tr) {
+                        (uint8_t *)&fifo_ctrl_reg, 1);
+
+  switch (fifo_ctrl_reg.tr)
+  {
     case IIS2DH_INT1_GEN:
       *val = IIS2DH_INT1_GEN;
       break;
+
     case IIS2DH_INT2_GEN:
       *val = IIS2DH_INT2_GEN;
       break;
+
     default:
       *val = IIS2DH_INT1_GEN;
       break;
   }
+
   return ret;
 }
 
@@ -1760,12 +1989,15 @@ int32_t iis2dh_fifo_mode_set(stmdev_ctx_t *ctx, iis2dh_fm_t val)
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_CTRL_REG,
-                        (uint8_t*)&fifo_ctrl_reg, 1);
-  if (ret == 0) {
+                        (uint8_t *)&fifo_ctrl_reg, 1);
+
+  if (ret == 0)
+  {
     fifo_ctrl_reg.fm = (uint8_t)val;
     ret = iis2dh_write_reg(ctx, IIS2DH_FIFO_CTRL_REG,
-                           (uint8_t*)&fifo_ctrl_reg, 1);
+                           (uint8_t *)&fifo_ctrl_reg, 1);
   }
+
   return ret;
 }
 
@@ -1783,24 +2015,31 @@ int32_t iis2dh_fifo_mode_get(stmdev_ctx_t *ctx, iis2dh_fm_t *val)
   int32_t ret;
 
   ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_CTRL_REG,
-                        (uint8_t*)&fifo_ctrl_reg, 1);
-  switch (fifo_ctrl_reg.fm) {
+                        (uint8_t *)&fifo_ctrl_reg, 1);
+
+  switch (fifo_ctrl_reg.fm)
+  {
     case IIS2DH_BYPASS_MODE:
       *val = IIS2DH_BYPASS_MODE;
       break;
+
     case IIS2DH_FIFO_MODE:
       *val = IIS2DH_FIFO_MODE;
       break;
+
     case IIS2DH_DYNAMIC_STREAM_MODE:
       *val = IIS2DH_DYNAMIC_STREAM_MODE;
       break;
+
     case IIS2DH_STREAM_TO_FIFO_MODE:
       *val = IIS2DH_STREAM_TO_FIFO_MODE;
       break;
+
     default:
       *val = IIS2DH_BYPASS_MODE;
       break;
   }
+
   return ret;
 }
 
@@ -1812,10 +2051,13 @@ int32_t iis2dh_fifo_mode_get(stmdev_ctx_t *ctx, iis2dh_fm_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_fifo_status_get(stmdev_ctx_t *ctx, iis2dh_fifo_src_reg_t *val)
+int32_t iis2dh_fifo_status_get(stmdev_ctx_t *ctx,
+                               iis2dh_fifo_src_reg_t *val)
 {
   int32_t ret;
-  ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_SRC_REG, (uint8_t*) val, 1);
+
+  ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_SRC_REG, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1831,7 +2073,8 @@ int32_t iis2dh_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_SRC_REG, (uint8_t*)&fifo_src_reg, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_SRC_REG,
+                        (uint8_t *)&fifo_src_reg, 1);
   *val = (uint8_t)fifo_src_reg.fss;
 
   return ret;
@@ -1849,7 +2092,8 @@ int32_t iis2dh_fifo_empty_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_SRC_REG, (uint8_t*)&fifo_src_reg, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_SRC_REG,
+                        (uint8_t *)&fifo_src_reg, 1);
   *val = (uint8_t)fifo_src_reg.empty;
 
   return ret;
@@ -1867,7 +2111,8 @@ int32_t iis2dh_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_SRC_REG, (uint8_t*)&fifo_src_reg, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_SRC_REG,
+                        (uint8_t *)&fifo_src_reg, 1);
   *val = (uint8_t)fifo_src_reg.ovrn_fifo;
 
   return ret;
@@ -1885,7 +2130,8 @@ int32_t iis2dh_fifo_fth_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_SRC_REG, (uint8_t*)&fifo_src_reg, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_FIFO_SRC_REG,
+                        (uint8_t *)&fifo_src_reg, 1);
   *val = (uint8_t)fifo_src_reg.wtm;
 
   return ret;
@@ -1911,10 +2157,13 @@ int32_t iis2dh_fifo_fth_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_tap_conf_set(stmdev_ctx_t *ctx, iis2dh_click_cfg_t *val)
+int32_t iis2dh_tap_conf_set(stmdev_ctx_t *ctx,
+                            iis2dh_click_cfg_t *val)
 {
   int32_t ret;
-  ret = iis2dh_write_reg(ctx, IIS2DH_CLICK_CFG, (uint8_t*) val, 1);
+
+  ret = iis2dh_write_reg(ctx, IIS2DH_CLICK_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1926,10 +2175,13 @@ int32_t iis2dh_tap_conf_set(stmdev_ctx_t *ctx, iis2dh_click_cfg_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_tap_conf_get(stmdev_ctx_t *ctx, iis2dh_click_cfg_t *val)
+int32_t iis2dh_tap_conf_get(stmdev_ctx_t *ctx,
+                            iis2dh_click_cfg_t *val)
 {
   int32_t ret;
-  ret = iis2dh_read_reg(ctx, IIS2DH_CLICK_CFG, (uint8_t*) val, 1);
+
+  ret = iis2dh_read_reg(ctx, IIS2DH_CLICK_CFG, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1940,10 +2192,13 @@ int32_t iis2dh_tap_conf_get(stmdev_ctx_t *ctx, iis2dh_click_cfg_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dh_tap_source_get(stmdev_ctx_t *ctx, iis2dh_click_src_t *val)
+int32_t iis2dh_tap_source_get(stmdev_ctx_t *ctx,
+                              iis2dh_click_src_t *val)
 {
   int32_t ret;
-  ret = iis2dh_read_reg(ctx, IIS2DH_CLICK_SRC, (uint8_t*) val, 1);
+
+  ret = iis2dh_read_reg(ctx, IIS2DH_CLICK_SRC, (uint8_t *) val, 1);
+
   return ret;
 }
 /**
@@ -1960,11 +2215,14 @@ int32_t iis2dh_tap_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_click_ths_t click_ths;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CLICK_THS, (uint8_t*)&click_ths, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CLICK_THS, (uint8_t *)&click_ths, 1);
+
+  if (ret == 0)
+  {
     click_ths.ths = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CLICK_THS, (uint8_t*)&click_ths, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CLICK_THS, (uint8_t *)&click_ths, 1);
   }
+
   return ret;
 }
 
@@ -1982,7 +2240,7 @@ int32_t iis2dh_tap_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_click_ths_t click_ths;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CLICK_THS, (uint8_t*)&click_ths, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_CLICK_THS, (uint8_t *)&click_ths, 1);
   *val = (uint8_t)click_ths.ths;
 
   return ret;
@@ -2003,11 +2261,14 @@ int32_t iis2dh_shock_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_time_limit_t time_limit;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_LIMIT, (uint8_t*)&time_limit, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_LIMIT, (uint8_t *)&time_limit, 1);
+
+  if (ret == 0)
+  {
     time_limit.tli = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_TIME_LIMIT, (uint8_t*)&time_limit, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_TIME_LIMIT, (uint8_t *)&time_limit, 1);
   }
+
   return ret;
 }
 
@@ -2026,7 +2287,7 @@ int32_t iis2dh_shock_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_time_limit_t time_limit;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_LIMIT, (uint8_t*)&time_limit, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_LIMIT, (uint8_t *)&time_limit, 1);
   *val = (uint8_t)time_limit.tli;
 
   return ret;
@@ -2048,12 +2309,16 @@ int32_t iis2dh_quiet_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_time_latency_t time_latency;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_LATENCY, (uint8_t*)&time_latency, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_LATENCY,
+                        (uint8_t *)&time_latency, 1);
+
+  if (ret == 0)
+  {
     time_latency.tla = val;
     ret = iis2dh_write_reg(ctx, IIS2DH_TIME_LATENCY,
-                           (uint8_t*)&time_latency, 1);
+                           (uint8_t *)&time_latency, 1);
   }
+
   return ret;
 }
 
@@ -2073,7 +2338,8 @@ int32_t iis2dh_quiet_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_time_latency_t time_latency;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_LATENCY, (uint8_t*)&time_latency, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_LATENCY,
+                        (uint8_t *)&time_latency, 1);
   *val = (uint8_t)time_latency.tla;
 
   return ret;
@@ -2095,11 +2361,16 @@ int32_t iis2dh_double_tap_timeout_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_time_window_t time_window;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_WINDOW, (uint8_t*)&time_window, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_WINDOW,
+                        (uint8_t *)&time_window, 1);
+
+  if (ret == 0)
+  {
     time_window.tw = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_TIME_WINDOW, (uint8_t*)&time_window, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_TIME_WINDOW,
+                           (uint8_t *)&time_window, 1);
   }
+
   return ret;
 }
 
@@ -2119,7 +2390,8 @@ int32_t iis2dh_double_tap_timeout_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_time_window_t time_window;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_WINDOW, (uint8_t*)&time_window, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_TIME_WINDOW,
+                        (uint8_t *)&time_window, 1);
   *val = (uint8_t)time_window.tw;
 
   return ret;
@@ -2153,11 +2425,14 @@ int32_t iis2dh_act_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_act_ths_t act_ths;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_ACT_THS, (uint8_t*)&act_ths, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_ACT_THS, (uint8_t *)&act_ths, 1);
+
+  if (ret == 0)
+  {
     act_ths.acth = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_ACT_THS, (uint8_t*)&act_ths, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_ACT_THS, (uint8_t *)&act_ths, 1);
   }
+
   return ret;
 }
 
@@ -2176,7 +2451,7 @@ int32_t iis2dh_act_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_act_ths_t act_ths;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_ACT_THS, (uint8_t*)&act_ths, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_ACT_THS, (uint8_t *)&act_ths, 1);
   *val = (uint8_t)act_ths.acth;
 
   return ret;
@@ -2196,11 +2471,14 @@ int32_t iis2dh_act_timeout_set(stmdev_ctx_t *ctx, uint8_t val)
   iis2dh_act_dur_t act_dur;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_ACT_DUR, (uint8_t*)&act_dur, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_ACT_DUR, (uint8_t *)&act_dur, 1);
+
+  if (ret == 0)
+  {
     act_dur.actd = val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_ACT_DUR, (uint8_t*)&act_dur, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_ACT_DUR, (uint8_t *)&act_dur, 1);
   }
+
   return ret;
 }
 
@@ -2218,7 +2496,7 @@ int32_t iis2dh_act_timeout_get(stmdev_ctx_t *ctx, uint8_t *val)
   iis2dh_act_dur_t act_dur;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_ACT_DUR, (uint8_t*)&act_dur, 1);
+  ret = iis2dh_read_reg(ctx, IIS2DH_ACT_DUR, (uint8_t *)&act_dur, 1);
   *val = (uint8_t)act_dur.actd;
 
   return ret;
@@ -2250,11 +2528,14 @@ int32_t iis2dh_spi_mode_set(stmdev_ctx_t *ctx, iis2dh_sim_t val)
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  if (ret == 0) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret == 0)
+  {
     ctrl_reg4.sim = (uint8_t)val;
-    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
+    ret = iis2dh_write_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
+
   return ret;
 }
 
@@ -2271,18 +2552,23 @@ int32_t iis2dh_spi_mode_get(stmdev_ctx_t *ctx, iis2dh_sim_t *val)
   iis2dh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
 
-  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  switch (ctrl_reg4.sim) {
+  ret = iis2dh_read_reg(ctx, IIS2DH_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  switch (ctrl_reg4.sim)
+  {
     case IIS2DH_SPI_4_WIRE:
       *val = IIS2DH_SPI_4_WIRE;
       break;
+
     case IIS2DH_SPI_3_WIRE:
       *val = IIS2DH_SPI_3_WIRE;
       break;
+
     default:
       *val = IIS2DH_SPI_4_WIRE;
       break;
   }
+
   return ret;
 }
 

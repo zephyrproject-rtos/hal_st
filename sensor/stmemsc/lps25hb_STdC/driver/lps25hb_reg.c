@@ -1,21 +1,21 @@
-/*
- ******************************************************************************
- * @file    lps25hb_reg.c
- * @author  Sensors Software Solution Team
- * @brief   LPS25HB driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    lps25hb_reg.c
+  * @author  Sensors Software Solution Team
+  * @brief   LPS25HB driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 #include "lps25hb_reg.h"
 
@@ -45,11 +45,14 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps25hb_read_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
+int32_t lps25hb_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                         uint8_t *data,
                          uint16_t len)
 {
   int32_t ret;
+
   ret = ctx->read_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -63,11 +66,14 @@ int32_t lps25hb_read_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps25hb_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
+int32_t lps25hb_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                          uint8_t *data,
                           uint16_t len)
 {
   int32_t ret;
+
   ret = ctx->write_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -85,12 +91,12 @@ int32_t lps25hb_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
 
 float_t lps25hb_from_lsb_to_hpa(uint32_t lsb)
 {
-  return ( (float_t)lsb / 4096.0f );
+  return ((float_t)lsb / 4096.0f);
 }
 
 float_t lps25hb_from_lsb_to_degc(int16_t lsb)
 {
-  return ( (float_t)lsb / 480.0f ) + 42.5f ;
+  return ((float_t)lsb / 480.0f) + 42.5f ;
 }
 
 /**
@@ -115,10 +121,17 @@ float_t lps25hb_from_lsb_to_degc(int16_t lsb)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_ref_set(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lps25hb_pressure_ref_set(stmdev_ctx_t *ctx, int32_t val)
 {
+  uint8_t buff[3];
   int32_t ret;
+
+  buff[2] = (uint8_t)((uint32_t)val / 65536U);
+  buff[1] = (uint8_t)((uint32_t)val - (buff[2] * 65536U)) / 256U;
+  buff[0] = (uint8_t)((uint32_t)val - (buff[2] * 65536U) -
+                      (buff[1] * 256U));
   ret = lps25hb_read_reg(ctx, LPS25HB_REF_P_XL,  buff, 3);
+
   return ret;
 }
 
@@ -132,10 +145,16 @@ int32_t lps25hb_pressure_ref_set(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_ref_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lps25hb_pressure_ref_get(stmdev_ctx_t *ctx, int32_t *val)
 {
+  uint8_t buff[3];
   int32_t ret;
+
   ret = lps25hb_read_reg(ctx, LPS25HB_REF_P_XL,  buff, 3);
+  *val = (int32_t)buff[2];
+  *val = (*val * 256) + (int32_t)buff[1];
+  *val = (*val * 256) + (int32_t)buff[0];
+
   return ret;
 }
 
@@ -147,16 +166,20 @@ int32_t lps25hb_pressure_ref_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_avg_set(stmdev_ctx_t *ctx, lps25hb_avgp_t val)
+int32_t lps25hb_pressure_avg_set(stmdev_ctx_t *ctx,
+                                 lps25hb_avgp_t val)
 {
   lps25hb_res_conf_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_RES_CONF, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_RES_CONF, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.avgp = (uint8_t)val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_RES_CONF, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_RES_CONF, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -168,29 +191,37 @@ int32_t lps25hb_pressure_avg_set(stmdev_ctx_t *ctx, lps25hb_avgp_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_avg_get(stmdev_ctx_t *ctx, lps25hb_avgp_t *val)
+int32_t lps25hb_pressure_avg_get(stmdev_ctx_t *ctx,
+                                 lps25hb_avgp_t *val)
 {
   lps25hb_res_conf_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_RES_CONF, (uint8_t*)&reg, 1);
-  switch (reg.avgp){
+  ret = lps25hb_read_reg(ctx, LPS25HB_RES_CONF, (uint8_t *)&reg, 1);
+
+  switch (reg.avgp)
+  {
     case LPS25HB_P_AVG_8:
       *val = LPS25HB_P_AVG_8;
       break;
+
     case LPS25HB_P_AVG_16:
       *val = LPS25HB_P_AVG_16;
       break;
+
     case LPS25HB_P_AVG_32:
       *val = LPS25HB_P_AVG_32;
       break;
+
     case LPS25HB_P_AVG_64:
       *val = LPS25HB_P_AVG_64;
       break;
+
     default:
       *val = LPS25HB_P_AVG_8;
       break;
   }
+
   return ret;
 }
 
@@ -202,16 +233,20 @@ int32_t lps25hb_pressure_avg_get(stmdev_ctx_t *ctx, lps25hb_avgp_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_temperature_avg_set(stmdev_ctx_t *ctx, lps25hb_avgt_t val)
+int32_t lps25hb_temperature_avg_set(stmdev_ctx_t *ctx,
+                                    lps25hb_avgt_t val)
 {
   lps25hb_res_conf_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_RES_CONF, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_RES_CONF, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.avgt = (uint8_t)val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_RES_CONF, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_RES_CONF, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -223,29 +258,37 @@ int32_t lps25hb_temperature_avg_set(stmdev_ctx_t *ctx, lps25hb_avgt_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_temperature_avg_get(stmdev_ctx_t *ctx, lps25hb_avgt_t *val)
+int32_t lps25hb_temperature_avg_get(stmdev_ctx_t *ctx,
+                                    lps25hb_avgt_t *val)
 {
   lps25hb_res_conf_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_RES_CONF, (uint8_t*)&reg, 1);
-  switch (reg.avgt){
+  ret = lps25hb_read_reg(ctx, LPS25HB_RES_CONF, (uint8_t *)&reg, 1);
+
+  switch (reg.avgt)
+  {
     case LPS25HB_T_AVG_8:
       *val = LPS25HB_T_AVG_8;
       break;
+
     case LPS25HB_T_AVG_16:
       *val = LPS25HB_T_AVG_16;
       break;
+
     case LPS25HB_T_AVG_32:
       *val = LPS25HB_T_AVG_32;
       break;
+
     case LPS25HB_T_AVG_64:
       *val = LPS25HB_T_AVG_64;
       break;
+
     default:
       *val = LPS25HB_T_AVG_8;
       break;
   }
+
   return ret;
 }
 
@@ -262,11 +305,14 @@ int32_t lps25hb_autozero_rst_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.reset_az = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -283,7 +329,7 @@ int32_t lps25hb_autozero_rst_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
   *val = reg.reset_az;
 
   return ret;
@@ -302,11 +348,14 @@ int32_t lps25hb_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.bdu = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -323,7 +372,7 @@ int32_t lps25hb_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
   *val = reg.bdu;
 
   return ret;
@@ -342,11 +391,14 @@ int32_t lps25hb_data_rate_set(stmdev_ctx_t *ctx, lps25hb_odr_t val)
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.odr = (uint8_t)val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -363,30 +415,39 @@ int32_t lps25hb_data_rate_get(stmdev_ctx_t *ctx, lps25hb_odr_t *val)
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
-  switch (reg.odr){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
+
+  switch (reg.odr)
+  {
     case LPS25HB_POWER_DOWN:
       *val = LPS25HB_POWER_DOWN;
       break;
+
     case LPS25HB_ODR_1Hz:
       *val = LPS25HB_ODR_1Hz;
       break;
+
     case LPS25HB_ODR_7Hz:
       *val = LPS25HB_ODR_7Hz;
       break;
+
     case LPS25HB_ODR_12Hz5:
       *val = LPS25HB_ODR_12Hz5;
       break;
+
     case LPS25HB_ODR_25Hz:
       *val = LPS25HB_ODR_25Hz;
       break;
+
     case LPS25HB_ONE_SHOT:
       *val = LPS25HB_ONE_SHOT;
       break;
+
     default:
       *val = LPS25HB_POWER_DOWN;
       break;
   }
+
   return ret;
 }
 
@@ -403,11 +464,14 @@ int32_t lps25hb_one_shoot_trigger_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.one_shot = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -424,7 +488,7 @@ int32_t lps25hb_one_shoot_trigger_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   *val = reg.one_shot;
 
   return ret;
@@ -443,11 +507,14 @@ int32_t lps25hb_autozero_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.autozero = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -464,7 +531,7 @@ int32_t lps25hb_autozero_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   *val = reg.autozero;
 
   return ret;
@@ -479,16 +546,20 @@ int32_t lps25hb_autozero_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_mean_decimator_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_fifo_mean_decimator_set(stmdev_ctx_t *ctx,
+                                        uint8_t val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.fifo_mean_dec = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -501,12 +572,13 @@ int32_t lps25hb_fifo_mean_decimator_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_mean_decimator_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_fifo_mean_decimator_get(stmdev_ctx_t *ctx,
+                                        uint8_t *val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   *val = reg.fifo_mean_dec;
 
   return ret;
@@ -525,7 +597,7 @@ int32_t lps25hb_press_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_status_reg_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_STATUS_REG, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_STATUS_REG, (uint8_t *)&reg, 1);
   *val = reg.p_da;
 
   return ret;
@@ -544,7 +616,7 @@ int32_t lps25hb_temp_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_status_reg_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_STATUS_REG, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_STATUS_REG, (uint8_t *)&reg, 1);
   *val = reg.t_da;
 
   return ret;
@@ -563,7 +635,7 @@ int32_t lps25hb_temp_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_status_reg_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_STATUS_REG, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_STATUS_REG, (uint8_t *)&reg, 1);
   *val = reg.t_or;
 
   return ret;
@@ -582,7 +654,7 @@ int32_t lps25hb_press_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_status_reg_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_STATUS_REG, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_STATUS_REG, (uint8_t *)&reg, 1);
   *val = reg.p_or;
 
   return ret;
@@ -596,10 +668,17 @@ int32_t lps25hb_press_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lps25hb_pressure_raw_get(stmdev_ctx_t *ctx, uint32_t *buff)
 {
+  uint8_t reg[3];
   int32_t ret;
-  ret = lps25hb_read_reg(ctx, LPS25HB_PRESS_OUT_XL,  buff, 3);
+
+  ret = lps25hb_read_reg(ctx, LPS25HB_PRESS_OUT_XL,  reg, 3);
+  *buff = reg[2];
+  *buff = (*buff * 256) + reg[1];
+  *buff = (*buff * 256) + reg[0];
+  *buff *= 256;
+
   return ret;
 }
 
@@ -611,10 +690,15 @@ int32_t lps25hb_pressure_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_temperature_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lps25hb_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *buff)
 {
+  uint8_t reg[2];
   int32_t ret;
-  ret = lps25hb_read_reg(ctx, LPS25HB_TEMP_OUT_L,  buff, 2);
+
+  ret = lps25hb_read_reg(ctx, LPS25HB_TEMP_OUT_L,  reg, 2);
+  *buff = reg[1];
+  *buff = (*buff * 256) + reg[0];
+
   return ret;
 }
 
@@ -627,10 +711,15 @@ int32_t lps25hb_temperature_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_offset_set(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lps25hb_pressure_offset_set(stmdev_ctx_t *ctx, int16_t val)
 {
+  uint8_t buff[2];
   int32_t ret;
+
+  buff[1] = (uint8_t)((uint16_t)val / 256U);
+  buff[0] = (uint8_t)((uint16_t)val - (buff[1] * 256U));
   ret = lps25hb_read_reg(ctx, LPS25HB_RPDS_L,  buff, 2);
+
   return ret;
 }
 
@@ -643,10 +732,15 @@ int32_t lps25hb_pressure_offset_set(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_offset_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lps25hb_pressure_offset_get(stmdev_ctx_t *ctx, int16_t *val)
 {
+  uint8_t buff[2];
   int32_t ret;
+
   ret = lps25hb_read_reg(ctx, LPS25HB_RPDS_L,  buff, 2);
+  *val = (int16_t)buff[1];
+  *val = (*val * 256) + (int16_t)buff[0];
+
   return ret;
 }
 
@@ -657,7 +751,7 @@ int32_t lps25hb_pressure_offset_get(stmdev_ctx_t *ctx, uint8_t *buff)
 
 /**
   * @defgroup   LPS25HB_common
-  * @brief      This section group common usefull functions
+  * @brief      This section group common useful functions
   * @{
   *
   */
@@ -673,7 +767,9 @@ int32_t lps25hb_pressure_offset_get(stmdev_ctx_t *ctx, uint8_t *buff)
 int32_t lps25hb_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret = lps25hb_read_reg(ctx, LPS25HB_WHO_AM_I,  buff, 1);
+
   return ret;
 }
 
@@ -690,11 +786,14 @@ int32_t lps25hb_reset_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.swreset = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -711,7 +810,7 @@ int32_t lps25hb_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   *val = reg.swreset;
 
   return ret;
@@ -730,11 +829,14 @@ int32_t lps25hb_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.boot = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -751,7 +853,7 @@ int32_t lps25hb_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   *val = reg.boot;
 
   return ret;
@@ -765,10 +867,13 @@ int32_t lps25hb_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_status_get(stmdev_ctx_t *ctx, lps25hb_status_reg_t *val)
+int32_t lps25hb_status_get(stmdev_ctx_t *ctx,
+                           lps25hb_status_reg_t *val)
 {
   int32_t ret;
-  ret = lps25hb_read_reg(ctx, LPS25HB_STATUS_REG, (uint8_t*) val, 1);
+
+  ret = lps25hb_read_reg(ctx, LPS25HB_STATUS_REG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -797,11 +902,14 @@ int32_t lps25hb_int_generation_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.diff_en = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -818,7 +926,7 @@ int32_t lps25hb_int_generation_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
   *val = reg.diff_en;
 
   return ret;
@@ -832,16 +940,20 @@ int32_t lps25hb_int_generation_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_pin_mode_set(stmdev_ctx_t *ctx, lps25hb_int_s_t val)
+int32_t lps25hb_int_pin_mode_set(stmdev_ctx_t *ctx,
+                                 lps25hb_int_s_t val)
 {
   lps25hb_ctrl_reg3_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.int_s = (uint8_t)val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -853,29 +965,37 @@ int32_t lps25hb_int_pin_mode_set(stmdev_ctx_t *ctx, lps25hb_int_s_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_pin_mode_get(stmdev_ctx_t *ctx, lps25hb_int_s_t *val)
+int32_t lps25hb_int_pin_mode_get(stmdev_ctx_t *ctx,
+                                 lps25hb_int_s_t *val)
 {
   lps25hb_ctrl_reg3_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t*)&reg, 1);
-  switch (reg.int_s){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t *)&reg, 1);
+
+  switch (reg.int_s)
+  {
     case LPS25HB_DRDY_OR_FIFO_FLAGS:
       *val = LPS25HB_DRDY_OR_FIFO_FLAGS;
       break;
+
     case LPS25HB_HIGH_PRES_INT:
       *val = LPS25HB_HIGH_PRES_INT;
       break;
+
     case LPS25HB_LOW_PRES_INT:
       *val = LPS25HB_LOW_PRES_INT;
       break;
+
     case LPS25HB_EVERY_PRES_INT:
       *val = LPS25HB_EVERY_PRES_INT;
       break;
+
     default:
       *val = LPS25HB_DRDY_OR_FIFO_FLAGS;
       break;
   }
+
   return ret;
 }
 
@@ -892,11 +1012,14 @@ int32_t lps25hb_pin_mode_set(stmdev_ctx_t *ctx, lps25hb_pp_od_t val)
   lps25hb_ctrl_reg3_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.pp_od = (uint8_t)val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -913,18 +1036,23 @@ int32_t lps25hb_pin_mode_get(stmdev_ctx_t *ctx, lps25hb_pp_od_t *val)
   lps25hb_ctrl_reg3_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t*)&reg, 1);
-  switch (reg.pp_od){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t *)&reg, 1);
+
+  switch (reg.pp_od)
+  {
     case LPS25HB_PUSH_PULL:
       *val = LPS25HB_PUSH_PULL;
       break;
+
     case LPS25HB_OPEN_DRAIN:
       *val = LPS25HB_OPEN_DRAIN;
       break;
+
     default:
       *val = LPS25HB_PUSH_PULL;
       break;
   }
+
   return ret;
 }
 
@@ -936,16 +1064,20 @@ int32_t lps25hb_pin_mode_get(stmdev_ctx_t *ctx, lps25hb_pp_od_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_polarity_set(stmdev_ctx_t *ctx, lps25hb_int_h_l_t val)
+int32_t lps25hb_int_polarity_set(stmdev_ctx_t *ctx,
+                                 lps25hb_int_h_l_t val)
 {
   lps25hb_ctrl_reg3_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.int_h_l = (uint8_t)val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -957,23 +1089,29 @@ int32_t lps25hb_int_polarity_set(stmdev_ctx_t *ctx, lps25hb_int_h_l_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_polarity_get(stmdev_ctx_t *ctx, lps25hb_int_h_l_t *val)
+int32_t lps25hb_int_polarity_get(stmdev_ctx_t *ctx,
+                                 lps25hb_int_h_l_t *val)
 {
   lps25hb_ctrl_reg3_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t*)&reg, 1);
-  switch (reg.int_h_l){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG3, (uint8_t *)&reg, 1);
+
+  switch (reg.int_h_l)
+  {
     case LPS25HB_ACTIVE_HIGH:
       *val = LPS25HB_ACTIVE_HIGH;
       break;
+
     case LPS25HB_ACTIVE_LOW:
       *val = LPS25HB_ACTIVE_LOW;
       break;
+
     default:
       *val = LPS25HB_ACTIVE_HIGH;
       break;
   }
+
   return ret;
 }
 
@@ -990,11 +1128,14 @@ int32_t lps25hb_drdy_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.drdy = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1011,7 +1152,7 @@ int32_t lps25hb_drdy_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
   *val = reg.drdy;
 
   return ret;
@@ -1030,11 +1171,14 @@ int32_t lps25hb_fifo_ovr_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.f_ovr = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1051,7 +1195,7 @@ int32_t lps25hb_fifo_ovr_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
   *val = reg.f_ovr;
 
   return ret;
@@ -1065,16 +1209,20 @@ int32_t lps25hb_fifo_ovr_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_threshold_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_fifo_threshold_on_int_set(stmdev_ctx_t *ctx,
+                                          uint8_t val)
 {
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.f_fth = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1086,12 +1234,13 @@ int32_t lps25hb_fifo_threshold_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_threshold_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_fifo_threshold_on_int_get(stmdev_ctx_t *ctx,
+                                          uint8_t *val)
 {
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
   *val = reg.f_fth;
 
   return ret;
@@ -1110,11 +1259,14 @@ int32_t lps25hb_fifo_empty_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.f_empty = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1131,7 +1283,7 @@ int32_t lps25hb_fifo_empty_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG4, (uint8_t *)&reg, 1);
   *val = reg.f_empty;
 
   return ret;
@@ -1151,11 +1303,14 @@ int32_t lps25hb_sign_of_int_threshold_set(stmdev_ctx_t *ctx,
   lps25hb_interrupt_cfg_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.pe = (uint8_t)val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1173,24 +1328,31 @@ int32_t lps25hb_sign_of_int_threshold_get(stmdev_ctx_t *ctx,
   lps25hb_interrupt_cfg_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t*)&reg, 1);
-  switch (reg.pe){
+  ret = lps25hb_read_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t *)&reg, 1);
+
+  switch (reg.pe)
+  {
     case LPS25HB_NO_THRESHOLD:
       *val = LPS25HB_NO_THRESHOLD;
       break;
+
     case LPS25HB_POSITIVE:
       *val = LPS25HB_POSITIVE;
       break;
+
     case LPS25HB_NEGATIVE:
       *val = LPS25HB_NEGATIVE;
       break;
+
     case LPS25HB_BOTH:
       *val = LPS25HB_BOTH;
       break;
+
     default:
       *val = LPS25HB_NO_THRESHOLD;
       break;
   }
+
   return ret;
 }
 
@@ -1208,11 +1370,14 @@ int32_t lps25hb_int_notification_mode_set(stmdev_ctx_t *ctx,
   lps25hb_interrupt_cfg_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.lir = (uint8_t)val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1230,18 +1395,23 @@ int32_t lps25hb_int_notification_mode_get(stmdev_ctx_t *ctx,
   lps25hb_interrupt_cfg_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t*)&reg, 1);
-  switch (reg.lir){
+  ret = lps25hb_read_reg(ctx, LPS25HB_INTERRUPT_CFG, (uint8_t *)&reg, 1);
+
+  switch (reg.lir)
+  {
     case LPS25HB_INT_PULSED:
       *val = LPS25HB_INT_PULSED;
       break;
+
     case LPS25HB_INT_LATCHED:
       *val = LPS25HB_INT_LATCHED;
       break;
+
     default:
       *val = LPS25HB_INT_PULSED;
       break;
   }
+
   return ret;
 }
 
@@ -1253,10 +1423,13 @@ int32_t lps25hb_int_notification_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_source_get(stmdev_ctx_t *ctx, lps25hb_int_source_t *val)
+int32_t lps25hb_int_source_get(stmdev_ctx_t *ctx,
+                               lps25hb_int_source_t *val)
 {
   int32_t ret;
-  ret = lps25hb_read_reg(ctx, LPS25HB_INT_SOURCE, (uint8_t*) val, 1);
+
+  ret = lps25hb_read_reg(ctx, LPS25HB_INT_SOURCE, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1273,7 +1446,7 @@ int32_t lps25hb_int_on_press_high_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_int_source_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_INT_SOURCE, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_INT_SOURCE, (uint8_t *)&reg, 1);
   *val = reg.ph;
 
   return ret;
@@ -1292,7 +1465,7 @@ int32_t lps25hb_int_on_press_low_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_int_source_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_INT_SOURCE, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_INT_SOURCE, (uint8_t *)&reg, 1);
   *val = reg.pl;
 
   return ret;
@@ -1311,7 +1484,7 @@ int32_t lps25hb_interrupt_event_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_int_source_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_INT_SOURCE, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_INT_SOURCE, (uint8_t *)&reg, 1);
   *val = reg.ia;
 
   return ret;
@@ -1325,10 +1498,15 @@ int32_t lps25hb_interrupt_event_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_threshold_set(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lps25hb_int_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
 {
+  uint8_t buff[2];
   int32_t ret;
+
+  buff[1] = (uint8_t)(val / 256U);
+  buff[0] = (uint8_t)(val - (buff[1] * 256U));
   ret = lps25hb_read_reg(ctx, LPS25HB_THS_P_L,  buff, 2);
+
   return ret;
 }
 
@@ -1340,10 +1518,15 @@ int32_t lps25hb_int_threshold_set(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_threshold_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lps25hb_int_threshold_get(stmdev_ctx_t *ctx, uint16_t *val)
 {
+  uint8_t buff[2];
   int32_t ret;
+
   ret = lps25hb_read_reg(ctx, LPS25HB_THS_P_L,  buff, 2);
+  *val = buff[1];
+  *val = (*val * 256) + buff[0];
+
   return ret;
 }
 
@@ -1367,16 +1550,20 @@ int32_t lps25hb_int_threshold_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_stop_on_fifo_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_stop_on_fifo_threshold_set(stmdev_ctx_t *ctx,
+                                           uint8_t val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.stop_on_fth = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1388,12 +1575,13 @@ int32_t lps25hb_stop_on_fifo_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_stop_on_fifo_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_stop_on_fifo_threshold_get(stmdev_ctx_t *ctx,
+                                           uint8_t *val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   *val = reg.stop_on_fth;
 
   return ret;
@@ -1412,11 +1600,14 @@ int32_t lps25hb_fifo_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.fifo_en = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1433,7 +1624,7 @@ int32_t lps25hb_fifo_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   *val = reg.fifo_en;
 
   return ret;
@@ -1452,11 +1643,14 @@ int32_t lps25hb_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
   lps25hb_fifo_ctrl_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.wtm_point = val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1473,7 +1667,7 @@ int32_t lps25hb_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_fifo_ctrl_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t *)&reg, 1);
   *val = reg.wtm_point;
 
   return ret;
@@ -1492,11 +1686,14 @@ int32_t lps25hb_fifo_mode_set(stmdev_ctx_t *ctx, lps25hb_f_mode_t val)
   lps25hb_fifo_ctrl_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.f_mode = (uint8_t)val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1508,38 +1705,49 @@ int32_t lps25hb_fifo_mode_set(stmdev_ctx_t *ctx, lps25hb_f_mode_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_mode_get(stmdev_ctx_t *ctx, lps25hb_f_mode_t *val)
+int32_t lps25hb_fifo_mode_get(stmdev_ctx_t *ctx,
+                              lps25hb_f_mode_t *val)
 {
   lps25hb_fifo_ctrl_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t*)&reg, 1);
-  switch (reg.f_mode){
+  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_CTRL, (uint8_t *)&reg, 1);
+
+  switch (reg.f_mode)
+  {
     case LPS25HB_BYPASS_MODE:
       *val = LPS25HB_BYPASS_MODE;
       break;
+
     case LPS25HB_FIFO_MODE:
       *val = LPS25HB_FIFO_MODE;
       break;
+
     case LPS25HB_STREAM_MODE:
       *val = LPS25HB_STREAM_MODE;
       break;
+
     case LPS25HB_Stream_to_FIFO_mode:
       *val = LPS25HB_Stream_to_FIFO_mode;
       break;
+
     case LPS25HB_BYPASS_TO_STREAM_MODE:
       *val = LPS25HB_BYPASS_TO_STREAM_MODE;
       break;
+
     case LPS25HB_MEAN_MODE:
       *val = LPS25HB_MEAN_MODE;
       break;
+
     case LPS25HB_BYPASS_TO_FIFO_MODE:
       *val = LPS25HB_BYPASS_TO_FIFO_MODE;
       break;
+
     default:
       *val = LPS25HB_BYPASS_MODE;
       break;
   }
+
   return ret;
 }
 
@@ -1555,7 +1763,9 @@ int32_t lps25hb_fifo_status_get(stmdev_ctx_t *ctx,
                                 lps25hb_fifo_status_t *val)
 {
   int32_t ret;
-  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_STATUS, (uint8_t*) val, 1);
+
+  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_STATUS, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1572,7 +1782,7 @@ int32_t lps25hb_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_fifo_status_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_STATUS, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_STATUS, (uint8_t *)&reg, 1);
   *val = reg.fss;
 
   return ret;
@@ -1591,7 +1801,7 @@ int32_t lps25hb_fifo_empty_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_fifo_status_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_STATUS, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_STATUS, (uint8_t *)&reg, 1);
   *val = reg.empty_fifo;
 
   return ret;
@@ -1610,7 +1820,7 @@ int32_t lps25hb_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_fifo_status_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_STATUS, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_STATUS, (uint8_t *)&reg, 1);
   *val = reg.ovr;
 
   return ret;
@@ -1629,7 +1839,7 @@ int32_t lps25hb_fifo_fth_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   lps25hb_fifo_status_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_STATUS, (uint8_t*)&reg, 1);
+  ret = lps25hb_read_reg(ctx, LPS25HB_FIFO_STATUS, (uint8_t *)&reg, 1);
   *val = reg.fth_fifo;
 
   return ret;
@@ -1661,11 +1871,14 @@ int32_t lps25hb_spi_mode_set(stmdev_ctx_t *ctx, lps25hb_sim_t val)
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.sim = (uint8_t)val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1682,18 +1895,23 @@ int32_t lps25hb_spi_mode_get(stmdev_ctx_t *ctx, lps25hb_sim_t *val)
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t*)&reg, 1);
-  switch (reg.sim){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG1, (uint8_t *)&reg, 1);
+
+  switch (reg.sim)
+  {
     case LPS25HB_SPI_4_WIRE:
       *val = LPS25HB_SPI_4_WIRE;
       break;
+
     case LPS25HB_SPI_3_WIRE:
       *val = LPS25HB_SPI_3_WIRE;
       break;
+
     default:
       *val = LPS25HB_SPI_4_WIRE;
       break;
   }
+
   return ret;
 }
 
@@ -1705,16 +1923,20 @@ int32_t lps25hb_spi_mode_get(stmdev_ctx_t *ctx, lps25hb_sim_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_i2c_interface_set(stmdev_ctx_t *ctx, lps25hb_i2c_dis_t val)
+int32_t lps25hb_i2c_interface_set(stmdev_ctx_t *ctx,
+                                  lps25hb_i2c_dis_t val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
-  if(ret == 0){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
+
+  if (ret == 0)
+  {
     reg.i2c_dis = (uint8_t)val;
-    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
+    ret = lps25hb_write_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
   }
+
   return ret;
 }
 
@@ -1726,23 +1948,29 @@ int32_t lps25hb_i2c_interface_set(stmdev_ctx_t *ctx, lps25hb_i2c_dis_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_i2c_interface_get(stmdev_ctx_t *ctx, lps25hb_i2c_dis_t *val)
+int32_t lps25hb_i2c_interface_get(stmdev_ctx_t *ctx,
+                                  lps25hb_i2c_dis_t *val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
 
-  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t*)&reg, 1);
-  switch (reg.i2c_dis){
+  ret = lps25hb_read_reg(ctx, LPS25HB_CTRL_REG2, (uint8_t *)&reg, 1);
+
+  switch (reg.i2c_dis)
+  {
     case LPS25HB_I2C_ENABLE:
       *val = LPS25HB_I2C_ENABLE;
       break;
+
     case LPS25HB_I2C_DISABLE:
       *val = LPS25HB_I2C_DISABLE;
       break;
+
     default:
       *val = LPS25HB_I2C_ENABLE;
       break;
   }
+
   return ret;
 }
 

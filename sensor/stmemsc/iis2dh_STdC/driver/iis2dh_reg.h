@@ -1,33 +1,34 @@
-/*
- ******************************************************************************
- * @file    iis2dh_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          iis2dh_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    iis2dh_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          iis2dh_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef IIS2DH_REGS_H
 #define IIS2DH_REGS_H
 
 #ifdef __cplusplus
-  extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stddef.h>
 #include <math.h>
 
 /** @addtogroup IIS2DH
@@ -74,7 +75,8 @@
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct{
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -107,10 +109,11 @@ typedef struct{
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t*, uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t*, uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, const uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -131,15 +134,16 @@ typedef struct {
 /** @defgroup    Generic address-data structure definition
   * @brief       This structure is useful to load a predefined configuration
   *              of a sensor.
-	*              You can create a sensor configuration by your own or using 
-	*              Unico / Unicleo tools available on STMicroelectronics
-	*              web site.
+  *              You can create a sensor configuration by your own or using
+  *              Unico / Unicleo tools available on STMicroelectronics
+  *              web site.
   *
   * @{
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -174,7 +178,8 @@ typedef struct {
   */
 
 #define IIS2DH_STATUS_REG_AUX        0x07U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01       : 2;
   uint8_t tda               : 1;
@@ -196,7 +201,8 @@ typedef struct {
 #define IIS2DH_WHO_AM_I              0x0FU
 
 #define IIS2DH_TEMP_CFG_REG          0x1FU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01       : 6;
   uint8_t temp_en           : 2;
@@ -207,7 +213,8 @@ typedef struct {
 } iis2dh_temp_cfg_reg_t;
 
 #define IIS2DH_CTRL_REG1             0x20U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xen               : 1;
   uint8_t yen               : 1;
@@ -224,7 +231,8 @@ typedef struct {
 } iis2dh_ctrl_reg1_t;
 
 #define IIS2DH_CTRL_REG2             0x21U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t hp                : 3; /* HPCLICK + HPIS2 + HPIS1 -> HP */
   uint8_t fds               : 1;
@@ -239,7 +247,8 @@ typedef struct {
 } iis2dh_ctrl_reg2_t;
 
 #define IIS2DH_CTRL_REG3             0x22U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01       : 1;
   uint8_t i1_overrun        : 1;
@@ -262,7 +271,8 @@ typedef struct {
 } iis2dh_ctrl_reg3_t;
 
 #define IIS2DH_CTRL_REG4             0x23U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t sim               : 1;
   uint8_t st                : 2;
@@ -281,7 +291,8 @@ typedef struct {
 } iis2dh_ctrl_reg4_t;
 
 #define IIS2DH_CTRL_REG5             0x24U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t d4d_int2          : 1;
   uint8_t lir_int2          : 1;
@@ -302,7 +313,8 @@ typedef struct {
 } iis2dh_ctrl_reg5_t;
 
 #define IIS2DH_CTRL_REG6            0x25U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01       : 1;
   uint8_t h_lactive         : 1;
@@ -326,7 +338,8 @@ typedef struct {
 
 #define IIS2DH_REFERENCE            0x26U
 #define IIS2DH_STATUS_REG           0x27U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xda               : 1;
   uint8_t yda               : 1;
@@ -355,7 +368,8 @@ typedef struct {
 #define IIS2DH_OUT_Z_L              0x2CU
 #define IIS2DH_OUT_Z_H              0x2DU
 #define IIS2DH_FIFO_CTRL_REG        0x2EU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t fth               : 5;
   uint8_t tr                : 1;
@@ -368,7 +382,8 @@ typedef struct {
 } iis2dh_fifo_ctrl_reg_t;
 
 #define IIS2DH_FIFO_SRC_REG         0x2FU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t fss               : 5;
   uint8_t empty             : 1;
@@ -383,7 +398,8 @@ typedef struct {
 } iis2dh_fifo_src_reg_t;
 
 #define IIS2DH_INT1_CFG             0x30U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xlie              : 1;
   uint8_t xhie              : 1;
@@ -406,7 +422,8 @@ typedef struct {
 } iis2dh_int1_cfg_t;
 
 #define IIS2DH_INT1_SRC             0x31U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xl                : 1;
   uint8_t xh                : 1;
@@ -429,7 +446,8 @@ typedef struct {
 } iis2dh_int1_src_t;
 
 #define IIS2DH_INT1_THS             0x32U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ths               : 7;
   uint8_t not_used_01       : 1;
@@ -440,7 +458,8 @@ typedef struct {
 } iis2dh_int1_ths_t;
 
 #define IIS2DH_INT1_DURATION        0x33U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t d                 : 7;
   uint8_t not_used_01       : 1;
@@ -451,7 +470,8 @@ typedef struct {
 } iis2dh_int1_duration_t;
 
 #define IIS2DH_INT2_CFG             0x34U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xlie              : 1;
   uint8_t xhie              : 1;
@@ -474,7 +494,8 @@ typedef struct {
 } iis2dh_int2_cfg_t;
 
 #define IIS2DH_INT2_SRC             0x35U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xl                : 1;
   uint8_t xh                : 1;
@@ -497,7 +518,8 @@ typedef struct {
 } iis2dh_int2_src_t;
 
 #define IIS2DH_INT2_THS             0x36U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ths               : 7;
   uint8_t not_used_01       : 1;
@@ -508,7 +530,8 @@ typedef struct {
 } iis2dh_int2_ths_t;
 
 #define IIS2DH_INT2_DURATION        0x37U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t d                 : 7;
   uint8_t not_used_01       : 1;
@@ -517,7 +540,8 @@ typedef struct {
 } iis2dh_int2_duration_t;
 
 #define IIS2DH_CLICK_CFG            0x38U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xs                : 1;
   uint8_t xd                : 1;
@@ -538,7 +562,8 @@ typedef struct {
 } iis2dh_click_cfg_t;
 
 #define IIS2DH_CLICK_SRC            0x39U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t x                 : 1;
   uint8_t y                 : 1;
@@ -561,7 +586,8 @@ typedef struct {
 } iis2dh_click_src_t;
 
 #define IIS2DH_CLICK_THS            0x3AU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ths               : 7;
   uint8_t not_used_01       : 1;
@@ -572,7 +598,8 @@ typedef struct {
 } iis2dh_click_ths_t;
 
 #define IIS2DH_TIME_LIMIT           0x3BU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t tli               : 7;
   uint8_t not_used_01       : 1;
@@ -583,17 +610,20 @@ typedef struct {
 } iis2dh_time_limit_t;
 
 #define IIS2DH_TIME_LATENCY         0x3CU
-typedef struct {
+typedef struct
+{
   uint8_t tla               : 8;
 } iis2dh_time_latency_t;
 
 #define IIS2DH_TIME_WINDOW          0x3DU
-typedef struct {
+typedef struct
+{
   uint8_t tw                : 8;
 } iis2dh_time_window_t;
 
 #define IIS2DH_ACT_THS              0x3EU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t acth              : 7;
   uint8_t not_used_01       : 1;
@@ -604,23 +634,25 @@ typedef struct {
 } iis2dh_act_ths_t;
 
 #define IIS2DH_ACT_DUR              0x3FU
-typedef struct {
+typedef struct
+{
   uint8_t actd              : 8;
 } iis2dh_act_dur_t;
 
 /**
   * @defgroup IIS2DH_Register_Union
-  * @brief    This union group all the registers that has a bitfield
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is usefull but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
-  *           REMOVING this union you are complient with:
+  *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
   *
   * @{
   *
   */
-typedef union{
+typedef union
+{
   iis2dh_status_reg_aux_t status_reg_aux;
   iis2dh_temp_cfg_reg_t   temp_cfg_reg;
   iis2dh_ctrl_reg1_t      ctrl_reg1;
@@ -657,9 +689,10 @@ typedef union{
   *
   */
 
-int32_t iis2dh_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t* data,
+int32_t iis2dh_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
                         uint16_t len);
-int32_t iis2dh_write_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t* data,
+int32_t iis2dh_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                         uint8_t *data,
                          uint16_t len);
 
 float_t iis2dh_from_fs2_hr_to_mg(int16_t lsb);
@@ -687,22 +720,29 @@ int32_t iis2dh_temp_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t iis2dh_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_TEMP_DISABLE  = 0,
   IIS2DH_TEMP_ENABLE   = 3,
 } iis2dh_temp_en_t;
-int32_t iis2dh_temperature_meas_set(stmdev_ctx_t *ctx, iis2dh_temp_en_t val);
-int32_t iis2dh_temperature_meas_get(stmdev_ctx_t *ctx, iis2dh_temp_en_t *val);
+int32_t iis2dh_temperature_meas_set(stmdev_ctx_t *ctx,
+                                    iis2dh_temp_en_t val);
+int32_t iis2dh_temperature_meas_get(stmdev_ctx_t *ctx,
+                                    iis2dh_temp_en_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_HR_12bit   = 0,
   IIS2DH_NM_10bit   = 1,
   IIS2DH_LP_8bit    = 2,
 } iis2dh_op_md_t;
-int32_t iis2dh_operating_mode_set(stmdev_ctx_t *ctx, iis2dh_op_md_t val);
-int32_t iis2dh_operating_mode_get(stmdev_ctx_t *ctx, iis2dh_op_md_t *val);
+int32_t iis2dh_operating_mode_set(stmdev_ctx_t *ctx,
+                                  iis2dh_op_md_t val);
+int32_t iis2dh_operating_mode_get(stmdev_ctx_t *ctx,
+                                  iis2dh_op_md_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_POWER_DOWN                      = 0x00,
   IIS2DH_ODR_1Hz                         = 0x01,
   IIS2DH_ODR_10Hz                        = 0x02,
@@ -717,28 +757,37 @@ typedef enum {
 int32_t iis2dh_data_rate_set(stmdev_ctx_t *ctx, iis2dh_odr_t val);
 int32_t iis2dh_data_rate_get(stmdev_ctx_t *ctx, iis2dh_odr_t *val);
 
-int32_t iis2dh_high_pass_on_outputs_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis2dh_high_pass_on_outputs_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis2dh_high_pass_on_outputs_set(stmdev_ctx_t *ctx,
+                                        uint8_t val);
+int32_t iis2dh_high_pass_on_outputs_get(stmdev_ctx_t *ctx,
+                                        uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_AGGRESSIVE  = 0,
   IIS2DH_STRONG      = 1,
   IIS2DH_MEDIUM      = 2,
   IIS2DH_LIGHT       = 3,
 } iis2dh_hpcf_t;
-int32_t iis2dh_high_pass_bandwidth_set(stmdev_ctx_t *ctx, iis2dh_hpcf_t val);
-int32_t iis2dh_high_pass_bandwidth_get(stmdev_ctx_t *ctx, iis2dh_hpcf_t *val);
+int32_t iis2dh_high_pass_bandwidth_set(stmdev_ctx_t *ctx,
+                                       iis2dh_hpcf_t val);
+int32_t iis2dh_high_pass_bandwidth_get(stmdev_ctx_t *ctx,
+                                       iis2dh_hpcf_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_NORMAL_WITH_RST  = 0,
   IIS2DH_REFERENCE_MODE   = 1,
   IIS2DH_NORMAL           = 2,
   IIS2DH_AUTORST_ON_INT   = 3,
 } iis2dh_hpm_t;
-int32_t iis2dh_high_pass_mode_set(stmdev_ctx_t *ctx, iis2dh_hpm_t val);
-int32_t iis2dh_high_pass_mode_get(stmdev_ctx_t *ctx, iis2dh_hpm_t *val);
+int32_t iis2dh_high_pass_mode_set(stmdev_ctx_t *ctx,
+                                  iis2dh_hpm_t val);
+int32_t iis2dh_high_pass_mode_get(stmdev_ctx_t *ctx,
+                                  iis2dh_hpm_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_2g   = 0,
   IIS2DH_4g   = 1,
   IIS2DH_8g   = 2,
@@ -761,7 +810,8 @@ int32_t iis2dh_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val);
 
 int32_t iis2dh_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_ST_DISABLE   = 0,
   IIS2DH_ST_POSITIVE  = 1,
   IIS2DH_ST_NEGATIVE  = 2,
@@ -769,7 +819,8 @@ typedef enum {
 int32_t iis2dh_self_test_set(stmdev_ctx_t *ctx, iis2dh_st_t val);
 int32_t iis2dh_self_test_get(stmdev_ctx_t *ctx, iis2dh_st_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_LSB_AT_LOW_ADD = 0,
   IIS2DH_MSB_AT_LOW_ADD = 1,
 } iis2dh_ble_t;
@@ -780,31 +831,41 @@ int32_t iis2dh_boot_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis2dh_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t iis2dh_int_occurrencies_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis2dh_status_get(stmdev_ctx_t *ctx, iis2dh_status_reg_t *val);
+int32_t iis2dh_status_get(stmdev_ctx_t *ctx,
+                          iis2dh_status_reg_t *val);
 
-int32_t iis2dh_int1_gen_conf_set(stmdev_ctx_t *ctx, iis2dh_int1_cfg_t *val);
-int32_t iis2dh_int1_gen_conf_get(stmdev_ctx_t *ctx, iis2dh_int1_cfg_t *val);
+int32_t iis2dh_int1_gen_conf_set(stmdev_ctx_t *ctx,
+                                 iis2dh_int1_cfg_t *val);
+int32_t iis2dh_int1_gen_conf_get(stmdev_ctx_t *ctx,
+                                 iis2dh_int1_cfg_t *val);
 
-int32_t iis2dh_int1_gen_source_get(stmdev_ctx_t *ctx, iis2dh_int1_src_t *val);
+int32_t iis2dh_int1_gen_source_get(stmdev_ctx_t *ctx,
+                                   iis2dh_int1_src_t *val);
 
 int32_t iis2dh_int1_gen_threshold_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis2dh_int1_gen_threshold_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis2dh_int1_gen_threshold_get(stmdev_ctx_t *ctx,
+                                      uint8_t *val);
 
 int32_t iis2dh_int1_gen_duration_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis2dh_int1_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis2dh_int2_gen_conf_set(stmdev_ctx_t *ctx, iis2dh_int2_cfg_t *val);
-int32_t iis2dh_int2_gen_conf_get(stmdev_ctx_t *ctx, iis2dh_int2_cfg_t *val);
+int32_t iis2dh_int2_gen_conf_set(stmdev_ctx_t *ctx,
+                                 iis2dh_int2_cfg_t *val);
+int32_t iis2dh_int2_gen_conf_get(stmdev_ctx_t *ctx,
+                                 iis2dh_int2_cfg_t *val);
 
-int32_t iis2dh_int2_gen_source_get(stmdev_ctx_t *ctx, iis2dh_int2_src_t *val);
+int32_t iis2dh_int2_gen_source_get(stmdev_ctx_t *ctx,
+                                   iis2dh_int2_src_t *val);
 
 int32_t iis2dh_int2_gen_threshold_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis2dh_int2_gen_threshold_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis2dh_int2_gen_threshold_get(stmdev_ctx_t *ctx,
+                                      uint8_t *val);
 
 int32_t iis2dh_int2_gen_duration_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis2dh_int2_gen_duration_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_DISC_FROM_INT_GENERATOR  = 0,
   IIS2DH_ON_INT1_GEN              = 1,
   IIS2DH_ON_INT2_GEN              = 2,
@@ -814,8 +875,10 @@ typedef enum {
   IIS2DH_ON_INT2_TAP_GEN          = 6,
   IIS2DH_ON_INT1_INT2_TAP_GEN     = 7,
 } iis2dh_hp_t;
-int32_t iis2dh_high_pass_int_conf_set(stmdev_ctx_t *ctx, iis2dh_hp_t val);
-int32_t iis2dh_high_pass_int_conf_get(stmdev_ctx_t *ctx, iis2dh_hp_t *val);
+int32_t iis2dh_high_pass_int_conf_set(stmdev_ctx_t *ctx,
+                                      iis2dh_hp_t val);
+int32_t iis2dh_high_pass_int_conf_get(stmdev_ctx_t *ctx,
+                                      iis2dh_hp_t *val);
 
 int32_t iis2dh_pin_int1_config_set(stmdev_ctx_t *ctx,
                                    iis2dh_ctrl_reg3_t *val);
@@ -823,9 +886,11 @@ int32_t iis2dh_pin_int1_config_get(stmdev_ctx_t *ctx,
                                    iis2dh_ctrl_reg3_t *val);
 
 int32_t iis2dh_int2_pin_detect_4d_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis2dh_int2_pin_detect_4d_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis2dh_int2_pin_detect_4d_get(stmdev_ctx_t *ctx,
+                                      uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_INT2_PULSED   = 0,
   IIS2DH_INT2_LATCHED  = 1,
 } iis2dh_lir_int2_t;
@@ -835,9 +900,11 @@ int32_t iis2dh_int2_pin_notification_mode_get(stmdev_ctx_t *ctx,
                                               iis2dh_lir_int2_t *val);
 
 int32_t iis2dh_int1_pin_detect_4d_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis2dh_int1_pin_detect_4d_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis2dh_int1_pin_detect_4d_get(stmdev_ctx_t *ctx,
+                                      uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_INT1_PULSED   = 0,
   IIS2DH_INT1_LATCHED  = 1,
 } iis2dh_lir_int1_t;
@@ -857,14 +924,18 @@ int32_t iis2dh_fifo_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t iis2dh_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis2dh_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_INT1_GEN = 0,
   IIS2DH_INT2_GEN = 1,
 } iis2dh_tr_t;
-int32_t iis2dh_fifo_trigger_event_set(stmdev_ctx_t *ctx, iis2dh_tr_t val);
-int32_t iis2dh_fifo_trigger_event_get(stmdev_ctx_t *ctx, iis2dh_tr_t *val);
+int32_t iis2dh_fifo_trigger_event_set(stmdev_ctx_t *ctx,
+                                      iis2dh_tr_t val);
+int32_t iis2dh_fifo_trigger_event_get(stmdev_ctx_t *ctx,
+                                      iis2dh_tr_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_BYPASS_MODE           = 0,
   IIS2DH_FIFO_MODE             = 1,
   IIS2DH_DYNAMIC_STREAM_MODE   = 2,
@@ -874,7 +945,7 @@ int32_t iis2dh_fifo_mode_set(stmdev_ctx_t *ctx, iis2dh_fm_t val);
 int32_t iis2dh_fifo_mode_get(stmdev_ctx_t *ctx, iis2dh_fm_t *val);
 
 int32_t iis2dh_fifo_status_get(stmdev_ctx_t *ctx,
-                                 iis2dh_fifo_src_reg_t *val);
+                               iis2dh_fifo_src_reg_t *val);
 
 int32_t iis2dh_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val);
 
@@ -884,15 +955,19 @@ int32_t iis2dh_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t iis2dh_fifo_fth_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis2dh_tap_conf_set(stmdev_ctx_t *ctx, iis2dh_click_cfg_t *val);
-int32_t iis2dh_tap_conf_get(stmdev_ctx_t *ctx, iis2dh_click_cfg_t *val);
+int32_t iis2dh_tap_conf_set(stmdev_ctx_t *ctx,
+                            iis2dh_click_cfg_t *val);
+int32_t iis2dh_tap_conf_get(stmdev_ctx_t *ctx,
+                            iis2dh_click_cfg_t *val);
 
-int32_t iis2dh_tap_source_get(stmdev_ctx_t *ctx, iis2dh_click_src_t *val);
+int32_t iis2dh_tap_source_get(stmdev_ctx_t *ctx,
+                              iis2dh_click_src_t *val);
 
 int32_t iis2dh_tap_threshold_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis2dh_tap_threshold_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_TAP_PULSED   = 0,
   IIS2DH_TAP_LATCHED  = 1,
 } iis2dh_lir_click_t;
@@ -908,7 +983,8 @@ int32_t iis2dh_quiet_dur_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis2dh_quiet_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t iis2dh_double_tap_timeout_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis2dh_double_tap_timeout_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis2dh_double_tap_timeout_get(stmdev_ctx_t *ctx,
+                                      uint8_t *val);
 
 int32_t iis2dh_act_threshold_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis2dh_act_threshold_get(stmdev_ctx_t *ctx, uint8_t *val);
@@ -916,7 +992,8 @@ int32_t iis2dh_act_threshold_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t iis2dh_act_timeout_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis2dh_act_timeout_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_PULL_UP_DISCONNECT  = 0,
   IIS2DH_PULL_UP_CONNECT     = 1,
 } iis2dh_sdo_pu_disc_t;
@@ -925,7 +1002,8 @@ int32_t iis2dh_pin_sdo_sa0_mode_set(stmdev_ctx_t *ctx,
 int32_t iis2dh_pin_sdo_sa0_mode_get(stmdev_ctx_t *ctx,
                                     iis2dh_sdo_pu_disc_t *val);
 
-typedef enum {
+typedef enum
+{
   IIS2DH_SPI_4_WIRE = 0,
   IIS2DH_SPI_3_WIRE = 1,
 } iis2dh_sim_t;
