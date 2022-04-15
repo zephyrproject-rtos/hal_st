@@ -235,7 +235,7 @@ typedef struct
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t sim                       : 1;
   uint8_t st                        : 2;
-  uint8_t not_used_01               : 3;
+  uint8_t not_used_01               : 1;
   uint8_t fs                        : 2;
   uint8_t ble                       : 1;
   uint8_t not_used_02               : 1;
@@ -243,7 +243,7 @@ typedef struct
   uint8_t not_used_02               : 1;
   uint8_t ble                       : 1;
   uint8_t fs                        : 2;
-  uint8_t not_used_01               : 3;
+  uint8_t not_used_01               : 1;
   uint8_t st                        : 2;
   uint8_t sim                       : 1;
 #endif /* DRV_BYTE_ORDER */

@@ -530,28 +530,28 @@ int32_t lsm6dsrx_xl_data_rate_get(stmdev_ctx_t *ctx,
       *val = LSM6DSRX_XL_ODR_208Hz;
       break;
 
-    case LSM6DSRX_XL_ODR_417Hz:
-      *val = LSM6DSRX_XL_ODR_417Hz;
+    case LSM6DSRX_XL_ODR_416Hz:
+      *val = LSM6DSRX_XL_ODR_416Hz;
       break;
 
     case LSM6DSRX_XL_ODR_833Hz:
       *val = LSM6DSRX_XL_ODR_833Hz;
       break;
 
-    case LSM6DSRX_XL_ODR_1667Hz:
-      *val = LSM6DSRX_XL_ODR_1667Hz;
+    case LSM6DSRX_XL_ODR_1666Hz:
+      *val = LSM6DSRX_XL_ODR_1666Hz;
       break;
 
-    case LSM6DSRX_XL_ODR_3333Hz:
-      *val = LSM6DSRX_XL_ODR_3333Hz;
+    case LSM6DSRX_XL_ODR_3332Hz:
+      *val = LSM6DSRX_XL_ODR_3332Hz;
       break;
 
     case LSM6DSRX_XL_ODR_6667Hz:
       *val = LSM6DSRX_XL_ODR_6667Hz;
       break;
 
-    case LSM6DSRX_XL_ODR_6Hz5:
-      *val = LSM6DSRX_XL_ODR_6Hz5;
+    case LSM6DSRX_XL_ODR_1Hz6:
+      *val = LSM6DSRX_XL_ODR_1Hz6;
       break;
 
     default:
@@ -935,20 +935,20 @@ int32_t lsm6dsrx_gy_data_rate_get(stmdev_ctx_t *ctx,
       *val = LSM6DSRX_GY_ODR_208Hz;
       break;
 
-    case LSM6DSRX_GY_ODR_417Hz:
-      *val = LSM6DSRX_GY_ODR_417Hz;
+    case LSM6DSRX_GY_ODR_416Hz:
+      *val = LSM6DSRX_GY_ODR_416Hz;
       break;
 
     case LSM6DSRX_GY_ODR_833Hz:
       *val = LSM6DSRX_GY_ODR_833Hz;
       break;
 
-    case LSM6DSRX_GY_ODR_1667Hz:
-      *val = LSM6DSRX_GY_ODR_1667Hz;
+    case LSM6DSRX_GY_ODR_1666Hz:
+      *val = LSM6DSRX_GY_ODR_1666Hz;
       break;
 
-    case LSM6DSRX_GY_ODR_3333Hz:
-      *val = LSM6DSRX_GY_ODR_3333Hz;
+    case LSM6DSRX_GY_ODR_3332Hz:
+      *val = LSM6DSRX_GY_ODR_3332Hz;
       break;
 
     case LSM6DSRX_GY_ODR_6667Hz:

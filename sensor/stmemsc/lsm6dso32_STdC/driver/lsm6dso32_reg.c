@@ -6163,6 +6163,10 @@ int32_t lsm6dso32_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
       *val = LSM6DSO32_TEMPERATURE_TAG;
       break;
 
+    case LSM6DSO32_TIMESTAMP_TAG:
+      *val = LSM6DSO32_TIMESTAMP_TAG;
+      break;
+
     case LSM6DSO32_CFG_CHANGE_TAG:
       *val = LSM6DSO32_CFG_CHANGE_TAG;
       break;

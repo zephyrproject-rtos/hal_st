@@ -934,9 +934,10 @@ int32_t lis2hh12_fifo_mode_get(stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t fss             : 1;
+  uint8_t fss             : 5;
   uint8_t empty           : 1;
   uint8_t ovr             : 1;
+  uint8_t fth             : 1;
 } lis2hh12_fifo_stat_t;
 int32_t lis2hh12_fifo_status_get(stmdev_ctx_t *ctx,
                                  lis2hh12_fifo_stat_t *val);
