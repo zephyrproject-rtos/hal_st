@@ -11,6 +11,7 @@ set(stmems_pids
   ais328dq
   ais3624dq
   asm330lhh
+  asm330lhhx
   h3lis100dl
   h3lis331dl
   hts221
@@ -22,6 +23,7 @@ set(stmems_pids
   iis328dq
   iis3dhhc
   iis3dwb
+  ilps22qs
   ism303dac
   ism330dhcx
   ism330dlc
@@ -29,6 +31,7 @@ set(stmems_pids
   l3gd20h
   lis25ba
   lis2de12
+  lis2dh
   lis2dh12
   lis2ds12
   lis2dtw12
@@ -42,11 +45,13 @@ set(stmems_pids
   lis3dsh
   lis3mdl
   lps22ch
+  lps22df
   lps22hb
   lps22hh
   lps25hb
   lps27hhtw
   lps27hhw
+  lps28dfw
   lps33hw
   lps33k
   lps33w

@@ -528,28 +528,28 @@ int32_t ism330dhcx_xl_data_rate_get(stmdev_ctx_t *ctx,
       *val = ISM330DHCX_XL_ODR_208Hz;
       break;
 
-    case ISM330DHCX_XL_ODR_417Hz:
-      *val = ISM330DHCX_XL_ODR_417Hz;
+    case ISM330DHCX_XL_ODR_416Hz:
+      *val = ISM330DHCX_XL_ODR_416Hz;
       break;
 
     case ISM330DHCX_XL_ODR_833Hz:
       *val = ISM330DHCX_XL_ODR_833Hz;
       break;
 
-    case ISM330DHCX_XL_ODR_1667Hz:
-      *val = ISM330DHCX_XL_ODR_1667Hz;
+    case ISM330DHCX_XL_ODR_1666Hz:
+      *val = ISM330DHCX_XL_ODR_1666Hz;
       break;
 
-    case ISM330DHCX_XL_ODR_3333Hz:
-      *val = ISM330DHCX_XL_ODR_3333Hz;
+    case ISM330DHCX_XL_ODR_3332Hz:
+      *val = ISM330DHCX_XL_ODR_3332Hz;
       break;
 
     case ISM330DHCX_XL_ODR_6667Hz:
       *val = ISM330DHCX_XL_ODR_6667Hz;
       break;
 
-    case ISM330DHCX_XL_ODR_6Hz5:
-      *val = ISM330DHCX_XL_ODR_6Hz5;
+    case ISM330DHCX_XL_ODR_1Hz6:
+      *val = ISM330DHCX_XL_ODR_1Hz6;
       break;
 
     default:
@@ -935,20 +935,20 @@ int32_t ism330dhcx_gy_data_rate_get(stmdev_ctx_t *ctx,
       *val = ISM330DHCX_GY_ODR_208Hz;
       break;
 
-    case ISM330DHCX_GY_ODR_417Hz:
-      *val = ISM330DHCX_GY_ODR_417Hz;
+    case ISM330DHCX_GY_ODR_416Hz:
+      *val = ISM330DHCX_GY_ODR_416Hz;
       break;
 
     case ISM330DHCX_GY_ODR_833Hz:
       *val = ISM330DHCX_GY_ODR_833Hz;
       break;
 
-    case ISM330DHCX_GY_ODR_1667Hz:
-      *val = ISM330DHCX_GY_ODR_1667Hz;
+    case ISM330DHCX_GY_ODR_1666Hz:
+      *val = ISM330DHCX_GY_ODR_1666Hz;
       break;
 
-    case ISM330DHCX_GY_ODR_3333Hz:
-      *val = ISM330DHCX_GY_ODR_3333Hz;
+    case ISM330DHCX_GY_ODR_3332Hz:
+      *val = ISM330DHCX_GY_ODR_3332Hz;
       break;
 
     case ISM330DHCX_GY_ODR_6667Hz:

@@ -303,8 +303,8 @@ int32_t asm330lhh_xl_data_rate_get(stmdev_ctx_t *ctx,
       *val = ASM330LHH_XL_ODR_208Hz;
       break;
 
-    case ASM330LHH_XL_ODR_417Hz:
-      *val = ASM330LHH_XL_ODR_417Hz;
+    case ASM330LHH_XL_ODR_416Hz:
+      *val = ASM330LHH_XL_ODR_416Hz;
       break;
 
     case ASM330LHH_XL_ODR_833Hz:
@@ -321,10 +321,6 @@ int32_t asm330lhh_xl_data_rate_get(stmdev_ctx_t *ctx,
 
     case ASM330LHH_XL_ODR_6667Hz:
       *val = ASM330LHH_XL_ODR_6667Hz;
-      break;
-
-    case ASM330LHH_XL_ODR_6Hz5:
-      *val = ASM330LHH_XL_ODR_6Hz5;
       break;
 
     default:
@@ -477,8 +473,8 @@ int32_t asm330lhh_gy_data_rate_get(stmdev_ctx_t *ctx,
       *val = ASM330LHH_GY_ODR_208Hz;
       break;
 
-    case ASM330LHH_GY_ODR_417Hz:
-      *val = ASM330LHH_GY_ODR_417Hz;
+    case ASM330LHH_GY_ODR_416Hz:
+      *val = ASM330LHH_GY_ODR_416Hz;
       break;
 
     case ASM330LHH_GY_ODR_833Hz:

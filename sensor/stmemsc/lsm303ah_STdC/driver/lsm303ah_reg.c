@@ -3861,9 +3861,9 @@ int32_t lsm303ah_xl_fifo_data_level_get(stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    ret = lsm303ah_read_reg(ctx, LSM303AH_FIFO_SRC_A, &fifo_sample_a, 1);
+    ret = lsm303ah_read_reg(ctx, LSM303AH_FIFO_SAMPLES_A, &fifo_sample_a, 1);
     *val = fifo_src_a.diff;
-    *val = *val << 7;
+    *val = *val << 8;
     *val += fifo_sample_a;
   }
 
