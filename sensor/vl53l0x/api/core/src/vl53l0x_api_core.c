@@ -1861,8 +1861,8 @@ VL53L0X_Error VL53L0X_calc_sigma_estimate(VL53L0X_DEV Dev,
 		 * 500 is added to ensure rounding when integer division
 		 * truncates.
 		 */
-		diff1_mcps = (((peakSignalRate_kcps << 16) -
-			2 * xTalkCompRate_kcps) + 500)/1000;
+		diff1_mcps = abs((int32_t) ((((peakSignalRate_kcps << 16) -
+					      2 * xTalkCompRate_kcps) + 500)/1000));
 
 		/* vcselRate + xtalkCompRate */
 		diff2_mcps = ((peakSignalRate_kcps << 16) + 500)/1000;
@@ -1872,7 +1872,7 @@ VL53L0X_Error VL53L0X_calc_sigma_estimate(VL53L0X_DEV Dev,
 		diff1_mcps <<= 8;
 
 		/* FixPoint0824/FixPoint1616 = FixPoint2408 */
-		xTalkCorrection	 = abs(diff1_mcps/diff2_mcps);
+		xTalkCorrection	 = diff1_mcps/diff2_mcps;
 
 		/* FixPoint2408 << 8 = FixPoint1616 */
 		xTalkCorrection <<= 8;
