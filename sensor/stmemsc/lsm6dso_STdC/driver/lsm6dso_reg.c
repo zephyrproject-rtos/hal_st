@@ -11768,6 +11768,16 @@ int32_t lsm6dso_all_sources_get(stmdev_ctx_t *ctx,
   return ret;
 }
 
+/*
+ * `-Wmaybe-uninitialized` warning is disabled for the `lsm6dso_mode_set`
+ * function because GCC 12 and above may report a false positive warning
+ * claiming that the `ctrl2_ois` variable may be used uninitialized.
+ */
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+
 /**
   * @brief  Sensor conversion parameters selection.[set]
   *
@@ -12225,6 +12235,10 @@ int32_t lsm6dso_mode_set(stmdev_ctx_t *ctx, stmdev_ctx_t *aux_ctx,
 
   return ret;
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @brief  Sensor conversion parameters selection.[get]
