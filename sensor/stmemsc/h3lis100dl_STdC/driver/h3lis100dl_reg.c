@@ -46,9 +46,9 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t h3lis100dl_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                            uint8_t *data,
-                            uint16_t len)
+int32_t __weak h3lis100dl_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                   uint8_t *data,
+                                   uint16_t len)
 {
   int32_t ret;
 
@@ -67,9 +67,9 @@ int32_t h3lis100dl_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t h3lis100dl_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                             uint8_t *data,
-                             uint16_t len)
+int32_t __weak h3lis100dl_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                    uint8_t *data,
+                                    uint16_t len)
 {
   int32_t ret;
 
@@ -92,7 +92,7 @@ int32_t h3lis100dl_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
 
 float_t h3lis100dl_from_fs100g_to_mg(int8_t lsb)
 {
-  return ((float_t)lsb / 256.0f) * 780.0f;
+  return (float_t)lsb * 780.0f;
 }
 
 /**
@@ -460,18 +460,13 @@ int32_t h3lis100dl_flag_data_ready_get(stmdev_ctx_t *ctx,
   *
   */
 int32_t h3lis100dl_acceleration_raw_get(stmdev_ctx_t *ctx,
-                                        int16_t *val)
+                                        int8_t *val)
 {
-  uint8_t buff[6];
   int32_t ret;
 
-  ret = h3lis100dl_read_reg(ctx, (H3LIS100DL_OUT_X - 1U), buff, 6);
-  val[0] = (int16_t)buff[1];
-  val[0] = (val[0] * 256) + (int16_t)buff[0];
-  val[1] = (int16_t)buff[3];
-  val[1] = (val[1] * 256) + (int16_t)buff[2];
-  val[2] = (int16_t)buff[5];
-  val[2] = (val[2] * 256) + (int16_t)buff[4];
+  ret = h3lis100dl_read_reg(ctx, H3LIS100DL_OUT_X, (uint8_t *)&val[0], 1);
+  ret = h3lis100dl_read_reg(ctx, H3LIS100DL_OUT_Y, (uint8_t *)&val[1], 1);
+  ret = h3lis100dl_read_reg(ctx, H3LIS100DL_OUT_Z, (uint8_t *)&val[2], 1);
 
   return ret;
 }

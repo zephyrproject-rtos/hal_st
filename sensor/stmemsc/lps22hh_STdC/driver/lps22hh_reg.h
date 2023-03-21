@@ -50,7 +50,7 @@ extern "C" {
 /** if _BYTE_ORDER is not defined, choose the endianness of your architecture
   * by uncommenting the define which fits your platform endianness
   */
-//#define DRV_BYTE_ORDER    DRV_BIG_ENDIAN
+/* #define DRV_BYTE_ORDER    DRV_BIG_ENDIAN */
 #define DRV_BYTE_ORDER    DRV_LITTLE_ENDIAN
 
 #else /* defined __BYTE_ORDER__ */
@@ -111,12 +111,15 @@ typedef struct
 
 typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, const uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -433,12 +436,24 @@ typedef union
   *
   */
 
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
 int32_t lps22hh_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                         uint8_t *data,
-                         uint16_t len);
+                                uint8_t *data,
+                                uint16_t len);
 int32_t lps22hh_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                          uint8_t *data,
-                          uint16_t len);
+                                 uint8_t *data,
+                                 uint16_t len);
 
 float_t lps22hh_from_lsb_to_hpa(uint32_t lsb);
 
@@ -606,10 +621,17 @@ int32_t lps22hh_pin_polarity_set(stmdev_ctx_t *ctx,
 int32_t lps22hh_pin_polarity_get(stmdev_ctx_t *ctx,
                                  lps22hh_int_h_l_t *val);
 
+typedef struct
+{
+  uint8_t drdy_pres : 1; /* Pressure data ready */
+  uint8_t fifo_th   : 1; /* FIFO threshold reached */
+  uint8_t fifo_ovr  : 1; /* FIFO overrun */
+  uint8_t fifo_full : 1; /* FIFO full */
+} lps22hh_pin_int_route_t;
 int32_t lps22hh_pin_int_route_set(stmdev_ctx_t *ctx,
-                                  lps22hh_ctrl_reg3_t *val);
+                                  lps22hh_pin_int_route_t *val);
 int32_t lps22hh_pin_int_route_get(stmdev_ctx_t *ctx,
-                                  lps22hh_ctrl_reg3_t *val);
+                                  lps22hh_pin_int_route_t *val);
 
 typedef enum
 {
@@ -647,7 +669,7 @@ int32_t lps22hh_fifo_stop_on_wtm_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lps22hh_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lps22hh_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps22hh_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t lps22hh_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *num);
 
 int32_t lps22hh_fifo_src_get(stmdev_ctx_t *ctx,
                              lps22hh_fifo_status2_t *val);
@@ -657,17 +679,6 @@ int32_t lps22hh_fifo_full_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lps22hh_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t lps22hh_fifo_wtm_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lps22hh_fifo_ovr_on_int_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps22hh_fifo_ovr_on_int_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lps22hh_fifo_threshold_on_int_set(stmdev_ctx_t *ctx,
-                                          uint8_t val);
-int32_t lps22hh_fifo_threshold_on_int_get(stmdev_ctx_t *ctx,
-                                          uint8_t *val);
-
-int32_t lps22hh_fifo_full_on_int_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps22hh_fifo_full_on_int_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 /**
   * @}

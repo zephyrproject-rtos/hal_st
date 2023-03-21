@@ -50,7 +50,7 @@ extern "C" {
 /** if _BYTE_ORDER is not defined, choose the endianness of your architecture
   * by uncommenting the define which fits your platform endianness
   */
-//#define DRV_BYTE_ORDER    DRV_BIG_ENDIAN
+/* #define DRV_BYTE_ORDER    DRV_BIG_ENDIAN */
 #define DRV_BYTE_ORDER    DRV_LITTLE_ENDIAN
 
 #else /* defined __BYTE_ORDER__ */
@@ -111,12 +111,15 @@ typedef struct
 
 typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, const uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -2821,6 +2824,18 @@ typedef union
   *
   */
 
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
 int32_t ism330dhcx_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
                             uint8_t *data,
                             uint16_t len);
@@ -2847,7 +2862,7 @@ float_t ism330dhcx_from_lsb_to_nsec(int32_t lsb);
 typedef enum
 {
   ISM330DHCX_2g   = 0,
-  ISM330DHCX_16g  = 1, /* if XL_FS_MODE = ‘1’ -> ISM330DHCX_2g */
+  ISM330DHCX_16g  = 1, /* if XL_FS_MODE = '1' -> ISM330DHCX_2g */
   ISM330DHCX_4g   = 2,
   ISM330DHCX_8g   = 3,
 } ism330dhcx_fs_xl_t;

@@ -46,9 +46,9 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t h3lis331dl_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                            uint8_t *data,
-                            uint16_t len)
+int32_t __weak h3lis331dl_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                   uint8_t *data,
+                                   uint16_t len)
 {
   int32_t ret;
 
@@ -67,9 +67,9 @@ int32_t h3lis331dl_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t h3lis331dl_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                             uint8_t *data,
-                             uint16_t len)
+int32_t __weak h3lis331dl_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                    uint8_t *data,
+                                    uint16_t len)
 {
   int32_t ret;
 
@@ -315,8 +315,8 @@ int32_t h3lis331dl_data_rate_get(stmdev_ctx_t *ctx,
       *val = H3LIS331DL_ODR_1Hz;
       break;
 
-    case H3LIS331DL_ODR_5Hz2:
-      *val = H3LIS331DL_ODR_5Hz2;
+    case H3LIS331DL_ODR_2Hz:
+      *val = H3LIS331DL_ODR_2Hz;
       break;
 
     case H3LIS331DL_ODR_5Hz:

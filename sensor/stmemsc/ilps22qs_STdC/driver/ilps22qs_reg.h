@@ -109,14 +109,17 @@ typedef struct
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, const uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -283,13 +286,17 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t if_add_inc       : 1;
-  uint8_t not_used_01      : 6;
-  uint8_t ah_qvar_en       : 1;
+  uint8_t if_add_inc             : 1;
+  uint8_t not_used_01            : 4;
+  uint8_t ah_qvar_p_auto_en      : 1;
+  uint8_t not_used_02            : 1;
+  uint8_t ah_qvar_en             : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t ah_qvar_en       : 1;
-  uint8_t not_used_01      : 6;
-  uint8_t if_add_inc       : 1;
+  uint8_t ah_qvar_en             : 1;
+  uint8_t not_used_02            : 1;
+  uint8_t ah_qvar_p_auto_en      : 1;
+  uint8_t not_used_01            : 4;
+  uint8_t if_add_inc             : 1;
 #endif /* DRV_BYTE_ORDER */
 } ilps22qs_ctrl_reg3_t;
 
@@ -297,15 +304,17 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t f_mode           : 2;
-  uint8_t trig_modes       : 1;
-  uint8_t stop_on_wtm      : 1;
-  uint8_t not_used_01      : 4;
+  uint8_t f_mode                 : 2;
+  uint8_t trig_modes             : 1;
+  uint8_t stop_on_wtm            : 1;
+  uint8_t ah_qvar_p_fifo_en      : 1;
+  uint8_t not_used_01            : 3;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used_01      : 4;
-  uint8_t stop_on_wtm      : 1;
-  uint8_t trig_modes       : 1;
-  uint8_t f_mode           : 2;
+  uint8_t not_used_01            : 3;
+  uint8_t ah_qvar_p_fifo_en      : 1;
+  uint8_t stop_on_wtm            : 1;
+  uint8_t trig_modes             : 1;
+  uint8_t f_mode                 : 2;
 #endif /* DRV_BYTE_ORDER */
 } ilps22qs_fifo_ctrl_t;
 
@@ -324,16 +333,16 @@ typedef struct
 #define ILPS22QS_REF_P_L                 0x16U
 typedef struct
 {
-  uint8_t refl             : 8;
+  uint8_t refp             : 8;
 } ilps22qs_ref_p_l_t;
 
 #define ILPS22QS_REF_P_H                 0x17U
 typedef struct
 {
-  uint8_t refl             : 8;
+  uint8_t refp             : 8;
 } ilps22qs_ref_p_h_t;
 
-#define ILPS22QS_I3C_IF_CTRL_ADD         0x19U
+#define ILPS22QS_I3C_IF_CTRL             0x19U
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
@@ -345,7 +354,7 @@ typedef struct
   uint8_t asf_on           : 1;
   uint8_t not_used_02      : 5;
 #endif /* DRV_BYTE_ORDER */
-} ilps22qs_i3c_if_ctrl_add_t;
+} ilps22qs_i3c_if_ctrl_t;
 
 #define ILPS22QS_RPDS_L                  0x1AU
 #define ILPS22QS_RPDS_H                  0x1BU
@@ -445,7 +454,7 @@ typedef union
   ilps22qs_fifo_wtm_t         fifo_wtm;
   ilps22qs_ref_p_l_t          ref_p_l;
   ilps22qs_ref_p_h_t          ref_p_h;
-  ilps22qs_i3c_if_ctrl_add_t  i3c_if_ctrl_add;
+  ilps22qs_i3c_if_ctrl_t      i3c_if_ctrl;
   ilps22qs_int_source_t       int_source;
   ilps22qs_fifo_status1_t     fifo_status1;
   ilps22qs_fifo_status2_t     fifo_status2;
@@ -453,6 +462,19 @@ typedef union
   bitwise_t                  bitwise;
   uint8_t                    byte;
 } ilps22qs_reg_t;
+
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
 
 int32_t ilps22qs_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data, uint16_t len);
@@ -566,6 +588,7 @@ typedef struct
     ILPS22QS_LPF_ODR_DIV_4 = 1,
     ILPS22QS_LPF_ODR_DIV_9 = 3,
   } lpf;
+  uint8_t interleaved_mode;
 } ilps22qs_md_t;
 int32_t ilps22qs_mode_set(stmdev_ctx_t *ctx, ilps22qs_md_t *val);
 int32_t ilps22qs_mode_get(stmdev_ctx_t *ctx, ilps22qs_md_t *val);
@@ -584,6 +607,10 @@ typedef struct
     float_t deg_c;
     int16_t raw;
   } heat;
+  struct
+  {
+    int32_t lsb; /* 24 bit properly right aligned */
+  } ah_qvar;
 } ilps22qs_data_t;
 int32_t ilps22qs_data_get(stmdev_ctx_t *ctx, ilps22qs_md_t *md,
                           ilps22qs_data_t *data);
@@ -606,7 +633,7 @@ typedef struct
     ILPS22QS_BYPASS_TO_STREAM = 6, /* Bypass, Dynamic-Stream on Trigger */
     ILPS22QS_BYPASS_TO_FIFO   = 5, /* Bypass, FIFO on Trigger */
   } operation;
-  uint8_t watermark; /* (0 disable) max 128.*/
+  uint8_t watermark : 7; /* (0 disable) max 128.*/
 } ilps22qs_fifo_md_t;
 int32_t ilps22qs_fifo_mode_set(stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val);
 int32_t ilps22qs_fifo_mode_get(stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val);
@@ -616,6 +643,7 @@ int32_t ilps22qs_fifo_level_get(stmdev_ctx_t *ctx, uint8_t *val);
 typedef struct
 {
   float_t hpa;
+  int32_t lsb; /* 24 bit properly right aligned */
   int32_t raw;
 } ilps22qs_fifo_data_t;
 int32_t ilps22qs_fifo_data_get(stmdev_ctx_t *ctx, uint8_t samp,

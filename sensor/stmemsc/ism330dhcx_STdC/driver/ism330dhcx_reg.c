@@ -46,9 +46,9 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ism330dhcx_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                            uint8_t *data,
-                            uint16_t len)
+int32_t __weak ism330dhcx_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                   uint8_t *data,
+                                   uint16_t len)
 {
   int32_t ret;
   ret = ctx->read_reg(ctx->handle, reg, data, len);
@@ -66,9 +66,9 @@ int32_t ism330dhcx_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ism330dhcx_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                             uint8_t *data,
-                             uint16_t len)
+int32_t __weak ism330dhcx_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                    uint8_t *data,
+                                    uint16_t len)
 {
   int32_t ret;
   ret = ctx->write_reg(ctx->handle, reg, data, len);
@@ -1341,7 +1341,7 @@ int32_t ism330dhcx_temp_flag_data_ready_get(stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -1360,7 +1360,7 @@ int32_t ism330dhcx_xl_usr_offset_x_set(stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -1379,7 +1379,7 @@ int32_t ism330dhcx_xl_usr_offset_x_get(stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -1398,7 +1398,7 @@ int32_t ism330dhcx_xl_usr_offset_y_set(stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -1417,7 +1417,7 @@ int32_t ism330dhcx_xl_usr_offset_y_get(stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer Z-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Z-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -1436,7 +1436,7 @@ int32_t ism330dhcx_xl_usr_offset_z_set(stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -1571,7 +1571,7 @@ int32_t ism330dhcx_timestamp_get(stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  Timestamp first data output register (r).
   *         The value is expressed as a 32-bit word and the bit resolution
-  *         is 25 μs.[get]
+  *         is 25 us.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data read
@@ -1673,7 +1673,7 @@ int32_t ism330dhcx_rounding_mode_get(stmdev_ctx_t *ctx,
 
 /**
   * @brief  Temperature data output register (r).
-  *         L and H registers together express a 16-bit word in two’s
+  *         L and H registers together express a 16-bit word in two's
   *         complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
@@ -1695,7 +1695,7 @@ int32_t ism330dhcx_temperature_raw_get(stmdev_ctx_t *ctx,
 
 /**
   * @brief  Angular rate sensor. The value is expressed as a 16-bit
-  *         word in two’s complement.[get]
+  *         word in two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data read
@@ -1720,7 +1720,7 @@ int32_t ism330dhcx_angular_rate_raw_get(stmdev_ctx_t *ctx,
 
 /**
   * @brief  Linear acceleration output register. The value is expressed as a
-  *         16-bit word in two’s complement.[get]
+  *         16-bit word in two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data read
@@ -2112,7 +2112,8 @@ int32_t ism330dhcx_ln_pg_write(stmdev_ctx_t *ctx, uint16_t add,
   ism330dhcx_page_rw_t page_rw;
   ism330dhcx_page_sel_t page_sel;
   ism330dhcx_page_address_t page_address;
-  uint8_t msb, lsb;
+  uint8_t msb;
+  uint8_t lsb;
   int32_t ret;
   uint8_t i ;
   msb = (uint8_t)((add / 256U) & 0x0FU);

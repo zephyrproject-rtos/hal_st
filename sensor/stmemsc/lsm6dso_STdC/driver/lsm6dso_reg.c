@@ -47,9 +47,9 @@
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dso_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                         uint8_t *data,
-                         uint16_t len)
+int32_t __weak lsm6dso_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                uint8_t *data,
+                                uint16_t len)
 {
   int32_t ret;
 
@@ -68,9 +68,9 @@ int32_t lsm6dso_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dso_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                          uint8_t *data,
-                          uint16_t len)
+int32_t __weak lsm6dso_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                 uint8_t *data,
+                                 uint16_t len)
 {
   int32_t ret;
 
@@ -780,7 +780,7 @@ int32_t lsm6dso_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Block data update.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of bdu in reg CTRL3_C
+  * @param  val      Get the values of bdu in reg CTRL3_C
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -1019,7 +1019,7 @@ int32_t lsm6dso_status_reg_get(stmdev_ctx_t *ctx,
   * @brief  Accelerometer new data available.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of xlda in reg STATUS_REG
+  * @param  val      Get the values of xlda in reg STATUS_REG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -1039,7 +1039,7 @@ int32_t lsm6dso_xl_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @brief  Gyroscope new data available.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of gda in reg STATUS_REG
+  * @param  val      Get the values of gda in reg STATUS_REG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -1059,7 +1059,7 @@ int32_t lsm6dso_gy_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @brief  Temperature new data available.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of tda in reg STATUS_REG
+  * @param  val      Get the values of tda in reg STATUS_REG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -1077,7 +1077,7 @@ int32_t lsm6dso_temp_flag_data_ready_get(stmdev_ctx_t *ctx,
 
 /**
   * @brief  Accelerometer X-axis user offset correction expressed in
-  *         two’s complement, weight depends on USR_OFF_W in CTRL6_C (15h).
+  *         two's complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
   * @param  ctx      read / write interface definitions
@@ -1095,7 +1095,7 @@ int32_t lsm6dso_xl_usr_offset_x_set(stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -1114,7 +1114,7 @@ int32_t lsm6dso_xl_usr_offset_x_get(stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -1133,7 +1133,7 @@ int32_t lsm6dso_xl_usr_offset_y_set(stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -1152,7 +1152,7 @@ int32_t lsm6dso_xl_usr_offset_y_get(stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Z-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Z-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -1171,7 +1171,7 @@ int32_t lsm6dso_xl_usr_offset_z_set(stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Z-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Z-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -1286,7 +1286,7 @@ int32_t lsm6dso_timestamp_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Enables timestamp counter.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of timestamp_en in reg CTRL10_C
+  * @param  val      Get the values of timestamp_en in reg CTRL10_C
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -1304,7 +1304,7 @@ int32_t lsm6dso_timestamp_get(stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  Timestamp first data output register (r).
   *         The value is expressed as a 32-bit word and the bit
-  *         resolution is 25 μs.[get]
+  *         resolution is 25 us.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read
@@ -1407,7 +1407,7 @@ int32_t lsm6dso_rounding_mode_get(stmdev_ctx_t *ctx,
 
 /**
   * @brief  Temperature data output register (r).
-  *         L and H registers together express a 16-bit word in two’s
+  *         L and H registers together express a 16-bit word in two's
   *         complement.[get]
   *
   * @param  ctx      read / write interface definitions
@@ -1429,7 +1429,7 @@ int32_t lsm6dso_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 
 /**
   * @brief  Angular rate sensor. The value is expressed as a 16-bit
-  *         word in two’s complement.[get]
+  *         word in two's complement.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read
@@ -1454,7 +1454,7 @@ int32_t lsm6dso_angular_rate_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 
 /**
   * @brief  Linear acceleration output register.
-  *         The value is expressed as a 16-bit word in two’s complement.[get]
+  *         The value is expressed as a 16-bit word in two's complement.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read
@@ -1604,7 +1604,7 @@ int32_t lsm6dso_odr_cal_reg_set(stmdev_ctx_t *ctx, uint8_t val)
   *         Step:  0.15%. 8-bit format, 2's complement.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of freq_fine in reg INTERNAL_FREQ_FINE
+  * @param  val      Get the values of freq_fine in reg INTERNAL_FREQ_FINE
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -2043,7 +2043,7 @@ int32_t lsm6dso_reset_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Software reset. Restore the default values in user registers.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of sw_reset in reg CTRL3_C
+  * @param  val      Get the values of sw_reset in reg CTRL3_C
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -2088,7 +2088,7 @@ int32_t lsm6dso_auto_increment_set(stmdev_ctx_t *ctx, uint8_t val)
   *         access with a serial interface.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of if_inc in reg CTRL3_C
+  * @param  val      Get the values of if_inc in reg CTRL3_C
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -2131,7 +2131,7 @@ int32_t lsm6dso_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Reboot memory content. Reload the calibration parameters.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of boot in reg CTRL3_C
+  * @param  val      Get the values of boot in reg CTRL3_C
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -2313,7 +2313,7 @@ int32_t lsm6dso_xl_filter_lp2_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Accelerometer output from LPF2 filtering stage selection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of lpf2_xl_en in reg CTRL1_XL
+  * @param  val      Get the values of lpf2_xl_en in reg CTRL1_XL
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -2360,7 +2360,7 @@ int32_t lsm6dso_gy_filter_lp1_set(stmdev_ctx_t *ctx, uint8_t val)
   *         in CTRL6_C (15h).[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of lpf1_sel_g in reg CTRL4_C
+  * @param  val      Get the values of lpf1_sel_g in reg CTRL4_C
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -2406,7 +2406,7 @@ int32_t lsm6dso_filter_settling_mask_set(stmdev_ctx_t *ctx,
   *         (XL and Gyro independently masked).[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of drdy_mask in reg CTRL4_C
+  * @param  val      Get the values of drdy_mask in reg CTRL4_C
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -2533,7 +2533,7 @@ int32_t lsm6dso_xl_lp2_on_6d_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Low pass filter 2 on 6D function selection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of low_pass_on_6d in reg CTRL8_XL
+  * @param  val      Get the values of low_pass_on_6d in reg CTRL8_XL
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -2731,7 +2731,7 @@ int32_t lsm6dso_xl_fast_settling_set(stmdev_ctx_t *ctx, uint8_t val)
   *         Active only during device exit from power-down mode.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of fastsettl_mode_xl in reg CTRL8_XL
+  * @param  val      Get the values of fastsettl_mode_xl in reg CTRL8_XL
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -2812,7 +2812,7 @@ int32_t lsm6dso_xl_hp_path_internal_get(stmdev_ctx_t *ctx,
   *         enabled only if the gyro is in HP mode.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      Get the values of hp_en_g and hp_en_g
+  * @param  val      change the values of hp_en_g and hp_en_g
   *                            in reg CTRL7_G
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -3110,7 +3110,7 @@ int32_t lsm6dso_aux_status_reg_get(stmdev_ctx_t *ctx,
   * @brief  aux_xl_flag_data_ready: [get]  AUX accelerometer data available
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of xlda in reg STATUS_SPIAUX
+  * @param  val      Get the values of xlda in reg STATUS_SPIAUX
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -3130,7 +3130,7 @@ int32_t lsm6dso_aux_xl_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @brief  aux_gy_flag_data_ready: [get]  AUX gyroscope data available.
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of gda in reg STATUS_SPIAUX
+  * @param  val      Get the values of gda in reg STATUS_SPIAUX
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -3150,7 +3150,7 @@ int32_t lsm6dso_aux_gy_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @brief  High when the gyroscope output is in the settling phase.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of gyro_settling in reg STATUS_SPIAUX
+  * @param  val      Get the values of gyro_settling in reg STATUS_SPIAUX
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -3403,7 +3403,7 @@ int32_t lsm6dso_aux_drdy_on_int2_set(stmdev_ctx_t *ctx, uint8_t val)
   *         This setting has priority over all other INT2 settings.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of int2_drdy_ois in reg INT_OIS
+  * @param  val      Get the values of int2_drdy_ois in reg INT_OIS
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -4284,7 +4284,7 @@ int32_t lsm6dso_i3c_disable_set(stmdev_ctx_t *ctx,
   * @brief  I3C Enable/Disable communication protocol.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of i3c_disable in
+  * @param  val      Get the values of i3c_disable in
   *                                reg CTRL9_XL
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -4549,7 +4549,7 @@ int32_t lsm6dso_all_on_int1_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  All interrupt signals become available on INT1 pin.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of int2_on_int1 in reg CTRL4_C
+  * @param  val      Get the values of int2_on_int1 in reg CTRL4_C
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -4793,7 +4793,7 @@ int32_t lsm6dso_wkup_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   *         WAKE_UP_DUR.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of wk_ths in reg WAKE_UP_THS
+  * @param  val      Get the values of wk_ths in reg WAKE_UP_THS
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -4839,7 +4839,7 @@ int32_t lsm6dso_xl_usr_offset_on_wkup_set(stmdev_ctx_t *ctx,
   *         1LSb = 1 / ODR
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of usr_off_on_wu in reg WAKE_UP_THS
+  * @param  val      Get the values of usr_off_on_wu in reg WAKE_UP_THS
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -4885,7 +4885,7 @@ int32_t lsm6dso_wkup_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   *         1LSb = 1 / ODR
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of wake_dur in reg WAKE_UP_DUR
+  * @param  val      Get the values of wake_dur in reg WAKE_UP_DUR
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -4941,7 +4941,7 @@ int32_t lsm6dso_gy_sleep_mode_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Enables gyroscope Sleep mode.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of sleep_g in reg CTRL4_C
+  * @param  val      Get the values of sleep_g in reg CTRL4_C
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5118,7 +5118,7 @@ int32_t lsm6dso_act_sleep_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   *         1 LSb = 512 / ODR
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of sleep_dur in reg WAKE_UP_DUR
+  * @param  val      Get the values of sleep_dur in reg WAKE_UP_DUR
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5174,7 +5174,7 @@ int32_t lsm6dso_tap_detection_on_z_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Enable Z direction in tap recognition.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of tap_z_en in reg TAP_CFG0
+  * @param  val      Get the values of tap_z_en in reg TAP_CFG0
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5218,7 +5218,7 @@ int32_t lsm6dso_tap_detection_on_y_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Enable Y direction in tap recognition.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of tap_y_en in reg TAP_CFG0
+  * @param  val      Get the values of tap_y_en in reg TAP_CFG0
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5262,7 +5262,7 @@ int32_t lsm6dso_tap_detection_on_x_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Enable X direction in tap recognition.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of tap_x_en in reg TAP_CFG0
+  * @param  val      Get the values of tap_x_en in reg TAP_CFG0
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5306,7 +5306,7 @@ int32_t lsm6dso_tap_threshold_x_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  X-axis tap recognition threshold.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of tap_ths_x in reg TAP_CFG1
+  * @param  val      Get the values of tap_ths_x in reg TAP_CFG1
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5426,7 +5426,7 @@ int32_t lsm6dso_tap_threshold_y_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Y-axis tap recognition threshold.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of tap_ths_y in reg TAP_CFG2
+  * @param  val      Get the values of tap_ths_y in reg TAP_CFG2
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5469,7 +5469,7 @@ int32_t lsm6dso_tap_threshold_z_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Z-axis recognition threshold.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of tap_ths_z in reg TAP_THS_6D
+  * @param  val      Get the values of tap_ths_z in reg TAP_THS_6D
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5522,7 +5522,7 @@ int32_t lsm6dso_tap_shock_set(stmdev_ctx_t *ctx, uint8_t val)
   *         value, 1LSB corresponds to 8*ODR_XL time.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of shock in reg INT_DUR2
+  * @param  val      Get the values of shock in reg INT_DUR2
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5577,7 +5577,7 @@ int32_t lsm6dso_tap_quiet_set(stmdev_ctx_t *ctx, uint8_t val)
   *         value, 1LSB corresponds to 4*ODR_XL time.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of quiet in reg INT_DUR2
+  * @param  val      Get the values of quiet in reg INT_DUR2
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5634,7 +5634,7 @@ int32_t lsm6dso_tap_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   *         1LSB corresponds to 32*ODR_XL time.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of dur in reg INT_DUR2
+  * @param  val      Get the values of dur in reg INT_DUR2
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5816,7 +5816,7 @@ int32_t lsm6dso_4d_mode_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  4D orientation detection enable.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of d4d_en in reg TAP_THS_6D
+  * @param  val      Get the values of d4d_en in reg TAP_THS_6D
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -5970,7 +5970,7 @@ int32_t lsm6dso_ff_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   *         1LSb = 1 / ODR
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of ff_dur in reg FREE_FALL
+  * @param  val      Get the values of ff_dur in reg FREE_FALL
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -6042,7 +6042,7 @@ int32_t lsm6dso_fifo_watermark_set(stmdev_ctx_t *ctx, uint16_t val)
   * @brief  FIFO watermark level selection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of wtm in reg FIFO_CTRL1
+  * @param  val      Get the values of wtm in reg FIFO_CTRL1
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -6105,7 +6105,7 @@ int32_t lsm6dso_compression_algo_init_set(stmdev_ctx_t *ctx,
   * @brief  FIFO compression feature initialization request [get].
   *
   * @param  ctx    read / write interface definitions
-  * @param  val    change the values of FIFO_COMPR_INIT in
+  * @param  val    Get the values of FIFO_COMPR_INIT in
   *                reg EMB_FUNC_INIT_B
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -6237,7 +6237,7 @@ int32_t lsm6dso_fifo_virtual_sens_odr_chg_set(stmdev_ctx_t *ctx,
   * @brief  Enables ODR CHANGE virtual sensor to be batched in FIFO.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of odrchg_en in reg FIFO_CTRL2
+  * @param  val      Get the values of odrchg_en in reg FIFO_CTRL2
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -6283,7 +6283,7 @@ int32_t lsm6dso_compression_algo_real_time_set(stmdev_ctx_t *ctx,
   * @brief   Enables/Disables compression algorithm runtime. [get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of fifo_compr_rt_en in reg FIFO_CTRL2
+  * @param  val      Get the values of fifo_compr_rt_en in reg FIFO_CTRL2
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -6329,7 +6329,7 @@ int32_t lsm6dso_fifo_stop_on_wtm_set(stmdev_ctx_t *ctx, uint8_t val)
   *         threshold level.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of stop_on_wtm in reg FIFO_CTRL2
+  * @param  val      Get the values of stop_on_wtm in reg FIFO_CTRL2
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -6827,7 +6827,7 @@ int32_t lsm6dso_fifo_cnt_event_batch_get(stmdev_ctx_t *ctx,
 
 /**
   * @brief  Resets the internal counter of batching vents for a single sensor.
-  *         This bit is automatically reset to zero if it was set to ‘1’.[set]
+  *         This bit is automatically reset to zero if it was set to '1'.[set]
   *
   * @param  ctx      read / write interface definitions
   * @param  val      change the values of rst_counter_bdr in
@@ -6854,10 +6854,10 @@ int32_t lsm6dso_rst_batch_counter_set(stmdev_ctx_t *ctx, uint8_t val)
 
 /**
   * @brief  Resets the internal counter of batching events for a single sensor.
-  *         This bit is automatically reset to zero if it was set to ‘1’.[get]
+  *         This bit is automatically reset to zero if it was set to '1'.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of rst_counter_bdr in
+  * @param  val      Get the values of rst_counter_bdr in
   *                  reg COUNTER_BDR_REG1
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -6913,7 +6913,7 @@ int32_t lsm6dso_batch_counter_threshold_set(stmdev_ctx_t *ctx,
   * @brief  Batch data rate counter.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of cnt_bdr_th in
+  * @param  val      Get the values of cnt_bdr_th in
   *                  reg COUNTER_BDR_REG2 and COUNTER_BDR_REG1.
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -6943,7 +6943,7 @@ int32_t lsm6dso_batch_counter_threshold_get(stmdev_ctx_t *ctx,
   * @brief  Number of unread sensor data(TAG + 6 bytes) stored in FIFO.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of diff_fifo in reg FIFO_STATUS1
+  * @param  val      Get the values of diff_fifo in reg FIFO_STATUS1
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -6989,7 +6989,7 @@ int32_t lsm6dso_fifo_status_get(stmdev_ctx_t *ctx,
   * @brief  Smart FIFO full status.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of fifo_full_ia in reg FIFO_STATUS2
+  * @param  val      Get the values of fifo_full_ia in reg FIFO_STATUS2
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -7008,7 +7008,7 @@ int32_t lsm6dso_fifo_full_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  FIFO overrun status.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of  fifo_over_run_latched in
+  * @param  val      Get the values of  fifo_over_run_latched in
   *                  reg FIFO_STATUS2
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -7028,7 +7028,7 @@ int32_t lsm6dso_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  FIFO watermark status.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of fifo_wtm_ia in reg FIFO_STATUS2
+  * @param  val      Get the values of fifo_wtm_ia in reg FIFO_STATUS2
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -7047,7 +7047,7 @@ int32_t lsm6dso_fifo_wtm_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  Identifies the sensor in FIFO_DATA_OUT.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of tag_sensor in reg FIFO_DATA_OUT_TAG
+  * @param  val      Get the values of tag_sensor in reg FIFO_DATA_OUT_TAG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -7072,6 +7072,10 @@ int32_t lsm6dso_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
 
     case LSM6DSO_TEMPERATURE_TAG:
       *val = LSM6DSO_TEMPERATURE_TAG;
+      break;
+
+    case LSM6DSO_TIMESTAMP_TAG:
+      *val = LSM6DSO_TIMESTAMP_TAG;
       break;
 
     case LSM6DSO_CFG_CHANGE_TAG:
@@ -7126,8 +7130,8 @@ int32_t lsm6dso_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
       *val = LSM6DSO_SENSORHUB_SLAVE3_TAG;
       break;
 
-    case LSM6DSO_STEP_CPUNTER_TAG:
-      *val = LSM6DSO_STEP_CPUNTER_TAG;
+    case LSM6DSO_STEP_COUNTER_TAG:
+      *val = LSM6DSO_STEP_COUNTER_TAG;
       break;
 
     case LSM6DSO_GAME_ROTATION_TAG:
@@ -7196,7 +7200,7 @@ int32_t lsm6dso_fifo_pedo_batch_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Enable FIFO batching of pedometer embedded function values.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of pedo_fifo_en in
+  * @param  val      Get the values of pedo_fifo_en in
   *                  reg LSM6DSO_EMB_FUNC_FIFO_CFG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -7262,7 +7266,7 @@ int32_t lsm6dso_sh_batch_slave_0_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Enable FIFO batching data of first slave.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of  batch_ext_sens_0_en in
+  * @param  val      Get the values of  batch_ext_sens_0_en in
   *                  reg SLV0_CONFIG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -7327,7 +7331,7 @@ int32_t lsm6dso_sh_batch_slave_1_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief   Enable FIFO batching data of second slave.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of  batch_ext_sens_1_en in
+  * @param  val      Get the values of  batch_ext_sens_1_en in
   *                  reg SLV1_CONFIG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -7392,7 +7396,7 @@ int32_t lsm6dso_sh_batch_slave_2_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Enable FIFO batching data of third slave.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of  batch_ext_sens_2_en in
+  * @param  val      Get the values of  batch_ext_sens_2_en in
   *                  reg SLV2_CONFIG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -7457,7 +7461,7 @@ int32_t lsm6dso_sh_batch_slave_3_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Enable FIFO batching data of fourth slave.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of  batch_ext_sens_3_en in
+  * @param  val      Get the values of  batch_ext_sens_3_en in
   *                  reg SLV3_CONFIG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -7717,7 +7721,7 @@ int32_t lsm6dso_den_mark_axis_x_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  DEN value stored in LSB of X-axis.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of den_z in reg CTRL9_XL
+  * @param  val      Get the values of den_z in reg CTRL9_XL
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -7760,7 +7764,7 @@ int32_t lsm6dso_den_mark_axis_y_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  DEN value stored in LSB of Y-axis.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of den_y in reg CTRL9_XL
+  * @param  val      Get the values of den_y in reg CTRL9_XL
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -7803,7 +7807,7 @@ int32_t lsm6dso_den_mark_axis_z_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  DEN value stored in LSB of Z-axis.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of den_x in reg CTRL9_XL
+  * @param  val      Get the values of den_x in reg CTRL9_XL
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -7902,7 +7906,7 @@ int32_t lsm6dso_pedo_sens_get(stmdev_ctx_t *ctx,
   * @brief  Interrupt status bit for step detection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of is_step_det in reg EMB_FUNC_STATUS
+  * @param  val      Get the values of is_step_det in reg EMB_FUNC_STATUS
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -8100,7 +8104,7 @@ int32_t lsm6dso_pedo_int_mode_get(stmdev_ctx_t *ctx,
   * @brief   Interrupt status bit for significant motion detection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of is_sigmot in reg EMB_FUNC_STATUS
+  * @param  val      Get the values of is_sigmot in reg EMB_FUNC_STATUS
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -8143,7 +8147,7 @@ int32_t lsm6dso_motion_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @brief  Interrupt status bit for tilt detection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of is_tilt in reg EMB_FUNC_STATUS
+  * @param  val      Get the values of is_tilt in reg EMB_FUNC_STATUS
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -8826,7 +8830,7 @@ int32_t lsm6dso_mag_x_orient_get(stmdev_ctx_t *ctx,
   *          timeout interrupt event.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of is_fsm_lc in reg EMB_FUNC_STATUS
+  * @param  val      Get the values of is_fsm_lc in reg EMB_FUNC_STATUS
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -9225,7 +9229,7 @@ int32_t lsm6dso_fsm_init_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  FSM initialization request.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of fsm_init in reg FSM_INIT
+  * @param  val      Get the values of fsm_init in reg FSM_INIT
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -9571,7 +9575,7 @@ int32_t lsm6dso_sh_master_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  Sensor hub I2C master enable.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of master_on in reg MASTER_CONFIG
+  * @param  val      Get the values of master_on in reg MASTER_CONFIG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -9714,7 +9718,7 @@ int32_t lsm6dso_sh_pass_through_set(stmdev_ctx_t *ctx, uint8_t val)
   * @brief  I2C interface pass-through.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of pass_through_mode in
+  * @param  val      Get the values of pass_through_mode in
   *                  reg MASTER_CONFIG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
@@ -9943,7 +9947,7 @@ int32_t lsm6dso_sh_reset_set(stmdev_ctx_t *ctx)
   * @brief  Reset Master logic and output registers.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of rst_master_regs in reg MASTER_CONFIG
+  * @param  val      Get the values of rst_master_regs in reg MASTER_CONFIG
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -10919,14 +10923,13 @@ int32_t lsm6dso_interrupt_mode_get(stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    ctrl3_c.h_lactive = val->active_low;
+    val->active_low = ctrl3_c.h_lactive;
     ret = lsm6dso_read_reg(ctx, LSM6DSO_TAP_CFG0, (uint8_t *) &tap_cfg0, 1);
   }
 
   if (ret == 0)
   {
-    tap_cfg0.lir = val->base_latched;
-    tap_cfg0.int_clr_on_read = val->base_latched | val->emb_latched;
+    val->base_latched = (tap_cfg0.lir & tap_cfg0.int_clr_on_read);
     ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
   }
 
@@ -10937,8 +10940,7 @@ int32_t lsm6dso_interrupt_mode_get(stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    page_rw.emb_func_lir = val->emb_latched;
-    ret = lsm6dso_write_reg(ctx, LSM6DSO_PAGE_RW, (uint8_t *) &page_rw, 1);
+    val->emb_latched = (page_rw.emb_func_lir & tap_cfg0.int_clr_on_read);
   }
 
   if (ret == 0)
