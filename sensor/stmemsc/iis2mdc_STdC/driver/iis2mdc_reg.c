@@ -45,9 +45,9 @@
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2mdc_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                         uint8_t *data,
-                         uint16_t len)
+int32_t __weak iis2mdc_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                uint8_t *data,
+                                uint16_t len)
 {
   int32_t ret;
 
@@ -66,9 +66,9 @@ int32_t iis2mdc_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2mdc_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                          uint8_t *data,
-                          uint16_t len)
+int32_t __weak iis2mdc_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                 uint8_t *data,
+                                 uint16_t len)
 {
   int32_t ret;
 
@@ -115,7 +115,7 @@ float_t iis2mdc_from_lsb_to_celsius(int16_t lsb)
 /**
   * @brief  These registers comprise a 3 group of 16-bit number and represent
   *         hard-iron offset in order to compensate environmental effects.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG.
   *         These values act on the magnetic output data value in order to
   *         delete the environmental offset.[set]
@@ -144,7 +144,7 @@ int32_t iis2mdc_mag_user_offset_set(stmdev_ctx_t *ctx, int16_t *val)
 /**
   * @brief  These registers comprise a 3 group of 16-bit number and represent
   *         hard-iron offset in order to compensate environmental effects.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG.
   *         These values act on the magnetic output data value in order to
   *         delete the environmental offset.[get]
@@ -1153,7 +1153,7 @@ int32_t iis2mdc_int_gen_source_get(stmdev_ctx_t *ctx,
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
   *         Data format is the same of output data raw:
-  *         two’s complement with 1LSb = 1.5mG.[set]
+  *         two's complement with 1LSb = 1.5mG.[set]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that contains data to write
@@ -1175,7 +1175,7 @@ int32_t iis2mdc_int_gen_treshold_set(stmdev_ctx_t *ctx, int16_t val)
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
   *         Data format is the same of output data raw:
-  *         two’s complement with 1LSb = 1.5mG.[get]
+  *         two's complement with 1LSb = 1.5mG.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read

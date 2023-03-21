@@ -46,8 +46,8 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps28dfw_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
-                          uint16_t len)
+int32_t __weak lps28dfw_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
+                                 uint16_t len)
 {
   int32_t ret;
   ret = ctx->read_reg(ctx->handle, reg, data, len);
@@ -64,8 +64,8 @@ int32_t lps28dfw_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps28dfw_write_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
-                           uint16_t len)
+int32_t __weak lps28dfw_write_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
+                                  uint16_t len)
 {
   int32_t ret;
   ret = ctx->write_reg(ctx->handle, reg, data, len);
@@ -1045,7 +1045,7 @@ int32_t lps28dfw_int_on_threshold_mode_set(stmdev_ctx_t *ctx,
     bytecpy(&reg[1], (uint8_t *)&ths_p_l);
     bytecpy(&reg[2], (uint8_t *)&ths_p_h);
 
-    ret = lps28dfw_read_reg(ctx, LPS28DFW_INTERRUPT_CFG, reg, 3);
+    ret = lps28dfw_write_reg(ctx, LPS28DFW_INTERRUPT_CFG, reg, 3);
   }
   return ret;
 }
@@ -1118,7 +1118,7 @@ int32_t lps28dfw_reference_mode_set(stmdev_ctx_t *ctx, lps28dfw_ref_md_t *val)
     interrupt_cfg.reset_az  = ((uint8_t)val->apply_ref & 0x02U) >> 1;
     interrupt_cfg.reset_arp = ((uint8_t)val->apply_ref & 0x02U) >> 1;
 
-    ret = lps28dfw_read_reg(ctx, LPS28DFW_INTERRUPT_CFG,
+    ret = lps28dfw_write_reg(ctx, LPS28DFW_INTERRUPT_CFG,
                             (uint8_t *)&interrupt_cfg, 1);
   }
   return ret;

@@ -108,14 +108,17 @@ typedef struct
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, const uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -1798,9 +1801,6 @@ typedef struct
 #define ASM330LHHX_FSM_PROGRAMS                 0x17CU
 #define ASM330LHHX_FSM_START_ADD_L              0x17EU
 #define ASM330LHHX_FSM_START_ADD_H              0x17FU
-#define ASM330LHHX_PEDO_DEB_STEPS_CONF          0x184U
-#define ASM330LHHX_PEDO_SC_DELTAT_L             0x1D0U
-#define ASM330LHHX_PEDO_SC_DELTAT_H             0x1D1U
 
 #define ASM330LHHX_MLC_MAG_SENSITIVITY_L        0x1E8U
 #define ASM330LHHX_MLC_MAG_SENSITIVITY_H        0x1E9U
@@ -2551,6 +2551,19 @@ typedef union
   *
   */
 
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
+
 int32_t asm330lhhx_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
                             uint16_t len);
 int32_t asm330lhhx_write_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
@@ -2593,7 +2606,7 @@ typedef enum
   ASM330LHHX_XL_ODR_1667Hz = 8,
   ASM330LHHX_XL_ODR_3333Hz = 9,
   ASM330LHHX_XL_ODR_6667Hz = 10,
-  ASM330LHHX_XL_ODR_6Hz5   = 11, /* (low power only) */
+  ASM330LHHX_XL_ODR_1Hz6   = 11, /* (low power only) */
 } asm330lhhx_odr_xl_t;
 int32_t asm330lhhx_xl_data_rate_set(stmdev_ctx_t *ctx, asm330lhhx_odr_xl_t val);
 int32_t asm330lhhx_xl_data_rate_get(stmdev_ctx_t *ctx,
@@ -3090,7 +3103,7 @@ typedef enum
   ASM330LHHX_XL_BATCHED_AT_1667Hz  =  8,
   ASM330LHHX_XL_BATCHED_AT_3333Hz  =  9,
   ASM330LHHX_XL_BATCHED_AT_6667Hz  = 10,
-  ASM330LHHX_XL_BATCHED_AT_6Hz5    = 11,
+  ASM330LHHX_XL_BATCHED_AT_1Hz6    = 11,
 } asm330lhhx_bdr_xl_t;
 int32_t asm330lhhx_fifo_xl_batch_set(stmdev_ctx_t *ctx,
                                      asm330lhhx_bdr_xl_t val);
@@ -3110,7 +3123,7 @@ typedef enum
   ASM330LHHX_GY_BATCHED_AT_1667Hz   = 8,
   ASM330LHHX_GY_BATCHED_AT_3333Hz   = 9,
   ASM330LHHX_GY_BATCHED_AT_6667Hz   = 10,
-  ASM330LHHX_GY_BATCHED_6Hz5        = 11,
+  ASM330LHHX_GY_BATCHED_AT_6Hz5     = 11,
 } asm330lhhx_bdr_gy_t;
 int32_t asm330lhhx_fifo_gy_batch_set(stmdev_ctx_t *ctx,
                                      asm330lhhx_bdr_gy_t val);
@@ -3305,6 +3318,29 @@ int32_t asm330lhhx_mag_x_orient_set(stmdev_ctx_t *ctx,
 int32_t asm330lhhx_mag_x_orient_get(stmdev_ctx_t *ctx,
                                     asm330lhhx_mag_x_axis_t *val);
 
+typedef struct
+{
+  uint16_t fsm1 : 1;
+  uint16_t fsm2 : 1;
+  uint16_t fsm3 : 1;
+  uint16_t fsm4 : 1;
+  uint16_t fsm5 : 1;
+  uint16_t fsm6 : 1;
+  uint16_t fsm7 : 1;
+  uint16_t fsm8 : 1;
+  uint16_t fsm9 : 1;
+  uint16_t fsm10 : 1;
+  uint16_t fsm11 : 1;
+  uint16_t fsm12 : 1;
+  uint16_t fsm13 : 1;
+  uint16_t fsm14 : 1;
+  uint16_t fsm15 : 1;
+  uint16_t fsm16 : 1;
+} asm330lhhx_fsm_status_t;
+int32_t asm330lhhx_fsm_status_get(stmdev_ctx_t *ctx,
+                                  asm330lhhx_fsm_status_t *val);
+int32_t asm330lhhx_fsm_out_get(stmdev_ctx_t *ctx, uint8_t *buff);
+
 int32_t asm330lhhx_long_cnt_flag_data_ready_get(stmdev_ctx_t *ctx,
                                                 uint8_t *val);
 
@@ -3337,27 +3373,6 @@ int32_t asm330lhhx_long_clr_set(stmdev_ctx_t *ctx,
                                 asm330lhhx_fsm_lc_clr_t val);
 int32_t asm330lhhx_long_clr_get(stmdev_ctx_t *ctx,
                                 asm330lhhx_fsm_lc_clr_t *val);
-
-typedef struct
-{
-  asm330lhhx_fsm_outs1_t    fsm_outs1;
-  asm330lhhx_fsm_outs2_t    fsm_outs2;
-  asm330lhhx_fsm_outs3_t    fsm_outs3;
-  asm330lhhx_fsm_outs4_t    fsm_outs4;
-  asm330lhhx_fsm_outs5_t    fsm_outs5;
-  asm330lhhx_fsm_outs6_t    fsm_outs6;
-  asm330lhhx_fsm_outs7_t    fsm_outs7;
-  asm330lhhx_fsm_outs8_t    fsm_outs8;
-  asm330lhhx_fsm_outs9_t    fsm_outs9;
-  asm330lhhx_fsm_outs10_t    fsm_outs10;
-  asm330lhhx_fsm_outs11_t    fsm_outs11;
-  asm330lhhx_fsm_outs12_t    fsm_outs12;
-  asm330lhhx_fsm_outs13_t    fsm_outs13;
-  asm330lhhx_fsm_outs14_t    fsm_outs14;
-  asm330lhhx_fsm_outs15_t    fsm_outs15;
-  asm330lhhx_fsm_outs16_t    fsm_outs16;
-} asm330lhhx_fsm_out_t;
-int32_t asm330lhhx_fsm_out_get(stmdev_ctx_t *ctx, asm330lhhx_fsm_out_t *val);
 
 typedef enum
 {

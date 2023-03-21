@@ -45,8 +45,8 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t hts221_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
-                        uint16_t len)
+int32_t __weak hts221_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
+                               uint16_t len)
 {
   int32_t ret;
 
@@ -65,9 +65,9 @@ int32_t hts221_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t hts221_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                         uint8_t *data,
-                         uint16_t len)
+int32_t __weak hts221_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                uint8_t *data,
+                                uint16_t len)
 {
   int32_t ret;
 
@@ -888,7 +888,8 @@ int32_t hts221_hum_rh_point_1_get(stmdev_ctx_t *ctx, float_t *val)
 int32_t hts221_temp_deg_point_0_get(stmdev_ctx_t *ctx, float_t *val)
 {
   hts221_t1_t0_msb_t reg;
-  uint8_t coeff_h, coeff_l;
+  uint8_t coeff_h;
+  uint8_t coeff_l;
   int32_t ret;
 
   ret = hts221_read_reg(ctx, HTS221_T0_DEGC_X8, &coeff_l, 1);
@@ -914,7 +915,8 @@ int32_t hts221_temp_deg_point_0_get(stmdev_ctx_t *ctx, float_t *val)
 int32_t hts221_temp_deg_point_1_get(stmdev_ctx_t *ctx, float_t *val)
 {
   hts221_t1_t0_msb_t reg;
-  uint8_t coeff_h, coeff_l;
+  uint8_t coeff_h;
+  uint8_t coeff_l;
   int32_t ret;
 
   ret = hts221_read_reg(ctx, HTS221_T1_DEGC_X8, &coeff_l, 1);

@@ -46,9 +46,9 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsox_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                          uint8_t *data,
-                          uint16_t len)
+int32_t __weak lsm6dsox_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                 uint8_t *data,
+                                 uint16_t len)
 {
   int32_t ret;
 
@@ -67,9 +67,9 @@ int32_t lsm6dsox_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsox_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                           uint8_t *data,
-                           uint16_t len)
+int32_t __weak lsm6dsox_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                  uint8_t *data,
+                                  uint16_t len)
 {
   int32_t ret;
 
@@ -11911,14 +11911,13 @@ int32_t lsm6dsox_interrupt_mode_get(stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    ctrl3_c.h_lactive = val->active_low;
+    val->active_low = ctrl3_c.h_lactive;
     ret = lsm6dsox_read_reg(ctx, LSM6DSOX_TAP_CFG0, (uint8_t *) &tap_cfg0, 1);
   }
 
   if (ret == 0)
   {
-    tap_cfg0.lir = val->base_latched;
-    tap_cfg0.int_clr_on_read = val->base_latched | val->emb_latched;
+    val->base_latched = (tap_cfg0.lir & tap_cfg0.int_clr_on_read);
     ret = lsm6dsox_mem_bank_set(ctx, LSM6DSOX_EMBEDDED_FUNC_BANK);
   }
 
@@ -11929,8 +11928,7 @@ int32_t lsm6dsox_interrupt_mode_get(stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    page_rw.emb_func_lir = val->emb_latched;
-    ret = lsm6dsox_write_reg(ctx, LSM6DSOX_PAGE_RW, (uint8_t *) &page_rw, 1);
+    val->emb_latched = (page_rw.emb_func_lir & tap_cfg0.int_clr_on_read);
   }
 
   if (ret == 0)

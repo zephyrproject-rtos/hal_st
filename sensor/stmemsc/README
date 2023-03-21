@@ -6,7 +6,7 @@ Origin:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 Status:
-   version v2.01
+   version v2.02
 
 Purpose:
    ST Microelectronics standard C platform-independent drivers for MEMS
@@ -25,18 +25,26 @@ Description:
 
    The driver is platform-independent, you only need to define the two
    functions for read and write transactions from the sensor hardware bus
-   (ie. SPI or I2C).
+   (ie. SPI or I2C). In addition you may define a mdelay (milliseconds) 
+   routine.
 
    Define in your 'xyz' driver code the read and write functions that use the
-   I2C or SPI platform driver like the following:
+   I2C or SPI platform driver (plus the optional mdelay function) like the following:
 
    /** Please note that is MANDATORY: return 0 -> no Error.**/
    int platform_wr(void *handle, u8_t reg, const u8_t *bufp, u16_t len);
    int platform_rd(void *handle, u8_t reg, u8_t *bufp, u16_t len);
 
+   /** Component optional fields **/
+   void platform_mdelay(u32_t millisec);
+
+
    stmdev_ctx_t stmdev_ctx = {
        .read_reg = (stmdev_read_ptr) platform_rd,
        .write_reg = (stmdev_write_ptr) platform_wr,
+
+       /** Component optional fields **/
+       .mdelay = (stmdev_mdelay_ptr) platform_mdelay,
    };
 
 Dependencies:
@@ -46,7 +54,7 @@ URL:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 commit:
-   version v2.01
+   version v2.02
 
 Maintained-by:
    ST Microelectronics

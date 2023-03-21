@@ -111,12 +111,15 @@ typedef struct
 
 typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, const uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -477,6 +480,19 @@ typedef union
   *
   */
 
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
+
 int32_t h3lis331dl_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
                             uint8_t *data,
                             uint16_t len);
@@ -502,7 +518,7 @@ typedef enum
   H3LIS331DL_ODR_OFF   = 0x00,
   H3LIS331DL_ODR_Hz5   = 0x02,
   H3LIS331DL_ODR_1Hz   = 0x03,
-  H3LIS331DL_ODR_5Hz2  = 0x04,
+  H3LIS331DL_ODR_2Hz   = 0x04,
   H3LIS331DL_ODR_5Hz   = 0x05,
   H3LIS331DL_ODR_10Hz  = 0x06,
   H3LIS331DL_ODR_50Hz  = 0x01,
