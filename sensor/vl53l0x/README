@@ -49,5 +49,10 @@ License:
 License Link:
    http://www.st.com/en/embedded-software/stsw-img005.html
 
+Patch List:
 
-
+   *Cast unsigned abs param to signed type
+     This will prevent a compiler warning when using clang
+     without -ffreestanding
+     Impacted files:
+      api/core/src/vl53l0x_api_core.c
