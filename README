@@ -6,3 +6,8 @@ Available libs:
       allows to drive the vl53l0x sensor
       full information can be found here : http://www.st.com/en/embedded-software/stsw-img005.html
   *...
+
+Patch List:
+
+   *Fix double-promotion warnings
+    -audio/microphone/OpenPDMFilter.c modified

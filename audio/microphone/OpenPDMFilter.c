@@ -177,8 +177,8 @@ void Open_PDM_Filter_Init(TPDMFilter_InitStruct *Param)
   }
 
   Param->OldOut = Param->OldIn = Param->OldZ = 0;
-  Param->LP_ALFA = (Param->LP_HZ != 0 ? (uint16_t) (Param->LP_HZ * 256 / (Param->LP_HZ + Param->Fs / (2 * 3.14159))) : 0);
-  Param->HP_ALFA = (Param->HP_HZ != 0 ? (uint16_t) (Param->Fs * 256 / (2 * 3.14159 * Param->HP_HZ + Param->Fs)) : 0);
+  Param->LP_ALFA = (Param->LP_HZ != 0 ? (uint16_t) (Param->LP_HZ * 256 / (Param->LP_HZ + Param->Fs / (2 * 3.14159f))) : 0);
+  Param->HP_ALFA = (Param->HP_HZ != 0 ? (uint16_t) (Param->Fs * 256 / (2 * 3.14159f * Param->HP_HZ + Param->Fs)) : 0);
 
   Param->FilterLen = decimation * SINCN;       
   sinc[0] = 0;
