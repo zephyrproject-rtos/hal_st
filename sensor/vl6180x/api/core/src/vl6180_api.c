@@ -411,6 +411,7 @@ int VL6180_RangePollMeasurement(VL6180Dev_t dev, VL6180_RangeData_t *pRangeData)
 	int status;
 	int ClrStatus;
 	IntrStatus_t IntStatus;
+	uint8_t i;
 
 	LOG_FUNCTION_START("");
 	/* start single range measurement */
@@ -433,7 +434,7 @@ int VL6180_RangePollMeasurement(VL6180Dev_t dev, VL6180_RangeData_t *pRangeData)
 
 
 	/* poll for new sample ready */
-	while (1) {
+	for (i=0; i<50; i++) {
 		status = VL6180_RangeGetInterruptStatus(dev, &IntStatus.val);
 		if (status) {
 			break;
@@ -443,6 +444,7 @@ int VL6180_RangePollMeasurement(VL6180Dev_t dev, VL6180_RangeData_t *pRangeData)
 		}
 
 		VL6180_PollDelay(dev);
+		status = TIME_OUT;
 	}
 	/* //![single_shot_snipet] */
 

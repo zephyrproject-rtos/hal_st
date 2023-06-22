@@ -49,5 +49,6 @@ License:
 License Link:
    https://www.st.com/en/embedded-software/stsw-img011.html
 
-
+Patch List:
+   * Fix infinity loop at read measurments.
 
