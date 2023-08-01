@@ -6,7 +6,7 @@ Origin:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 Status:
-   version v2.02
+   version v2.3
 
 Purpose:
    ST Microelectronics standard C platform-independent drivers for MEMS
@@ -47,6 +47,86 @@ Description:
        .mdelay = (stmdev_mdelay_ptr) platform_mdelay,
    };
 
+   Driver versions in this package:
+
+     - a3g4250d_STdC         v1.1.0
+     - ais25ba_STdC          v1.1.0
+     - ais2dw12_STdC         v1.1.0
+     - ais2ih_STdC           v1.1.0
+     - ais328dq_STdC         v1.1.0
+     - ais3624dq_STdC        v1.1.0
+     - asm330lhb_STdC        v1.0.0
+     - asm330lhh_STdC        v2.1.0
+     - asm330lhhx_STdC       v1.1.1
+     - h3lis100dl_STdC       v1.1.0
+     - h3lis331dl_STdC       v1.1.0
+     - hts221_STdC           v1.1.0
+     - i3g4250d_STdC         v1.1.0
+     - iis2dh_STdC           v1.1.0
+     - iis2dlpc_STdC         v1.1.0
+     - iis2iclx_STdC         v1.1.0
+     - iis2mdc_STdC          v1.1.0
+     - iis328dq_STdC         v1.1.0
+     - iis3dhhc_STdC         v1.1.0
+     - iis3dwb_STdC          v1.1.1
+     - ilps22qs_STdC         v2.1.1
+     - ilps28qsw_STdC        v1.0.1
+     - ism303dac_STdC        v1.1.0
+     - ism330dhcx_STdC       v1.1.0
+     - ism330dlc_STdC        v1.1.0
+     - ism330is_STdC         v2.1.0
+     - l20g20is_STdC         v1.1.0
+     - l3gd20h_STdC          v1.1.0
+     - lis25ba_STdC          v1.1.0
+     - lis2de12_STdC         v1.1.0
+     - lis2dh12_STdC         v1.1.0
+     - lis2dh_STdC           v1.1.0
+     - lis2ds12_STdC         v1.1.0
+     - lis2dtw12_STdC        v1.1.0
+     - lis2du12_STdC         v1.1.3
+     - lis2dux12_STdC        v1.1.4
+     - lis2duxs12_STdC       v1.1.5
+     - lis2dw12_STdC         v1.1.0
+     - lis2hh12_STdC         v1.1.0
+     - lis2mdl_STdC          v1.1.0
+     - lis331dlh_STdC        v1.1.0
+     - lis3de_STdC           v1.1.0
+     - lis3dh_STdC           v1.1.0
+     - lis3dhh_STdC          v1.1.0
+     - lis3dsh_STdC          v1.1.0
+     - lis3mdl_STdC          v1.1.0
+     - lps22ch_STdC          v1.1.0
+     - lps22df_STdC          v1.1.0
+     - lps22hb_STdC          v1.1.0
+     - lps22hh_STdC          v1.1.0
+     - lps25hb_STdC          v1.1.0
+     - lps27hhtw_STdC        v1.1.0
+     - lps27hhw_STdC         v1.1.0
+     - lps28dfw_STdC         v1.1.0
+     - lps33hw_STdC          v1.1.0
+     - lps33k_STdC           v1.1.0
+     - lps33w_STdC           v1.1.0
+     - lsm303agr_STdC        v1.1.0
+     - lsm303ah_STdC         v1.1.0
+     - lsm6ds3_STdC          v1.1.1
+     - lsm6ds3tr-c_STdC      v1.1.0
+     - lsm6dsl_STdC          v1.1.0
+     - lsm6dsm_STdC          v1.1.0
+     - lsm6dso16is_STdC      v2.1.1
+     - lsm6dso32_STdC        v1.1.0
+     - lsm6dso32x_STdC       v1.1.0
+     - lsm6dso_STdC          v2.1.0
+     - lsm6dsox_STdC         v2.0.1
+     - lsm6dsr_STdC          v1.1.0
+     - lsm6dsrx_STdC         v1.1.0
+     - lsm6dsv16bx_STdC      v2.1.2
+     - lsm6dsv16x_STdC       v2.2.1
+     - lsm6dsv_STdC          v1.2.1
+     - lsm9ds1_STdC          v1.1.0
+     - sths34pf80_STdC       v1.0.0
+     - stts22h_STdC          v1.1.0
+     - stts751_STdC          v1.1.0
+
 Dependencies:
     None.
 
@@ -54,7 +134,7 @@ URL:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 commit:
-   version v2.02
+   version v2.3
 
 Maintained-by:
    ST Microelectronics

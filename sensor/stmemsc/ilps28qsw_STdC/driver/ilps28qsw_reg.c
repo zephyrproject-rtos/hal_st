@@ -120,6 +120,11 @@ float_t ilps28qsw_from_lsb_to_celsius(int16_t lsb)
   return ((float_t)lsb / 100.0f);
 }
 
+float_t ilps28qsw_from_lsb_to_mv(int32_t lsb)
+{
+  return ((float_t)lsb) / 426000.0f;
+}
+
 /**
   * @}
   *
@@ -755,6 +760,8 @@ int32_t ilps28qsw_ah_qvar_data_get(stmdev_ctx_t *ctx,
   data->raw = (data->raw * 256) + (int32_t) buff[0];
   data->raw = (data->raw * 256);
   data->lsb = (data->raw / 256); /* shift 8bit left */
+
+  data->mv = ilps28qsw_from_lsb_to_mv(data->lsb);
 
   return ret;
 }

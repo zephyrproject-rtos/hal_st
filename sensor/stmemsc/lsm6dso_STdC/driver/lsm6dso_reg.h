@@ -2931,8 +2931,8 @@ int32_t lsm6dso_ln_pg_read_byte(stmdev_ctx_t *ctx, uint16_t address,
                                 uint8_t *val);
 int32_t lsm6dso_ln_pg_write(stmdev_ctx_t *ctx, uint16_t address,
                             uint8_t *buf, uint8_t len);
-int32_t lsm6dso_ln_pg_read(stmdev_ctx_t *ctx, uint16_t address,
-                           uint8_t *val);
+int32_t lsm6dso_ln_pg_read(stmdev_ctx_t *ctx, uint16_t address, uint8_t *buf,
+                           uint8_t len);
 
 typedef enum
 {
@@ -3647,17 +3647,8 @@ int32_t lsm6dso_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
 int32_t lsm6dso_fifo_pedo_batch_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dso_fifo_pedo_batch_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lsm6dso_sh_batch_slave_0_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dso_sh_batch_slave_0_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lsm6dso_sh_batch_slave_1_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dso_sh_batch_slave_1_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lsm6dso_sh_batch_slave_2_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dso_sh_batch_slave_2_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lsm6dso_sh_batch_slave_3_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dso_sh_batch_slave_3_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dso_sh_batch_slave_set(stmdev_ctx_t *ctx, uint8_t idx, uint8_t val);
+int32_t lsm6dso_sh_batch_slave_get(stmdev_ctx_t *ctx, uint8_t idx, uint8_t *val);
 
 typedef enum
 {
@@ -3952,13 +3943,7 @@ typedef struct
   uint8_t   slv_subadd;
   uint8_t   slv_len;
 } lsm6dso_sh_cfg_read_t;
-int32_t lsm6dso_sh_slv0_cfg_read(stmdev_ctx_t *ctx,
-                                 lsm6dso_sh_cfg_read_t *val);
-int32_t lsm6dso_sh_slv1_cfg_read(stmdev_ctx_t *ctx,
-                                 lsm6dso_sh_cfg_read_t *val);
-int32_t lsm6dso_sh_slv2_cfg_read(stmdev_ctx_t *ctx,
-                                 lsm6dso_sh_cfg_read_t *val);
-int32_t lsm6dso_sh_slv3_cfg_read(stmdev_ctx_t *ctx,
+int32_t lsm6dso_sh_slv_cfg_read(stmdev_ctx_t *ctx, uint8_t idx,
                                  lsm6dso_sh_cfg_read_t *val);
 
 int32_t lsm6dso_sh_status_get(stmdev_ctx_t *ctx,

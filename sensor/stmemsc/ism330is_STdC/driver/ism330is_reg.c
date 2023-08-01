@@ -207,17 +207,13 @@ int32_t ism330is_odr_cal_reg_get(stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t ism330is_mem_bank_set(stmdev_ctx_t *ctx, ism330is_mem_bank_t val)
 {
-  ism330is_func_cfg_access_t func_cfg_access;
+  ism330is_func_cfg_access_t func_cfg_access = {0x0};
   int32_t ret;
 
-  ret = ism330is_read_reg(ctx, ISM330IS_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
-
-  if (ret == 0)
-  {
-    func_cfg_access.shub_reg_access = (val == ISM330IS_SENSOR_HUB_MEM_BANK) ? 0x1U : 0x0U;
-    func_cfg_access.ispu_reg_access = (val == ISM330IS_ISPU_MEM_BANK) ? 0x1U : 0x0U;
-    ret = ism330is_write_reg(ctx, ISM330IS_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
-  }
+  /* no need to read it first as the only other field is a ispu reset bit */
+  func_cfg_access.shub_reg_access = (val == ISM330IS_SENSOR_HUB_MEM_BANK) ? 0x1U : 0x0U;
+  func_cfg_access.ispu_reg_access = (val == ISM330IS_ISPU_MEM_BANK) ? 0x1U : 0x0U;
+  ret = ism330is_write_reg(ctx, ISM330IS_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
 
   return ret;
 }
@@ -348,7 +344,7 @@ int32_t ism330is_software_reset(stmdev_ctx_t *ctx)
     ret += ism330is_gy_data_rate_set(ctx, ISM330IS_GY_ODR_OFF);
 
     ctrl3_c.sw_reset = PROPERTY_ENABLE;
-    ret = ism330is_write_reg(ctx, ISM330IS_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
+    ret += ism330is_write_reg(ctx, ISM330IS_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
     do {
       ret += ism330is_read_reg(ctx, ISM330IS_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
@@ -573,10 +569,7 @@ int32_t ism330is_xl_data_rate_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
 
   switch ((ctrl6_c.xl_hm_mode << 4) | (ctrl1_xl.odr_xl))
   {
@@ -672,6 +665,7 @@ int32_t ism330is_xl_data_rate_get(stmdev_ctx_t *ctx,
       *val = ISM330IS_XL_ODR_OFF;
       break;
   }
+
   return ret;
 }
 
@@ -852,10 +846,7 @@ int32_t ism330is_gy_data_rate_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
   switch ((ctrl7_g.g_hm_mode << 4) | (ctrl2_g.odr_g))
   {
@@ -1480,29 +1471,26 @@ int32_t ism330is_all_sources_get(stmdev_ctx_t *ctx, ism330is_all_sources_t *val)
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_STATUS_REG, (uint8_t *)&status_reg, 1);
-  if (ret == 0)
-  {
-    val->drdy_xl = status_reg.xlda;
-    val->drdy_gy = status_reg.gda;
-    val->drdy_temp = status_reg.tda;
-  }
+  if (ret != 0) { return ret; }
+
+  val->drdy_xl = status_reg.xlda;
+  val->drdy_gy = status_reg.gda;
+  val->drdy_temp = status_reg.tda;
 
   ret = ism330is_read_reg(ctx, ISM330IS_STATUS_MASTER_MAINPAGE, (uint8_t *)&status_sh, 1);
-  if (ret == 0)
-  {
-    val->sh_endop = status_sh.sens_hub_endop;
-    val->sh_slave0_nack = status_sh.sens_hub_endop;
-    val->sh_slave1_nack = status_sh.sens_hub_endop;
-    val->sh_slave2_nack = status_sh.sens_hub_endop;
-    val->sh_slave3_nack = status_sh.sens_hub_endop;
-    val->sh_wr_once = status_sh.sens_hub_endop;
-  }
+  if (ret != 0) { return ret; }
+
+  val->sh_endop = status_sh.sens_hub_endop;
+  val->sh_slave0_nack = status_sh.sens_hub_endop;
+  val->sh_slave1_nack = status_sh.sens_hub_endop;
+  val->sh_slave2_nack = status_sh.sens_hub_endop;
+  val->sh_slave3_nack = status_sh.sens_hub_endop;
+  val->sh_wr_once = status_sh.sens_hub_endop;
 
   ret = ism330is_read_reg(ctx, ISM330IS_ISPU_INT_STATUS0_MAINPAGE, (uint8_t *)&status_ispu, 4);
-  if (ret == 0)
-  {
-    val->ispu = status_ispu;
-  }
+  if (ret != 0) { return ret; }
+
+  val->ispu = status_ispu;
 
   return ret;
 }
@@ -1679,22 +1667,18 @@ int32_t ism330is_pin_int1_route_set(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MD1_CFG, (uint8_t *)&md1_cfg, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    int1_ctrl.int1_drdy_xl = val.drdy_xl;
-    int1_ctrl.int1_drdy_g = val.drdy_gy;
-    int1_ctrl.int1_boot = val.boot;
-    ret += ism330is_write_reg(ctx, ISM330IS_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
+  int1_ctrl.int1_drdy_xl = val.drdy_xl;
+  int1_ctrl.int1_drdy_g = val.drdy_gy;
+  int1_ctrl.int1_boot = val.boot;
+  ret += ism330is_write_reg(ctx, ISM330IS_INT1_CTRL, (uint8_t *)&int1_ctrl,
+                               1);
 
-    md1_cfg.int1_shub = val.sh_endop;
-    md1_cfg.int1_ispu = val.ispu;
-    ret += ism330is_write_reg(ctx, ISM330IS_MD1_CFG, (uint8_t *)&md1_cfg, 1);
-  }
+  md1_cfg.int1_shub = val.sh_endop;
+  md1_cfg.int1_ispu = val.ispu;
+  ret += ism330is_write_reg(ctx, ISM330IS_MD1_CFG, (uint8_t *)&md1_cfg, 1);
 
   return ret;
 }
@@ -1715,19 +1699,14 @@ int32_t ism330is_pin_int1_route_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MD1_CFG, (uint8_t *)&md1_cfg, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    val->drdy_xl = int1_ctrl.int1_drdy_xl;
-    val->drdy_gy = int1_ctrl.int1_drdy_g;
-    val->boot = int1_ctrl.int1_boot;
-    val->sh_endop = md1_cfg.int1_shub;
-    val->ispu = md1_cfg.int1_ispu;
-  }
+  val->drdy_xl = int1_ctrl.int1_drdy_xl;
+  val->drdy_gy = int1_ctrl.int1_drdy_g;
+  val->boot = int1_ctrl.int1_boot;
+  val->sh_endop = md1_cfg.int1_shub;
+  val->ispu = md1_cfg.int1_ispu;
 
   return ret;
 }
@@ -1748,23 +1727,18 @@ int32_t ism330is_pin_int2_route_set(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MD2_CFG, (uint8_t *)&md2_cfg, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    int2_ctrl.int2_drdy_xl = val.drdy_xl;
-    int2_ctrl.int2_drdy_g = val.drdy_gy;
-    int2_ctrl.int2_drdy_temp = val.drdy_temp;
-    int2_ctrl.int2_sleep_ispu = val.ispu_sleep;
-    ret += ism330is_write_reg(ctx, ISM330IS_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
+  int2_ctrl.int2_drdy_xl = val.drdy_xl;
+  int2_ctrl.int2_drdy_g = val.drdy_gy;
+  int2_ctrl.int2_drdy_temp = val.drdy_temp;
+  int2_ctrl.int2_sleep_ispu = val.ispu_sleep;
+  ret += ism330is_write_reg(ctx, ISM330IS_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
 
-    md2_cfg.int2_ispu = val.ispu;
-    md2_cfg.int2_timestamp = val.timestamp;
-    ret += ism330is_write_reg(ctx, ISM330IS_MD2_CFG, (uint8_t *)&md2_cfg, 1);
-  }
+  md2_cfg.int2_ispu = val.ispu;
+  md2_cfg.int2_timestamp = val.timestamp;
+  ret += ism330is_write_reg(ctx, ISM330IS_MD2_CFG, (uint8_t *)&md2_cfg, 1);
 
   return ret;
 }
@@ -1785,20 +1759,15 @@ int32_t ism330is_pin_int2_route_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MD2_CFG, (uint8_t *)&md2_cfg, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    val->drdy_xl = int2_ctrl.int2_drdy_xl;
-    val->drdy_gy = int2_ctrl.int2_drdy_g;
-    val->drdy_temp = int2_ctrl.int2_drdy_temp;
-    val->ispu_sleep = int2_ctrl.int2_sleep_ispu;
-    val->ispu = md2_cfg.int2_ispu;
-    val->timestamp = md2_cfg.int2_timestamp;
-  }
+  val->drdy_xl = int2_ctrl.int2_drdy_xl;
+  val->drdy_gy = int2_ctrl.int2_drdy_g;
+  val->drdy_temp = int2_ctrl.int2_drdy_temp;
+  val->ispu_sleep = int2_ctrl.int2_sleep_ispu;
+  val->ispu = md2_cfg.int2_ispu;
+  val->timestamp = md2_cfg.int2_timestamp;
 
   return ret;
 }
@@ -1940,23 +1909,14 @@ int32_t ism330is_pin_polarity_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ism330is_sh_read_data_raw_get(stmdev_ctx_t *ctx,
-                                      ism330is_emb_sh_read_t *val,
+int32_t ism330is_sh_read_data_raw_get(stmdev_ctx_t *ctx, uint8_t *val,
                                       uint8_t len)
 {
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_SENSOR_HUB_1, (uint8_t *) val,
-                            len);
-  }
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
-
+  ret += ism330is_read_reg(ctx, ISM330IS_SENSOR_HUB_1, val, len);
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -1976,20 +1936,14 @@ int32_t ism330is_sh_slave_connected_set(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    master_config.aux_sens_on = (uint8_t)val & 0x3U;
-    ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  master_config.aux_sens_on = (uint8_t)val & 0x3U;
+  ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+
+exit:
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2009,14 +1963,9 @@ int32_t ism330is_sh_slave_connected_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
+  if (ret != 0) { return ret; }
 
   switch (master_config.aux_sens_on)
   {
@@ -2040,6 +1989,7 @@ int32_t ism330is_sh_slave_connected_get(stmdev_ctx_t *ctx,
       *val = ISM330IS_SLV_0;
       break;
   }
+
   return ret;
 }
 
@@ -2057,20 +2007,14 @@ int32_t ism330is_sh_master_set(stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    master_config.master_on = val;
-    ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  master_config.master_on = val;
+  ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+
+exit:
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2089,17 +2033,12 @@ int32_t ism330is_sh_master_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  if (ret != 0) { return ret; }
 
   *val = master_config.master_on;
 
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2118,21 +2057,14 @@ int32_t ism330is_sh_master_interface_pull_up_set(stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    master_config.shub_pu_en = val;
-    ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
+  master_config.shub_pu_en = val;
+  ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
 
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+exit:
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2152,17 +2084,12 @@ int32_t ism330is_sh_master_interface_pull_up_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  if (ret != 0) { return ret; }
 
   *val = master_config.shub_pu_en;
 
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2181,24 +2108,14 @@ int32_t ism330is_sh_pass_through_set(stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG,
-                            (uint8_t *)&master_config, 1);
-  }
+  master_config.pass_through_mode = (uint8_t)val;
+  ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
 
-  if (ret == 0)
-  {
-    master_config.pass_through_mode = (uint8_t)val;
-    ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG,
-                             (uint8_t *)&master_config, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+exit:
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2217,18 +2134,10 @@ int32_t ism330is_sh_pass_through_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
 
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG,
-                            (uint8_t *)&master_config, 1);
-  }
-
-  if (ret == 0)
-  {
-    *val = master_config.pass_through_mode;
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  *val = master_config.pass_through_mode;
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2248,20 +2157,14 @@ int32_t ism330is_sh_syncro_mode_set(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    master_config.start_config = (uint8_t)val & 0x01U;
-    ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  master_config.start_config = (uint8_t)val & 0x01U;
+  ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+
+exit:
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2281,14 +2184,9 @@ int32_t ism330is_sh_syncro_mode_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
+  if (ret != 0) { return ret; }
 
   switch (master_config.start_config)
   {
@@ -2304,6 +2202,7 @@ int32_t ism330is_sh_syncro_mode_get(stmdev_ctx_t *ctx,
       *val = ISM330IS_SH_TRG_XL_GY_DRDY;
       break;
   }
+
   return ret;
 }
 
@@ -2322,20 +2221,14 @@ int32_t ism330is_sh_write_mode_set(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    master_config.write_once = (uint8_t)val & 0x01U;
-    ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  master_config.write_once = (uint8_t)val & 0x01U;
+  ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+
+exit:
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2355,15 +2248,9 @@ int32_t ism330is_sh_write_mode_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
-
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
+  if (ret != 0) { return ret; }
 
   switch (master_config.write_once)
   {
@@ -2379,6 +2266,7 @@ int32_t ism330is_sh_write_mode_get(stmdev_ctx_t *ctx,
       *val = ISM330IS_EACH_SH_CYCLE;
       break;
   }
+
   return ret;
 }
 
@@ -2396,20 +2284,14 @@ int32_t ism330is_sh_reset_set(stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    master_config.rst_master_regs = val;
-    ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  master_config.rst_master_regs = val;
+  ret = ism330is_write_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+
+exit:
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2428,17 +2310,12 @@ int32_t ism330is_sh_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
+  if (ret != 0) { return ret; }
 
   *val = master_config.rst_master_regs;
 
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2461,29 +2338,22 @@ int32_t ism330is_sh_cfg_write(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    reg.slave0_add = val->slv0_add;
-    reg.rw_0 = 0;
-    ret = ism330is_write_reg(ctx, ISM330IS_SLV0_ADD, (uint8_t *)&reg, 1);
-  }
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    ret = ism330is_write_reg(ctx, ISM330IS_SLV0_SUBADD,
-                             &(val->slv0_subadd), 1);
-  }
+  reg.slave0_add = val->slv0_add;
+  reg.rw_0 = 0;
+  ret = ism330is_write_reg(ctx, ISM330IS_SLV0_ADD, (uint8_t *)&reg, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    ret = ism330is_write_reg(ctx, ISM330IS_DATAWRITE_SLV0,
-                             &(val->slv0_data), 1);
-  }
+  ret = ism330is_write_reg(ctx, ISM330IS_SLV0_SUBADD,
+                              &(val->slv0_subadd), 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  ret = ism330is_write_reg(ctx, ISM330IS_DATAWRITE_SLV0,
+                              &(val->slv0_data), 1);
+
+exit:
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2503,20 +2373,14 @@ int32_t ism330is_sh_data_rate_set(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_SLAVE0_CONFIG, (uint8_t *)&slv0_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_SLV0_CONFIG, (uint8_t *)&slv0_config, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    slv0_config.shub_odr = (uint8_t)val & 0x07U;
-    ret = ism330is_write_reg(ctx, ISM330IS_SLAVE0_CONFIG, (uint8_t *)&slv0_config, 1);
-  }
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  slv0_config.shub_odr = (uint8_t)val & 0x07U;
+  ret = ism330is_write_reg(ctx, ISM330IS_SLV0_CONFIG, (uint8_t *)&slv0_config, 1);
+
+exit:
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2536,14 +2400,9 @@ int32_t ism330is_sh_data_rate_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_SLAVE0_CONFIG, (uint8_t *)&slv0_config, 1);
-  }
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_SLV0_CONFIG, (uint8_t *)&slv0_config, 1);
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
+  if (ret != 0) { return ret; }
 
   switch (slv0_config.shub_odr)
   {
@@ -2567,221 +2426,69 @@ int32_t ism330is_sh_data_rate_get(stmdev_ctx_t *ctx,
       *val = ISM330IS_SH_12_5Hz;
       break;
   }
-  return ret;
-}
-
-/**
-  * @brief  Configure slave 0 for perform a read.[set]
-  *
-  * @param  ctx      read / write interface definitions
-  * @param  val      Structure that contain
-  *                      - uint8_t slv1_add;    8 bit i2c device address
-  *                      - uint8_t slv1_subadd; 8 bit register device address
-  *                      - uint8_t slv1_len;    num of bit to read
-  * @retval             interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t ism330is_sh_slv0_cfg_read(stmdev_ctx_t *ctx,
-                                  ism330is_sh_cfg_read_t *val)
-{
-  ism330is_slv0_add_t slv0_add;
-  ism330is_slv0_config_t slv0_config;
-  int32_t ret;
-
-  ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-
-  if (ret == 0)
-  {
-    slv0_add.slave0_add = val->slv_add;
-    slv0_add.rw_0 = 1;
-    ret = ism330is_write_reg(ctx, ISM330IS_SLV0_ADD, (uint8_t *)&slv0_add, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = ism330is_write_reg(ctx, ISM330IS_SLV0_SUBADD,
-                             &(val->slv_subadd), 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_SLAVE0_CONFIG,
-                            (uint8_t *)&slv0_config, 1);
-  }
-
-  if (ret == 0)
-  {
-    slv0_config.slave0_numop = val->slv_len;
-    ret = ism330is_write_reg(ctx, ISM330IS_SLAVE0_CONFIG,
-                             (uint8_t *)&slv0_config, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
 
   return ret;
 }
 
 /**
-  * @brief  Configure slave 0 for perform a write/read.[set]
+  * @brief  Configure slave idx for perform a read.[set]
   *
   * @param  ctx      read / write interface definitions
   * @param  val      Structure that contain
-  *                      - uint8_t slv1_add;    8 bit i2c device address
-  *                      - uint8_t slv1_subadd; 8 bit register device address
-  *                      - uint8_t slv1_len;    num of bit to read
+  *                      - uint8_t slv_add;    8 bit i2c device address
+  *                      - uint8_t slv_subadd; 8 bit register device address
+  *                      - uint8_t slv_len;    num of bit to read
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ism330is_sh_slv1_cfg_read(stmdev_ctx_t *ctx,
-                                  ism330is_sh_cfg_read_t *val)
+int32_t ism330is_sh_slv_cfg_read(stmdev_ctx_t *ctx, uint8_t idx,
+                                 ism330is_sh_cfg_read_t *val)
 {
-  ism330is_slv1_add_t slv1_add;
-  ism330is_slv1_config_t slv1_config;
+  ism330is_slv0_add_t slv_add;
+  ism330is_slv0_config_t slv_config;
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    slv1_add.slave1_add = val->slv_add;
-    slv1_add.r_1 = 1;
-    ret = ism330is_write_reg(ctx, ISM330IS_SLV1_ADD, (uint8_t *)&slv1_add, 1);
-  }
+  slv_add.slave0_add = val->slv_add;
+  slv_add.rw_0 = 1;
+  ret = ism330is_write_reg(ctx, ISM330IS_SLV0_ADD + idx*3U,
+                             (uint8_t *)&slv_add, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    ret = ism330is_write_reg(ctx, ISM330IS_SLV1_SUBADD,
+  ret = ism330is_write_reg(ctx, ISM330IS_SLV0_SUBADD + idx*3U,
                              &(val->slv_subadd), 1);
-  }
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_SLAVE1_CONFIG,
-                            (uint8_t *)&slv1_config, 1);
-  }
+  ret = ism330is_read_reg(ctx, ISM330IS_SLV0_CONFIG + idx*3U,
+                            (uint8_t *)&slv_config, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    slv1_config.slave1_numop = val->slv_len;
-    ret = ism330is_write_reg(ctx, ISM330IS_SLAVE1_CONFIG,
-                             (uint8_t *)&slv1_config, 1);
-  }
+  slv_config.slave0_numop = val->slv_len;
+  ret = ism330is_write_reg(ctx, ISM330IS_SLV0_CONFIG + idx*3U,
+                             (uint8_t *)&slv_config, 1);
 
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+exit:
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
 
 /**
-  * @brief  Configure slave 0 for perform a write/read.[set]
+  * @brief  Sensor hub source register.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      Structure that contain
-  *                      - uint8_t slv2_add;    8 bit i2c device address
-  *                      - uint8_t slv2_subadd; 8 bit register device address
-  *                      - uint8_t slv2_len;    num of bit to read
-  * @retval             interface status (MANDATORY: return 0 -> no Error)
+  * @param  val      union of registers from STATUS_MASTER to
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ism330is_sh_slv2_cfg_read(stmdev_ctx_t *ctx,
-                                  ism330is_sh_cfg_read_t *val)
+int32_t ism330is_sh_status_get(stmdev_ctx_t *ctx,
+                               ism330is_status_master_t *val)
 {
-  ism330is_slv2_add_t slv2_add;
-  ism330is_slv2_config_t slv2_config;
   int32_t ret;
 
-  ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-
-  if (ret == 0)
-  {
-    slv2_add.slave2_add = val->slv_add;
-    slv2_add.r_2 = 1;
-    ret = ism330is_write_reg(ctx, ISM330IS_SLV2_ADD, (uint8_t *)&slv2_add, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = ism330is_write_reg(ctx, ISM330IS_SLV2_SUBADD,
-                             &(val->slv_subadd), 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_SLAVE2_CONFIG,
-                            (uint8_t *)&slv2_config, 1);
-  }
-
-  if (ret == 0)
-  {
-    slv2_config.slave2_numop = val->slv_len;
-    ret = ism330is_write_reg(ctx, ISM330IS_SLAVE2_CONFIG,
-                             (uint8_t *)&slv2_config, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
-
-  return ret;
-}
-
-/**
-  * @brief Configure slave 0 for perform a write/read.[set]
-  *
-  * @param  ctx      read / write interface definitions
-  * @param  val      Structure that contain
-  *                      - uint8_t slv3_add;    8 bit i2c device address
-  *                      - uint8_t slv3_subadd; 8 bit register device address
-  *                      - uint8_t slv3_len;    num of bit to read
-  * @retval             interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t ism330is_sh_slv3_cfg_read(stmdev_ctx_t *ctx,
-                                  ism330is_sh_cfg_read_t *val)
-{
-  ism330is_slv3_add_t slv3_add;
-  ism330is_slv3_config_t slv3_config;
-  int32_t ret;
-
-  ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-
-  if (ret == 0)
-  {
-    slv3_add.slave3_add = val->slv_add;
-    slv3_add.r_3 = 1;
-    ret = ism330is_write_reg(ctx, ISM330IS_SLV3_ADD, (uint8_t *)&slv3_add, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = ism330is_write_reg(ctx, ISM330IS_SLV3_SUBADD,
-                             &(val->slv_subadd), 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = ism330is_read_reg(ctx, ISM330IS_SLAVE3_CONFIG,
-                            (uint8_t *)&slv3_config, 1);
-  }
-
-  if (ret == 0)
-  {
-    slv3_config.slave3_numop = val->slv_len;
-    ret = ism330is_write_reg(ctx, ISM330IS_SLAVE3_CONFIG,
-                             (uint8_t *)&slv3_config, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  ret = ism330is_read_reg(ctx, ISM330IS_STATUS_MASTER_MAINPAGE, (uint8_t *) val, 1);
 
   return ret;
 }
@@ -3102,8 +2809,8 @@ int32_t ism330is_ispu_write_dummy_cfg(stmdev_ctx_t *ctx, uint8_t offset,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ism330is_ispu_ready_dummy_cfg(stmdev_ctx_t *ctx, uint8_t offset,
-                                      uint8_t *val, uint8_t len)
+int32_t ism330is_ispu_read_dummy_cfg(stmdev_ctx_t *ctx, uint8_t offset,
+                                     uint8_t *val, uint8_t len)
 {
   int32_t ret;
 
@@ -3133,20 +2840,16 @@ int32_t ism330is_ispu_boot_set(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    ret += ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
-  }
+  ret = ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    ispu_config.ispu_rst_n = (uint8_t)val;
-    ispu_config.clk_dis = (uint8_t)val;
-    ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config,
-                              1);
-  }
+  ispu_config.ispu_rst_n = (uint8_t)val;
+  ispu_config.clk_dis = (uint8_t)val;
+  ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
 
+exit:
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
@@ -3167,11 +2870,10 @@ int32_t ism330is_ispu_boot_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    ret += ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
+  if (ret != 0) { goto exit; }
 
   *val = ISM330IS_ISPU_TURN_OFF;
   if (ispu_config.ispu_rst_n == 1U || ispu_config.clk_dis == 1U)
@@ -3179,6 +2881,7 @@ int32_t ism330is_ispu_boot_get(stmdev_ctx_t *ctx,
     *val = ISM330IS_ISPU_TURN_ON;
   }
 
+exit:
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
@@ -3199,19 +2902,15 @@ int32_t ism330is_ispu_int_latched_set(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    ret += ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
-  }
+  ret += ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    ispu_config.latched = ((uint8_t)val & 0x1U);
-    ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config,
-                              1);
-  }
+  ispu_config.latched = ((uint8_t)val & 0x1U);
+  ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
 
+exit:
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
@@ -3232,13 +2931,9 @@ int32_t ism330is_ispu_int_latched_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
-
-  if (ret == 0)
-  {
-    ret += ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
-  }
-
+  ret += ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
+  if (ret != 0) { return ret; }
 
   switch ((ispu_config.latched))
   {
@@ -3254,6 +2949,7 @@ int32_t ism330is_ispu_int_latched_get(stmdev_ctx_t *ctx,
       *val = ISM330IS_ISPU_INT_PULSED;
       break;
   }
+
   return ret;
 }
 
@@ -3272,13 +2968,11 @@ int32_t ism330is_ispu_get_boot_status(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
-  if (ret == 0)
-  {
-    ret += ism330is_read_reg(ctx, ISM330IS_ISPU_STATUS,
-                             (uint8_t *)&ispu_boot_status, 1);
-    *val = (ism330is_ispu_boot_end_t)ispu_boot_status.boot_end;
-    ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
-  }
+  if (ret != 0) { return ret; }
+
+  ret = ism330is_read_reg(ctx, ISM330IS_ISPU_STATUS, (uint8_t *)&ispu_boot_status, 1);
+  *val = (ism330is_ispu_boot_end_t)ispu_boot_status.boot_end;
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3299,7 +2993,7 @@ static int32_t ism330is_ispu_sel_memory_addr(stmdev_ctx_t *ctx, uint16_t mem_add
 }
 
 /**
-  * @brief  ISPU write memory
+  * @brief  ISPU write memory. ISPU clock is disabled inside the routine.
   *
   * @param  ctx      read / write interface definitions
   * @param  mem_sel  ISM330IS_ISPU_DATA_RAM_MEMORY, ISM330IS_ISPU_PROGRAM_RAM_MEMORY
@@ -3314,46 +3008,63 @@ int32_t ism330is_ispu_write_memory(stmdev_ctx_t *ctx,
                                    uint16_t mem_addr, uint8_t *mem_data, uint16_t len)
 {
   ism330is_ispu_mem_sel_t ispu_mem_sel;
+  ism330is_ispu_config_t ispu_cfg;
+  uint8_t clk_dis;
   int32_t ret;
   uint16_t i;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
   if (ret == 0)
   {
+    /* disable ISPU clock */
+    ret = ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
+    clk_dis = ispu_cfg.clk_dis;
+    ispu_cfg.clk_dis = 1;
+    ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
+
     /* select memory to be written */
     ispu_mem_sel.read_mem_en = 0;
     ispu_mem_sel.mem_sel = (uint8_t)mem_sel;
-    ret = ism330is_write_reg(ctx, ISM330IS_ISPU_MEM_SEL, (uint8_t *)&ispu_mem_sel, 1);
+    ret += ism330is_write_reg(ctx, ISM330IS_ISPU_MEM_SEL, (uint8_t *)&ispu_mem_sel, 1);
 
     if (mem_sel == ISM330IS_ISPU_PROGRAM_RAM_MEMORY)
     {
-      uint16_t addr_s[4] = {0U, 0U, 0U, 0U};
-      uint16_t len_s[4] = {0U, 0U, 0U, 0U};
+      uint16_t addr_s[4] = {(uint16_t)0, (uint16_t)0, (uint16_t)0, (uint16_t)0};
+      uint16_t len_s[4] = {(uint16_t)0, (uint16_t)0, (uint16_t)0, (uint16_t)0};
       uint8_t j = 0;
       uint16_t k;
 
       addr_s[0] = mem_addr;
-      for (i = 0, k = 0; i < len; i++, k++)
+      k = 0U;
+      for (i = 0U; i < len; i++)
       {
         if ((mem_addr + i == 0x2000U) || (mem_addr + i == 0x4000U) || (mem_addr + i == 0x6000U))
         {
           len_s[j++] = k;
           addr_s[j] = mem_addr + i;
-          k = 0;
+          k = 0U;
         }
+
+        k++;
       }
       len_s[j++] = k;
 
-      for (i = 0, k = 0; i < j; k+=len_s[i], i++)
+      k = 0U;
+      for (i = 0U; i < j; i++)
       {
         ret += ism330is_ispu_sel_memory_addr(ctx, addr_s[i]);
         ret += ism330is_write_reg(ctx, ISM330IS_ISPU_MEM_DATA, &mem_data[k], len_s[i]);
+        k+=len_s[i];
       }
     } else {
       /* select memory address */
       ret += ism330is_ispu_sel_memory_addr(ctx, mem_addr);
       ret += ism330is_write_reg(ctx, ISM330IS_ISPU_MEM_DATA, &mem_data[0], len);
     }
+
+    /* set ISPU clock back to previous value */
+    ispu_cfg.clk_dis = clk_dis;
+    ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
   }
 
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
@@ -3362,7 +3073,7 @@ int32_t ism330is_ispu_write_memory(stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  ISPU read memory
+  * @brief  ISPU read memory. ISPU clock is disabled inside the routine.
   *
   * @param  ctx      read / write interface definitions
   * @param  mem_sel  ISM330IS_ISPU_DATA_RAM_MEMORY, ISM330IS_ISPU_PROGRAM_RAM_MEMORY
@@ -3377,22 +3088,35 @@ int32_t ism330is_ispu_read_memory(stmdev_ctx_t *ctx,
                                   uint16_t mem_addr, uint8_t *mem_data, uint16_t len)
 {
   ism330is_ispu_mem_sel_t ispu_mem_sel;
+  ism330is_ispu_config_t ispu_cfg;
+  uint8_t clk_dis;
   int32_t ret;
   uint8_t dummy;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
   if (ret == 0)
   {
+    /* disable ISPU clock */
+    ret = ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
+    clk_dis = ispu_cfg.clk_dis;
+    ispu_cfg.clk_dis = 1;
+    ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
+
     /* select memory to be read */
     ispu_mem_sel.read_mem_en = 1;
     ispu_mem_sel.mem_sel = (uint8_t)mem_sel;
-    ret = ism330is_write_reg(ctx, ISM330IS_ISPU_MEM_SEL, (uint8_t *)&ispu_mem_sel, 1);
+    ret += ism330is_write_reg(ctx, ISM330IS_ISPU_MEM_SEL, (uint8_t *)&ispu_mem_sel, 1);
 
     /* select memory address */
     ret += ism330is_ispu_sel_memory_addr(ctx, mem_addr);
-    ret += ism330is_read_reg(ctx, ISM330IS_ISPU_MEM_DATA, &dummy, 1);
 
+    /* read data */
+    ret += ism330is_read_reg(ctx, ISM330IS_ISPU_MEM_DATA, &dummy, 1);
     ret += ism330is_read_reg(ctx, ISM330IS_ISPU_MEM_DATA, &mem_data[0], len);
+
+    /* set ISPU clock back to previous value */
+    ispu_cfg.clk_dis = clk_dis;
+    ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
   }
 
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
