@@ -478,6 +478,8 @@ extern float_t ilps28qsw_from_fs4000_to_hPa(int32_t lsb);
 
 extern float_t ilps28qsw_from_lsb_to_celsius(int16_t lsb);
 
+extern float_t ilps28qsw_from_lsb_to_mv(int32_t lsb);
+
 typedef struct
 {
   uint8_t whoami;
@@ -602,6 +604,7 @@ int32_t ilps28qsw_data_get(stmdev_ctx_t *ctx, ilps28qsw_md_t *md,
                            ilps28qsw_data_t *data);
 typedef struct
 {
+  float_t mv; /* value converted in mV */
   int32_t lsb; /* 24 bit properly right aligned */
   int32_t raw; /* 32 bit signed-left algned  format left  */
 } ilps28qsw_ah_qvar_data_t;

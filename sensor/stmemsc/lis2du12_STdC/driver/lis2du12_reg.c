@@ -430,7 +430,7 @@ int32_t lis2du12_all_sources_get(stmdev_ctx_t *ctx,
 
       val->wake_up_z = wu_src.z_wu;
       val->wake_up_y = wu_src.y_wu;
-      val->wake_up_x = wu_src.z_wu;
+      val->wake_up_x = wu_src.x_wu;
       val->sleep_state = wu_src.sleep_state;
     }
 
@@ -493,8 +493,8 @@ int32_t lis2du12_mode_get(stmdev_ctx_t *ctx, lis2du12_md_t *val)
     case LIS2DU12_OFF:
       val->odr = LIS2DU12_OFF;
       break;
-    case LIS2DU12_1Hz5_ULP:
-      val->odr = LIS2DU12_1Hz5_ULP;
+    case LIS2DU12_1Hz6_ULP:
+      val->odr = LIS2DU12_1Hz6_ULP;
       break;
     case LIS2DU12_3Hz_ULP:
       val->odr = LIS2DU12_3Hz_ULP;
@@ -1280,6 +1280,7 @@ int32_t lis2du12_wake_up_mode_set(stmdev_ctx_t *ctx, lis2du12_wkup_md_t *val)
                            (uint8_t*)&wake_up_dur, 1);
   ret += lis2du12_write_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t*)&md1_cfg, 1);
   ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL4, (uint8_t *)&ctrl4, 1);
 
   return ret;
 }
@@ -1343,8 +1344,8 @@ int32_t lis2du12_wake_up_mode_get(stmdev_ctx_t *ctx, lis2du12_wkup_md_t *val)
     case LIS2DU12_SLEEP_AT_3Hz:
       val->sleep.odr = LIS2DU12_SLEEP_AT_3Hz;
       break;
-    case LIS2DU12_SLEEP_AT_1Hz5:
-      val->sleep.odr = LIS2DU12_SLEEP_AT_1Hz5;
+    case LIS2DU12_SLEEP_AT_1Hz6:
+      val->sleep.odr = LIS2DU12_SLEEP_AT_1Hz6;
       break;
     default:
       val->sleep.odr = LIS2DU12_DO_NOT_CHANGE;

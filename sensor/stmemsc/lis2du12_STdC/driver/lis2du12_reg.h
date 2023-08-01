@@ -778,17 +778,17 @@ int32_t lis2du12_all_sources_get(stmdev_ctx_t *ctx,
 typedef struct {
   enum {
     LIS2DU12_OFF               = 0x00, /* in power down */
-    LIS2DU12_1Hz5_ULP          = 0x01, /* @1Hz6 (low power) */
-    LIS2DU12_3Hz_ULP           = 0x02, /* @1Hz6 (ultra low/Gy, OIS imu off) */
-    LIS2DU12_6Hz_ULP           = 0x03, /* @12Hz5 (high performance) */
-    LIS2DU12_6Hz               = 0x04, /* @12Hz5 (low power) */
-    LIS2DU12_12Hz5             = 0x05, /* @12Hz5 (ultra low/Gy, OIS imu off) */
-    LIS2DU12_25Hz              = 0x06, /* @26Hz  (high performance) */
-    LIS2DU12_50Hz              = 0x07, /* @26Hz  (low power) */
-    LIS2DU12_100Hz             = 0x08, /* @26Hz  (ultra low/Gy, OIS imu off) */
-    LIS2DU12_200Hz             = 0x09, /* @52Hz  (high performance) */
-    LIS2DU12_400Hz             = 0x0A, /* @52Hz  (low power) */
-    LIS2DU12_800Hz             = 0x0B, /* @52Hz  (ultra low/Gy, OIS imu off) */
+    LIS2DU12_1Hz6_ULP          = 0x01, /* @1Hz6(ultralow power) */
+    LIS2DU12_3Hz_ULP           = 0x02, /* @3Hz (ultralow power) */
+    LIS2DU12_6Hz_ULP           = 0x03, /* @6Hz (ultralow power) */
+    LIS2DU12_6Hz               = 0x04, /* @6Hz (normal) */
+    LIS2DU12_12Hz5             = 0x05, /* @12Hz5 (normal) */
+    LIS2DU12_25Hz              = 0x06, /* @25Hz  (normal) */
+    LIS2DU12_50Hz              = 0x07, /* @50Hz  (normal) */
+    LIS2DU12_100Hz             = 0x08, /* @100Hz (normal) */
+    LIS2DU12_200Hz             = 0x09, /* @200Hz (normal) */
+    LIS2DU12_400Hz             = 0x0A, /* @400Hz (normal) */
+    LIS2DU12_800Hz             = 0x0B, /* @800Hz (normal) */
     LIS2DU12_TRIG_PIN          = 0x0E, /* Single-shot high latency by INT2 */
     LIS2DU12_TRIG_SW           = 0x0F, /* Single-shot high latency by IF */
   } odr;
@@ -924,7 +924,7 @@ typedef struct {
       LIS2DU12_DO_NOT_CHANGE = 0,
       LIS2DU12_SLEEP_AT_6Hz  = 1,
       LIS2DU12_SLEEP_AT_3Hz  = 2,
-      LIS2DU12_SLEEP_AT_1Hz5 = 3,
+      LIS2DU12_SLEEP_AT_1Hz6 = 3,
     } odr;
   } sleep;
 } lis2du12_wkup_md_t;

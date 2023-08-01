@@ -2648,6 +2648,8 @@ float_t lsm6dsv16bx_from_lsb_to_celsius(int16_t lsb);
 
 uint64_t lsm6dsv16bx_from_lsb_to_nsec(uint32_t lsb);
 
+float_t lsm6dsv16bx_from_lsb_to_mv(int16_t lsb);
+
 typedef enum
 {
   LSM6DSV16BX_READY                               = 0x0,
@@ -2755,7 +2757,7 @@ typedef enum
   LSM6DSV16BX_500dps                              = 0x2,
   LSM6DSV16BX_1000dps                             = 0x3,
   LSM6DSV16BX_2000dps                             = 0x4,
-  LSM6DSV16BX_4000dps                             = 0x5,
+  LSM6DSV16BX_4000dps                             = 0xc,
 } lsm6dsv16bx_gy_full_scale_t;
 int32_t lsm6dsv16bx_gy_full_scale_set(stmdev_ctx_t *ctx,
                                       lsm6dsv16bx_gy_full_scale_t val);
