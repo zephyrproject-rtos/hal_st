@@ -2350,13 +2350,6 @@ VL53L1_Error VL53L1_get_device_results(
 			pdev->low_power_auto_data.low_power_auto_range_count = 2;
 		}
 
-		/* perform DSS calculation. This can be performed every range */
-		if ((pdev->low_power_auto_data.low_power_auto_range_count != 0xFF) &&
-			(status == VL53L1_ERROR_NONE)) {
-			status = VL53L1_low_power_auto_update_DSS(
-					Dev);
-		}
-
 	}
 	/* End Patch_LowPowerAutoMode */
 

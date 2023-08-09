@@ -474,7 +474,7 @@ VL53L1_Error VL53L1_poll_for_firmware_ready(
 
 	/* calculate time limit in absolute time */
 
-	VL53L1_GetTickCount(&start_time_ms); /*lint !e534 ignoring return*/
+	VL53L1_GetTickCount(Dev, &start_time_ms); /*lint !e534 ignoring return*/
 	pdev->fw_ready_poll_duration_ms = 0;
 
 	/* wait until firmware is ready, timeout reached on error occurred */
@@ -499,7 +499,7 @@ VL53L1_Error VL53L1_poll_for_firmware_ready(
 		 * Update polling time (Compare difference rather than
 		 * absolute to negate 32bit wrap around issue)
 		 */
-		VL53L1_GetTickCount(&current_time_ms);  /*lint !e534 ignoring return*/
+		VL53L1_GetTickCount(Dev, &current_time_ms);  /*lint !e534 ignoring return*/
 		pdev->fw_ready_poll_duration_ms =
 				current_time_ms - start_time_ms;
 	}
