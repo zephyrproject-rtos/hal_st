@@ -1,64 +1,13 @@
-/*
-* Copyright (c) 2017, STMicroelectronics - All Rights Reserved
-*
-* This file is part of VL53L1 Core and is dual licensed,
-* either 'STMicroelectronics
-* Proprietary license'
-* or 'BSD 3-clause "New" or "Revised" License' , at your option.
-*
-********************************************************************************
-*
-* 'STMicroelectronics Proprietary license'
-*
-********************************************************************************
-*
-* License terms: STMicroelectronics Proprietary in accordance with licensing
-* terms at www.st.com/sla0081
-*
-* STMicroelectronics confidential
-* Reproduction and Communication of this document is strictly prohibited unless
-* specifically authorized in writing by STMicroelectronics.
-*
-*
-********************************************************************************
-*
-* Alternatively, VL53L1 Core may be distributed under the terms of
-* 'BSD 3-clause "New" or "Revised" License', in which case the following
-* provisions apply instead of the ones mentioned above :
-*
-********************************************************************************
-*
-* License terms: BSD 3-clause "New" or "Revised" License.
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions are met:
-*
-* 1. Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* 2. Redistributions in binary form must reproduce the above copyright notice,
-* this list of conditions and the following disclaimer in the documentation
-* and/or other materials provided with the distribution.
-*
-* 3. Neither the name of the copyright holder nor the names of its contributors
-* may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-*
-********************************************************************************
-*
-*/
+
+/* SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause */
+/******************************************************************************
+ * Copyright (c) 2020, STMicroelectronics - All Rights Reserved
+
+ This file is part of VL53L1 and is dual licensed,
+ either GPL-2.0+
+ or 'BSD 3-clause "New" or "Revised" License' , at your option.
+ ******************************************************************************
+ */
 
 /**
  * @file vl53l1_def.h
@@ -86,11 +35,11 @@ extern "C" {
 /** VL53L1 IMPLEMENTATION major version */
 #define VL53L1_IMPLEMENTATION_VER_MAJOR       2
 /** VL53L1 IMPLEMENTATION minor version */
-#define VL53L1_IMPLEMENTATION_VER_MINOR       3
+#define VL53L1_IMPLEMENTATION_VER_MINOR       4
 /** VL53L1 IMPLEMENTATION sub version */
-#define VL53L1_IMPLEMENTATION_VER_SUB         3
+#define VL53L1_IMPLEMENTATION_VER_SUB         5
 /** VL53L1 IMPLEMENTATION sub version */
-#define VL53L1_IMPLEMENTATION_VER_REVISION  1885
+#define VL53L1_IMPLEMENTATION_VER_REVISION  2548
 
 /****************************************
  * PRIVATE define do not edit
@@ -112,7 +61,7 @@ typedef struct {
  */
 typedef struct {
 	char Name[VL53L1_DEVINFO_STRLEN];
-		/*!< Name of the Device e.g. Left_Distance */
+		/*!< Full Name of the Device e.g. VL53L1 cut1.1 */
 	char Type[VL53L1_DEVINFO_STRLEN];
 		/*!< Type of the Device e.g VL53L1 */
 	char ProductId[VL53L1_DEVINFO_STRLEN];
@@ -120,7 +69,9 @@ typedef struct {
 		 * @warning Not yet implemented
 		 */
 	uint8_t ProductType;
-		/*!< Product Type, VL53L1 = 1, VL53L1 = 2*/
+		/*!< Product Type, VL53L1 = 0xCC, VL53L3 = 0xAA
+		 * Stands as module_type in the datasheet
+		 */
 	uint8_t ProductRevisionMajor;
 		/*!< Product revision major */
 	uint8_t ProductRevisionMinor;
@@ -156,9 +107,9 @@ typedef uint8_t VL53L1_DistanceModes;
 
 
 /** @defgroup VL53L1_define_XtalkCal_group Defines Xtalk Calibration modes
-*  Defines all possible Offset Calibration modes for the device
-*  @{
-*/
+ *  Defines all possible Offset Calibration modes for the device
+ *  @{
+ */
 typedef uint8_t VL53L1_XtalkCalibrationModes;
 
 #define VL53L1_XTALKCALIBRATIONMODE_NO_TARGET \
@@ -174,9 +125,9 @@ typedef uint8_t VL53L1_XtalkCalibrationModes;
 /** @} VL53L1_define_XtalkCal_group */
 
 /** @defgroup VL53L1_define_OffsetCal_group Defines Offset Calibration modes
-*  Defines all possible Offset Calibration modes for the device
-*  @{
-*/
+ *  Defines all possible Offset Calibration modes for the device
+ *  @{
+ */
 typedef uint8_t VL53L1_OffsetCalibrationModes;
 
 #define VL53L1_OFFSETCALIBRATIONMODE_STANDARD \
@@ -267,7 +218,7 @@ typedef uint8_t VL53L1_DetectionMode;
 #define VL53L1_DETECTION_DISTANCE_OR_RATE   \
 	((VL53L1_DetectionMode)  4)
 	/*!< Trigger interrupt if "threshold event" occurs on distance OR rate
-	*/
+	 */
 
 /** @} end of VL53L1_DetectionMode_group */
 
@@ -288,22 +239,14 @@ typedef struct {
 	/*!< Defines the operating mode to be used for the next measure */
 	VL53L1_DistanceModes DistanceMode;
 	/*!< Defines the operating mode to be used for the next measure */
-	VL53L1_DistanceModes InternalDistanceMode;
-	/*!< Defines the internal operating mode to be used for the next
-	 * measure
-	 */
-	VL53L1_DistanceModes NewDistanceMode;
-	/*!< Defines the new operating mode to be programmed for the next
-	 * measure
-	 */
 	uint32_t MeasurementTimingBudgetMicroSeconds;
 	/*!< Defines the allowed total time for a single measurement */
 	uint8_t LimitChecksEnable[VL53L1_CHECKENABLE_NUMBER_OF_CHECKS];
 	/*!< This Array store all the Limit Check enable for this device. */
 	uint8_t LimitChecksStatus[VL53L1_CHECKENABLE_NUMBER_OF_CHECKS];
 	/*!< This Array stores all the Status of the check linked to last
-	* measurement.
-	*/
+	 * measurement.
+	 */
 	FixPoint1616_t LimitChecksValue[VL53L1_CHECKENABLE_NUMBER_OF_CHECKS];
 	/*!< This Array stores all the Limit Check value for this device */
 	FixPoint1616_t LimitChecksCurrent[VL53L1_CHECKENABLE_NUMBER_OF_CHECKS];
@@ -362,13 +305,13 @@ typedef struct {
 	FixPoint1616_t SignalRateRtnMegaCps;
 		/*!< Return signal rate (MCPS)\n these is a 16.16 fix point
 		 *  value, which is effectively a measure of target
-		 *   reflectance.
+		 *  reflectance.
 		 */
 
 	FixPoint1616_t AmbientRateRtnMegaCps;
 		/*!< Return ambient rate (MCPS)\n these is a 16.16 fix point
-		 *  value, which is effectively a measure of the ambien
-		 *  t light.
+		 *  value, which is effectively a measure of the ambient
+		 *  light.
 		 */
 
 	uint16_t EffectiveSpadRtnCount;
@@ -455,10 +398,9 @@ typedef struct {
 	VL53L1_optical_centre_t              optical_centre;
 	VL53L1_gain_calibration_data_t       gain_cal;
 	VL53L1_cal_peak_rate_map_t           cal_peak_rate_map;
-
 } VL53L1_CalibrationData_t;
 
-#define VL53L1_ADDITIONAL_CALIBRATION_DATA_STRUCT_VERSION  0x10
+#define VL53L1_ADDITIONAL_CALIBRATION_DATA_STRUCT_VERSION  0x20
 /** VL53L1 additional Calibration Data struct version final struct version
  * is given by adding it to  VL53L1_LL_CALIBRATION_DATA_STRUCT_VERSION
  */
@@ -646,11 +588,6 @@ typedef struct {
 #ifndef SUPPRESS_UNUSED_WARNING
 #define SUPPRESS_UNUSED_WARNING(x) ((void) (x))
 #endif
-
-#define CHECK_ERROR_GO_ENDFUNC do {\
-		if (Status != VL53L1_ERROR_NONE) \
-			goto ENDFUNC; \
-	} while (0)
 
 /** @} VL53L1_define_GeneralMacro_group */
 
