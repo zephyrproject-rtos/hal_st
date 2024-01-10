@@ -1,2 +1,4 @@
+name: hal_st
 build:
   cmake: .
+  kconfig-ext: True
