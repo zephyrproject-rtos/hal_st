@@ -2,3 +2,11 @@ name: hal_st
 build:
   cmake: .
   kconfig-ext: True
+blobs:
+  - path: img/bluetooth/steval-mkboxpro/dtm.bin
+    sha256: f65b59363482a1122d4155ceb843b1fe7bb5612496f81feb50746f110fc27ebf
+    type: img
+    version: '1.0.0'
+    license-path: zephyr/blobs/license.md
+    url: https://github.com/STMicroelectronics/stsw-mkbox-bleco/raw/v1.0.0/img/steval-mkboxpro/DTM_SPI_WITH_UPDATER_CONTROLLER.bin
+    description: "controller-only BLE f/w image for the STEVAL-MKBOXPRO board"
