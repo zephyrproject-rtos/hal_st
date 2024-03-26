@@ -10,7 +10,7 @@ zephyr_library()
 
 if(CONFIG_VL53L0X)
 zephyr_include_directories(sensor/vl53l0x/api/core/inc
-			   ${PROJECT_SOURCE_DIR}/drivers/sensor/vl53l0x)
+			   ${PROJECT_SOURCE_DIR}/drivers/sensor/st/vl53l0x)
 zephyr_library_sources(sensor/vl53l0x/api/core/src/vl53l0x_api.c)
 zephyr_library_sources(sensor/vl53l0x/api/core/src/vl53l0x_api_ranging.c)
 zephyr_library_sources(sensor/vl53l0x/api/core/src/vl53l0x_api_calibration.c)
@@ -20,7 +20,7 @@ endif()
 
 if(CONFIG_VL53L1X)
 zephyr_include_directories(sensor/vl53l1x/api/core/inc
-			   ${PROJECT_SOURCE_DIR}/drivers/sensor/vl53l1x)
+			   ${PROJECT_SOURCE_DIR}/drivers/sensor/st/vl53l1x)
 zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_api.c)
 zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_api_calibration.c)
 zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_wait.c)
