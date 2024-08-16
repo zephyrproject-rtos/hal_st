@@ -409,10 +409,10 @@ typedef union
  * them with a custom implementation.
  */
 
-int32_t lps25hb_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t lps25hb_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data,
                          uint16_t len);
-int32_t lps25hb_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t lps25hb_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
 
@@ -420,8 +420,8 @@ float_t lps25hb_from_lsb_to_hpa(uint32_t lsb);
 
 float_t lps25hb_from_lsb_to_degc(int16_t lsb);
 
-int32_t lps25hb_pressure_ref_set(stmdev_ctx_t *ctx, int32_t val);
-int32_t lps25hb_pressure_ref_get(stmdev_ctx_t *ctx, int32_t *val);
+int32_t lps25hb_pressure_ref_set(const stmdev_ctx_t *ctx, int32_t val);
+int32_t lps25hb_pressure_ref_get(const stmdev_ctx_t *ctx, int32_t *val);
 
 typedef enum
 {
@@ -430,9 +430,9 @@ typedef enum
   LPS25HB_P_AVG_32 = 2,
   LPS25HB_P_AVG_64 = 3,
 } lps25hb_avgp_t;
-int32_t lps25hb_pressure_avg_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_pressure_avg_set(const stmdev_ctx_t *ctx,
                                  lps25hb_avgp_t val);
-int32_t lps25hb_pressure_avg_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_pressure_avg_get(const stmdev_ctx_t *ctx,
                                  lps25hb_avgp_t *val);
 
 typedef enum
@@ -442,16 +442,16 @@ typedef enum
   LPS25HB_T_AVG_32 = 2,
   LPS25HB_T_AVG_64 = 3,
 } lps25hb_avgt_t;
-int32_t lps25hb_temperature_avg_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_temperature_avg_set(const stmdev_ctx_t *ctx,
                                     lps25hb_avgt_t val);
-int32_t lps25hb_temperature_avg_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_temperature_avg_get(const stmdev_ctx_t *ctx,
                                     lps25hb_avgt_t *val);
 
-int32_t lps25hb_autozero_rst_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_autozero_rst_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_autozero_rst_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_autozero_rst_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_block_data_update_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_block_data_update_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
 typedef enum
@@ -463,49 +463,49 @@ typedef enum
   LPS25HB_ODR_25Hz   = 12,
   LPS25HB_ONE_SHOT   = 8,
 } lps25hb_odr_t;
-int32_t lps25hb_data_rate_set(stmdev_ctx_t *ctx, lps25hb_odr_t val);
-int32_t lps25hb_data_rate_get(stmdev_ctx_t *ctx, lps25hb_odr_t *val);
+int32_t lps25hb_data_rate_set(const stmdev_ctx_t *ctx, lps25hb_odr_t val);
+int32_t lps25hb_data_rate_get(const stmdev_ctx_t *ctx, lps25hb_odr_t *val);
 
-int32_t lps25hb_one_shoot_trigger_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_one_shoot_trigger_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_one_shoot_trigger_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_one_shoot_trigger_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
-int32_t lps25hb_autozero_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_autozero_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_autozero_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_autozero_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_fifo_mean_decimator_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_mean_decimator_set(const stmdev_ctx_t *ctx,
                                         uint8_t val);
-int32_t lps25hb_fifo_mean_decimator_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_mean_decimator_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val);
 
-int32_t lps25hb_press_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_press_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_temp_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_temp_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_temp_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_temp_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_press_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_press_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_pressure_raw_get(stmdev_ctx_t *ctx, uint32_t *buff);
+int32_t lps25hb_pressure_raw_get(const stmdev_ctx_t *ctx, uint32_t *buff);
 
-int32_t lps25hb_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *buff);
+int32_t lps25hb_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *buff);
 
-int32_t lps25hb_pressure_offset_set(stmdev_ctx_t *ctx, int16_t val);
-int32_t lps25hb_pressure_offset_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t lps25hb_pressure_offset_set(const stmdev_ctx_t *ctx, int16_t val);
+int32_t lps25hb_pressure_offset_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t lps25hb_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t lps25hb_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t lps25hb_reset_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_reset_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_boot_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_status_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_status_get(const stmdev_ctx_t *ctx,
                            lps25hb_status_reg_t *val);
 
-int32_t lps25hb_int_generation_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_int_generation_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_int_generation_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_int_generation_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -514,9 +514,9 @@ typedef enum
   LPS25HB_LOW_PRES_INT        = 2,
   LPS25HB_EVERY_PRES_INT      = 3,
 } lps25hb_int_s_t;
-int32_t lps25hb_int_pin_mode_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_pin_mode_set(const stmdev_ctx_t *ctx,
                                  lps25hb_int_s_t val);
-int32_t lps25hb_int_pin_mode_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_pin_mode_get(const stmdev_ctx_t *ctx,
                                  lps25hb_int_s_t *val);
 
 typedef enum
@@ -524,32 +524,32 @@ typedef enum
   LPS25HB_PUSH_PULL   = 0,
   LPS25HB_OPEN_DRAIN  = 1,
 } lps25hb_pp_od_t;
-int32_t lps25hb_pin_mode_set(stmdev_ctx_t *ctx, lps25hb_pp_od_t val);
-int32_t lps25hb_pin_mode_get(stmdev_ctx_t *ctx, lps25hb_pp_od_t *val);
+int32_t lps25hb_pin_mode_set(const stmdev_ctx_t *ctx, lps25hb_pp_od_t val);
+int32_t lps25hb_pin_mode_get(const stmdev_ctx_t *ctx, lps25hb_pp_od_t *val);
 
 typedef enum
 {
   LPS25HB_ACTIVE_HIGH = 0,
   LPS25HB_ACTIVE_LOW  = 1,
 } lps25hb_int_h_l_t;
-int32_t lps25hb_int_polarity_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_polarity_set(const stmdev_ctx_t *ctx,
                                  lps25hb_int_h_l_t val);
-int32_t lps25hb_int_polarity_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_polarity_get(const stmdev_ctx_t *ctx,
                                  lps25hb_int_h_l_t *val);
 
-int32_t lps25hb_drdy_on_int_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_drdy_on_int_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_drdy_on_int_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_drdy_on_int_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_fifo_ovr_on_int_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_fifo_ovr_on_int_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_fifo_ovr_on_int_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_fifo_ovr_on_int_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_fifo_threshold_on_int_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_threshold_on_int_set(const stmdev_ctx_t *ctx,
                                           uint8_t val);
-int32_t lps25hb_fifo_threshold_on_int_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_threshold_on_int_get(const stmdev_ctx_t *ctx,
                                           uint8_t *val);
 
-int32_t lps25hb_fifo_empty_on_int_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_fifo_empty_on_int_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_empty_on_int_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_fifo_empty_on_int_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
 typedef enum
@@ -559,9 +559,9 @@ typedef enum
   LPS25HB_NEGATIVE     = 2,
   LPS25HB_BOTH         = 3,
 } lps25hb_pe_t;
-int32_t lps25hb_sign_of_int_threshold_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_sign_of_int_threshold_set(const stmdev_ctx_t *ctx,
                                           lps25hb_pe_t val);
-int32_t lps25hb_sign_of_int_threshold_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_sign_of_int_threshold_get(const stmdev_ctx_t *ctx,
                                           lps25hb_pe_t *val);
 
 typedef enum
@@ -569,34 +569,34 @@ typedef enum
   LPS25HB_INT_PULSED = 0,
   LPS25HB_INT_LATCHED = 1,
 } lps25hb_lir_t;
-int32_t lps25hb_int_notification_mode_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_notification_mode_set(const stmdev_ctx_t *ctx,
                                           lps25hb_lir_t val);
-int32_t lps25hb_int_notification_mode_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_notification_mode_get(const stmdev_ctx_t *ctx,
                                           lps25hb_lir_t *val);
 
-int32_t lps25hb_int_source_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_source_get(const stmdev_ctx_t *ctx,
                                lps25hb_int_source_t *val);
 
-int32_t lps25hb_int_on_press_high_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_on_press_high_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
-int32_t lps25hb_int_on_press_low_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_int_on_press_low_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_interrupt_event_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_interrupt_event_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_int_threshold_set(stmdev_ctx_t *ctx, uint16_t val);
-int32_t lps25hb_int_threshold_get(stmdev_ctx_t *ctx, uint16_t *val);
+int32_t lps25hb_int_threshold_set(const stmdev_ctx_t *ctx, uint16_t val);
+int32_t lps25hb_int_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
-int32_t lps25hb_stop_on_fifo_threshold_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_stop_on_fifo_threshold_set(const stmdev_ctx_t *ctx,
                                            uint8_t val);
-int32_t lps25hb_stop_on_fifo_threshold_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_stop_on_fifo_threshold_get(const stmdev_ctx_t *ctx,
                                            uint8_t *val);
 
-int32_t lps25hb_fifo_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_fifo_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_fifo_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_fifo_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps25hb_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps25hb_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -608,38 +608,38 @@ typedef enum
   LPS25HB_MEAN_MODE                 = 6,
   LPS25HB_BYPASS_TO_FIFO_MODE      = 7,
 } lps25hb_f_mode_t;
-int32_t lps25hb_fifo_mode_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_mode_set(const stmdev_ctx_t *ctx,
                               lps25hb_f_mode_t val);
-int32_t lps25hb_fifo_mode_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_mode_get(const stmdev_ctx_t *ctx,
                               lps25hb_f_mode_t *val);
 
-int32_t lps25hb_fifo_status_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_status_get(const stmdev_ctx_t *ctx,
                                 lps25hb_fifo_status_t *val);
 
-int32_t lps25hb_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_fifo_empty_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_fifo_empty_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps25hb_fifo_fth_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps25hb_fifo_fth_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
   LPS25HB_SPI_4_WIRE = 0,
   LPS25HB_SPI_3_WIRE = 1,
 } lps25hb_sim_t;
-int32_t lps25hb_spi_mode_set(stmdev_ctx_t *ctx, lps25hb_sim_t val);
-int32_t lps25hb_spi_mode_get(stmdev_ctx_t *ctx, lps25hb_sim_t *val);
+int32_t lps25hb_spi_mode_set(const stmdev_ctx_t *ctx, lps25hb_sim_t val);
+int32_t lps25hb_spi_mode_get(const stmdev_ctx_t *ctx, lps25hb_sim_t *val);
 
 typedef enum
 {
   LPS25HB_I2C_ENABLE  = 0,
   LPS25HB_I2C_DISABLE = 1,
 } lps25hb_i2c_dis_t;
-int32_t lps25hb_i2c_interface_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_i2c_interface_set(const stmdev_ctx_t *ctx,
                                   lps25hb_i2c_dis_t val);
-int32_t lps25hb_i2c_interface_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_i2c_interface_get(const stmdev_ctx_t *ctx,
                                   lps25hb_i2c_dis_t *val);
 
 /**

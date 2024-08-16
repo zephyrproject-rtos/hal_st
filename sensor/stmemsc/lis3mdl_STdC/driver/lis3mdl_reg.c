@@ -46,11 +46,16 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lis3mdl_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lis3mdl_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                 uint8_t *data,
                                 uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -67,11 +72,16 @@ int32_t __weak lis3mdl_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lis3mdl_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lis3mdl_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                  uint8_t *data,
                                  uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -136,7 +146,7 @@ float_t lis3mdl_from_lsb_to_celsius(int16_t lsb)
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_data_rate_set(stmdev_ctx_t *ctx, lis3mdl_om_t val)
+int32_t lis3mdl_data_rate_set(const stmdev_ctx_t *ctx, lis3mdl_om_t val)
 {
   lis3mdl_ctrl_reg1_t ctrl_reg1;
   lis3mdl_ctrl_reg4_t ctrl_reg4;
@@ -174,7 +184,7 @@ int32_t lis3mdl_data_rate_set(stmdev_ctx_t *ctx, lis3mdl_om_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_data_rate_get(stmdev_ctx_t *ctx, lis3mdl_om_t *val)
+int32_t lis3mdl_data_rate_get(const stmdev_ctx_t *ctx, lis3mdl_om_t *val)
 {
   lis3mdl_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -332,7 +342,7 @@ int32_t lis3mdl_data_rate_get(stmdev_ctx_t *ctx, lis3mdl_om_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_temperature_meas_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3mdl_temperature_meas_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis3mdl_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -356,7 +366,7 @@ int32_t lis3mdl_temperature_meas_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_temperature_meas_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_temperature_meas_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -375,7 +385,7 @@ int32_t lis3mdl_temperature_meas_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_full_scale_set(stmdev_ctx_t *ctx, lis3mdl_fs_t val)
+int32_t lis3mdl_full_scale_set(const stmdev_ctx_t *ctx, lis3mdl_fs_t val)
 {
   lis3mdl_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -399,7 +409,7 @@ int32_t lis3mdl_full_scale_set(stmdev_ctx_t *ctx, lis3mdl_fs_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_full_scale_get(stmdev_ctx_t *ctx, lis3mdl_fs_t *val)
+int32_t lis3mdl_full_scale_get(const stmdev_ctx_t *ctx, lis3mdl_fs_t *val)
 {
   lis3mdl_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -440,7 +450,7 @@ int32_t lis3mdl_full_scale_get(stmdev_ctx_t *ctx, lis3mdl_fs_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_operating_mode_set(stmdev_ctx_t *ctx,
+int32_t lis3mdl_operating_mode_set(const stmdev_ctx_t *ctx,
                                    lis3mdl_md_t val)
 {
   lis3mdl_ctrl_reg3_t ctrl_reg3;
@@ -465,7 +475,7 @@ int32_t lis3mdl_operating_mode_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_operating_mode_get(stmdev_ctx_t *ctx,
+int32_t lis3mdl_operating_mode_get(const stmdev_ctx_t *ctx,
                                    lis3mdl_md_t *val)
 {
   lis3mdl_ctrl_reg3_t ctrl_reg3;
@@ -503,7 +513,7 @@ int32_t lis3mdl_operating_mode_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_fast_low_power_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3mdl_fast_low_power_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis3mdl_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
@@ -527,7 +537,7 @@ int32_t lis3mdl_fast_low_power_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_fast_low_power_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_fast_low_power_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
@@ -546,7 +556,7 @@ int32_t lis3mdl_fast_low_power_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3mdl_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis3mdl_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -570,7 +580,7 @@ int32_t lis3mdl_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -590,7 +600,7 @@ int32_t lis3mdl_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_high_part_cycle_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3mdl_high_part_cycle_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis3mdl_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -615,7 +625,7 @@ int32_t lis3mdl_high_part_cycle_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_high_part_cycle_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_high_part_cycle_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -634,7 +644,7 @@ int32_t lis3mdl_high_part_cycle_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_mag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_mag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_status_reg_t status_reg;
   int32_t ret;
@@ -654,7 +664,7 @@ int32_t lis3mdl_mag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_mag_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_mag_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_status_reg_t status_reg;
   int32_t ret;
@@ -673,7 +683,7 @@ int32_t lis3mdl_mag_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_magnetic_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lis3mdl_magnetic_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
@@ -696,7 +706,7 @@ int32_t lis3mdl_magnetic_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lis3mdl_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -728,7 +738,7 @@ int32_t lis3mdl_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lis3mdl_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -744,7 +754,7 @@ int32_t lis3mdl_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_self_test_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3mdl_self_test_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis3mdl_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -768,7 +778,7 @@ int32_t lis3mdl_self_test_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_self_test_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -787,7 +797,7 @@ int32_t lis3mdl_self_test_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_reset_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3mdl_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis3mdl_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -811,7 +821,7 @@ int32_t lis3mdl_reset_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -830,7 +840,7 @@ int32_t lis3mdl_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_boot_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3mdl_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis3mdl_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -854,7 +864,7 @@ int32_t lis3mdl_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -873,7 +883,7 @@ int32_t lis3mdl_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_data_format_set(stmdev_ctx_t *ctx, lis3mdl_ble_t val)
+int32_t lis3mdl_data_format_set(const stmdev_ctx_t *ctx, lis3mdl_ble_t val)
 {
   lis3mdl_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -897,7 +907,7 @@ int32_t lis3mdl_data_format_set(stmdev_ctx_t *ctx, lis3mdl_ble_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_data_format_get(stmdev_ctx_t *ctx, lis3mdl_ble_t *val)
+int32_t lis3mdl_data_format_get(const stmdev_ctx_t *ctx, lis3mdl_ble_t *val)
 {
   lis3mdl_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -930,7 +940,7 @@ int32_t lis3mdl_data_format_get(stmdev_ctx_t *ctx, lis3mdl_ble_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_status_get(stmdev_ctx_t *ctx,
+int32_t lis3mdl_status_get(const stmdev_ctx_t *ctx,
                            lis3mdl_status_reg_t *val)
 {
   return lis3mdl_read_reg(ctx, LIS3MDL_STATUS_REG, (uint8_t *) val, 1);
@@ -955,7 +965,7 @@ int32_t lis3mdl_status_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_config_set(stmdev_ctx_t *ctx,
+int32_t lis3mdl_int_config_set(const stmdev_ctx_t *ctx,
                                lis3mdl_int_cfg_t *val)
 {
   return lis3mdl_write_reg(ctx, LIS3MDL_INT_CFG, (uint8_t *) val, 1);
@@ -969,7 +979,7 @@ int32_t lis3mdl_int_config_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_config_get(stmdev_ctx_t *ctx,
+int32_t lis3mdl_int_config_get(const stmdev_ctx_t *ctx,
                                lis3mdl_int_cfg_t *val)
 {
   return lis3mdl_read_reg(ctx, LIS3MDL_INT_CFG, (uint8_t *) val, 1);
@@ -982,7 +992,7 @@ int32_t lis3mdl_int_config_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_generation_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3mdl_int_generation_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis3mdl_int_cfg_t int_cfg;
   int32_t ret;
@@ -1006,7 +1016,7 @@ int32_t lis3mdl_int_generation_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_generation_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_int_generation_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_int_cfg_t int_cfg;
   int32_t ret;
@@ -1026,7 +1036,7 @@ int32_t lis3mdl_int_generation_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_notification_mode_set(stmdev_ctx_t *ctx,
+int32_t lis3mdl_int_notification_mode_set(const stmdev_ctx_t *ctx,
                                           lis3mdl_lir_t val)
 {
   lis3mdl_int_cfg_t int_cfg;
@@ -1052,7 +1062,7 @@ int32_t lis3mdl_int_notification_mode_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_notification_mode_get(stmdev_ctx_t *ctx,
+int32_t lis3mdl_int_notification_mode_get(const stmdev_ctx_t *ctx,
                                           lis3mdl_lir_t *val)
 {
   lis3mdl_int_cfg_t int_cfg;
@@ -1086,7 +1096,7 @@ int32_t lis3mdl_int_notification_mode_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_polarity_set(stmdev_ctx_t *ctx, lis3mdl_iea_t val)
+int32_t lis3mdl_int_polarity_set(const stmdev_ctx_t *ctx, lis3mdl_iea_t val)
 {
   lis3mdl_int_cfg_t int_cfg;
   int32_t ret;
@@ -1110,7 +1120,7 @@ int32_t lis3mdl_int_polarity_set(stmdev_ctx_t *ctx, lis3mdl_iea_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_polarity_get(stmdev_ctx_t *ctx,
+int32_t lis3mdl_int_polarity_get(const stmdev_ctx_t *ctx,
                                  lis3mdl_iea_t *val)
 {
   lis3mdl_int_cfg_t int_cfg;
@@ -1144,7 +1154,7 @@ int32_t lis3mdl_int_polarity_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_on_z_ax_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3mdl_int_on_z_ax_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis3mdl_int_cfg_t int_cfg;
   int32_t ret;
@@ -1168,7 +1178,7 @@ int32_t lis3mdl_int_on_z_ax_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_on_z_ax_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_int_on_z_ax_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_int_cfg_t int_cfg;
   int32_t ret;
@@ -1187,7 +1197,7 @@ int32_t lis3mdl_int_on_z_ax_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_on_y_ax_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3mdl_int_on_y_ax_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis3mdl_int_cfg_t int_cfg;
   int32_t ret;
@@ -1211,7 +1221,7 @@ int32_t lis3mdl_int_on_y_ax_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_on_y_ax_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_int_on_y_ax_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_int_cfg_t int_cfg;
   int32_t ret;
@@ -1230,7 +1240,7 @@ int32_t lis3mdl_int_on_y_ax_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_on_x_ax_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis3mdl_int_on_x_ax_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis3mdl_int_cfg_t int_cfg;
   int32_t ret;
@@ -1254,7 +1264,7 @@ int32_t lis3mdl_int_on_x_ax_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_on_x_ax_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_int_on_x_ax_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_int_cfg_t int_cfg;
   int32_t ret;
@@ -1273,7 +1283,7 @@ int32_t lis3mdl_int_on_x_ax_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_source_get(stmdev_ctx_t *ctx,
+int32_t lis3mdl_int_source_get(const stmdev_ctx_t *ctx,
                                lis3mdl_int_src_t *val)
 {
   return lis3mdl_read_reg(ctx, LIS3MDL_INT_SRC, (uint8_t *) val, 1);
@@ -1287,7 +1297,7 @@ int32_t lis3mdl_int_source_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_interrupt_event_flag_get(stmdev_ctx_t *ctx,
+int32_t lis3mdl_interrupt_event_flag_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val)
 {
   lis3mdl_int_src_t int_src;
@@ -1307,7 +1317,7 @@ int32_t lis3mdl_interrupt_event_flag_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_mag_over_range_flag_get(stmdev_ctx_t *ctx,
+int32_t lis3mdl_int_mag_over_range_flag_get(const stmdev_ctx_t *ctx,
                                             uint8_t *val)
 {
   lis3mdl_int_src_t int_src;
@@ -1327,7 +1337,7 @@ int32_t lis3mdl_int_mag_over_range_flag_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_neg_z_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_int_neg_z_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_int_src_t int_src;
   int32_t ret;
@@ -1346,7 +1356,7 @@ int32_t lis3mdl_int_neg_z_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_neg_y_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_int_neg_y_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_int_src_t int_src;
   int32_t ret;
@@ -1364,7 +1374,7 @@ int32_t lis3mdl_int_neg_y_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_neg_x_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_int_neg_x_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_int_src_t int_src;
   int32_t ret;
@@ -1382,7 +1392,7 @@ int32_t lis3mdl_int_neg_x_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_pos_z_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_int_pos_z_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_int_src_t int_src;
   int32_t ret;
@@ -1400,7 +1410,7 @@ int32_t lis3mdl_int_pos_z_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_pos_y_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_int_pos_y_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_int_src_t int_src;
   int32_t ret;
@@ -1418,7 +1428,7 @@ int32_t lis3mdl_int_pos_y_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_pos_x_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis3mdl_int_pos_x_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis3mdl_int_src_t int_src;
   int32_t ret;
@@ -1436,7 +1446,7 @@ int32_t lis3mdl_int_pos_x_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
+int32_t lis3mdl_int_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -1456,7 +1466,7 @@ int32_t lis3mdl_int_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_int_threshold_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t lis3mdl_int_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -1489,7 +1499,7 @@ int32_t lis3mdl_int_threshold_get(stmdev_ctx_t *ctx, uint16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_spi_mode_set(stmdev_ctx_t *ctx, lis3mdl_sim_t val)
+int32_t lis3mdl_spi_mode_set(const stmdev_ctx_t *ctx, lis3mdl_sim_t val)
 {
   lis3mdl_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
@@ -1513,7 +1523,7 @@ int32_t lis3mdl_spi_mode_set(stmdev_ctx_t *ctx, lis3mdl_sim_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis3mdl_spi_mode_get(stmdev_ctx_t *ctx, lis3mdl_sim_t *val)
+int32_t lis3mdl_spi_mode_get(const stmdev_ctx_t *ctx, lis3mdl_sim_t *val)
 {
   lis3mdl_ctrl_reg3_t ctrl_reg3;
   int32_t ret;

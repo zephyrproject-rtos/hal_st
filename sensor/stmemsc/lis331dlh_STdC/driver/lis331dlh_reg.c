@@ -46,11 +46,16 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lis331dlh_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lis331dlh_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                   uint8_t *data,
                                   uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -67,11 +72,16 @@ int32_t __weak lis331dlh_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lis331dlh_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lis331dlh_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                    uint8_t *data,
                                    uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -126,7 +136,7 @@ float_t lis331dlh_from_fs8_to_mg(int16_t lsb)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_axis_x_data_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis331dlh_axis_x_data_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis331dlh_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -152,7 +162,7 @@ int32_t lis331dlh_axis_x_data_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_axis_x_data_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis331dlh_axis_x_data_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis331dlh_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -172,7 +182,7 @@ int32_t lis331dlh_axis_x_data_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_axis_y_data_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis331dlh_axis_y_data_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis331dlh_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -198,7 +208,7 @@ int32_t lis331dlh_axis_y_data_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_axis_y_data_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis331dlh_axis_y_data_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis331dlh_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -218,7 +228,7 @@ int32_t lis331dlh_axis_y_data_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_axis_z_data_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis331dlh_axis_z_data_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis331dlh_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -244,7 +254,7 @@ int32_t lis331dlh_axis_z_data_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_axis_z_data_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis331dlh_axis_z_data_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis331dlh_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -264,7 +274,7 @@ int32_t lis331dlh_axis_z_data_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_data_rate_set(stmdev_ctx_t *ctx, lis331dlh_dr_t val)
+int32_t lis331dlh_data_rate_set(const stmdev_ctx_t *ctx, lis331dlh_dr_t val)
 {
   lis331dlh_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -291,7 +301,7 @@ int32_t lis331dlh_data_rate_set(stmdev_ctx_t *ctx, lis331dlh_dr_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_data_rate_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_data_rate_get(const stmdev_ctx_t *ctx,
                                 lis331dlh_dr_t *val)
 {
   lis331dlh_ctrl_reg1_t ctrl_reg1;
@@ -358,7 +368,7 @@ int32_t lis331dlh_data_rate_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_reference_mode_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_reference_mode_set(const stmdev_ctx_t *ctx,
                                      lis331dlh_hpm_t val)
 {
   lis331dlh_ctrl_reg2_t ctrl_reg2;
@@ -385,7 +395,7 @@ int32_t lis331dlh_reference_mode_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_reference_mode_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_reference_mode_get(const stmdev_ctx_t *ctx,
                                      lis331dlh_hpm_t *val)
 {
   lis331dlh_ctrl_reg2_t ctrl_reg2;
@@ -420,7 +430,7 @@ int32_t lis331dlh_reference_mode_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_full_scale_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_full_scale_set(const stmdev_ctx_t *ctx,
                                  lis331dlh_fs_t val)
 {
   lis331dlh_ctrl_reg4_t ctrl_reg4;
@@ -447,7 +457,7 @@ int32_t lis331dlh_full_scale_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_full_scale_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_full_scale_get(const stmdev_ctx_t *ctx,
                                  lis331dlh_fs_t *val)
 {
   lis331dlh_ctrl_reg4_t ctrl_reg4;
@@ -486,7 +496,7 @@ int32_t lis331dlh_full_scale_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_block_data_update_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_block_data_update_set(const stmdev_ctx_t *ctx,
                                         uint8_t val)
 {
   lis331dlh_ctrl_reg4_t ctrl_reg4;
@@ -513,7 +523,7 @@ int32_t lis331dlh_block_data_update_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_block_data_update_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_block_data_update_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val)
 {
   lis331dlh_ctrl_reg4_t ctrl_reg4;
@@ -534,7 +544,7 @@ int32_t lis331dlh_block_data_update_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_status_reg_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_status_reg_get(const stmdev_ctx_t *ctx,
                                  lis331dlh_status_reg_t *val)
 {
   int32_t ret;
@@ -552,7 +562,7 @@ int32_t lis331dlh_status_reg_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_flag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis331dlh_flag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis331dlh_status_reg_t status_reg;
   int32_t ret;
@@ -585,7 +595,7 @@ int32_t lis331dlh_flag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_acceleration_raw_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_acceleration_raw_get(const stmdev_ctx_t *ctx,
                                        int16_t *val)
 {
   uint8_t buff[6];
@@ -622,7 +632,7 @@ int32_t lis331dlh_acceleration_raw_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lis331dlh_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -639,7 +649,7 @@ int32_t lis331dlh_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_boot_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis331dlh_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis331dlh_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -665,7 +675,7 @@ int32_t lis331dlh_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis331dlh_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis331dlh_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -685,7 +695,7 @@ int32_t lis331dlh_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_self_test_set(stmdev_ctx_t *ctx, lis331dlh_st_t val)
+int32_t lis331dlh_self_test_set(const stmdev_ctx_t *ctx, lis331dlh_st_t val)
 {
   lis331dlh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -711,7 +721,7 @@ int32_t lis331dlh_self_test_set(stmdev_ctx_t *ctx, lis331dlh_st_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_self_test_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_self_test_get(const stmdev_ctx_t *ctx,
                                 lis331dlh_st_t *val)
 {
   lis331dlh_ctrl_reg4_t ctrl_reg4;
@@ -750,7 +760,7 @@ int32_t lis331dlh_self_test_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_data_format_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_data_format_set(const stmdev_ctx_t *ctx,
                                   lis331dlh_ble_t val)
 {
   lis331dlh_ctrl_reg4_t ctrl_reg4;
@@ -777,7 +787,7 @@ int32_t lis331dlh_data_format_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_data_format_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_data_format_get(const stmdev_ctx_t *ctx,
                                   lis331dlh_ble_t *val)
 {
   lis331dlh_ctrl_reg4_t ctrl_reg4;
@@ -825,7 +835,7 @@ int32_t lis331dlh_data_format_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_hp_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_hp_bandwidth_set(const stmdev_ctx_t *ctx,
                                    lis331dlh_hpcf_t val)
 {
   lis331dlh_ctrl_reg2_t ctrl_reg2;
@@ -852,7 +862,7 @@ int32_t lis331dlh_hp_bandwidth_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_hp_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_hp_bandwidth_get(const stmdev_ctx_t *ctx,
                                    lis331dlh_hpcf_t *val)
 {
   lis331dlh_ctrl_reg2_t ctrl_reg2;
@@ -895,7 +905,7 @@ int32_t lis331dlh_hp_bandwidth_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_hp_path_set(stmdev_ctx_t *ctx, lis331dlh_hpen_t val)
+int32_t lis331dlh_hp_path_set(const stmdev_ctx_t *ctx, lis331dlh_hpen_t val)
 {
   lis331dlh_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -922,7 +932,7 @@ int32_t lis331dlh_hp_path_set(stmdev_ctx_t *ctx, lis331dlh_hpen_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_hp_path_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_hp_path_get(const stmdev_ctx_t *ctx,
                               lis331dlh_hpen_t *val)
 {
   lis331dlh_ctrl_reg2_t ctrl_reg2;
@@ -985,7 +995,7 @@ int32_t lis331dlh_hp_path_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_hp_reset_get(stmdev_ctx_t *ctx)
+int32_t lis331dlh_hp_reset_get(const stmdev_ctx_t *ctx)
 {
   uint8_t dummy;
   int32_t ret;
@@ -1004,7 +1014,7 @@ int32_t lis331dlh_hp_reset_get(stmdev_ctx_t *ctx)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_hp_reference_value_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_hp_reference_value_set(const stmdev_ctx_t *ctx,
                                          uint8_t val)
 {
   int32_t ret;
@@ -1022,7 +1032,7 @@ int32_t lis331dlh_hp_reference_value_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_hp_reference_value_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_hp_reference_value_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val)
 {
   int32_t ret;
@@ -1053,7 +1063,7 @@ int32_t lis331dlh_hp_reference_value_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_spi_mode_set(stmdev_ctx_t *ctx, lis331dlh_sim_t val)
+int32_t lis331dlh_spi_mode_set(const stmdev_ctx_t *ctx, lis331dlh_sim_t val)
 {
   lis331dlh_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -1079,7 +1089,7 @@ int32_t lis331dlh_spi_mode_set(stmdev_ctx_t *ctx, lis331dlh_sim_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_spi_mode_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_spi_mode_get(const stmdev_ctx_t *ctx,
                                lis331dlh_sim_t *val)
 {
   lis331dlh_ctrl_reg4_t ctrl_reg4;
@@ -1127,7 +1137,7 @@ int32_t lis331dlh_spi_mode_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_pin_int1_route_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                      lis331dlh_i1_cfg_t val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1154,7 +1164,7 @@ int32_t lis331dlh_pin_int1_route_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_pin_int1_route_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                      lis331dlh_i1_cfg_t *val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1198,7 +1208,7 @@ int32_t lis331dlh_pin_int1_route_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_notification_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int1_notification_set(const stmdev_ctx_t *ctx,
                                         lis331dlh_lir1_t val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1226,7 +1236,7 @@ int32_t lis331dlh_int1_notification_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_notification_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int1_notification_get(const stmdev_ctx_t *ctx,
                                         lis331dlh_lir1_t *val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1261,7 +1271,7 @@ int32_t lis331dlh_int1_notification_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_pin_int2_route_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                      lis331dlh_i2_cfg_t val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1288,7 +1298,7 @@ int32_t lis331dlh_pin_int2_route_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_pin_int2_route_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                      lis331dlh_i2_cfg_t *val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1332,7 +1342,7 @@ int32_t lis331dlh_pin_int2_route_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_notification_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int2_notification_set(const stmdev_ctx_t *ctx,
                                         lis331dlh_lir2_t val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1360,7 +1370,7 @@ int32_t lis331dlh_int2_notification_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_notification_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int2_notification_get(const stmdev_ctx_t *ctx,
                                         lis331dlh_lir2_t *val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1395,7 +1405,7 @@ int32_t lis331dlh_int2_notification_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_pin_mode_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_pin_mode_set(const stmdev_ctx_t *ctx,
                                lis331dlh_pp_od_t val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1422,7 +1432,7 @@ int32_t lis331dlh_pin_mode_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_pin_mode_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_pin_mode_get(const stmdev_ctx_t *ctx,
                                lis331dlh_pp_od_t *val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1457,7 +1467,7 @@ int32_t lis331dlh_pin_mode_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_pin_polarity_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_pin_polarity_set(const stmdev_ctx_t *ctx,
                                    lis331dlh_ihl_t val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1484,7 +1494,7 @@ int32_t lis331dlh_pin_polarity_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_pin_polarity_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_pin_polarity_get(const stmdev_ctx_t *ctx,
                                    lis331dlh_ihl_t *val)
 {
   lis331dlh_ctrl_reg3_t ctrl_reg3;
@@ -1532,7 +1542,7 @@ int32_t lis331dlh_pin_polarity_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_on_threshold_conf_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int1_on_threshold_conf_set(const stmdev_ctx_t *ctx,
                                              int1_on_th_conf_t val)
 {
   lis331dlh_int1_cfg_t int1_cfg;
@@ -1564,7 +1574,7 @@ int32_t lis331dlh_int1_on_threshold_conf_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_on_threshold_conf_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int1_on_threshold_conf_get(const stmdev_ctx_t *ctx,
                                              int1_on_th_conf_t *val)
 {
   lis331dlh_int1_cfg_t int1_cfg;
@@ -1590,7 +1600,7 @@ int32_t lis331dlh_int1_on_threshold_conf_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_on_threshold_mode_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int1_on_threshold_mode_set(const stmdev_ctx_t *ctx,
                                              lis331dlh_int1_aoi_t val)
 {
   lis331dlh_int1_cfg_t int1_cfg;
@@ -1617,7 +1627,7 @@ int32_t lis331dlh_int1_on_threshold_mode_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_on_threshold_mode_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int1_on_threshold_mode_get(const stmdev_ctx_t *ctx,
                                              lis331dlh_int1_aoi_t *val)
 {
   lis331dlh_int1_cfg_t int1_cfg;
@@ -1652,7 +1662,7 @@ int32_t lis331dlh_int1_on_threshold_mode_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_src_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int1_src_get(const stmdev_ctx_t *ctx,
                                lis331dlh_int1_src_t *val)
 {
   int32_t ret;
@@ -1670,7 +1680,7 @@ int32_t lis331dlh_int1_src_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis331dlh_int1_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis331dlh_int1_ths_t int1_ths;
   int32_t ret;
@@ -1696,7 +1706,7 @@ int32_t lis331dlh_int1_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis331dlh_int1_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis331dlh_int1_ths_t int1_ths;
   int32_t ret;
@@ -1716,7 +1726,7 @@ int32_t lis331dlh_int1_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_dur_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis331dlh_int1_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis331dlh_int1_duration_t int1_duration;
   int32_t ret;
@@ -1742,7 +1752,7 @@ int32_t lis331dlh_int1_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis331dlh_int1_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis331dlh_int1_duration_t int1_duration;
   int32_t ret;
@@ -1762,7 +1772,7 @@ int32_t lis331dlh_int1_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_on_threshold_conf_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int2_on_threshold_conf_set(const stmdev_ctx_t *ctx,
                                              int2_on_th_conf_t val)
 {
   lis331dlh_int2_cfg_t int2_cfg;
@@ -1794,7 +1804,7 @@ int32_t lis331dlh_int2_on_threshold_conf_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_on_threshold_conf_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int2_on_threshold_conf_get(const stmdev_ctx_t *ctx,
                                              int2_on_th_conf_t *val)
 {
   lis331dlh_int2_cfg_t int2_cfg;
@@ -1820,7 +1830,7 @@ int32_t lis331dlh_int2_on_threshold_conf_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_on_threshold_mode_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int2_on_threshold_mode_set(const stmdev_ctx_t *ctx,
                                              lis331dlh_int2_aoi_t val)
 {
   lis331dlh_int2_cfg_t int2_cfg;
@@ -1847,7 +1857,7 @@ int32_t lis331dlh_int2_on_threshold_mode_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_on_threshold_mode_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int2_on_threshold_mode_get(const stmdev_ctx_t *ctx,
                                              lis331dlh_int2_aoi_t *val)
 {
   lis331dlh_int2_cfg_t int2_cfg;
@@ -1882,7 +1892,7 @@ int32_t lis331dlh_int2_on_threshold_mode_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_src_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int2_src_get(const stmdev_ctx_t *ctx,
                                lis331dlh_int2_src_t *val)
 {
   int32_t ret;
@@ -1900,7 +1910,7 @@ int32_t lis331dlh_int2_src_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis331dlh_int2_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis331dlh_int2_ths_t int2_ths;
   int32_t ret;
@@ -1926,7 +1936,7 @@ int32_t lis331dlh_int2_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis331dlh_int2_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis331dlh_int2_ths_t int2_ths;
   int32_t ret;
@@ -1946,7 +1956,7 @@ int32_t lis331dlh_int2_treshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_dur_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis331dlh_int2_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis331dlh_int2_duration_t int2_duration;
   int32_t ret;
@@ -1972,7 +1982,7 @@ int32_t lis331dlh_int2_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis331dlh_int2_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis331dlh_int2_duration_t int2_duration;
   int32_t ret;
@@ -2005,7 +2015,7 @@ int32_t lis331dlh_int2_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_wkup_to_sleep_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis331dlh_wkup_to_sleep_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis331dlh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -2031,7 +2041,7 @@ int32_t lis331dlh_wkup_to_sleep_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_wkup_to_sleep_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis331dlh_wkup_to_sleep_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis331dlh_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -2064,7 +2074,7 @@ int32_t lis331dlh_wkup_to_sleep_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_6d_mode_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int1_6d_mode_set(const stmdev_ctx_t *ctx,
                                    lis331dlh_int1_6d_t val)
 {
   lis331dlh_int1_cfg_t int1_cfg;
@@ -2092,7 +2102,7 @@ int32_t lis331dlh_int1_6d_mode_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_6d_mode_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int1_6d_mode_get(const stmdev_ctx_t *ctx,
                                    lis331dlh_int1_6d_t *val)
 {
   lis331dlh_int1_cfg_t int1_cfg;
@@ -2131,7 +2141,7 @@ int32_t lis331dlh_int1_6d_mode_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_6d_src_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int1_6d_src_get(const stmdev_ctx_t *ctx,
                                   lis331dlh_int1_src_t *val)
 {
   int32_t ret;
@@ -2149,7 +2159,7 @@ int32_t lis331dlh_int1_6d_src_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_6d_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis331dlh_int1_6d_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis331dlh_int1_ths_t int1_ths;
   int32_t ret;
@@ -2175,8 +2185,8 @@ int32_t lis331dlh_int1_6d_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int1_6d_treshold_get(stmdev_ctx_t *ctx,
-                                       uint8_t *val)
+int32_t lis331dlh_int1_6d_threshold_get(const stmdev_ctx_t *ctx,
+                                        uint8_t *val)
 {
   lis331dlh_int1_ths_t int1_ths;
   int32_t ret;
@@ -2196,7 +2206,7 @@ int32_t lis331dlh_int1_6d_treshold_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_6d_mode_set(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int2_6d_mode_set(const stmdev_ctx_t *ctx,
                                    lis331dlh_int2_6d_t val)
 {
   lis331dlh_int2_cfg_t int2_cfg;
@@ -2224,7 +2234,7 @@ int32_t lis331dlh_int2_6d_mode_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_6d_mode_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int2_6d_mode_get(const stmdev_ctx_t *ctx,
                                    lis331dlh_int2_6d_t *val)
 {
   lis331dlh_int2_cfg_t int2_cfg;
@@ -2263,7 +2273,7 @@ int32_t lis331dlh_int2_6d_mode_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_6d_src_get(stmdev_ctx_t *ctx,
+int32_t lis331dlh_int2_6d_src_get(const stmdev_ctx_t *ctx,
                                   lis331dlh_int2_src_t *val)
 {
   int32_t ret;
@@ -2281,7 +2291,7 @@ int32_t lis331dlh_int2_6d_src_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_6d_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis331dlh_int2_6d_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis331dlh_int2_ths_t int2_ths;
   int32_t ret;
@@ -2307,8 +2317,8 @@ int32_t lis331dlh_int2_6d_treshold_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis331dlh_int2_6d_treshold_get(stmdev_ctx_t *ctx,
-                                       uint8_t *val)
+int32_t lis331dlh_int2_6d_threshold_get(const stmdev_ctx_t *ctx,
+                                        uint8_t *val)
 {
   lis331dlh_int2_ths_t int2_ths;
   int32_t ret;

@@ -45,11 +45,16 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lis2hh12_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lis2hh12_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                  uint8_t *data,
                                  uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -66,11 +71,16 @@ int32_t __weak lis2hh12_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lis2hh12_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lis2hh12_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                   uint8_t *data,
                                   uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -106,7 +116,8 @@ float_t lis2hh12_from_fs8g_to_mg(int16_t lsb)
 
 float_t lis2hh12_from_lsb_to_celsius(int16_t lsb)
 {
-  return (((float_t)lsb / 8.0f) + 25.0f);
+  /* 8 LSB/C - 11bit resolution */
+  return ((((float_t)lsb / 32.0f) / 8.0f) + 25.0f);
 }
 
 /**
@@ -130,7 +141,7 @@ float_t lis2hh12_from_lsb_to_celsius(int16_t lsb)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_axis_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_axis_set(const stmdev_ctx_t *ctx,
                              lis2hh12_xl_axis_t val)
 {
   lis2hh12_ctrl1_t ctrl1;
@@ -157,7 +168,7 @@ int32_t lis2hh12_xl_axis_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_axis_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_axis_get(const stmdev_ctx_t *ctx,
                              lis2hh12_xl_axis_t *val)
 {
   lis2hh12_ctrl1_t ctrl1;
@@ -179,7 +190,7 @@ int32_t lis2hh12_xl_axis_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis2hh12_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2hh12_ctrl1_t ctrl1;
   int32_t ret;
@@ -203,7 +214,7 @@ int32_t lis2hh12_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_block_data_update_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_block_data_update_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val)
 {
   lis2hh12_ctrl1_t ctrl1;
@@ -223,7 +234,7 @@ int32_t lis2hh12_block_data_update_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_data_rate_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_data_rate_set(const stmdev_ctx_t *ctx,
                                   lis2hh12_xl_data_rate_t val)
 {
   lis2hh12_ctrl1_t ctrl1;
@@ -248,7 +259,7 @@ int32_t lis2hh12_xl_data_rate_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_data_rate_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_data_rate_get(const stmdev_ctx_t *ctx,
                                   lis2hh12_xl_data_rate_t *val)
 {
   lis2hh12_ctrl1_t ctrl1;
@@ -302,7 +313,7 @@ int32_t lis2hh12_xl_data_rate_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_full_scale_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_full_scale_set(const stmdev_ctx_t *ctx,
                                    lis2hh12_xl_fs_t val)
 {
   lis2hh12_ctrl4_t ctrl4;
@@ -327,7 +338,7 @@ int32_t lis2hh12_xl_full_scale_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_full_scale_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_full_scale_get(const stmdev_ctx_t *ctx,
                                    lis2hh12_xl_fs_t *val)
 {
   lis2hh12_ctrl4_t ctrl4;
@@ -365,7 +376,7 @@ int32_t lis2hh12_xl_full_scale_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_decimation_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_decimation_set(const stmdev_ctx_t *ctx,
                                    lis2hh12_dec_t val)
 {
   lis2hh12_ctrl5_t ctrl5;
@@ -390,7 +401,7 @@ int32_t lis2hh12_xl_decimation_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_decimation_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_decimation_get(const stmdev_ctx_t *ctx,
                                    lis2hh12_dec_t *val)
 {
   lis2hh12_ctrl5_t ctrl5;
@@ -432,7 +443,7 @@ int32_t lis2hh12_xl_decimation_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val)
 {
   lis2hh12_status_t status;
@@ -465,7 +476,7 @@ int32_t lis2hh12_xl_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lis2hh12_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -486,7 +497,7 @@ int32_t lis2hh12_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lis2hh12_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
@@ -522,7 +533,7 @@ int32_t lis2hh12_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_dev_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lis2hh12_dev_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -540,7 +551,7 @@ int32_t lis2hh12_dev_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_dev_reset_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis2hh12_dev_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2hh12_ctrl5_t ctrl5;
   int32_t ret;
@@ -565,7 +576,7 @@ int32_t lis2hh12_dev_reset_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_dev_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis2hh12_dev_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2hh12_ctrl5_t ctrl5;
   int32_t ret;
@@ -584,7 +595,7 @@ int32_t lis2hh12_dev_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_dev_boot_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis2hh12_dev_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2hh12_ctrl6_t ctrl6;
   int32_t ret;
@@ -608,7 +619,7 @@ int32_t lis2hh12_dev_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_dev_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis2hh12_dev_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2hh12_ctrl6_t ctrl6;
   int32_t ret;
@@ -627,7 +638,7 @@ int32_t lis2hh12_dev_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_dev_status_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_dev_status_get(const stmdev_ctx_t *ctx,
                                 lis2hh12_status_reg_t *val)
 {
   lis2hh12_status_t status;
@@ -667,7 +678,7 @@ int32_t lis2hh12_dev_status_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_int_path_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_int_path_set(const stmdev_ctx_t *ctx,
                                         lis2hh12_xl_hp_path_t val)
 {
   lis2hh12_ctrl2_t ctrl2;
@@ -692,7 +703,7 @@ int32_t lis2hh12_xl_filter_int_path_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_int_path_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_int_path_get(const stmdev_ctx_t *ctx,
                                         lis2hh12_xl_hp_path_t *val)
 {
   lis2hh12_ctrl2_t ctrl2;
@@ -730,7 +741,7 @@ int32_t lis2hh12_xl_filter_int_path_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_out_path_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_out_path_set(const stmdev_ctx_t *ctx,
                                         lis2hh12_xl_out_path_t val)
 {
   lis2hh12_ctrl1_t ctrl1;
@@ -767,7 +778,7 @@ int32_t lis2hh12_xl_filter_out_path_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_out_path_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_out_path_get(const stmdev_ctx_t *ctx,
                                         lis2hh12_xl_out_path_t *val)
 {
   lis2hh12_ctrl1_t ctrl1;
@@ -812,7 +823,7 @@ int32_t lis2hh12_xl_filter_out_path_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_hp_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_hp_bandwidth_set(const stmdev_ctx_t *ctx,
                                             lis2hh12_xl_hp_bw_t val)
 {
   lis2hh12_ctrl2_t ctrl2;
@@ -839,7 +850,7 @@ int32_t lis2hh12_xl_filter_hp_bandwidth_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_hp_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_hp_bandwidth_get(const stmdev_ctx_t *ctx,
                                             lis2hh12_xl_hp_bw_t *val)
 {
   lis2hh12_ctrl2_t ctrl2;
@@ -898,7 +909,7 @@ int32_t lis2hh12_xl_filter_hp_bandwidth_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_low_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_low_bandwidth_set(const stmdev_ctx_t *ctx,
                                              lis2hh12_xl_lp_bw_t val)
 {
   lis2hh12_ctrl2_t ctrl2;
@@ -924,7 +935,7 @@ int32_t lis2hh12_xl_filter_low_bandwidth_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_low_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_low_bandwidth_get(const stmdev_ctx_t *ctx,
                                              lis2hh12_xl_lp_bw_t *val)
 {
   lis2hh12_ctrl2_t ctrl2;
@@ -966,7 +977,7 @@ int32_t lis2hh12_xl_filter_low_bandwidth_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_aalias_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_aalias_bandwidth_set(const stmdev_ctx_t *ctx,
                                                 lis2hh12_xl_filt_aa_bw_t val)
 {
   lis2hh12_ctrl4_t ctrl4;
@@ -992,7 +1003,7 @@ int32_t lis2hh12_xl_filter_aalias_bandwidth_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_aalias_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_aalias_bandwidth_get(const stmdev_ctx_t *ctx,
                                                 lis2hh12_xl_filt_aa_bw_t *val)
 {
   lis2hh12_ctrl4_t ctrl4;
@@ -1038,7 +1049,7 @@ int32_t lis2hh12_xl_filter_aalias_bandwidth_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_reference_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_reference_set(const stmdev_ctx_t *ctx,
                                          int16_t *val)
 {
   uint8_t buff[6];
@@ -1063,7 +1074,7 @@ int32_t lis2hh12_xl_filter_reference_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_filter_reference_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_reference_get(const stmdev_ctx_t *ctx,
                                          int16_t *val)
 {
   uint8_t buff[6];
@@ -1101,7 +1112,7 @@ int32_t lis2hh12_xl_filter_reference_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_spi_mode_set(stmdev_ctx_t *ctx, lis2hh12_sim_t val)
+int32_t lis2hh12_spi_mode_set(const stmdev_ctx_t *ctx, lis2hh12_sim_t val)
 {
   lis2hh12_ctrl4_t ctrl4;
   int32_t ret;
@@ -1125,7 +1136,7 @@ int32_t lis2hh12_spi_mode_set(stmdev_ctx_t *ctx, lis2hh12_sim_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_spi_mode_get(stmdev_ctx_t *ctx, lis2hh12_sim_t *val)
+int32_t lis2hh12_spi_mode_get(const stmdev_ctx_t *ctx, lis2hh12_sim_t *val)
 {
   lis2hh12_ctrl4_t ctrl4;
   int32_t ret;
@@ -1158,7 +1169,7 @@ int32_t lis2hh12_spi_mode_get(stmdev_ctx_t *ctx, lis2hh12_sim_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_i2c_interface_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_i2c_interface_set(const stmdev_ctx_t *ctx,
                                    lis2hh12_i2c_dis_t val)
 {
   lis2hh12_ctrl4_t ctrl4;
@@ -1183,7 +1194,7 @@ int32_t lis2hh12_i2c_interface_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_i2c_interface_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_i2c_interface_get(const stmdev_ctx_t *ctx,
                                    lis2hh12_i2c_dis_t *val)
 {
   lis2hh12_ctrl4_t ctrl4;
@@ -1218,7 +1229,7 @@ int32_t lis2hh12_i2c_interface_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_auto_increment_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_auto_increment_set(const stmdev_ctx_t *ctx,
                                     lis2hh12_auto_inc_t val)
 {
   lis2hh12_ctrl4_t ctrl4;
@@ -1244,7 +1255,7 @@ int32_t lis2hh12_auto_increment_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_auto_increment_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_auto_increment_get(const stmdev_ctx_t *ctx,
                                     lis2hh12_auto_inc_t *val)
 {
   lis2hh12_ctrl4_t ctrl4;
@@ -1291,7 +1302,7 @@ int32_t lis2hh12_auto_increment_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_int1_route_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                     lis2hh12_pin_int1_route_t val)
 {
   lis2hh12_ctrl3_t ctrl3;
@@ -1321,7 +1332,7 @@ int32_t lis2hh12_pin_int1_route_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_int1_route_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                     lis2hh12_pin_int1_route_t *val)
 {
   lis2hh12_ctrl3_t ctrl3;
@@ -1346,7 +1357,7 @@ int32_t lis2hh12_pin_int1_route_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_mode_set(stmdev_ctx_t *ctx, lis2hh12_pp_od_t val)
+int32_t lis2hh12_pin_mode_set(const stmdev_ctx_t *ctx, lis2hh12_pp_od_t val)
 {
   lis2hh12_ctrl5_t ctrl5;
   int32_t ret;
@@ -1370,7 +1381,7 @@ int32_t lis2hh12_pin_mode_set(stmdev_ctx_t *ctx, lis2hh12_pp_od_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_mode_get(const stmdev_ctx_t *ctx,
                               lis2hh12_pp_od_t *val)
 {
   lis2hh12_ctrl5_t ctrl5;
@@ -1404,7 +1415,7 @@ int32_t lis2hh12_pin_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_polarity_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_polarity_set(const stmdev_ctx_t *ctx,
                                   lis2hh12_pin_pol_t val)
 {
   lis2hh12_ctrl5_t ctrl5;
@@ -1429,7 +1440,7 @@ int32_t lis2hh12_pin_polarity_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_polarity_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_polarity_get(const stmdev_ctx_t *ctx,
                                   lis2hh12_pin_pol_t *val)
 {
   lis2hh12_ctrl5_t ctrl5;
@@ -1463,7 +1474,7 @@ int32_t lis2hh12_pin_polarity_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_int2_route_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                     lis2hh12_pin_int2_route_t val)
 {
   lis2hh12_ctrl6_t ctrl6;
@@ -1493,7 +1504,7 @@ int32_t lis2hh12_pin_int2_route_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_int2_route_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                     lis2hh12_pin_int2_route_t *val)
 {
   lis2hh12_ctrl6_t ctrl6;
@@ -1518,7 +1529,7 @@ int32_t lis2hh12_pin_int2_route_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_notification_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_notification_set(const stmdev_ctx_t *ctx,
                                       lis2hh12_lir_t val)
 {
   lis2hh12_ctrl7_t ctrl7;
@@ -1543,7 +1554,7 @@ int32_t lis2hh12_pin_notification_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_notification_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_notification_get(const stmdev_ctx_t *ctx,
                                       lis2hh12_lir_t *val)
 {
   lis2hh12_ctrl7_t ctrl7;
@@ -1577,7 +1588,7 @@ int32_t lis2hh12_pin_notification_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_logic_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_logic_set(const stmdev_ctx_t *ctx,
                                lis2hh12_pin_logic_t val)
 {
   lis2hh12_ig_cfg1_t ig_cfg1;
@@ -1614,7 +1625,7 @@ int32_t lis2hh12_pin_logic_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_pin_logic_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_logic_get(const stmdev_ctx_t *ctx,
                                lis2hh12_pin_logic_t *val)
 {
   lis2hh12_ig_cfg1_t ig_cfg1;
@@ -1675,7 +1686,7 @@ int32_t lis2hh12_pin_logic_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_trshld_mode_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_mode_set(const stmdev_ctx_t *ctx,
                                     lis2hh12_dcrm_t val)
 {
   lis2hh12_ctrl7_t ctrl7;
@@ -1700,7 +1711,7 @@ int32_t lis2hh12_xl_trshld_mode_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_trshld_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_mode_get(const stmdev_ctx_t *ctx,
                                     lis2hh12_dcrm_t *val)
 {
   lis2hh12_ctrl7_t ctrl7;
@@ -1735,7 +1746,7 @@ int32_t lis2hh12_xl_trshld_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_trshld_axis_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_axis_set(const stmdev_ctx_t *ctx,
                                     lis2hh12_xl_trshld_en_t val)
 {
   lis2hh12_ig_cfg1_t ig_cfg1;
@@ -1783,7 +1794,7 @@ int32_t lis2hh12_xl_trshld_axis_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_trshld_axis_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_axis_get(const stmdev_ctx_t *ctx,
                                     lis2hh12_xl_trshld_en_t *val)
 {
   lis2hh12_ig_cfg1_t ig_cfg1;
@@ -1821,7 +1832,7 @@ int32_t lis2hh12_xl_trshld_axis_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_trshld_src_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_src_get(const stmdev_ctx_t *ctx,
                                    lis2hh12_xl_trshld_src_t *val)
 {
   lis2hh12_ig_src1_t ig_src1;
@@ -1861,7 +1872,7 @@ int32_t lis2hh12_xl_trshld_src_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_trshld_set(stmdev_ctx_t *ctx, uint8_t ig1_x,
+int32_t lis2hh12_xl_trshld_set(const stmdev_ctx_t *ctx, uint8_t ig1_x,
                                uint8_t ig1_y, uint8_t ig1_z,
                                uint8_t ig2_xyz)
 {
@@ -1895,7 +1906,7 @@ int32_t lis2hh12_xl_trshld_set(stmdev_ctx_t *ctx, uint8_t ig1_x,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_trshld_get(stmdev_ctx_t *ctx, uint8_t *ig1_x,
+int32_t lis2hh12_xl_trshld_get(const stmdev_ctx_t *ctx, uint8_t *ig1_x,
                                uint8_t *ig1_y, uint8_t *ig1_z,
                                uint8_t *ig2_xyz)
 {
@@ -1929,7 +1940,7 @@ int32_t lis2hh12_xl_trshld_get(stmdev_ctx_t *ctx, uint8_t *ig1_x,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_trshld_min_sample_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_min_sample_set(const stmdev_ctx_t *ctx,
                                           uint8_t ig1_sam, uint8_t ig2_sam)
 {
   lis2hh12_ig_dur1_t ig_dur1;
@@ -1986,7 +1997,7 @@ int32_t lis2hh12_xl_trshld_min_sample_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_trshld_min_sample_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_min_sample_get(const stmdev_ctx_t *ctx,
                                           uint8_t *ig1_sam, uint8_t *ig2_sam)
 {
   lis2hh12_ig_dur1_t ig_dur1;
@@ -2026,7 +2037,7 @@ int32_t lis2hh12_xl_trshld_min_sample_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_act_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis2hh12_act_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2hh12_act_ths_t act_ths;
   int32_t ret;
@@ -2050,7 +2061,7 @@ int32_t lis2hh12_act_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_act_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis2hh12_act_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2hh12_act_ths_t act_ths;
   int32_t ret;
@@ -2069,7 +2080,7 @@ int32_t lis2hh12_act_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_act_duration_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis2hh12_act_duration_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2hh12_act_dur_t act_dur;
   int32_t ret;
@@ -2093,7 +2104,7 @@ int32_t lis2hh12_act_duration_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_act_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis2hh12_act_duration_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2hh12_act_dur_t act_dur;
   int32_t ret;
@@ -2125,7 +2136,7 @@ int32_t lis2hh12_act_duration_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_6d_mode_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_6d_mode_set(const stmdev_ctx_t *ctx,
                              lis2hh12_6d_mode_t val)
 {
   lis2hh12_ig_cfg1_t ig_cfg1;
@@ -2174,7 +2185,7 @@ int32_t lis2hh12_6d_mode_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_6d_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_6d_mode_get(const stmdev_ctx_t *ctx,
                              lis2hh12_6d_mode_t *val)
 {
   lis2hh12_ig_cfg1_t ig_cfg1;
@@ -2245,7 +2256,7 @@ int32_t lis2hh12_6d_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis2hh12_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2hh12_fifo_ctrl_t fifo_ctrl;
   lis2hh12_ctrl3_t ctrl3;
@@ -2292,7 +2303,7 @@ int32_t lis2hh12_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lis2hh12_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lis2hh12_fifo_ctrl_t fifo_ctrl;
   int32_t ret;
@@ -2312,7 +2323,7 @@ int32_t lis2hh12_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_fifo_mode_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_fifo_mode_set(const stmdev_ctx_t *ctx,
                                lis2hh12_fifo_md_t val)
 {
   lis2hh12_fifo_ctrl_t fifo_ctrl;
@@ -2351,7 +2362,7 @@ int32_t lis2hh12_fifo_mode_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_fifo_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_fifo_mode_get(const stmdev_ctx_t *ctx,
                                lis2hh12_fifo_md_t *val)
 {
   lis2hh12_fifo_ctrl_t fifo_ctrl;
@@ -2412,7 +2423,7 @@ int32_t lis2hh12_fifo_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_fifo_status_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_fifo_status_get(const stmdev_ctx_t *ctx,
                                  lis2hh12_fifo_stat_t *val)
 {
   lis2hh12_fifo_src_t fifo_src;
@@ -2448,7 +2459,7 @@ int32_t lis2hh12_fifo_status_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_self_test_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_self_test_set(const stmdev_ctx_t *ctx,
                                   lis2hh12_xl_st_t val)
 {
   lis2hh12_ctrl5_t ctrl5;
@@ -2473,7 +2484,7 @@ int32_t lis2hh12_xl_self_test_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2hh12_xl_self_test_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_self_test_get(const stmdev_ctx_t *ctx,
                                   lis2hh12_xl_st_t *val)
 {
   lis2hh12_ctrl5_t ctrl5;

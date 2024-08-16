@@ -493,10 +493,10 @@ typedef union
  * them with a custom implementation.
  */
 
-int32_t h3lis331dl_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t h3lis331dl_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                             uint8_t *data,
                             uint16_t len);
-int32_t h3lis331dl_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t h3lis331dl_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                              uint8_t *data,
                              uint16_t len);
 
@@ -504,14 +504,14 @@ float_t h3lis331dl_from_fs100_to_mg(int16_t lsb);
 float_t h3lis331dl_from_fs200_to_mg(int16_t lsb);
 float_t h3lis331dl_from_fs400_to_mg(int16_t lsb);
 
-int32_t h3lis331dl_axis_x_data_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t h3lis331dl_axis_x_data_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t h3lis331dl_axis_x_data_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t h3lis331dl_axis_x_data_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t h3lis331dl_axis_y_data_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t h3lis331dl_axis_y_data_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t h3lis331dl_axis_y_data_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t h3lis331dl_axis_y_data_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t h3lis331dl_axis_z_data_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t h3lis331dl_axis_z_data_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t h3lis331dl_axis_z_data_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t h3lis331dl_axis_z_data_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -526,9 +526,9 @@ typedef enum
   H3LIS331DL_ODR_400Hz = 0x21,
   H3LIS331DL_ODR_1kHz  = 0x31,
 } h3lis331dl_dr_t;
-int32_t h3lis331dl_data_rate_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_data_rate_set(const stmdev_ctx_t *ctx,
                                  h3lis331dl_dr_t val);
-int32_t h3lis331dl_data_rate_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_data_rate_get(const stmdev_ctx_t *ctx,
                                  h3lis331dl_dr_t *val);
 
 typedef enum
@@ -536,9 +536,9 @@ typedef enum
   H3LIS331DL_NORMAL_MODE      = 0,
   H3LIS331DL_REF_MODE_ENABLE  = 1,
 } h3lis331dl_hpm_t;
-int32_t h3lis331dl_reference_mode_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_reference_mode_set(const stmdev_ctx_t *ctx,
                                       h3lis331dl_hpm_t val);
-int32_t h3lis331dl_reference_mode_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_reference_mode_get(const stmdev_ctx_t *ctx,
                                       h3lis331dl_hpm_t *val);
 
 typedef enum
@@ -547,38 +547,38 @@ typedef enum
   H3LIS331DL_200g  = 1,
   H3LIS331DL_400g  = 3,
 } h3lis331dl_fs_t;
-int32_t h3lis331dl_full_scale_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_full_scale_set(const stmdev_ctx_t *ctx,
                                   h3lis331dl_fs_t val);
-int32_t h3lis331dl_full_scale_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_full_scale_get(const stmdev_ctx_t *ctx,
                                   h3lis331dl_fs_t *val);
 
-int32_t h3lis331dl_block_data_update_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_block_data_update_set(const stmdev_ctx_t *ctx,
                                          uint8_t val);
-int32_t h3lis331dl_block_data_update_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_block_data_update_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val);
 
-int32_t h3lis331dl_status_reg_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_status_reg_get(const stmdev_ctx_t *ctx,
                                   h3lis331dl_status_reg_t *val);
 
-int32_t h3lis331dl_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
-int32_t h3lis331dl_acceleration_raw_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_acceleration_raw_get(const stmdev_ctx_t *ctx,
                                         int16_t *val);
 
-int32_t h3lis331dl_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t h3lis331dl_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t h3lis331dl_boot_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t h3lis331dl_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t h3lis331dl_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t h3lis331dl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
   H3LIS331DL_LSB_AT_LOW_ADD  = 0,
   H3LIS331DL_MSB_AT_LOW_ADD  = 1,
 } h3lis331dl_ble_t;
-int32_t h3lis331dl_data_format_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_data_format_set(const stmdev_ctx_t *ctx,
                                    h3lis331dl_ble_t val);
-int32_t h3lis331dl_data_format_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_data_format_get(const stmdev_ctx_t *ctx,
                                    h3lis331dl_ble_t *val);
 
 typedef enum
@@ -588,9 +588,9 @@ typedef enum
   H3LIS331DL_CUT_OFF_32Hz  = 2,
   H3LIS331DL_CUT_OFF_64Hz  = 3,
 } h3lis331dl_hpcf_t;
-int32_t h3lis331dl_hp_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_hp_bandwidth_set(const stmdev_ctx_t *ctx,
                                     h3lis331dl_hpcf_t val);
-int32_t h3lis331dl_hp_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_hp_bandwidth_get(const stmdev_ctx_t *ctx,
                                     h3lis331dl_hpcf_t *val);
 
 typedef enum
@@ -604,16 +604,16 @@ typedef enum
   H3LIS331DL_HP_ON_INT2_OUT        = 6,
   H3LIS331DL_HP_ON_INT1_OUT        = 5,
 } h3lis331dl_hpen_t;
-int32_t h3lis331dl_hp_path_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_hp_path_set(const stmdev_ctx_t *ctx,
                                h3lis331dl_hpen_t val);
-int32_t h3lis331dl_hp_path_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_hp_path_get(const stmdev_ctx_t *ctx,
                                h3lis331dl_hpen_t *val);
 
-int32_t h3lis331dl_hp_reset_get(stmdev_ctx_t *ctx);
+int32_t h3lis331dl_hp_reset_get(const stmdev_ctx_t *ctx);
 
-int32_t h3lis331dl_hp_reference_value_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_hp_reference_value_set(const stmdev_ctx_t *ctx,
                                           uint8_t val);
-int32_t h3lis331dl_hp_reference_value_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_hp_reference_value_get(const stmdev_ctx_t *ctx,
                                           uint8_t *val);
 
 typedef enum
@@ -621,9 +621,9 @@ typedef enum
   H3LIS331DL_SPI_4_WIRE  = 0,
   H3LIS331DL_SPI_3_WIRE  = 1,
 } h3lis331dl_sim_t;
-int32_t h3lis331dl_spi_mode_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_spi_mode_set(const stmdev_ctx_t *ctx,
                                 h3lis331dl_sim_t val);
-int32_t h3lis331dl_spi_mode_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_spi_mode_get(const stmdev_ctx_t *ctx,
                                 h3lis331dl_sim_t *val);
 
 typedef enum
@@ -633,9 +633,9 @@ typedef enum
   H3LIS331DL_PAD1_DRDY               = 2,
   H3LIS331DL_PAD1_BOOT               = 3,
 } h3lis331dl_i1_cfg_t;
-int32_t h3lis331dl_pin_int1_route_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                       h3lis331dl_i1_cfg_t val);
-int32_t h3lis331dl_pin_int1_route_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                       h3lis331dl_i1_cfg_t *val);
 
 typedef enum
@@ -643,9 +643,9 @@ typedef enum
   H3LIS331DL_INT1_PULSED   = 0,
   H3LIS331DL_INT1_LATCHED  = 1,
 } h3lis331dl_lir1_t;
-int32_t h3lis331dl_int1_notification_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int1_notification_set(const stmdev_ctx_t *ctx,
                                          h3lis331dl_lir1_t val);
-int32_t h3lis331dl_int1_notification_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int1_notification_get(const stmdev_ctx_t *ctx,
                                          h3lis331dl_lir1_t *val);
 
 typedef enum
@@ -655,9 +655,9 @@ typedef enum
   H3LIS331DL_PAD2_DRDY               = 2,
   H3LIS331DL_PAD2_BOOT               = 3,
 } h3lis331dl_i2_cfg_t;
-int32_t h3lis331dl_pin_int2_route_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                       h3lis331dl_i2_cfg_t val);
-int32_t h3lis331dl_pin_int2_route_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                       h3lis331dl_i2_cfg_t *val);
 
 typedef enum
@@ -665,9 +665,9 @@ typedef enum
   H3LIS331DL_INT2_PULSED   = 0,
   H3LIS331DL_INT2_LATCHED  = 1,
 } h3lis331dl_lir2_t;
-int32_t h3lis331dl_int2_notification_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int2_notification_set(const stmdev_ctx_t *ctx,
                                          h3lis331dl_lir2_t val);
-int32_t h3lis331dl_int2_notification_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int2_notification_get(const stmdev_ctx_t *ctx,
                                          h3lis331dl_lir2_t *val);
 
 typedef enum
@@ -675,9 +675,9 @@ typedef enum
   H3LIS331DL_PUSH_PULL   = 0,
   H3LIS331DL_OPEN_DRAIN  = 1,
 } h3lis331dl_pp_od_t;
-int32_t h3lis331dl_pin_mode_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_pin_mode_set(const stmdev_ctx_t *ctx,
                                 h3lis331dl_pp_od_t val);
-int32_t h3lis331dl_pin_mode_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_pin_mode_get(const stmdev_ctx_t *ctx,
                                 h3lis331dl_pp_od_t *val);
 
 typedef enum
@@ -685,9 +685,9 @@ typedef enum
   H3LIS331DL_ACTIVE_HIGH  = 0,
   H3LIS331DL_ACTIVE_LOW   = 1,
 } h3lis331dl_ihl_t;
-int32_t h3lis331dl_pin_polarity_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_pin_polarity_set(const stmdev_ctx_t *ctx,
                                     h3lis331dl_ihl_t val);
-int32_t h3lis331dl_pin_polarity_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_pin_polarity_get(const stmdev_ctx_t *ctx,
                                     h3lis331dl_ihl_t *val);
 
 typedef struct
@@ -699,9 +699,9 @@ typedef struct
   uint8_t int1_zlie             : 1;
   uint8_t int1_zhie             : 1;
 } h3lis331dl_int1_on_th_conf_t;
-int32_t h3lis331dl_int1_on_threshold_conf_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int1_on_threshold_conf_set(const stmdev_ctx_t *ctx,
                                               h3lis331dl_int1_on_th_conf_t val);
-int32_t h3lis331dl_int1_on_threshold_conf_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int1_on_threshold_conf_get(const stmdev_ctx_t *ctx,
                                               h3lis331dl_int1_on_th_conf_t *val);
 
 typedef enum
@@ -709,19 +709,19 @@ typedef enum
   H3LIS331DL_INT1_ON_THRESHOLD_OR   = 0,
   H3LIS331DL_INT1_ON_THRESHOLD_AND  = 1,
 } h3lis331dl_int1_aoi_t;
-int32_t h3lis331dl_int1_on_threshold_mode_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int1_on_threshold_mode_set(const stmdev_ctx_t *ctx,
                                               h3lis331dl_int1_aoi_t val);
-int32_t h3lis331dl_int1_on_threshold_mode_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int1_on_threshold_mode_get(const stmdev_ctx_t *ctx,
                                               h3lis331dl_int1_aoi_t *val);
 
-int32_t h3lis331dl_int1_src_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int1_src_get(const stmdev_ctx_t *ctx,
                                 h3lis331dl_int1_src_t *val);
 
-int32_t h3lis331dl_int1_treshold_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t h3lis331dl_int1_treshold_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t h3lis331dl_int1_threshold_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t h3lis331dl_int1_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t h3lis331dl_int1_dur_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t h3lis331dl_int1_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t h3lis331dl_int1_dur_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t h3lis331dl_int1_dur_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef struct
 {
@@ -732,9 +732,9 @@ typedef struct
   uint8_t int2_zlie             : 1;
   uint8_t int2_zhie             : 1;
 } h3lis331dl_int2_on_th_conf_t;
-int32_t h3lis331dl_int2_on_threshold_conf_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int2_on_threshold_conf_set(const stmdev_ctx_t *ctx,
                                               h3lis331dl_int2_on_th_conf_t val);
-int32_t h3lis331dl_int2_on_threshold_conf_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int2_on_threshold_conf_get(const stmdev_ctx_t *ctx,
                                               h3lis331dl_int2_on_th_conf_t *val);
 
 typedef enum
@@ -742,22 +742,22 @@ typedef enum
   H3LIS331DL_INT2_ON_THRESHOLD_OR   = 0,
   H3LIS331DL_INT2_ON_THRESHOLD_AND  = 1,
 } h3lis331dl_int2_aoi_t;
-int32_t h3lis331dl_int2_on_threshold_mode_set(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int2_on_threshold_mode_set(const stmdev_ctx_t *ctx,
                                               h3lis331dl_int2_aoi_t val);
-int32_t h3lis331dl_int2_on_threshold_mode_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int2_on_threshold_mode_get(const stmdev_ctx_t *ctx,
                                               h3lis331dl_int2_aoi_t *val);
 
-int32_t h3lis331dl_int2_src_get(stmdev_ctx_t *ctx,
+int32_t h3lis331dl_int2_src_get(const stmdev_ctx_t *ctx,
                                 h3lis331dl_int2_src_t *val);
 
-int32_t h3lis331dl_int2_treshold_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t h3lis331dl_int2_treshold_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t h3lis331dl_int2_threshold_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t h3lis331dl_int2_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t h3lis331dl_int2_dur_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t h3lis331dl_int2_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t h3lis331dl_int2_dur_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t h3lis331dl_int2_dur_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t h3lis331dl_wkup_to_sleep_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t h3lis331dl_wkup_to_sleep_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t h3lis331dl_wkup_to_sleep_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t h3lis331dl_wkup_to_sleep_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 /**
   *@}

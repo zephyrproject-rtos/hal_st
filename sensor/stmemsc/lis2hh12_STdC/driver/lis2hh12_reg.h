@@ -585,10 +585,10 @@ typedef union
  * them with a custom implementation.
  */
 
-int32_t lis2hh12_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t lis2hh12_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
-int32_t lis2hh12_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t lis2hh12_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                            uint8_t *data,
                            uint16_t len);
 
@@ -604,14 +604,14 @@ typedef struct
   uint8_t yen              : 1;
   uint8_t zen              : 1;
 } lis2hh12_xl_axis_t;
-int32_t lis2hh12_xl_axis_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_axis_set(const stmdev_ctx_t *ctx,
                              lis2hh12_xl_axis_t val);
-int32_t lis2hh12_xl_axis_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_axis_get(const stmdev_ctx_t *ctx,
                              lis2hh12_xl_axis_t *val);
 
-int32_t lis2hh12_block_data_update_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_block_data_update_set(const stmdev_ctx_t *ctx,
                                        uint8_t val);
-int32_t lis2hh12_block_data_update_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_block_data_update_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
 typedef enum
@@ -624,9 +624,9 @@ typedef enum
   LIS2HH12_XL_ODR_400Hz    = 0x05,
   LIS2HH12_XL_ODR_800Hz    = 0x06,
 } lis2hh12_xl_data_rate_t;
-int32_t lis2hh12_xl_data_rate_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_data_rate_set(const stmdev_ctx_t *ctx,
                                   lis2hh12_xl_data_rate_t val);
-int32_t lis2hh12_xl_data_rate_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_data_rate_get(const stmdev_ctx_t *ctx,
                                   lis2hh12_xl_data_rate_t *val);
 
 typedef enum
@@ -636,9 +636,9 @@ typedef enum
   LIS2HH12_4g              = 0x02,
   LIS2HH12_8g              = 0x03,
 } lis2hh12_xl_fs_t;
-int32_t lis2hh12_xl_full_scale_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_full_scale_set(const stmdev_ctx_t *ctx,
                                    lis2hh12_xl_fs_t val);
-int32_t lis2hh12_xl_full_scale_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_full_scale_get(const stmdev_ctx_t *ctx,
                                    lis2hh12_xl_fs_t *val);
 
 typedef enum
@@ -648,26 +648,26 @@ typedef enum
   LIS2HH12_EVERY_4_SAMPLES = 0x02,
   LIS2HH12_EVERY_8_SAMPLES = 0x03,
 } lis2hh12_dec_t;
-int32_t lis2hh12_xl_decimation_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_decimation_set(const stmdev_ctx_t *ctx,
                                    lis2hh12_dec_t val);
-int32_t lis2hh12_xl_decimation_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_decimation_get(const stmdev_ctx_t *ctx,
                                    lis2hh12_dec_t *val);
 
-int32_t lis2hh12_xl_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val);
 
-int32_t lis2hh12_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t lis2hh12_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t lis2hh12_acceleration_raw_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_acceleration_raw_get(const stmdev_ctx_t *ctx,
                                       int16_t *val);
 
-int32_t lis2hh12_dev_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t lis2hh12_dev_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t lis2hh12_dev_reset_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2hh12_dev_reset_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2hh12_dev_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2hh12_dev_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lis2hh12_dev_boot_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2hh12_dev_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2hh12_dev_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2hh12_dev_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef struct
 {
@@ -680,7 +680,7 @@ typedef struct
   uint8_t zor              : 1;
   uint8_t zyxor            : 1;
 } lis2hh12_status_reg_t;
-int32_t lis2hh12_dev_status_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_dev_status_get(const stmdev_ctx_t *ctx,
                                 lis2hh12_status_reg_t *val);
 
 typedef enum
@@ -690,9 +690,9 @@ typedef enum
   LIS2HH12_HP_ON_INT_GEN_2 = 0x01,
   LIS2HH12_HP_ON_BOTH_GEN  = 0x03,
 } lis2hh12_xl_hp_path_t;
-int32_t lis2hh12_xl_filter_int_path_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_int_path_set(const stmdev_ctx_t *ctx,
                                         lis2hh12_xl_hp_path_t val);
-int32_t lis2hh12_xl_filter_int_path_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_int_path_get(const stmdev_ctx_t *ctx,
                                         lis2hh12_xl_hp_path_t *val);
 
 typedef enum
@@ -701,9 +701,9 @@ typedef enum
   LIS2HH12_FILT_HP         = 0x02,
   LIS2HH12_FILT_LP         = 0x01,
 } lis2hh12_xl_out_path_t;
-int32_t lis2hh12_xl_filter_out_path_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_out_path_set(const stmdev_ctx_t *ctx,
                                         lis2hh12_xl_out_path_t val);
-int32_t lis2hh12_xl_filter_out_path_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_out_path_get(const stmdev_ctx_t *ctx,
                                         lis2hh12_xl_out_path_t *val);
 
 typedef enum
@@ -717,9 +717,9 @@ typedef enum
   LIS2HH12_HP_ODR_DIV_9_REF_MD    = 0x21,
   LIS2HH12_HP_ODR_DIV_400_REF_MD  = 0x31,
 } lis2hh12_xl_hp_bw_t;
-int32_t lis2hh12_xl_filter_hp_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_hp_bandwidth_set(const stmdev_ctx_t *ctx,
                                             lis2hh12_xl_hp_bw_t val);
-int32_t lis2hh12_xl_filter_hp_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_hp_bandwidth_get(const stmdev_ctx_t *ctx,
                                             lis2hh12_xl_hp_bw_t *val);
 
 typedef enum
@@ -729,9 +729,9 @@ typedef enum
   LIS2HH12_LP_ODR_DIV_9    = 2,
   LIS2HH12_LP_ODR_DIV_400  = 3,
 } lis2hh12_xl_lp_bw_t;
-int32_t lis2hh12_xl_filter_low_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_low_bandwidth_set(const stmdev_ctx_t *ctx,
                                              lis2hh12_xl_lp_bw_t val);
-int32_t lis2hh12_xl_filter_low_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_low_bandwidth_get(const stmdev_ctx_t *ctx,
                                              lis2hh12_xl_lp_bw_t *val);
 
 typedef enum
@@ -742,14 +742,14 @@ typedef enum
   LIS2HH12_105Hz     = 0x12,
   LIS2HH12_50Hz      = 0x13,
 } lis2hh12_xl_filt_aa_bw_t;
-int32_t lis2hh12_xl_filter_aalias_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_aalias_bandwidth_set(const stmdev_ctx_t *ctx,
                                                 lis2hh12_xl_filt_aa_bw_t val);
-int32_t lis2hh12_xl_filter_aalias_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_aalias_bandwidth_get(const stmdev_ctx_t *ctx,
                                                 lis2hh12_xl_filt_aa_bw_t *val);
 
-int32_t lis2hh12_xl_filter_reference_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_reference_set(const stmdev_ctx_t *ctx,
                                          int16_t *val);
-int32_t lis2hh12_xl_filter_reference_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_filter_reference_get(const stmdev_ctx_t *ctx,
                                          int16_t *val);
 
 typedef enum
@@ -757,17 +757,17 @@ typedef enum
   LIS2HH12_SPI_4_WIRE = 0x00,
   LIS2HH12_SPI_3_WIRE = 0x01,
 } lis2hh12_sim_t;
-int32_t lis2hh12_spi_mode_set(stmdev_ctx_t *ctx, lis2hh12_sim_t val);
-int32_t lis2hh12_spi_mode_get(stmdev_ctx_t *ctx, lis2hh12_sim_t *val);
+int32_t lis2hh12_spi_mode_set(const stmdev_ctx_t *ctx, lis2hh12_sim_t val);
+int32_t lis2hh12_spi_mode_get(const stmdev_ctx_t *ctx, lis2hh12_sim_t *val);
 
 typedef enum
 {
   LIS2HH12_I2C_ENABLE  = 0x00,
   LIS2HH12_I2C_DISABLE = 0x01,
 } lis2hh12_i2c_dis_t;
-int32_t lis2hh12_i2c_interface_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_i2c_interface_set(const stmdev_ctx_t *ctx,
                                    lis2hh12_i2c_dis_t val);
-int32_t lis2hh12_i2c_interface_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_i2c_interface_get(const stmdev_ctx_t *ctx,
                                    lis2hh12_i2c_dis_t *val);
 
 typedef enum
@@ -775,9 +775,9 @@ typedef enum
   LIS2HH12_DISABLE = 0x00,
   LIS2HH12_ENABLE  = 0x01,
 } lis2hh12_auto_inc_t;
-int32_t lis2hh12_auto_increment_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_auto_increment_set(const stmdev_ctx_t *ctx,
                                     lis2hh12_auto_inc_t val);
-int32_t lis2hh12_auto_increment_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_auto_increment_get(const stmdev_ctx_t *ctx,
                                     lis2hh12_auto_inc_t *val);
 
 typedef struct
@@ -789,9 +789,9 @@ typedef struct
   uint8_t int1_ig2             : 1;
   uint8_t int1_inact           : 1;
 } lis2hh12_pin_int1_route_t;
-int32_t lis2hh12_pin_int1_route_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                     lis2hh12_pin_int1_route_t val);
-int32_t lis2hh12_pin_int1_route_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                     lis2hh12_pin_int1_route_t *val);
 
 typedef enum
@@ -799,9 +799,9 @@ typedef enum
   LIS2HH12_PUSH_PULL       = 0x00,
   LIS2HH12_OPEN_DRAIN      = 0x01,
 } lis2hh12_pp_od_t;
-int32_t lis2hh12_pin_mode_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_mode_set(const stmdev_ctx_t *ctx,
                               lis2hh12_pp_od_t val);
-int32_t lis2hh12_pin_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_mode_get(const stmdev_ctx_t *ctx,
                               lis2hh12_pp_od_t *val);
 
 typedef enum
@@ -809,9 +809,9 @@ typedef enum
   LIS2HH12_ACTIVE_HIGH     = 0x00,
   LIS2HH12_ACTIVE_LOW      = 0x01,
 } lis2hh12_pin_pol_t;
-int32_t lis2hh12_pin_polarity_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_polarity_set(const stmdev_ctx_t *ctx,
                                   lis2hh12_pin_pol_t val);
-int32_t lis2hh12_pin_polarity_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_polarity_get(const stmdev_ctx_t *ctx,
                                   lis2hh12_pin_pol_t *val);
 
 typedef struct
@@ -823,9 +823,9 @@ typedef struct
   uint8_t int2_ig2             : 1;
   uint8_t int2_boot            : 1;
 } lis2hh12_pin_int2_route_t;
-int32_t lis2hh12_pin_int2_route_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                     lis2hh12_pin_int2_route_t val);
-int32_t lis2hh12_pin_int2_route_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                     lis2hh12_pin_int2_route_t *val);
 
 typedef enum
@@ -833,9 +833,9 @@ typedef enum
   LIS2HH12_INT_PULSED      = 0x00,
   LIS2HH12_INT_LATCHED     = 0x01,
 } lis2hh12_lir_t;
-int32_t lis2hh12_pin_notification_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_notification_set(const stmdev_ctx_t *ctx,
                                       lis2hh12_lir_t val);
-int32_t lis2hh12_pin_notification_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_notification_get(const stmdev_ctx_t *ctx,
                                       lis2hh12_lir_t *val);
 typedef enum
 {
@@ -844,9 +844,9 @@ typedef enum
   LIS2HH12_IG1_OR_IG2_AND  = 0x10,
   LIS2HH12_IG1_AND_IG2_AND = 0x11,
 } lis2hh12_pin_logic_t;
-int32_t lis2hh12_pin_logic_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_logic_set(const stmdev_ctx_t *ctx,
                                lis2hh12_pin_logic_t val);
-int32_t lis2hh12_pin_logic_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_pin_logic_get(const stmdev_ctx_t *ctx,
                                lis2hh12_pin_logic_t *val);
 
 typedef enum
@@ -854,9 +854,9 @@ typedef enum
   LIS2HH12_RESET_MODE      = 0x00,
   LIS2HH12_DECREMENT_MODE  = 0x01,
 } lis2hh12_dcrm_t;
-int32_t lis2hh12_xl_trshld_mode_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_mode_set(const stmdev_ctx_t *ctx,
                                     lis2hh12_dcrm_t val);
-int32_t lis2hh12_xl_trshld_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_mode_get(const stmdev_ctx_t *ctx,
                                     lis2hh12_dcrm_t *val);
 
 typedef struct
@@ -874,9 +874,9 @@ typedef struct
   uint16_t ig2_zlie             : 1;
   uint16_t ig2_zhie             : 1;
 } lis2hh12_xl_trshld_en_t;
-int32_t lis2hh12_xl_trshld_axis_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_axis_set(const stmdev_ctx_t *ctx,
                                     lis2hh12_xl_trshld_en_t val);
-int32_t lis2hh12_xl_trshld_axis_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_axis_get(const stmdev_ctx_t *ctx,
                                     lis2hh12_xl_trshld_en_t *val);
 
 typedef struct
@@ -896,26 +896,26 @@ typedef struct
   uint16_t ig2_zh             : 1;
   uint16_t ig2_ia             : 1;
 } lis2hh12_xl_trshld_src_t;
-int32_t lis2hh12_xl_trshld_src_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_src_get(const stmdev_ctx_t *ctx,
                                    lis2hh12_xl_trshld_src_t *val);
 
-int32_t lis2hh12_xl_trshld_set(stmdev_ctx_t *ctx, uint8_t ig1_x,
+int32_t lis2hh12_xl_trshld_set(const stmdev_ctx_t *ctx, uint8_t ig1_x,
                                uint8_t ig1_y, uint8_t ig1_z,
                                uint8_t ig2_xyz);
-int32_t lis2hh12_xl_trshld_get(stmdev_ctx_t *ctx, uint8_t *ig1_x,
+int32_t lis2hh12_xl_trshld_get(const stmdev_ctx_t *ctx, uint8_t *ig1_x,
                                uint8_t *ig1_y, uint8_t *ig1_z,
                                uint8_t *ig2_xyz);
 
-int32_t lis2hh12_xl_trshld_min_sample_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_min_sample_set(const stmdev_ctx_t *ctx,
                                           uint8_t ig1_sam, uint8_t ig2_sam);
-int32_t lis2hh12_xl_trshld_min_sample_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_trshld_min_sample_get(const stmdev_ctx_t *ctx,
                                           uint8_t *ig1_sam, uint8_t *ig2_sam);
 
-int32_t lis2hh12_act_threshold_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2hh12_act_threshold_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2hh12_act_threshold_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2hh12_act_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lis2hh12_act_duration_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2hh12_act_duration_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2hh12_act_duration_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2hh12_act_duration_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -925,13 +925,13 @@ typedef enum
   LIS2HH12_ENABLE_ON_IG1_4D    = 0x11,
   LIS2HH12_ENABLE_ON_IG2_4D    = 0x12,
 } lis2hh12_6d_mode_t;
-int32_t lis2hh12_6d_mode_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_6d_mode_set(const stmdev_ctx_t *ctx,
                              lis2hh12_6d_mode_t val);
-int32_t lis2hh12_6d_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_6d_mode_get(const stmdev_ctx_t *ctx,
                              lis2hh12_6d_mode_t *val);
 
-int32_t lis2hh12_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2hh12_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2hh12_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2hh12_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -943,9 +943,9 @@ typedef enum
   LIS2HH12_BYPASS_TO_STREAM_MODE = 0x14,
   LIS2HH12_BYPASS_TO_FIFO_MODE   = 0x17,
 } lis2hh12_fifo_md_t;
-int32_t lis2hh12_fifo_mode_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_fifo_mode_set(const stmdev_ctx_t *ctx,
                                lis2hh12_fifo_md_t val);
-int32_t lis2hh12_fifo_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_fifo_mode_get(const stmdev_ctx_t *ctx,
                                lis2hh12_fifo_md_t *val);
 
 typedef struct
@@ -955,7 +955,7 @@ typedef struct
   uint8_t ovr             : 1;
   uint8_t fth             : 1;
 } lis2hh12_fifo_stat_t;
-int32_t lis2hh12_fifo_status_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_fifo_status_get(const stmdev_ctx_t *ctx,
                                  lis2hh12_fifo_stat_t *val);
 
 typedef enum
@@ -964,9 +964,9 @@ typedef enum
   LIS2HH12_ST_POSITIVE   = 0x01,
   LIS2HH12_ST_NEGATIVE   = 0x02,
 } lis2hh12_xl_st_t;
-int32_t lis2hh12_xl_self_test_set(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_self_test_set(const stmdev_ctx_t *ctx,
                                   lis2hh12_xl_st_t val);
-int32_t lis2hh12_xl_self_test_get(stmdev_ctx_t *ctx,
+int32_t lis2hh12_xl_self_test_get(const stmdev_ctx_t *ctx,
                                   lis2hh12_xl_st_t *val);
 
 /**

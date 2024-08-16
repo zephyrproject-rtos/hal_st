@@ -46,11 +46,13 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak a3g4250d_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak a3g4250d_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                  uint8_t *data,
                                  uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL) return -1;
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -67,11 +69,13 @@ int32_t __weak a3g4250d_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak a3g4250d_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak a3g4250d_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                   uint8_t *data,
                                   uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL) return -1;
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -121,7 +125,7 @@ float_t a3g4250d_from_lsb_to_celsius(int16_t lsb)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_data_rate_set(stmdev_ctx_t *ctx, a3g4250d_dr_t val)
+int32_t a3g4250d_data_rate_set(const stmdev_ctx_t *ctx, a3g4250d_dr_t val)
 {
   a3g4250d_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -148,7 +152,7 @@ int32_t a3g4250d_data_rate_set(stmdev_ctx_t *ctx, a3g4250d_dr_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_data_rate_get(stmdev_ctx_t *ctx, a3g4250d_dr_t *val)
+int32_t a3g4250d_data_rate_get(const stmdev_ctx_t *ctx, a3g4250d_dr_t *val)
 {
   a3g4250d_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -198,7 +202,7 @@ int32_t a3g4250d_data_rate_get(stmdev_ctx_t *ctx, a3g4250d_dr_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_status_reg_get(stmdev_ctx_t *ctx, a3g4250d_status_reg_t *val)
+int32_t a3g4250d_status_reg_get(const stmdev_ctx_t *ctx, a3g4250d_status_reg_t *val)
 {
   int32_t ret;
 
@@ -215,7 +219,7 @@ int32_t a3g4250d_status_reg_get(stmdev_ctx_t *ctx, a3g4250d_status_reg_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_flag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t a3g4250d_flag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   a3g4250d_status_reg_t status_reg;
   int32_t ret;
@@ -246,7 +250,7 @@ int32_t a3g4250d_flag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_temperature_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t a3g4250d_temperature_raw_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -264,7 +268,7 @@ int32_t a3g4250d_temperature_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_angular_rate_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t a3g4250d_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
@@ -300,7 +304,7 @@ int32_t a3g4250d_angular_rate_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t a3g4250d_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -317,7 +321,7 @@ int32_t a3g4250d_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_self_test_set(stmdev_ctx_t *ctx, a3g4250d_st_t val)
+int32_t a3g4250d_self_test_set(const stmdev_ctx_t *ctx, a3g4250d_st_t val)
 {
   a3g4250d_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -343,7 +347,7 @@ int32_t a3g4250d_self_test_set(stmdev_ctx_t *ctx, a3g4250d_st_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_self_test_get(stmdev_ctx_t *ctx, a3g4250d_st_t *val)
+int32_t a3g4250d_self_test_get(const stmdev_ctx_t *ctx, a3g4250d_st_t *val)
 {
   a3g4250d_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -381,7 +385,7 @@ int32_t a3g4250d_self_test_get(stmdev_ctx_t *ctx, a3g4250d_st_t *val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_data_format_set(stmdev_ctx_t *ctx, a3g4250d_ble_t val)
+int32_t a3g4250d_data_format_set(const stmdev_ctx_t *ctx, a3g4250d_ble_t val)
 {
   a3g4250d_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -407,7 +411,7 @@ int32_t a3g4250d_data_format_set(stmdev_ctx_t *ctx, a3g4250d_ble_t val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_data_format_get(stmdev_ctx_t *ctx, a3g4250d_ble_t *val)
+int32_t a3g4250d_data_format_get(const stmdev_ctx_t *ctx, a3g4250d_ble_t *val)
 {
   a3g4250d_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -441,7 +445,7 @@ int32_t a3g4250d_data_format_get(stmdev_ctx_t *ctx, a3g4250d_ble_t *val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_boot_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t a3g4250d_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   a3g4250d_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -467,7 +471,7 @@ int32_t a3g4250d_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t a3g4250d_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   a3g4250d_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -500,7 +504,7 @@ int32_t a3g4250d_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_lp_bandwidth_set(stmdev_ctx_t *ctx, a3g4250d_bw_t val)
+int32_t a3g4250d_lp_bandwidth_set(const stmdev_ctx_t *ctx, a3g4250d_bw_t val)
 {
   a3g4250d_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -526,7 +530,7 @@ int32_t a3g4250d_lp_bandwidth_set(stmdev_ctx_t *ctx, a3g4250d_bw_t val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_lp_bandwidth_get(stmdev_ctx_t *ctx, a3g4250d_bw_t *val)
+int32_t a3g4250d_lp_bandwidth_get(const stmdev_ctx_t *ctx, a3g4250d_bw_t *val)
 {
   a3g4250d_ctrl_reg1_t ctrl_reg1;
   int32_t ret;
@@ -568,7 +572,7 @@ int32_t a3g4250d_lp_bandwidth_get(stmdev_ctx_t *ctx, a3g4250d_bw_t *val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_hp_bandwidth_set(stmdev_ctx_t *ctx, a3g4250d_hpcf_t val)
+int32_t a3g4250d_hp_bandwidth_set(const stmdev_ctx_t *ctx, a3g4250d_hpcf_t val)
 {
   a3g4250d_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -594,7 +598,7 @@ int32_t a3g4250d_hp_bandwidth_set(stmdev_ctx_t *ctx, a3g4250d_hpcf_t val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_hp_bandwidth_get(stmdev_ctx_t *ctx, a3g4250d_hpcf_t *val)
+int32_t a3g4250d_hp_bandwidth_get(const stmdev_ctx_t *ctx, a3g4250d_hpcf_t *val)
 {
   a3g4250d_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -660,7 +664,7 @@ int32_t a3g4250d_hp_bandwidth_get(stmdev_ctx_t *ctx, a3g4250d_hpcf_t *val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_hp_mode_set(stmdev_ctx_t *ctx, a3g4250d_hpm_t val)
+int32_t a3g4250d_hp_mode_set(const stmdev_ctx_t *ctx, a3g4250d_hpm_t val)
 {
   a3g4250d_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -686,7 +690,7 @@ int32_t a3g4250d_hp_mode_set(stmdev_ctx_t *ctx, a3g4250d_hpm_t val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_hp_mode_get(stmdev_ctx_t *ctx, a3g4250d_hpm_t *val)
+int32_t a3g4250d_hp_mode_get(const stmdev_ctx_t *ctx, a3g4250d_hpm_t *val)
 {
   a3g4250d_ctrl_reg2_t ctrl_reg2;
   int32_t ret;
@@ -728,7 +732,7 @@ int32_t a3g4250d_hp_mode_get(stmdev_ctx_t *ctx, a3g4250d_hpm_t *val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_filter_path_set(stmdev_ctx_t *ctx, a3g4250d_out_sel_t val)
+int32_t a3g4250d_filter_path_set(const stmdev_ctx_t *ctx, a3g4250d_out_sel_t val)
 {
   a3g4250d_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -755,7 +759,7 @@ int32_t a3g4250d_filter_path_set(stmdev_ctx_t *ctx, a3g4250d_out_sel_t val)
   * @retval         Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_filter_path_get(stmdev_ctx_t *ctx, a3g4250d_out_sel_t *val)
+int32_t a3g4250d_filter_path_get(const stmdev_ctx_t *ctx, a3g4250d_out_sel_t *val)
 {
   a3g4250d_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -797,7 +801,7 @@ int32_t a3g4250d_filter_path_get(stmdev_ctx_t *ctx, a3g4250d_out_sel_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_filter_path_internal_set(stmdev_ctx_t *ctx,
+int32_t a3g4250d_filter_path_internal_set(const stmdev_ctx_t *ctx,
                                           a3g4250d_int1_sel_t val)
 {
   a3g4250d_ctrl_reg5_t ctrl_reg5;
@@ -825,7 +829,7 @@ int32_t a3g4250d_filter_path_internal_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_filter_path_internal_get(stmdev_ctx_t *ctx,
+int32_t a3g4250d_filter_path_internal_get(const stmdev_ctx_t *ctx,
                                           a3g4250d_int1_sel_t *val)
 {
   a3g4250d_ctrl_reg5_t ctrl_reg5;
@@ -868,7 +872,7 @@ int32_t a3g4250d_filter_path_internal_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_hp_reference_value_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t a3g4250d_hp_reference_value_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   a3g4250d_reference_t reference;
   int32_t ret;
@@ -894,7 +898,7 @@ int32_t a3g4250d_hp_reference_value_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_hp_reference_value_get(stmdev_ctx_t *ctx,
+int32_t a3g4250d_hp_reference_value_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val)
 {
   a3g4250d_reference_t reference;
@@ -928,7 +932,7 @@ int32_t a3g4250d_hp_reference_value_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_spi_mode_set(stmdev_ctx_t *ctx, a3g4250d_sim_t val)
+int32_t a3g4250d_spi_mode_set(const stmdev_ctx_t *ctx, a3g4250d_sim_t val)
 {
   a3g4250d_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -954,7 +958,7 @@ int32_t a3g4250d_spi_mode_set(stmdev_ctx_t *ctx, a3g4250d_sim_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_spi_mode_get(stmdev_ctx_t *ctx, a3g4250d_sim_t *val)
+int32_t a3g4250d_spi_mode_get(const stmdev_ctx_t *ctx, a3g4250d_sim_t *val)
 {
   a3g4250d_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -1002,7 +1006,7 @@ int32_t a3g4250d_spi_mode_get(stmdev_ctx_t *ctx, a3g4250d_sim_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_pin_int1_route_set(stmdev_ctx_t *ctx,
+int32_t a3g4250d_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                     a3g4250d_int1_route_t val)
 {
   a3g4250d_ctrl_reg3_t ctrl_reg3;
@@ -1031,7 +1035,7 @@ int32_t a3g4250d_pin_int1_route_set(stmdev_ctx_t *ctx,
   *
   */
 
-int32_t a3g4250d_pin_int1_route_get(stmdev_ctx_t *ctx,
+int32_t a3g4250d_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                     a3g4250d_int1_route_t *val)
 {
   a3g4250d_ctrl_reg3_t ctrl_reg3;
@@ -1052,7 +1056,7 @@ int32_t a3g4250d_pin_int1_route_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_pin_int2_route_set(stmdev_ctx_t *ctx,
+int32_t a3g4250d_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                     a3g4250d_int2_route_t val)
 {
   a3g4250d_ctrl_reg3_t ctrl_reg3;
@@ -1082,7 +1086,7 @@ int32_t a3g4250d_pin_int2_route_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_pin_int2_route_get(stmdev_ctx_t *ctx,
+int32_t a3g4250d_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                     a3g4250d_int2_route_t *val)
 {
   a3g4250d_ctrl_reg3_t ctrl_reg3;
@@ -1106,7 +1110,7 @@ int32_t a3g4250d_pin_int2_route_get(stmdev_ctx_t *ctx,
   *
   */
 
-int32_t a3g4250d_pin_mode_set(stmdev_ctx_t *ctx, a3g4250d_pp_od_t val)
+int32_t a3g4250d_pin_mode_set(const stmdev_ctx_t *ctx, a3g4250d_pp_od_t val)
 {
   a3g4250d_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
@@ -1132,7 +1136,7 @@ int32_t a3g4250d_pin_mode_set(stmdev_ctx_t *ctx, a3g4250d_pp_od_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_pin_mode_get(stmdev_ctx_t *ctx,
+int32_t a3g4250d_pin_mode_get(const stmdev_ctx_t *ctx,
                               a3g4250d_pp_od_t *val)
 {
   a3g4250d_ctrl_reg3_t ctrl_reg3;
@@ -1167,7 +1171,7 @@ int32_t a3g4250d_pin_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_pin_polarity_set(stmdev_ctx_t *ctx,
+int32_t a3g4250d_pin_polarity_set(const stmdev_ctx_t *ctx,
                                   a3g4250d_h_lactive_t val)
 {
   a3g4250d_ctrl_reg3_t ctrl_reg3;
@@ -1194,7 +1198,7 @@ int32_t a3g4250d_pin_polarity_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_pin_polarity_get(stmdev_ctx_t *ctx,
+int32_t a3g4250d_pin_polarity_get(const stmdev_ctx_t *ctx,
                                   a3g4250d_h_lactive_t *val)
 {
   a3g4250d_ctrl_reg3_t ctrl_reg3;
@@ -1229,7 +1233,7 @@ int32_t a3g4250d_pin_polarity_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_notification_set(stmdev_ctx_t *ctx, a3g4250d_lir_t val)
+int32_t a3g4250d_int_notification_set(const stmdev_ctx_t *ctx, a3g4250d_lir_t val)
 {
   a3g4250d_int1_cfg_t int1_cfg;
   int32_t ret;
@@ -1253,7 +1257,7 @@ int32_t a3g4250d_int_notification_set(stmdev_ctx_t *ctx, a3g4250d_lir_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_notification_get(stmdev_ctx_t *ctx, a3g4250d_lir_t *val)
+int32_t a3g4250d_int_notification_get(const stmdev_ctx_t *ctx, a3g4250d_lir_t *val)
 {
   a3g4250d_int1_cfg_t int1_cfg;
   int32_t ret;
@@ -1299,7 +1303,7 @@ int32_t a3g4250d_int_notification_get(stmdev_ctx_t *ctx, a3g4250d_lir_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_on_threshold_conf_set(stmdev_ctx_t *ctx,
+int32_t a3g4250d_int_on_threshold_conf_set(const stmdev_ctx_t *ctx,
                                            a3g4250d_int1_cfg_t *val)
 {
   int32_t ret;
@@ -1317,7 +1321,7 @@ int32_t a3g4250d_int_on_threshold_conf_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_on_threshold_conf_get(stmdev_ctx_t *ctx,
+int32_t a3g4250d_int_on_threshold_conf_get(const stmdev_ctx_t *ctx,
                                            a3g4250d_int1_cfg_t *val)
 {
   int32_t ret;
@@ -1334,7 +1338,7 @@ int32_t a3g4250d_int_on_threshold_conf_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_on_threshold_mode_set(stmdev_ctx_t *ctx,
+int32_t a3g4250d_int_on_threshold_mode_set(const stmdev_ctx_t *ctx,
                                            a3g4250d_and_or_t val)
 {
   a3g4250d_int1_cfg_t int1_cfg;
@@ -1359,7 +1363,7 @@ int32_t a3g4250d_int_on_threshold_mode_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_on_threshold_mode_get(stmdev_ctx_t *ctx,
+int32_t a3g4250d_int_on_threshold_mode_get(const stmdev_ctx_t *ctx,
                                            a3g4250d_and_or_t *val)
 {
   a3g4250d_int1_cfg_t int1_cfg;
@@ -1393,7 +1397,7 @@ int32_t a3g4250d_int_on_threshold_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_on_threshold_src_get(stmdev_ctx_t *ctx,
+int32_t a3g4250d_int_on_threshold_src_get(const stmdev_ctx_t *ctx,
                                           a3g4250d_int1_src_t *val)
 {
   int32_t ret;
@@ -1411,7 +1415,7 @@ int32_t a3g4250d_int_on_threshold_src_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_x_treshold_set(stmdev_ctx_t *ctx, uint16_t val)
+int32_t a3g4250d_int_x_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   a3g4250d_int1_tsh_xh_t int1_tsh_xh;
   a3g4250d_int1_tsh_xl_t int1_tsh_xl;
@@ -1451,7 +1455,7 @@ int32_t a3g4250d_int_x_treshold_set(stmdev_ctx_t *ctx, uint16_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_x_treshold_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t a3g4250d_int_x_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   a3g4250d_int1_tsh_xh_t int1_tsh_xh;
   a3g4250d_int1_tsh_xl_t int1_tsh_xl;
@@ -1480,7 +1484,7 @@ int32_t a3g4250d_int_x_treshold_get(stmdev_ctx_t *ctx, uint16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_y_treshold_set(stmdev_ctx_t *ctx, uint16_t val)
+int32_t a3g4250d_int_y_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   a3g4250d_int1_tsh_yh_t int1_tsh_yh;
   a3g4250d_int1_tsh_yl_t int1_tsh_yl;
@@ -1520,7 +1524,7 @@ int32_t a3g4250d_int_y_treshold_set(stmdev_ctx_t *ctx, uint16_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_y_treshold_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t a3g4250d_int_y_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   a3g4250d_int1_tsh_yh_t int1_tsh_yh;
   a3g4250d_int1_tsh_yl_t int1_tsh_yl;
@@ -1549,7 +1553,7 @@ int32_t a3g4250d_int_y_treshold_get(stmdev_ctx_t *ctx, uint16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_z_treshold_set(stmdev_ctx_t *ctx, uint16_t val)
+int32_t a3g4250d_int_z_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   a3g4250d_int1_tsh_zh_t int1_tsh_zh;
   a3g4250d_int1_tsh_zl_t int1_tsh_zl;
@@ -1589,7 +1593,7 @@ int32_t a3g4250d_int_z_treshold_set(stmdev_ctx_t *ctx, uint16_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_z_treshold_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t a3g4250d_int_z_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   a3g4250d_int1_tsh_zh_t int1_tsh_zh;
   a3g4250d_int1_tsh_zl_t int1_tsh_zl;
@@ -1618,7 +1622,7 @@ int32_t a3g4250d_int_z_treshold_get(stmdev_ctx_t *ctx, uint16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_on_threshold_dur_set(stmdev_ctx_t *ctx,
+int32_t a3g4250d_int_on_threshold_dur_set(const stmdev_ctx_t *ctx,
                                           uint8_t val)
 {
   a3g4250d_int1_duration_t int1_duration;
@@ -1656,7 +1660,7 @@ int32_t a3g4250d_int_on_threshold_dur_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_int_on_threshold_dur_get(stmdev_ctx_t *ctx,
+int32_t a3g4250d_int_on_threshold_dur_get(const stmdev_ctx_t *ctx,
                                           uint8_t *val)
 {
   a3g4250d_int1_duration_t int1_duration;
@@ -1689,7 +1693,7 @@ int32_t a3g4250d_int_on_threshold_dur_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_fifo_enable_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t a3g4250d_fifo_enable_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   a3g4250d_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -1715,7 +1719,7 @@ int32_t a3g4250d_fifo_enable_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_fifo_enable_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t a3g4250d_fifo_enable_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   a3g4250d_ctrl_reg5_t ctrl_reg5;
   int32_t ret;
@@ -1735,7 +1739,7 @@ int32_t a3g4250d_fifo_enable_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t a3g4250d_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   a3g4250d_fifo_ctrl_reg_t fifo_ctrl_reg;
   int32_t ret;
@@ -1761,7 +1765,7 @@ int32_t a3g4250d_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t a3g4250d_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   a3g4250d_fifo_ctrl_reg_t fifo_ctrl_reg;
   int32_t ret;
@@ -1781,7 +1785,7 @@ int32_t a3g4250d_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_fifo_mode_set(stmdev_ctx_t *ctx,
+int32_t a3g4250d_fifo_mode_set(const stmdev_ctx_t *ctx,
                                a3g4250d_fifo_mode_t val)
 {
   a3g4250d_fifo_ctrl_reg_t fifo_ctrl_reg;
@@ -1808,7 +1812,7 @@ int32_t a3g4250d_fifo_mode_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_fifo_mode_get(stmdev_ctx_t *ctx,
+int32_t a3g4250d_fifo_mode_get(const stmdev_ctx_t *ctx,
                                a3g4250d_fifo_mode_t *val)
 {
   a3g4250d_fifo_ctrl_reg_t fifo_ctrl_reg;
@@ -1847,7 +1851,7 @@ int32_t a3g4250d_fifo_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t a3g4250d_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   a3g4250d_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
@@ -1867,7 +1871,7 @@ int32_t a3g4250d_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_fifo_empty_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t a3g4250d_fifo_empty_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   a3g4250d_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
@@ -1887,7 +1891,7 @@ int32_t a3g4250d_fifo_empty_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t a3g4250d_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t a3g4250d_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   a3g4250d_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
@@ -1910,7 +1914,7 @@ int32_t a3g4250d_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   */
 
-int32_t a3g4250d_fifo_wtm_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t a3g4250d_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   a3g4250d_fifo_src_reg_t fifo_src_reg;
   int32_t ret;
