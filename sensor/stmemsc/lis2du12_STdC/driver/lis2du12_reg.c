@@ -46,11 +46,18 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lis2du12_read_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
+int32_t __weak lis2du12_read_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
                                  uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
+
   ret = ctx->read_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -64,11 +71,18 @@ int32_t __weak lis2du12_read_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lis2du12_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
+int32_t __weak lis2du12_write_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
                                   uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
+
   ret = ctx->write_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -86,7 +100,8 @@ int32_t __weak lis2du12_write_reg(stmdev_ctx_t* ctx, uint8_t reg, uint8_t* data,
 
 static void bytecpy(uint8_t *target, uint8_t *source)
 {
-  if ( (target != NULL) && (source != NULL) ) {
+  if ((target != NULL) && (source != NULL))
+  {
     *target = *source;
   }
 }
@@ -149,12 +164,12 @@ float_t lis2du12_from_lsb_to_celsius(int16_t lsb)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_id_get(stmdev_ctx_t *ctx, lis2du12_id_t *val)
+int32_t lis2du12_id_get(const stmdev_ctx_t *ctx, lis2du12_id_t *val)
 {
   uint8_t reg;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_WHO_AM_I,&reg, 1);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_WHO_AM_I, &reg, 1);
   val->whoami = reg;
 
   return ret;
@@ -168,24 +183,27 @@ int32_t lis2du12_id_get(stmdev_ctx_t *ctx, lis2du12_id_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_bus_mode_set(stmdev_ctx_t *ctx, lis2du12_bus_mode_t val)
+int32_t lis2du12_bus_mode_set(const stmdev_ctx_t *ctx, lis2du12_bus_mode_t val)
 {
   lis2du12_if_ctrl_t if_ctrl;
   lis2du12_ctrl1_t ctrl1;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t*)&if_ctrl, 1);
-  if (ret == 0) {
+  ret = lis2du12_read_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t *)&if_ctrl, 1);
+  if (ret == 0)
+  {
     if_ctrl.i3c_disable = (uint8_t)val & 0x01U;
     if_ctrl.i2c_disable = ((uint8_t)val & 0x02U) >> 1;
-    ret = lis2du12_write_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t*)&if_ctrl, 1);
+    ret = lis2du12_write_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t *)&if_ctrl, 1);
   }
-  if (ret == 0) {
-    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+  if (ret == 0)
+  {
+    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
   }
-  if (ret == 0) {
+  if (ret == 0)
+  {
     ctrl1.sim = ((uint8_t)val & 0x04U) >> 2;
-    ret = lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+    ret = lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
   }
 
   return ret;
@@ -200,18 +218,20 @@ int32_t lis2du12_bus_mode_set(stmdev_ctx_t *ctx, lis2du12_bus_mode_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_bus_mode_get(stmdev_ctx_t *ctx, lis2du12_bus_mode_t *val)
+int32_t lis2du12_bus_mode_get(const stmdev_ctx_t *ctx, lis2du12_bus_mode_t *val)
 {
   lis2du12_if_ctrl_t if_ctrl;
   lis2du12_ctrl1_t ctrl1;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t*)&if_ctrl, 1);
-  if (ret == 0) {
-    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t *)&if_ctrl, 1);
+  if (ret == 0)
+  {
+    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
   }
-  switch ( (ctrl1.sim << 2) | (if_ctrl.i2c_disable) << 1 |
-           (if_ctrl.i3c_disable) ) {
+  switch ((ctrl1.sim << 2) | (if_ctrl.i2c_disable) << 1 |
+          (if_ctrl.i3c_disable))
+  {
     case LIS2DU12_SEL_BY_HW:
       *val = LIS2DU12_SEL_BY_HW;
       break;
@@ -234,33 +254,34 @@ int32_t lis2du12_bus_mode_get(stmdev_ctx_t *ctx, lis2du12_bus_mode_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_init_set(stmdev_ctx_t *ctx, lis2du12_init_t val)
+int32_t lis2du12_init_set(const stmdev_ctx_t *ctx, lis2du12_init_t val)
 {
   lis2du12_ctrl1_t ctrl1;
   lis2du12_ctrl4_t ctrl4;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL4, (uint8_t*)&ctrl4, 1);
-  switch ( val ) {
+  ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL4, (uint8_t *)&ctrl4, 1);
+  switch (val)
+  {
     case LIS2DU12_BOOT:
       ctrl4.boot = PROPERTY_ENABLE;
-      ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL4, (uint8_t*)&ctrl4, 1);
+      ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL4, (uint8_t *)&ctrl4, 1);
       break;
     case LIS2DU12_RESET:
 
       ctrl1.sw_reset = PROPERTY_ENABLE;
-      ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+      ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
       break;
     case LIS2DU12_DRV_RDY:
       ctrl4.bdu = PROPERTY_ENABLE;
       ctrl1.if_add_inc = PROPERTY_ENABLE;
-      ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL4, (uint8_t*)&ctrl4, 1);
-      ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+      ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL4, (uint8_t *)&ctrl4, 1);
+      ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
       break;
     default:
       ctrl1.sw_reset = PROPERTY_ENABLE;
-      ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+      ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
       break;
   }
 
@@ -275,7 +296,7 @@ int32_t lis2du12_init_set(stmdev_ctx_t *ctx, lis2du12_init_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_status_get(stmdev_ctx_t *ctx, lis2du12_status_t *val)
+int32_t lis2du12_status_get(const stmdev_ctx_t *ctx, lis2du12_status_t *val)
 {
   lis2du12_status_register_t status_register;
   lis2du12_ctrl1_t ctrl1;
@@ -283,12 +304,14 @@ int32_t lis2du12_status_get(stmdev_ctx_t *ctx, lis2du12_status_t *val)
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_STATUS,
-                         (uint8_t*)&status_register, 1);
-  if (ret == 0) {
-    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+                          (uint8_t *)&status_register, 1);
+  if (ret == 0)
+  {
+    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
   }
-  if (ret == 0) {
-    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL4, (uint8_t*)&ctrl4, 1);
+  if (ret == 0)
+  {
+    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL4, (uint8_t *)&ctrl4, 1);
   }
 
   val->sw_reset = ctrl1.sw_reset;
@@ -307,7 +330,7 @@ int32_t lis2du12_status_get(stmdev_ctx_t *ctx, lis2du12_status_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_pin_conf_set(stmdev_ctx_t *ctx, lis2du12_pin_conf_t *val)
+int32_t lis2du12_pin_conf_set(const stmdev_ctx_t *ctx, lis2du12_pin_conf_t *val)
 {
   lis2du12_if_pu_ctrl_t if_pu_ctrl;
   lis2du12_md2_cfg_t md2_cfg;
@@ -315,34 +338,41 @@ int32_t lis2du12_pin_conf_set(stmdev_ctx_t *ctx, lis2du12_pin_conf_t *val)
   lis2du12_ctrl1_t ctrl1;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_IF_PU_CTRL, (uint8_t*)&if_pu_ctrl, 1);
-  if (ret == 0) {
-    ret = lis2du12_read_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t*)&if_ctrl, 1);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_IF_PU_CTRL, (uint8_t *)&if_pu_ctrl, 1);
+  if (ret == 0)
+  {
+    ret = lis2du12_read_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t *)&if_ctrl, 1);
   }
-  if (ret == 0) {
-    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+  if (ret == 0)
+  {
+    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
   }
-  if (ret == 0) {
-    ret = lis2du12_read_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t*)&md2_cfg, 1);
+  if (ret == 0)
+  {
+    ret = lis2du12_read_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   }
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     if_pu_ctrl.sdo_pu_disc = ~val->sdo_pull_up;
     if_pu_ctrl.sda_pu_en = val->sda_pull_up;
     if_pu_ctrl.cs_pu_disc = ~val->cs_pull_up;
-    ret = lis2du12_write_reg(ctx, LIS2DU12_IF_PU_CTRL, (uint8_t*)&if_pu_ctrl, 1);
+    ret = lis2du12_write_reg(ctx, LIS2DU12_IF_PU_CTRL, (uint8_t *)&if_pu_ctrl, 1);
   }
-  if (ret == 0) {
+  if (ret == 0)
+  {
     if_ctrl.pd_dis_int1 = val->int1_pull_down;
-    ret = lis2du12_write_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t*)&if_ctrl, 1);
+    ret = lis2du12_write_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t *)&if_ctrl, 1);
   }
-  if (ret == 0) {
+  if (ret == 0)
+  {
     ctrl1.pp_od = val->int1_int2_push_pull;
-    ret = lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+    ret = lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
   }
-  if (ret == 0) {
+  if (ret == 0)
+  {
     md2_cfg.pd_dis_int2 = val->int2_pull_down;
-    ret = lis2du12_write_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t*)&md2_cfg, 1);
+    ret = lis2du12_write_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   }
 
   return ret;
@@ -356,7 +386,7 @@ int32_t lis2du12_pin_conf_set(stmdev_ctx_t *ctx, lis2du12_pin_conf_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_pin_conf_get(stmdev_ctx_t *ctx, lis2du12_pin_conf_t *val)
+int32_t lis2du12_pin_conf_get(const stmdev_ctx_t *ctx, lis2du12_pin_conf_t *val)
 {
   lis2du12_if_pu_ctrl_t if_pu_ctrl;
   lis2du12_md2_cfg_t md2_cfg;
@@ -364,15 +394,18 @@ int32_t lis2du12_pin_conf_get(stmdev_ctx_t *ctx, lis2du12_pin_conf_t *val)
   lis2du12_ctrl1_t ctrl1;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_IF_PU_CTRL, (uint8_t*)&if_pu_ctrl, 1);
-  if (ret == 0) {
-    ret = lis2du12_read_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t*)&if_ctrl, 1);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_IF_PU_CTRL, (uint8_t *)&if_pu_ctrl, 1);
+  if (ret == 0)
+  {
+    ret = lis2du12_read_reg(ctx, LIS2DU12_IF_CTRL, (uint8_t *)&if_ctrl, 1);
   }
-  if (ret == 0) {
-    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+  if (ret == 0)
+  {
+    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
   }
-  if (ret == 0) {
-    ret = lis2du12_read_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t*)&md2_cfg, 1);
+  if (ret == 0)
+  {
+    ret = lis2du12_read_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   }
   val->sdo_pull_up = ~if_pu_ctrl.sdo_pu_disc;
   val->sda_pull_up = if_pu_ctrl.sda_pu_en;
@@ -392,13 +425,13 @@ int32_t lis2du12_pin_conf_get(stmdev_ctx_t *ctx, lis2du12_pin_conf_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_all_sources_get(stmdev_ctx_t *ctx,
+int32_t lis2du12_all_sources_get(const stmdev_ctx_t *ctx,
                                  lis2du12_all_sources_t *val)
 {
   lis2du12_all_int_src_t all_int_src;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_ALL_INT_SRC, (uint8_t*)&all_int_src, 1);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_ALL_INT_SRC, (uint8_t *)&all_int_src, 1);
   if (ret == 0 && all_int_src.int_global == 1U)
   {
     val->free_fall    = all_int_src.ff_ia_all;
@@ -412,7 +445,7 @@ int32_t lis2du12_all_sources_get(stmdev_ctx_t *ctx,
     {
       lis2du12_sixd_src_t sixd_src;
 
-      ret = lis2du12_read_reg(ctx, LIS2DU12_SIXD_SRC, (uint8_t*)&sixd_src, 1);
+      ret = lis2du12_read_reg(ctx, LIS2DU12_SIXD_SRC, (uint8_t *)&sixd_src, 1);
 
       val->six_d_xl = sixd_src.xl;
       val->six_d_xh = sixd_src.xh;
@@ -426,7 +459,7 @@ int32_t lis2du12_all_sources_get(stmdev_ctx_t *ctx,
     {
       lis2du12_wake_up_src_t wu_src;
 
-      ret = lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_SRC, (uint8_t*)&wu_src, 1);
+      ret = lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_SRC, (uint8_t *)&wu_src, 1);
 
       val->wake_up_z = wu_src.z_wu;
       val->wake_up_y = wu_src.y_wu;
@@ -438,7 +471,7 @@ int32_t lis2du12_all_sources_get(stmdev_ctx_t *ctx,
     {
       lis2du12_tap_src_t tap_src;
 
-      ret = lis2du12_read_reg(ctx, LIS2DU12_TAP_SRC, (uint8_t*)&tap_src, 1);
+      ret = lis2du12_read_reg(ctx, LIS2DU12_TAP_SRC, (uint8_t *)&tap_src, 1);
 
       val->tap_z        = tap_src.z_tap;
       val->tap_y        = tap_src.y_tap;
@@ -458,18 +491,18 @@ int32_t lis2du12_all_sources_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_mode_set(stmdev_ctx_t *ctx, lis2du12_md_t *val)
+int32_t lis2du12_mode_set(const stmdev_ctx_t *ctx, lis2du12_md_t *val)
 {
   lis2du12_ctrl5_t ctrl5;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL5, (uint8_t*)&ctrl5, 1);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL5, (uint8_t *)&ctrl5, 1);
 
   ctrl5.odr = (uint8_t)val->odr;
   ctrl5.fs = (uint8_t)val->fs;
   ctrl5.bw = (uint8_t)val->bw;
 
-  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL5, (uint8_t*)&ctrl5, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL5, (uint8_t *)&ctrl5, 1);
 
   return ret;
 }
@@ -482,14 +515,15 @@ int32_t lis2du12_mode_set(stmdev_ctx_t *ctx, lis2du12_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_mode_get(stmdev_ctx_t *ctx, lis2du12_md_t *val)
+int32_t lis2du12_mode_get(const stmdev_ctx_t *ctx, lis2du12_md_t *val)
 {
   lis2du12_ctrl5_t ctrl5;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL5, (uint8_t*)&ctrl5, 1);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL5, (uint8_t *)&ctrl5, 1);
 
-  switch (ctrl5.odr) {
+  switch (ctrl5.odr)
+  {
     case LIS2DU12_OFF:
       val->odr = LIS2DU12_OFF;
       break;
@@ -537,7 +571,8 @@ int32_t lis2du12_mode_get(stmdev_ctx_t *ctx, lis2du12_md_t *val)
       break;
   }
 
-  switch (ctrl5.fs) {
+  switch (ctrl5.fs)
+  {
     case LIS2DU12_2g:
       val->fs = LIS2DU12_2g;
       break;
@@ -555,7 +590,8 @@ int32_t lis2du12_mode_get(stmdev_ctx_t *ctx, lis2du12_md_t *val)
       break;
   }
 
-  switch (ctrl5.bw) {
+  switch (ctrl5.bw)
+  {
     case LIS2DU12_ODR_div_2:
       val->bw = LIS2DU12_ODR_div_2;
       break;
@@ -584,15 +620,16 @@ int32_t lis2du12_mode_get(stmdev_ctx_t *ctx, lis2du12_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_trigger_sw(stmdev_ctx_t *ctx, lis2du12_md_t *md)
+int32_t lis2du12_trigger_sw(const stmdev_ctx_t *ctx, lis2du12_md_t *md)
 {
   lis2du12_ctrl4_t ctrl4;
   int32_t ret = 0;
 
-  if ( md->odr == LIS2DU12_TRIG_SW ) {
-    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL4, (uint8_t*)&ctrl4, 1);
+  if (md->odr == LIS2DU12_TRIG_SW)
+  {
+    ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL4, (uint8_t *)&ctrl4, 1);
     ctrl4.soc = PROPERTY_ENABLE;
-    ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL4, (uint8_t*)&ctrl4, 1);
+    ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL4, (uint8_t *)&ctrl4, 1);
   }
   return ret;
 }
@@ -606,7 +643,7 @@ int32_t lis2du12_trigger_sw(stmdev_ctx_t *ctx, lis2du12_md_t *md)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_data_get(stmdev_ctx_t *ctx, lis2du12_md_t *md,
+int32_t lis2du12_data_get(const stmdev_ctx_t *ctx, lis2du12_md_t *md,
                           lis2du12_data_t *data)
 {
   uint8_t buff[8];
@@ -614,26 +651,28 @@ int32_t lis2du12_data_get(stmdev_ctx_t *ctx, lis2du12_md_t *md,
   uint8_t i;
   uint8_t j;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_OUTX_L, (uint8_t*)&buff, 8);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_OUTX_L, (uint8_t *)&buff, 8);
 
   /* acceleration conversion */
   j = 0U;
-  for (i = 0U; i < 3U; i++) {
-    data->xl.raw[i] = (int16_t)buff[j+1U];
+  for (i = 0U; i < 3U; i++)
+  {
+    data->xl.raw[i] = (int16_t)buff[j + 1U];
     data->xl.raw[i] = (data->xl.raw[i] * 256) + (int16_t) buff[j];
-    j+=2U;
-    switch ( md->fs ) {
+    j += 2U;
+    switch (md->fs)
+    {
       case LIS2DU12_2g:
-        data->xl.mg[i] =lis2du12_from_fs2g_to_mg(data->xl.raw[i]);
+        data->xl.mg[i] = lis2du12_from_fs2g_to_mg(data->xl.raw[i]);
         break;
       case LIS2DU12_4g:
-        data->xl.mg[i] =lis2du12_from_fs4g_to_mg(data->xl.raw[i]);
+        data->xl.mg[i] = lis2du12_from_fs4g_to_mg(data->xl.raw[i]);
         break;
       case LIS2DU12_8g:
-        data->xl.mg[i] =lis2du12_from_fs8g_to_mg(data->xl.raw[i]);
+        data->xl.mg[i] = lis2du12_from_fs8g_to_mg(data->xl.raw[i]);
         break;
       case LIS2DU12_16g:
-        data->xl.mg[i] =lis2du12_from_fs16g_to_mg(data->xl.raw[i]);
+        data->xl.mg[i] = lis2du12_from_fs16g_to_mg(data->xl.raw[i]);
         break;
       default:
         data->xl.mg[i] = 0.0f;
@@ -641,7 +680,7 @@ int32_t lis2du12_data_get(stmdev_ctx_t *ctx, lis2du12_md_t *md,
     }
   }
 
-  data->heat.raw = (int16_t)buff[j+1U];
+  data->heat.raw = (int16_t)buff[j + 1U];
   data->heat.raw = (data->heat.raw * 256) + (int16_t) buff[j];
   /* temperature conversion */
   data->heat.deg_c = lis2du12_from_lsb_to_celsius(data->heat.raw);
@@ -657,15 +696,16 @@ int32_t lis2du12_data_get(stmdev_ctx_t *ctx, lis2du12_md_t *md,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_self_test_sign_set(stmdev_ctx_t *ctx, lis2du12_st_t val)
+int32_t lis2du12_self_test_sign_set(const stmdev_ctx_t *ctx, lis2du12_st_t val)
 {
   lis2du12_st_sign_t st_sign;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_ST_SIGN, (uint8_t*)&st_sign, 1);
-  if (ret == 0) {
+  ret = lis2du12_read_reg(ctx, LIS2DU12_ST_SIGN, (uint8_t *)&st_sign, 1);
+  if (ret == 0)
+  {
     st_sign.stsign = (uint8_t) val;
-    ret = lis2du12_write_reg(ctx, LIS2DU12_ST_SIGN, (uint8_t*)&st_sign, 1);
+    ret = lis2du12_write_reg(ctx, LIS2DU12_ST_SIGN, (uint8_t *)&st_sign, 1);
   }
   return ret;
 }
@@ -678,18 +718,19 @@ int32_t lis2du12_self_test_sign_set(stmdev_ctx_t *ctx, lis2du12_st_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_self_test_start(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lis2du12_self_test_start(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lis2du12_ctrl3_t ctrl3;
   int32_t ret;
 
-  if (val != 1U && val != 2U) {
+  if (val != 1U && val != 2U)
+  {
     return -1;
   }
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL3, (uint8_t*)&ctrl3, 1);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL3, (uint8_t *)&ctrl3, 1);
   ctrl3.st = (uint8_t) val;
-  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL3, (uint8_t*)&ctrl3, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL3, (uint8_t *)&ctrl3, 1);
 
   return ret;
 }
@@ -702,14 +743,14 @@ int32_t lis2du12_self_test_start(stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_self_test_stop(stmdev_ctx_t *ctx)
+int32_t lis2du12_self_test_stop(const stmdev_ctx_t *ctx)
 {
   lis2du12_ctrl3_t ctrl3;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL3, (uint8_t*)&ctrl3, 1);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL3, (uint8_t *)&ctrl3, 1);
   ctrl3.st = 0;
-  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL3, (uint8_t*)&ctrl3, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL3, (uint8_t *)&ctrl3, 1);
 
   return ret;
 }
@@ -735,7 +776,7 @@ int32_t lis2du12_self_test_stop(stmdev_ctx_t *ctx)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_fifo_mode_set(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *val)
+int32_t lis2du12_fifo_mode_set(const stmdev_ctx_t *ctx, lis2du12_fifo_md_t *val)
 {
   lis2du12_fifo_ctrl_t fifo_ctrl;
   lis2du12_fifo_wtm_t fifo_wtm;
@@ -744,23 +785,25 @@ int32_t lis2du12_fifo_mode_set(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *val)
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_FIFO_CTRL, reg, 2);
 
-  bytecpy(( uint8_t*)&fifo_ctrl, &reg[0]);
-  bytecpy(( uint8_t*)&fifo_wtm, &reg[1]);
+  bytecpy((uint8_t *)&fifo_ctrl, &reg[0]);
+  bytecpy((uint8_t *)&fifo_wtm, &reg[1]);
 
   fifo_ctrl.f_mode = (uint8_t) val->operation;
   fifo_ctrl.fifo_depth = (uint8_t) val->store;
 
-  if (val->watermark != 0x00U) {
+  if (val->watermark != 0x00U)
+  {
     fifo_ctrl.stop_on_fth = PROPERTY_ENABLE;
   }
-  else {
+  else
+  {
     fifo_ctrl.stop_on_fth = PROPERTY_DISABLE;
   }
 
   fifo_wtm.fth = val->watermark;
 
-  bytecpy(&reg[0], ( uint8_t*)&fifo_ctrl);
-  bytecpy(&reg[1], ( uint8_t*)&fifo_wtm);
+  bytecpy(&reg[0], (uint8_t *)&fifo_ctrl);
+  bytecpy(&reg[1], (uint8_t *)&fifo_wtm);
 
   ret += lis2du12_write_reg(ctx, LIS2DU12_FIFO_CTRL, reg, 2);
 
@@ -775,7 +818,7 @@ int32_t lis2du12_fifo_mode_set(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_fifo_mode_get(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *val)
+int32_t lis2du12_fifo_mode_get(const stmdev_ctx_t *ctx, lis2du12_fifo_md_t *val)
 {
   lis2du12_fifo_ctrl_t fifo_ctrl;
   lis2du12_fifo_wtm_t fifo_wtm;
@@ -784,8 +827,8 @@ int32_t lis2du12_fifo_mode_get(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *val)
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_FIFO_CTRL, reg, 2);
 
-  bytecpy(( uint8_t*)&fifo_ctrl, &reg[0]);
-  bytecpy(( uint8_t*)&fifo_wtm, &reg[1]);
+  bytecpy((uint8_t *)&fifo_ctrl, &reg[0]);
+  bytecpy((uint8_t *)&fifo_wtm, &reg[1]);
 
   switch (fifo_ctrl.f_mode)
   {
@@ -830,7 +873,7 @@ int32_t lis2du12_fifo_mode_get(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *val)
   return ret;
 }
 
-int32_t lis2du12_fifo_status_get(stmdev_ctx_t *ctx, lis2du12_fifo_status_t *val)
+int32_t lis2du12_fifo_status_get(const stmdev_ctx_t *ctx, lis2du12_fifo_status_t *val)
 {
   lis2du12_fifo_status1_t fifo_status1;
   int32_t ret;
@@ -852,14 +895,14 @@ int32_t lis2du12_fifo_status_get(stmdev_ctx_t *ctx, lis2du12_fifo_status_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_fifo_level_get(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *md,
+int32_t lis2du12_fifo_level_get(const stmdev_ctx_t *ctx, lis2du12_fifo_md_t *md,
                                 uint8_t *val)
 {
   lis2du12_fifo_status2_t fifo_status2;
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_FIFO_STATUS2,
-                          (uint8_t*)&fifo_status2, 1);
+                          (uint8_t *)&fifo_status2, 1);
 
   *val = fifo_status2.fss;
 
@@ -876,7 +919,7 @@ int32_t lis2du12_fifo_level_get(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *md,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_fifo_data_get(stmdev_ctx_t *ctx, lis2du12_md_t *md,
+int32_t lis2du12_fifo_data_get(const stmdev_ctx_t *ctx, lis2du12_md_t *md,
                                lis2du12_fifo_md_t *fmd,
                                lis2du12_fifo_data_t *data)
 {
@@ -886,40 +929,47 @@ int32_t lis2du12_fifo_data_get(stmdev_ctx_t *ctx, lis2du12_md_t *md,
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_OUTX_L, fifo_data, 8);
 
-  if (fmd->store == LIS2DU12_8_BIT) {
-    for (i = 0; i < 3; i++) {
-      data->xl[0].raw[i] = (int16_t)fifo_data[2*i + 1];
-      data->xl[0].raw[i] = data->xl[0].raw[i] * 256 + (int16_t)fifo_data[2*i];
+  if (fmd->store == LIS2DU12_8_BIT)
+  {
+    for (i = 0; i < 3; i++)
+    {
+      data->xl[0].raw[i] = (int16_t)fifo_data[2 * i + 1];
+      data->xl[0].raw[i] = data->xl[0].raw[i] * 256 + (int16_t)fifo_data[2 * i];
     }
 
     data->heat.raw = (int16_t)fifo_data[7U];
     data->heat.raw = (data->heat.raw * 256) + (int16_t) fifo_data[6U];
     /* temperature conversion */
     data->heat.deg_c = lis2du12_from_lsb_to_celsius(data->heat.raw);
-  } else {
-    for (i = 0; i < 3; i++) {
+  }
+  else
+  {
+    for (i = 0; i < 3; i++)
+    {
       data->xl[0].raw[i] = (int16_t)fifo_data[i] * 256;
       data->xl[1].raw[i] = (int16_t)fifo_data[3 + i] * 256;
     }
   }
 
-  for (i = 0; i < 3; i++) {
-    switch ( md->fs ) {
+  for (i = 0; i < 3; i++)
+  {
+    switch (md->fs)
+    {
       case LIS2DU12_2g:
-        data->xl[0].mg[i] =lis2du12_from_fs2g_to_mg(data->xl[0].raw[i]);
-        data->xl[1].mg[i] =lis2du12_from_fs2g_to_mg(data->xl[1].raw[i]);
+        data->xl[0].mg[i] = lis2du12_from_fs2g_to_mg(data->xl[0].raw[i]);
+        data->xl[1].mg[i] = lis2du12_from_fs2g_to_mg(data->xl[1].raw[i]);
         break;
       case LIS2DU12_4g:
-        data->xl[0].mg[i] =lis2du12_from_fs4g_to_mg(data->xl[0].raw[i]);
-        data->xl[1].mg[i] =lis2du12_from_fs4g_to_mg(data->xl[1].raw[i]);
+        data->xl[0].mg[i] = lis2du12_from_fs4g_to_mg(data->xl[0].raw[i]);
+        data->xl[1].mg[i] = lis2du12_from_fs4g_to_mg(data->xl[1].raw[i]);
         break;
       case LIS2DU12_8g:
-        data->xl[0].mg[i] =lis2du12_from_fs8g_to_mg(data->xl[0].raw[i]);
-        data->xl[1].mg[i] =lis2du12_from_fs8g_to_mg(data->xl[1].raw[i]);
+        data->xl[0].mg[i] = lis2du12_from_fs8g_to_mg(data->xl[0].raw[i]);
+        data->xl[1].mg[i] = lis2du12_from_fs8g_to_mg(data->xl[1].raw[i]);
         break;
       case LIS2DU12_16g:
-        data->xl[0].mg[i] =lis2du12_from_fs16g_to_mg(data->xl[0].raw[i]);
-        data->xl[1].mg[i] =lis2du12_from_fs16g_to_mg(data->xl[1].raw[i]);
+        data->xl[0].mg[i] = lis2du12_from_fs16g_to_mg(data->xl[0].raw[i]);
+        data->xl[1].mg[i] = lis2du12_from_fs16g_to_mg(data->xl[1].raw[i]);
         break;
       default:
         data->xl[0].mg[i] = 0.0f;
@@ -952,7 +1002,7 @@ int32_t lis2du12_fifo_data_get(stmdev_ctx_t *ctx, lis2du12_md_t *md,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_interrupt_mode_set(stmdev_ctx_t *ctx,
+int32_t lis2du12_interrupt_mode_set(const stmdev_ctx_t *ctx,
                                     lis2du12_int_mode_t *val)
 {
   lis2du12_interrupt_cfg_t interrupt_cfg;
@@ -960,8 +1010,8 @@ int32_t lis2du12_interrupt_mode_set(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                          (uint8_t*)&interrupt_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+                          (uint8_t *)&interrupt_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
 
   interrupt_cfg.int_short_en = (uint8_t)val->base_sig & 0x01U;
   interrupt_cfg.lir = ((uint8_t)val->base_sig & 0x02U) >> 1 ;
@@ -972,8 +1022,8 @@ int32_t lis2du12_interrupt_mode_set(stmdev_ctx_t *ctx,
   interrupt_cfg.interrupts_enable = val->enable;
 
   ret += lis2du12_write_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                           (uint8_t*)&interrupt_cfg, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+                            (uint8_t *)&interrupt_cfg, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
 
   return ret;
 }
@@ -986,7 +1036,7 @@ int32_t lis2du12_interrupt_mode_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_interrupt_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2du12_interrupt_mode_get(const stmdev_ctx_t *ctx,
                                     lis2du12_int_mode_t *val)
 {
   lis2du12_interrupt_cfg_t interrupt_cfg;
@@ -994,14 +1044,15 @@ int32_t lis2du12_interrupt_mode_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                          (uint8_t*)&interrupt_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+                          (uint8_t *)&interrupt_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
 
   val->active_low = interrupt_cfg.h_lactive;
   val->drdy_latched = ~ctrl1.drdy_pulsed;
   val->enable = interrupt_cfg.interrupts_enable;
 
-  switch ( (interrupt_cfg.lir << 1) | interrupt_cfg.int_short_en ) {
+  switch ((interrupt_cfg.lir << 1) | interrupt_cfg.int_short_en)
+  {
     case LIS2DU12_INT_LEVEL:
       val->base_sig = LIS2DU12_INT_LEVEL;
       break;
@@ -1023,7 +1074,7 @@ int32_t lis2du12_interrupt_mode_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_pin_int1_route_set(stmdev_ctx_t *ctx,
+int32_t lis2du12_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                     lis2du12_pin_int_route_t *val)
 {
   lis2du12_interrupt_cfg_t interrupt_cfg;
@@ -1032,9 +1083,9 @@ int32_t lis2du12_pin_int1_route_set(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                          (uint8_t*)&interrupt_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t*)&md1_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL2, (uint8_t*)&ctrl2, 1);
+                          (uint8_t *)&interrupt_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL2, (uint8_t *)&ctrl2, 1);
 
   ctrl2.int1_boot = val->boot;
   ctrl2.int1_drdy = val->drdy_xl;
@@ -1048,19 +1099,21 @@ int32_t lis2du12_pin_int1_route_set(stmdev_ctx_t *ctx,
   md1_cfg.int1_ff = val->free_fall;
   md1_cfg.int1_single_tap = val->single_tap;
 
-  if ( val->sleep_state == 1U) {
+  if (val->sleep_state == 1U)
+  {
     interrupt_cfg.sleep_status_on_int = PROPERTY_ENABLE;
     md1_cfg.int1_sleep_change = PROPERTY_ENABLE;
   }
-  if ( val->sleep_change == 1U) {
+  if (val->sleep_change == 1U)
+  {
     interrupt_cfg.sleep_status_on_int = PROPERTY_DISABLE;
     md1_cfg.int1_sleep_change = PROPERTY_ENABLE;
   }
 
   ret += lis2du12_write_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                           (uint8_t*)&interrupt_cfg, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t*)&md1_cfg, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL2, (uint8_t*)&ctrl2, 1);
+                            (uint8_t *)&interrupt_cfg, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL2, (uint8_t *)&ctrl2, 1);
 
   return ret;
 }
@@ -1073,7 +1126,7 @@ int32_t lis2du12_pin_int1_route_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_pin_int1_route_get(stmdev_ctx_t *ctx,
+int32_t lis2du12_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                     lis2du12_pin_int_route_t *val)
 {
   lis2du12_interrupt_cfg_t interrupt_cfg;
@@ -1082,9 +1135,9 @@ int32_t lis2du12_pin_int1_route_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                          (uint8_t*)&interrupt_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t*)&md1_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL2, (uint8_t*)&ctrl2, 1);
+                          (uint8_t *)&interrupt_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL2, (uint8_t *)&ctrl2, 1);
 
   val->boot = ctrl2.int1_boot;
   val->drdy_xl = ctrl2.int1_drdy;
@@ -1100,10 +1153,12 @@ int32_t lis2du12_pin_int1_route_get(stmdev_ctx_t *ctx,
 
   val->sleep_state = interrupt_cfg.sleep_status_on_int;
 
-  if (val->sleep_state == PROPERTY_DISABLE) {
+  if (val->sleep_state == PROPERTY_DISABLE)
+  {
     val->sleep_change = md1_cfg.int1_sleep_change;
   }
-  else {
+  else
+  {
     val->sleep_change = PROPERTY_DISABLE;
   }
 
@@ -1118,7 +1173,7 @@ int32_t lis2du12_pin_int1_route_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_pin_int2_route_set(stmdev_ctx_t *ctx,
+int32_t lis2du12_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                     lis2du12_pin_int_route_t *val)
 {
   lis2du12_interrupt_cfg_t interrupt_cfg;
@@ -1127,9 +1182,9 @@ int32_t lis2du12_pin_int2_route_set(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                          (uint8_t*)&interrupt_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t*)&md2_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL3, (uint8_t*)&ctrl3, 1);
+                          (uint8_t *)&interrupt_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL3, (uint8_t *)&ctrl3, 1);
 
   ctrl3.int2_boot = val->boot;
   ctrl3.int2_drdy = val->drdy_xl;
@@ -1143,19 +1198,21 @@ int32_t lis2du12_pin_int2_route_set(stmdev_ctx_t *ctx,
   md2_cfg.int2_ff = val->free_fall;
   md2_cfg.int2_single_tap = val->single_tap;
 
-  if ( val->sleep_state == 1U) {
+  if (val->sleep_state == 1U)
+  {
     interrupt_cfg.sleep_status_on_int = PROPERTY_ENABLE;
     md2_cfg.int2_sleep_change = PROPERTY_ENABLE;
   }
-  if ( val->sleep_change == 1U) {
+  if (val->sleep_change == 1U)
+  {
     interrupt_cfg.sleep_status_on_int = PROPERTY_DISABLE;
     md2_cfg.int2_sleep_change = PROPERTY_ENABLE;
   }
 
   ret += lis2du12_write_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                           (uint8_t*)&interrupt_cfg, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t*)&md2_cfg, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL3, (uint8_t*)&ctrl3, 1);
+                            (uint8_t *)&interrupt_cfg, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL3, (uint8_t *)&ctrl3, 1);
 
   return ret;
 }
@@ -1168,7 +1225,7 @@ int32_t lis2du12_pin_int2_route_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_pin_int2_route_get(stmdev_ctx_t *ctx,
+int32_t lis2du12_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                     lis2du12_pin_int_route_t *val)
 {
   lis2du12_interrupt_cfg_t interrupt_cfg;
@@ -1177,9 +1234,9 @@ int32_t lis2du12_pin_int2_route_get(stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                          (uint8_t*)&interrupt_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t*)&md2_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL3, (uint8_t*)&ctrl3, 1);
+                          (uint8_t *)&interrupt_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL3, (uint8_t *)&ctrl3, 1);
 
   val->boot = ctrl3.int2_boot;
   val->drdy_xl = ctrl3.int2_drdy;
@@ -1195,10 +1252,12 @@ int32_t lis2du12_pin_int2_route_get(stmdev_ctx_t *ctx,
 
   val->sleep_state = interrupt_cfg.sleep_status_on_int;
 
-  if (val->sleep_state == PROPERTY_DISABLE) {
+  if (val->sleep_state == PROPERTY_DISABLE)
+  {
     val->sleep_change = md2_cfg.int2_sleep_change;
   }
-  else {
+  else
+  {
     val->sleep_change = PROPERTY_DISABLE;
   }
 
@@ -1226,7 +1285,7 @@ int32_t lis2du12_pin_int2_route_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_wake_up_mode_set(stmdev_ctx_t *ctx, lis2du12_wkup_md_t *val)
+int32_t lis2du12_wake_up_mode_set(const stmdev_ctx_t *ctx, lis2du12_wkup_md_t *val)
 {
   lis2du12_interrupt_cfg_t interrupt_cfg;
   lis2du12_wake_up_ths_t wake_up_ths;
@@ -1237,33 +1296,37 @@ int32_t lis2du12_wake_up_mode_set(stmdev_ctx_t *ctx, lis2du12_wkup_md_t *val)
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                          (uint8_t*)&interrupt_cfg, 1);
+                          (uint8_t *)&interrupt_cfg, 1);
   ret += lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_THS,
-                          (uint8_t*)&wake_up_ths, 1);
+                           (uint8_t *)&wake_up_ths, 1);
   ret += lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_DUR,
-                          (uint8_t*)&wake_up_dur, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t*)&md1_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL4, (uint8_t*)&ctrl4, 1);
+                           (uint8_t *)&wake_up_dur, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL4, (uint8_t *)&ctrl4, 1);
 
   ctrl1.wu_z_en = val->z_en;
   ctrl1.wu_y_en = val->y_en;
   ctrl1.wu_x_en = val->x_en;
 
-  if (val->threshold > 63U) {
+  if (val->threshold > 63U)
+  {
     interrupt_cfg.wake_ths_w = PROPERTY_ENABLE;
     wake_up_ths.wk_ths = val->threshold / 4U;
   }
-  else {
+  else
+  {
     interrupt_cfg.wake_ths_w = PROPERTY_DISABLE;
     wake_up_ths.wk_ths = val->threshold;
   }
 
-  if (val->duration > 3U) {
+  if (val->duration > 3U)
+  {
     md1_cfg.wu_dur_x4 = PROPERTY_ENABLE;
     wake_up_dur.wake_dur = val->duration / 4U;
   }
-  else {
+  else
+  {
     md1_cfg.wu_dur_x4 = PROPERTY_DISABLE;
     wake_up_dur.wake_dur = val->duration;
   }
@@ -1273,13 +1336,13 @@ int32_t lis2du12_wake_up_mode_set(stmdev_ctx_t *ctx, lis2du12_wkup_md_t *val)
   wake_up_dur.sleep_dur = val->sleep.duration;
 
   ret += lis2du12_write_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                           (uint8_t*)&interrupt_cfg, 1);
+                            (uint8_t *)&interrupt_cfg, 1);
   ret += lis2du12_write_reg(ctx, LIS2DU12_WAKE_UP_THS,
-                           (uint8_t*)&wake_up_ths, 1);
+                            (uint8_t *)&wake_up_ths, 1);
   ret += lis2du12_write_reg(ctx, LIS2DU12_WAKE_UP_DUR,
-                           (uint8_t*)&wake_up_dur, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t*)&md1_cfg, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
+                            (uint8_t *)&wake_up_dur, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
   ret += lis2du12_write_reg(ctx, LIS2DU12_CTRL4, (uint8_t *)&ctrl4, 1);
 
   return ret;
@@ -1293,7 +1356,7 @@ int32_t lis2du12_wake_up_mode_set(stmdev_ctx_t *ctx, lis2du12_wkup_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_wake_up_mode_get(stmdev_ctx_t *ctx, lis2du12_wkup_md_t *val)
+int32_t lis2du12_wake_up_mode_get(const stmdev_ctx_t *ctx, lis2du12_wkup_md_t *val)
 {
   lis2du12_interrupt_cfg_t interrupt_cfg;
   lis2du12_wake_up_ths_t wake_up_ths;
@@ -1304,37 +1367,42 @@ int32_t lis2du12_wake_up_mode_get(stmdev_ctx_t *ctx, lis2du12_wkup_md_t *val)
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_INTERRUPT_CFG,
-                          (uint8_t*)&interrupt_cfg, 1);
+                          (uint8_t *)&interrupt_cfg, 1);
   ret += lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_THS,
-                          (uint8_t*)&wake_up_ths, 1);
+                           (uint8_t *)&wake_up_ths, 1);
   ret += lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_DUR,
-                          (uint8_t*)&wake_up_dur, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t*)&md1_cfg, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t*)&ctrl1, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL4, (uint8_t*)&ctrl4, 1);
+                           (uint8_t *)&wake_up_dur, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_CTRL4, (uint8_t *)&ctrl4, 1);
 
   val->z_en = ctrl1.wu_z_en;
   val->y_en = ctrl1.wu_y_en;
   val->x_en = ctrl1.wu_x_en;
 
-  if (interrupt_cfg.wake_ths_w == PROPERTY_ENABLE) {
+  if (interrupt_cfg.wake_ths_w == PROPERTY_ENABLE)
+  {
     val->threshold = wake_up_ths.wk_ths * 4U;
   }
-  else {
+  else
+  {
     val->threshold = wake_up_ths.wk_ths;
   }
 
-  if (md1_cfg.wu_dur_x4 == PROPERTY_ENABLE) {
+  if (md1_cfg.wu_dur_x4 == PROPERTY_ENABLE)
+  {
     val->duration = wake_up_dur.wake_dur * 4U;
   }
-  else {
+  else
+  {
     val->duration = wake_up_dur.wake_dur;
   }
 
   val->sleep.en = wake_up_ths.sleep_on;
   val->sleep.duration = wake_up_dur.sleep_dur;
 
-  switch ( ctrl4.inact_odr ) {
+  switch (ctrl4.inact_odr)
+  {
     case LIS2DU12_DO_NOT_CHANGE:
       val->sleep.odr = LIS2DU12_DO_NOT_CHANGE;
       break;
@@ -1375,7 +1443,7 @@ int32_t lis2du12_wake_up_mode_get(stmdev_ctx_t *ctx, lis2du12_wkup_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_tap_mode_set(stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
+int32_t lis2du12_tap_mode_set(const stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
 {
   lis2du12_wake_up_ths_t wake_up_ths;
   lis2du12_tap_ths_x_t tap_ths_x;
@@ -1385,12 +1453,12 @@ int32_t lis2du12_tap_mode_set(stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_THS,
-                          (uint8_t*)&wake_up_ths, 1);
+                          (uint8_t *)&wake_up_ths, 1);
   ret += lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_X,
-                          (uint8_t*)&tap_ths_x, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_Y, (uint8_t*)&tap_ths_y, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_Z, (uint8_t*)&tap_ths_z, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_INT_DUR, (uint8_t*)&int_dur, 1);
+                           (uint8_t *)&tap_ths_x, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_Y, (uint8_t *)&tap_ths_y, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_Z, (uint8_t *)&tap_ths_z, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_INT_DUR, (uint8_t *)&int_dur, 1);
 
   tap_ths_z.tap_z_en = val->z_en;
   tap_ths_z.tap_y_en = val->y_en;
@@ -1409,11 +1477,11 @@ int32_t lis2du12_tap_mode_set(stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
   int_dur.latency = val->tap_double.latency;
 
   ret += lis2du12_write_reg(ctx, LIS2DU12_WAKE_UP_THS,
-                           (uint8_t*)&wake_up_ths, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_TAP_THS_X, (uint8_t*)&tap_ths_x, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_TAP_THS_Y, (uint8_t*)&tap_ths_y, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_TAP_THS_Z, (uint8_t*)&tap_ths_z, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_INT_DUR, (uint8_t*)&int_dur, 1);
+                            (uint8_t *)&wake_up_ths, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_TAP_THS_X, (uint8_t *)&tap_ths_x, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_TAP_THS_Y, (uint8_t *)&tap_ths_y, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_TAP_THS_Z, (uint8_t *)&tap_ths_z, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_INT_DUR, (uint8_t *)&int_dur, 1);
 
   return ret;
 }
@@ -1426,7 +1494,7 @@ int32_t lis2du12_tap_mode_set(stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_tap_mode_get(stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
+int32_t lis2du12_tap_mode_get(const stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
 {
   lis2du12_wake_up_ths_t wake_up_ths;
   lis2du12_tap_ths_x_t tap_ths_x;
@@ -1436,11 +1504,11 @@ int32_t lis2du12_tap_mode_get(stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_THS,
-                          (uint8_t*)&wake_up_ths, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_X, (uint8_t*)&tap_ths_x, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_Y, (uint8_t*)&tap_ths_y, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_Z, (uint8_t*)&tap_ths_z, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_INT_DUR, (uint8_t*)&int_dur, 1);
+                          (uint8_t *)&wake_up_ths, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_X, (uint8_t *)&tap_ths_x, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_Y, (uint8_t *)&tap_ths_y, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_Z, (uint8_t *)&tap_ths_z, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_INT_DUR, (uint8_t *)&int_dur, 1);
 
   val->z_en = tap_ths_z.tap_z_en;
   val->y_en = tap_ths_z.tap_y_en;
@@ -1453,7 +1521,8 @@ int32_t lis2du12_tap_mode_get(stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
   val->shock = int_dur.shock;
   val->quiet = int_dur.quiet;
 
-  switch ( tap_ths_y.tap_priority ) {
+  switch (tap_ths_y.tap_priority)
+  {
     case LIS2DU12_XYZ:
       val->priority = LIS2DU12_XYZ;
       break;
@@ -1504,15 +1573,15 @@ int32_t lis2du12_tap_mode_get(stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_free_fall_mode_set(stmdev_ctx_t *ctx, lis2du12_ff_md_t *val)
+int32_t lis2du12_free_fall_mode_set(const stmdev_ctx_t *ctx, lis2du12_ff_md_t *val)
 {
   lis2du12_wake_up_dur_t wake_up_dur;
   lis2du12_free_fall_t free_fall;
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_DUR,
-                          (uint8_t*)&wake_up_dur, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_FREE_FALL, (uint8_t*)&free_fall, 1);
+                          (uint8_t *)&wake_up_dur, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_FREE_FALL, (uint8_t *)&free_fall, 1);
 
   wake_up_dur.ff_dur = val->duration & 0x1FU;
   free_fall.ff_dur = (val->duration) & 0x20U >> 5;
@@ -1520,8 +1589,8 @@ int32_t lis2du12_free_fall_mode_set(stmdev_ctx_t *ctx, lis2du12_ff_md_t *val)
   free_fall.ff_ths = (uint8_t)val->threshold;
 
   ret += lis2du12_write_reg(ctx, LIS2DU12_WAKE_UP_DUR,
-                           (uint8_t*)&wake_up_dur, 1);
-  ret += lis2du12_write_reg(ctx, LIS2DU12_FREE_FALL, (uint8_t*)&free_fall, 1);
+                            (uint8_t *)&wake_up_dur, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_FREE_FALL, (uint8_t *)&free_fall, 1);
 
   return ret;
 }
@@ -1534,19 +1603,20 @@ int32_t lis2du12_free_fall_mode_set(stmdev_ctx_t *ctx, lis2du12_ff_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_free_fall_mode_get(stmdev_ctx_t *ctx, lis2du12_ff_md_t *val)
+int32_t lis2du12_free_fall_mode_get(const stmdev_ctx_t *ctx, lis2du12_ff_md_t *val)
 {
   lis2du12_wake_up_dur_t wake_up_dur;
   lis2du12_free_fall_t free_fall;
   int32_t ret;
 
   ret = lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_DUR,
-                          (uint8_t*)&wake_up_dur, 1);
-  ret += lis2du12_read_reg(ctx, LIS2DU12_FREE_FALL, (uint8_t*)&free_fall, 1);
+                          (uint8_t *)&wake_up_dur, 1);
+  ret += lis2du12_read_reg(ctx, LIS2DU12_FREE_FALL, (uint8_t *)&free_fall, 1);
 
   val->duration = (free_fall.ff_dur * 32U) + wake_up_dur.ff_dur;
 
-  switch ( free_fall.ff_ths ) {
+  switch (free_fall.ff_ths)
+  {
     case LIS2DU12_156mg:
       val->threshold = LIS2DU12_156mg;
       break;
@@ -1600,18 +1670,18 @@ int32_t lis2du12_free_fall_mode_get(stmdev_ctx_t *ctx, lis2du12_ff_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_orientation_mode_set(stmdev_ctx_t *ctx,
+int32_t lis2du12_orientation_mode_set(const stmdev_ctx_t *ctx,
                                       lis2du12_orient_md_t *val)
 {
   lis2du12_tap_ths_x_t tap_ths_x;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_X, (uint8_t*)&tap_ths_x, 1);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_X, (uint8_t *)&tap_ths_x, 1);
 
   tap_ths_x.d6d_ths = (uint8_t)val->threshold;
   tap_ths_x.d4d_en = (uint8_t)val->deg_of_freedom;
 
-  ret += lis2du12_write_reg(ctx, LIS2DU12_TAP_THS_X, (uint8_t*)&tap_ths_x, 1);
+  ret += lis2du12_write_reg(ctx, LIS2DU12_TAP_THS_X, (uint8_t *)&tap_ths_x, 1);
 
   return ret;
 }
@@ -1624,15 +1694,16 @@ int32_t lis2du12_orientation_mode_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2du12_orientation_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2du12_orientation_mode_get(const stmdev_ctx_t *ctx,
                                       lis2du12_orient_md_t *val)
 {
   lis2du12_tap_ths_x_t tap_ths_x;
   int32_t ret;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_X, (uint8_t*)&tap_ths_x, 1);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_TAP_THS_X, (uint8_t *)&tap_ths_x, 1);
 
-  switch ( tap_ths_x.d6d_ths ) {
+  switch (tap_ths_x.d6d_ths)
+  {
     case LIS2DU12_DEG_80:
       val->threshold = LIS2DU12_DEG_80;
       break;
@@ -1650,7 +1721,8 @@ int32_t lis2du12_orientation_mode_get(stmdev_ctx_t *ctx,
       break;
   }
 
-  switch ( tap_ths_x.d4d_en ) {
+  switch (tap_ths_x.d4d_en)
+  {
     case LIS2DU12_SIX:
       val->deg_of_freedom = LIS2DU12_SIX;
       break;

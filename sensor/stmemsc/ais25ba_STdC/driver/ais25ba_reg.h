@@ -304,10 +304,10 @@ typedef union
  * them with a custom implementation.
  */
 
-int32_t ais25ba_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t ais25ba_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data,
                          uint16_t len);
-int32_t ais25ba_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t ais25ba_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
 
@@ -317,7 +317,7 @@ typedef struct
 {
   uint8_t id;
 } ais25ba_id_t;
-int32_t ais25ba_id_get(stmdev_ctx_t *ctx, ais25ba_id_t *val);
+int32_t ais25ba_id_get(const stmdev_ctx_t *ctx, ais25ba_id_t *val);
 
 typedef struct
 {
@@ -330,9 +330,9 @@ typedef struct
     uint16_t cmax    : 1; /* BCLK in a WCLK (unused if odr=_XL_HW_SEL) */
   } tdm;
 } ais25ba_bus_mode_t;
-int32_t ais25ba_bus_mode_set(stmdev_ctx_t *ctx,
+int32_t ais25ba_bus_mode_set(const stmdev_ctx_t *ctx,
                              ais25ba_bus_mode_t *val);
-int32_t ais25ba_bus_mode_get(stmdev_ctx_t *ctx,
+int32_t ais25ba_bus_mode_get(const stmdev_ctx_t *ctx,
                              ais25ba_bus_mode_t *val);
 
 typedef struct
@@ -349,8 +349,8 @@ typedef struct
     } odr;
   } xl;
 } ais25ba_md_t;
-int32_t ais25ba_mode_set(stmdev_ctx_t *ctx, ais25ba_md_t *val);
-int32_t ais25ba_mode_get(stmdev_ctx_t *ctx, ais25ba_md_t *val);
+int32_t ais25ba_mode_set(const stmdev_ctx_t *ctx, ais25ba_md_t *val);
+int32_t ais25ba_mode_get(const stmdev_ctx_t *ctx, ais25ba_md_t *val);
 
 typedef struct
 {
@@ -363,8 +363,8 @@ typedef struct
 int32_t ais25ba_data_get(uint16_t *tdm_stream, ais25ba_bus_mode_t *md,
                          ais25ba_data_t *data);
 
-int32_t ais25ba_self_test_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ais25ba_self_test_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ais25ba_self_test_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ais25ba_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 /**
   * @}

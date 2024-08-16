@@ -767,10 +767,10 @@ typedef union
  * them with a custom implementation.
  */
 
-int32_t ism303dac_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t ism303dac_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                            uint8_t *data,
                            uint16_t len);
-int32_t ism303dac_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t ism303dac_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                             uint8_t *data,
                             uint16_t len);
 
@@ -792,17 +792,17 @@ typedef struct
   ism303dac_6d_src_a_t         _6d_src_a;
   ism303dac_func_src_a_t       func_src_a;
 } ism303dac_xl_all_sources_t;
-int32_t ism303dac_xl_all_sources_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_all_sources_get(const stmdev_ctx_t *ctx,
                                      ism303dac_xl_all_sources_t *val);
 
-int32_t ism303dac_xl_block_data_update_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_block_data_update_set(const stmdev_ctx_t *ctx,
                                            uint8_t val);
-int32_t ism303dac_xl_block_data_update_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_block_data_update_get(const stmdev_ctx_t *ctx,
                                            uint8_t *val);
 
-int32_t ism303dac_mg_block_data_update_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_block_data_update_set(const stmdev_ctx_t *ctx,
                                            uint8_t val);
-int32_t ism303dac_mg_block_data_update_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_block_data_update_get(const stmdev_ctx_t *ctx,
                                            uint8_t *val);
 
 typedef enum
@@ -810,9 +810,9 @@ typedef enum
   ISM303DAC_MG_LSB_AT_LOW_ADD  = 0,
   ISM303DAC_MG_MSB_AT_LOW_ADD  = 1,
 } ism303dac_mg_ble_t;
-int32_t ism303dac_mg_data_format_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_data_format_set(const stmdev_ctx_t *ctx,
                                      ism303dac_mg_ble_t val);
-int32_t ism303dac_mg_data_format_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_data_format_get(const stmdev_ctx_t *ctx,
                                      ism303dac_mg_ble_t *val);
 
 typedef enum
@@ -822,9 +822,9 @@ typedef enum
   ISM303DAC_XL_4g  = 2,
   ISM303DAC_XL_8g  = 3,
 } ism303dac_xl_fs_t;
-int32_t ism303dac_xl_full_scale_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_full_scale_set(const stmdev_ctx_t *ctx,
                                     ism303dac_xl_fs_t val);
-int32_t ism303dac_xl_full_scale_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_full_scale_get(const stmdev_ctx_t *ctx,
                                     ism303dac_xl_fs_t *val);
 
 typedef enum
@@ -849,26 +849,26 @@ typedef enum
   ISM303DAC_XL_ODR_3k2Hz_HF    = 0x16,
   ISM303DAC_XL_ODR_6k4Hz_HF    = 0x17,
 } ism303dac_xl_odr_t;
-int32_t ism303dac_xl_data_rate_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_data_rate_set(const stmdev_ctx_t *ctx,
                                    ism303dac_xl_odr_t val);
-int32_t ism303dac_xl_data_rate_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_data_rate_get(const stmdev_ctx_t *ctx,
                                    ism303dac_xl_odr_t *val);
 
-int32_t ism303dac_xl_status_reg_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_status_reg_get(const stmdev_ctx_t *ctx,
                                     ism303dac_status_a_t *val);
 
-int32_t ism303dac_mg_status_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_status_get(const stmdev_ctx_t *ctx,
                                 ism303dac_status_reg_m_t *val);
 
-int32_t ism303dac_xl_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val);
 
-int32_t ism303dac_mg_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val);
-int32_t ism303dac_mg_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_mg_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_mg_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_mg_user_offset_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_user_offset_set(const stmdev_ctx_t *ctx,
                                      uint16_t *val);
-int32_t ism303dac_mg_user_offset_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_user_offset_get(const stmdev_ctx_t *ctx,
                                      uint16_t *val);
 
 typedef enum
@@ -877,9 +877,9 @@ typedef enum
   ISM303DAC_MG_SINGLE_TRIGGER   = 1,
   ISM303DAC_MG_POWER_DOWN       = 2,
 } ism303dac_mg_md_t;
-int32_t ism303dac_mg_operating_mode_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_operating_mode_set(const stmdev_ctx_t *ctx,
                                         ism303dac_mg_md_t val);
-int32_t ism303dac_mg_operating_mode_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_operating_mode_get(const stmdev_ctx_t *ctx,
                                         ism303dac_mg_md_t *val);
 
 typedef enum
@@ -889,9 +889,9 @@ typedef enum
   ISM303DAC_MG_ODR_50Hz   = 2,
   ISM303DAC_MG_ODR_100Hz  = 3,
 } ism303dac_mg_odr_t;
-int32_t ism303dac_mg_data_rate_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_data_rate_set(const stmdev_ctx_t *ctx,
                                    ism303dac_mg_odr_t val);
-int32_t ism303dac_mg_data_rate_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_data_rate_get(const stmdev_ctx_t *ctx,
                                    ism303dac_mg_odr_t *val);
 
 typedef enum
@@ -899,14 +899,14 @@ typedef enum
   ISM303DAC_MG_HIGH_RESOLUTION  = 0,
   ISM303DAC_MG_LOW_POWER        = 1,
 } ism303dac_mg_lp_t;
-int32_t ism303dac_mg_power_mode_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_power_mode_set(const stmdev_ctx_t *ctx,
                                     ism303dac_mg_lp_t val);
-int32_t ism303dac_mg_power_mode_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_power_mode_get(const stmdev_ctx_t *ctx,
                                     ism303dac_mg_lp_t *val);
 
-int32_t ism303dac_mg_offset_temp_comp_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_offset_temp_comp_set(const stmdev_ctx_t *ctx,
                                           uint8_t val);
-int32_t ism303dac_mg_offset_temp_comp_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_offset_temp_comp_get(const stmdev_ctx_t *ctx,
                                           uint8_t *val);
 
 typedef enum
@@ -915,47 +915,47 @@ typedef enum
   ISM303DAC_MG_SENS_OFF_CANC_EVERY_ODR    = 1,
   ISM303DAC_MG_SET_SENS_ONLY_AT_POWER_ON  = 2,
 } ism303dac_mg_set_rst_t;
-int32_t ism303dac_mg_set_rst_mode_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_set_rst_mode_set(const stmdev_ctx_t *ctx,
                                       ism303dac_mg_set_rst_t val);
-int32_t ism303dac_mg_set_rst_mode_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_set_rst_mode_get(const stmdev_ctx_t *ctx,
                                       ism303dac_mg_set_rst_t *val);
 
-int32_t ism303dac_mg_set_rst_sensor_single_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_set_rst_sensor_single_set(const stmdev_ctx_t *ctx,
                                                uint8_t val);
-int32_t ism303dac_mg_set_rst_sensor_single_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_set_rst_sensor_single_get(const stmdev_ctx_t *ctx,
                                                uint8_t *val);
 
-int32_t ism303dac_acceleration_module_raw_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_acceleration_module_raw_get(const stmdev_ctx_t *ctx,
                                               uint8_t *buff);
 
-int32_t ism303dac_magnetic_raw_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t ism303dac_magnetic_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t ism303dac_xl_temperature_raw_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_temperature_raw_get(const stmdev_ctx_t *ctx,
                                          uint8_t *buff);
 
-int32_t ism303dac_acceleration_raw_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_acceleration_raw_get(const stmdev_ctx_t *ctx,
                                        int16_t *val);
 
-int32_t ism303dac_xl_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t ism303dac_xl_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t ism303dac_mg_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t ism303dac_mg_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t ism303dac_xl_auto_increment_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_auto_increment_set(const stmdev_ctx_t *ctx,
                                         uint8_t val);
-int32_t ism303dac_xl_auto_increment_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_auto_increment_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val);
 
-int32_t ism303dac_xl_reset_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_reset_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_xl_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_mg_reset_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_mg_reset_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_mg_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_mg_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_xl_boot_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_xl_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_mg_boot_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_mg_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_mg_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_mg_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -963,22 +963,22 @@ typedef enum
   ISM303DAC_XL_ST_POSITIVE    = 1,
   ISM303DAC_XL_ST_NEGATIVE    = 2,
 } ism303dac_xl_st_t;
-int32_t ism303dac_xl_self_test_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_self_test_set(const stmdev_ctx_t *ctx,
                                    ism303dac_xl_st_t val);
-int32_t ism303dac_xl_self_test_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_self_test_get(const stmdev_ctx_t *ctx,
                                    ism303dac_xl_st_t *val);
 
-int32_t ism303dac_mg_self_test_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_mg_self_test_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_mg_self_test_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_mg_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
   ISM303DAC_XL_DRDY_LATCHED   = 0,
   ISM303DAC_XL_DRDY_PULSED    = 1,
 } ism303dac_xl_drdy_pulsed_t;
-int32_t ism303dac_xl_data_ready_mode_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_data_ready_mode_set(const stmdev_ctx_t *ctx,
                                          ism303dac_xl_drdy_pulsed_t val);
-int32_t ism303dac_xl_data_ready_mode_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_data_ready_mode_get(const stmdev_ctx_t *ctx,
                                          ism303dac_xl_drdy_pulsed_t *val);
 
 typedef enum
@@ -986,9 +986,9 @@ typedef enum
   ISM303DAC_XL_HP_INTERNAL_ONLY  = 0,
   ISM303DAC_XL_HP_ON_OUTPUTS     = 1,
 } ism303dac_xl_fds_slope_t;
-int32_t ism303dac_xl_hp_path_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_hp_path_set(const stmdev_ctx_t *ctx,
                                  ism303dac_xl_fds_slope_t val);
-int32_t ism303dac_xl_hp_path_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_hp_path_get(const stmdev_ctx_t *ctx,
                                  ism303dac_xl_fds_slope_t *val);
 
 typedef enum
@@ -996,9 +996,9 @@ typedef enum
   ISM303DAC_MG_ODR_DIV_2  = 0,
   ISM303DAC_MG_ODR_DIV_4  = 1,
 } ism303dac_mg_lpf_t;
-int32_t ism303dac_mg_low_pass_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_low_pass_bandwidth_set(const stmdev_ctx_t *ctx,
                                             ism303dac_mg_lpf_t val);
-int32_t ism303dac_mg_low_pass_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_low_pass_bandwidth_get(const stmdev_ctx_t *ctx,
                                             ism303dac_mg_lpf_t *val);
 
 typedef enum
@@ -1006,9 +1006,9 @@ typedef enum
   ISM303DAC_XL_SPI_4_WIRE   = 0,
   ISM303DAC_XL_SPI_3_WIRE   = 1,
 } ism303dac_xl_sim_t;
-int32_t ism303dac_xl_spi_mode_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_spi_mode_set(const stmdev_ctx_t *ctx,
                                   ism303dac_xl_sim_t val);
-int32_t ism303dac_xl_spi_mode_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_spi_mode_get(const stmdev_ctx_t *ctx,
                                   ism303dac_xl_sim_t *val);
 
 typedef enum
@@ -1016,9 +1016,9 @@ typedef enum
   ISM303DAC_XL_I2C_ENABLE   = 0,
   ISM303DAC_XL_I2C_DISABLE  = 1,
 } ism303dac_xl_i2c_disable_t;
-int32_t ism303dac_xl_i2c_interface_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_i2c_interface_set(const stmdev_ctx_t *ctx,
                                        ism303dac_xl_i2c_disable_t val);
-int32_t ism303dac_xl_i2c_interface_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_i2c_interface_get(const stmdev_ctx_t *ctx,
                                        ism303dac_xl_i2c_disable_t *val);
 
 typedef enum
@@ -1026,9 +1026,9 @@ typedef enum
   ISM303DAC_MG_I2C_ENABLE   = 0,
   ISM303DAC_MG_I2C_DISABLE  = 1,
 } ism303dac_mg_i2c_dis_t;
-int32_t ism303dac_mg_i2c_interface_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_i2c_interface_set(const stmdev_ctx_t *ctx,
                                        ism303dac_mg_i2c_dis_t val);
-int32_t ism303dac_mg_i2c_interface_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_i2c_interface_get(const stmdev_ctx_t *ctx,
                                        ism303dac_mg_i2c_dis_t *val);
 
 typedef enum
@@ -1036,9 +1036,9 @@ typedef enum
   ISM303DAC_XL_PULL_UP_CONNECTED     = 0,
   ISM303DAC_XL_PULL_UP_DISCONNECTED  = 1,
 } ism303dac_xl_if_cs_pu_dis_t;
-int32_t ism303dac_xl_cs_mode_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_cs_mode_set(const stmdev_ctx_t *ctx,
                                  ism303dac_xl_if_cs_pu_dis_t val);
-int32_t ism303dac_xl_cs_mode_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_cs_mode_get(const stmdev_ctx_t *ctx,
                                  ism303dac_xl_if_cs_pu_dis_t *val);
 
 typedef enum
@@ -1046,9 +1046,9 @@ typedef enum
   ISM303DAC_XL_PUSH_PULL   = 0,
   ISM303DAC_XL_OPEN_DRAIN  = 1,
 } ism303dac_xl_pp_od_t;
-int32_t ism303dac_xl_pin_mode_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_pin_mode_set(const stmdev_ctx_t *ctx,
                                   ism303dac_xl_pp_od_t val);
-int32_t ism303dac_xl_pin_mode_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_pin_mode_get(const stmdev_ctx_t *ctx,
                                   ism303dac_xl_pp_od_t *val);
 
 typedef enum
@@ -1056,9 +1056,9 @@ typedef enum
   ISM303DAC_XL_ACTIVE_HIGH  = 0,
   ISM303DAC_XL_ACTIVE_LOW   = 1,
 } ism303dac_xl_h_lactive_t;
-int32_t ism303dac_xl_pin_polarity_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_pin_polarity_set(const stmdev_ctx_t *ctx,
                                       ism303dac_xl_h_lactive_t val);
-int32_t ism303dac_xl_pin_polarity_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_pin_polarity_get(const stmdev_ctx_t *ctx,
                                       ism303dac_xl_h_lactive_t *val);
 
 typedef enum
@@ -1066,9 +1066,9 @@ typedef enum
   ISM303DAC_XL_INT_PULSED   = 0,
   ISM303DAC_XL_INT_LATCHED  = 1,
 } ism303dac_xl_lir_t;
-int32_t ism303dac_xl_int_notification_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_int_notification_set(const stmdev_ctx_t *ctx,
                                           ism303dac_xl_lir_t val);
-int32_t ism303dac_xl_int_notification_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_int_notification_get(const stmdev_ctx_t *ctx,
                                           ism303dac_xl_lir_t *val);
 
 typedef struct
@@ -1082,9 +1082,9 @@ typedef struct
   uint8_t int1_s_tap              : 1;
   uint8_t int1_fss7               : 1;
 } ism303dac_xl_pin_int1_route_t;
-int32_t ism303dac_xl_pin_int1_route_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                         ism303dac_xl_pin_int1_route_t val);
-int32_t ism303dac_xl_pin_int1_route_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                         ism303dac_xl_pin_int1_route_t *val);
 
 typedef struct
@@ -1093,99 +1093,99 @@ typedef struct
   uint8_t int2_fth                : 1;
   uint8_t int2_drdy               : 1;
 } ism303dac_xl_pin_int2_route_t;
-int32_t ism303dac_xl_pin_int2_route_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                         ism303dac_xl_pin_int2_route_t val);
-int32_t ism303dac_xl_pin_int2_route_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                         ism303dac_xl_pin_int2_route_t *val);
 
-int32_t ism303dac_xl_all_on_int1_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_all_on_int1_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_xl_all_on_int1_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_mg_drdy_on_pin_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_mg_drdy_on_pin_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_mg_drdy_on_pin_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_mg_drdy_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_mg_int_on_pin_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_mg_int_on_pin_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_mg_int_on_pin_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_mg_int_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_mg_int_gen_conf_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_int_gen_conf_set(const stmdev_ctx_t *ctx,
                                       ism303dac_int_crtl_reg_m_t *val);
-int32_t ism303dac_mg_int_gen_conf_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_int_gen_conf_get(const stmdev_ctx_t *ctx,
                                       ism303dac_int_crtl_reg_m_t *val);
 
-int32_t ism303dac_mg_int_gen_source_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_int_gen_source_get(const stmdev_ctx_t *ctx,
                                         ism303dac_int_source_reg_m_t *val);
 
-int32_t ism303dac_mg_int_gen_treshold_set(stmdev_ctx_t *ctx,
-                                          uint16_t val);
-int32_t ism303dac_mg_int_gen_treshold_get(stmdev_ctx_t *ctx,
-                                          uint16_t *val);
+int32_t ism303dac_mg_int_gen_threshold_set(const stmdev_ctx_t *ctx,
+                                           uint16_t val);
+int32_t ism303dac_mg_int_gen_threshold_get(const stmdev_ctx_t *ctx,
+                                           uint16_t *val);
 
 typedef enum
 {
   ISM303DAC_MG_CHECK_BEFORE  = 0,
   ISM303DAC_MG_CHECK_AFTER   = 1,
 } ism303dac_mg_int_on_dataoff_t;
-int32_t ism303dac_mg_offset_int_conf_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_offset_int_conf_set(const stmdev_ctx_t *ctx,
                                          ism303dac_mg_int_on_dataoff_t val);
-int32_t ism303dac_mg_offset_int_conf_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_mg_offset_int_conf_get(const stmdev_ctx_t *ctx,
                                          ism303dac_mg_int_on_dataoff_t *val);
 
-int32_t ism303dac_xl_wkup_threshold_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_wkup_threshold_set(const stmdev_ctx_t *ctx,
                                         uint8_t val);
-int32_t ism303dac_xl_wkup_threshold_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_wkup_threshold_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val);
 
-int32_t ism303dac_xl_wkup_dur_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_wkup_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_xl_wkup_dur_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_xl_sleep_mode_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_sleep_mode_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_xl_sleep_mode_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_sleep_mode_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_xl_act_sleep_dur_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_act_sleep_dur_set(const stmdev_ctx_t *ctx,
                                        uint8_t val);
-int32_t ism303dac_xl_act_sleep_dur_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_act_sleep_dur_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
-int32_t ism303dac_xl_tap_detection_on_z_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_tap_detection_on_z_set(const stmdev_ctx_t *ctx,
                                             uint8_t val);
-int32_t ism303dac_xl_tap_detection_on_z_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_tap_detection_on_z_get(const stmdev_ctx_t *ctx,
                                             uint8_t *val);
 
-int32_t ism303dac_xl_tap_detection_on_y_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_tap_detection_on_y_set(const stmdev_ctx_t *ctx,
                                             uint8_t val);
-int32_t ism303dac_xl_tap_detection_on_y_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
                                             uint8_t *val);
 
-int32_t ism303dac_xl_tap_detection_on_x_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_tap_detection_on_x_set(const stmdev_ctx_t *ctx,
                                             uint8_t val);
-int32_t ism303dac_xl_tap_detection_on_x_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
                                             uint8_t *val);
 
-int32_t ism303dac_xl_tap_threshold_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_tap_threshold_set(const stmdev_ctx_t *ctx,
                                        uint8_t val);
-int32_t ism303dac_xl_tap_threshold_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_tap_threshold_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
-int32_t ism303dac_xl_tap_shock_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_tap_shock_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_xl_tap_shock_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_xl_tap_quiet_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_tap_quiet_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_xl_tap_quiet_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_xl_tap_dur_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_tap_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_xl_tap_dur_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
   ISM303DAC_XL_ONLY_SINGLE  = 0,
   ISM303DAC_XL_ONLY_DOUBLE  = 1,
 } ism303dac_xl_single_double_tap_t;
-int32_t ism303dac_xl_tap_mode_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_tap_mode_set(const stmdev_ctx_t *ctx,
                                   ism303dac_xl_single_double_tap_t val);
-int32_t ism303dac_xl_tap_mode_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_tap_mode_get(const stmdev_ctx_t *ctx,
                                   ism303dac_xl_single_double_tap_t *val);
 
-int32_t ism303dac_xl_tap_src_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_tap_src_get(const stmdev_ctx_t *ctx,
                                  ism303dac_tap_src_a_t *val);
 
 typedef enum
@@ -1195,27 +1195,27 @@ typedef enum
   ISM303DAC_XL_DEG_60   = 2,
   ISM303DAC_XL_DEG_50   = 3,
 } ism303dac_xl_6d_ths_t;
-int32_t ism303dac_xl_6d_threshold_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_6d_threshold_set(const stmdev_ctx_t *ctx,
                                       ism303dac_xl_6d_ths_t val);
-int32_t ism303dac_xl_6d_threshold_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_6d_threshold_get(const stmdev_ctx_t *ctx,
                                       ism303dac_xl_6d_ths_t *val);
 
-int32_t ism303dac_xl_4d_mode_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_4d_mode_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_xl_4d_mode_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_xl_6d_src_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_6d_src_get(const stmdev_ctx_t *ctx,
                                 ism303dac_6d_src_a_t *val);
 
-int32_t ism303dac_xl_ff_dur_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_ff_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_xl_ff_dur_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism303dac_xl_ff_threshold_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_ff_threshold_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_ff_threshold_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_ff_threshold_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
-int32_t ism303dac_xl_fifo_xl_module_batch_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_fifo_xl_module_batch_set(const stmdev_ctx_t *ctx,
                                               uint8_t val);
-int32_t ism303dac_xl_fifo_xl_module_batch_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_fifo_xl_module_batch_get(const stmdev_ctx_t *ctx,
                                               uint8_t *val);
 
 typedef enum
@@ -1226,33 +1226,33 @@ typedef enum
   ISM303DAC_XL_BYPASS_TO_STREAM_MODE  = 4,
   ISM303DAC_XL_STREAM_MODE            = 6,
 } ism303dac_xl_fmode_t;
-int32_t ism303dac_xl_fifo_mode_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_fifo_mode_set(const stmdev_ctx_t *ctx,
                                    ism303dac_xl_fmode_t val);
-int32_t ism303dac_xl_fifo_mode_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_fifo_mode_get(const stmdev_ctx_t *ctx,
                                    ism303dac_xl_fmode_t *val);
 
-int32_t ism303dac_xl_fifo_watermark_set(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_fifo_watermark_set(const stmdev_ctx_t *ctx,
                                         uint8_t val);
-int32_t ism303dac_xl_fifo_watermark_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_fifo_watermark_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val);
 
-int32_t ism303dac_xl_fifo_full_flag_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_fifo_full_flag_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val);
 
-int32_t ism303dac_xl_fifo_ovr_flag_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_fifo_ovr_flag_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
-int32_t ism303dac_xl_fifo_wtm_flag_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_fifo_wtm_flag_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
-int32_t ism303dac_xl_fifo_data_level_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_fifo_data_level_get(const stmdev_ctx_t *ctx,
                                          uint16_t *val);
 
-int32_t ism303dac_xl_fifo_src_get(stmdev_ctx_t *ctx,
+int32_t ism303dac_xl_fifo_src_get(const stmdev_ctx_t *ctx,
                                   ism303dac_fifo_src_a_t *val);
 
-int32_t ism303dac_xl_module_sens_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism303dac_xl_module_sens_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism303dac_xl_module_sens_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism303dac_xl_module_sens_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 /**
   * @}

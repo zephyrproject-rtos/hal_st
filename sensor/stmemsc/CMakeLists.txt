@@ -12,8 +12,10 @@ set(stmems_pids
   ais328dq
   ais3624dq
   asm330lhb
+  asm330lhbg1
   asm330lhh
   asm330lhhx
+  asm330lhhxg1
   h3lis100dl
   h3lis331dl
   hts221
@@ -28,14 +30,13 @@ set(stmems_pids
   ilps22qs
   ilps28qsw
   ism303dac
+  ism330bx
   ism330dhcx
   ism330dlc
   ism330is
-  l20g20is
   l3gd20h
   lis25ba
   lis2de12
-  lis2dh
   lis2dh12
   lis2ds12
   lis2dtw12
@@ -49,7 +50,6 @@ set(stmems_pids
   lis3de
   lis3dh
   lis3dhh
-  lis3dsh
   lis3mdl
   lps22ch
   lps22df
@@ -59,12 +59,9 @@ set(stmems_pids
   lps27hhtw
   lps27hhw
   lps28dfw
-  lps33hw
   lps33k
-  lps33w
   lsm303agr
   lsm303ah
-  lsm6ds3
   lsm6ds3tr-c
   lsm6dsl
   lsm6dsm
@@ -75,10 +72,13 @@ set(stmems_pids
   lsm6dsox
   lsm6dsr
   lsm6dsrx
+  lsm6dsv16b
   lsm6dsv16bx
   lsm6dsv16x
+  lsm6dsv32x
   lsm6dsv
   lsm9ds1
+  st1vafe6ax
   sths34pf80
   stts22h
   stts751

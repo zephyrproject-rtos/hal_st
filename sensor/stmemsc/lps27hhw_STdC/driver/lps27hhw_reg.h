@@ -311,15 +311,13 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-uint8_t f_mode                          :
-  3;  /* f_mode + trig_modes */
+  uint8_t f_mode                          : 3;  /* f_mode + trig_modes */
   uint8_t stop_on_wtm                     : 1;
   uint8_t not_used_01                     : 4;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
   uint8_t not_used_01                     : 4;
   uint8_t stop_on_wtm                     : 1;
-uint8_t f_mode                          :
-  3;  /* f_mode + trig_modes */
+  uint8_t f_mode                          : 3;  /* f_mode + trig_modes */
 #endif /* DRV_BYTE_ORDER */
 } lps27hhw_fifo_ctrl_t;
 
@@ -451,10 +449,10 @@ typedef union
  * them with a custom implementation.
  */
 
-int32_t lps27hhw_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t lps27hhw_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
-int32_t lps27hhw_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t lps27hhw_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                            uint8_t *data,
                            uint16_t len);
 
@@ -462,23 +460,23 @@ float_t lps27hhw_from_lsb_to_hpa(int32_t lsb);
 
 float_t lps27hhw_from_lsb_to_celsius(int16_t lsb);
 
-int32_t lps27hhw_autozero_rst_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps27hhw_autozero_rst_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps27hhw_autozero_rst_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps27hhw_autozero_rst_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps27hhw_autozero_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps27hhw_autozero_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps27hhw_autozero_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps27hhw_autozero_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps27hhw_pressure_snap_rst_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_pressure_snap_rst_set(const stmdev_ctx_t *ctx,
                                        uint8_t val);
-int32_t lps27hhw_pressure_snap_rst_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_pressure_snap_rst_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
-int32_t lps27hhw_pressure_snap_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps27hhw_pressure_snap_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps27hhw_pressure_snap_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps27hhw_pressure_snap_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps27hhw_block_data_update_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_block_data_update_set(const stmdev_ctx_t *ctx,
                                        uint8_t val);
-int32_t lps27hhw_block_data_update_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_block_data_update_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
 typedef enum
@@ -498,15 +496,15 @@ typedef enum
   LPS27HHW_100_Hz              = 0x06,
   LPS27HHW_200_Hz              = 0x07,
 } lps27hhw_odr_t;
-int32_t lps27hhw_data_rate_set(stmdev_ctx_t *ctx, lps27hhw_odr_t val);
-int32_t lps27hhw_data_rate_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_data_rate_set(const stmdev_ctx_t *ctx, lps27hhw_odr_t val);
+int32_t lps27hhw_data_rate_get(const stmdev_ctx_t *ctx,
                                lps27hhw_odr_t *val);
 
-int32_t lps27hhw_pressure_ref_set(stmdev_ctx_t *ctx, int16_t val);
-int32_t lps27hhw_pressure_ref_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t lps27hhw_pressure_ref_set(const stmdev_ctx_t *ctx, int16_t val);
+int32_t lps27hhw_pressure_ref_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t lps27hhw_pressure_offset_set(stmdev_ctx_t *ctx, int16_t val);
-int32_t lps27hhw_pressure_offset_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t lps27hhw_pressure_offset_set(const stmdev_ctx_t *ctx, int16_t val);
+int32_t lps27hhw_pressure_offset_get(const stmdev_ctx_t *ctx, int16_t *val);
 
 typedef struct
 {
@@ -514,39 +512,39 @@ typedef struct
   lps27hhw_fifo_status2_t  fifo_status2;
   lps27hhw_status_t        status;
 } lps27hhw_all_sources_t;
-int32_t lps27hhw_all_sources_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_all_sources_get(const stmdev_ctx_t *ctx,
                                  lps27hhw_all_sources_t *val);
 
-int32_t lps27hhw_status_reg_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_status_reg_get(const stmdev_ctx_t *ctx,
                                 lps27hhw_status_t *val);
 
-int32_t lps27hhw_press_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_press_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                            uint8_t *val);
 
-int32_t lps27hhw_temp_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                           uint8_t *val);
 
-int32_t lps27hhw_pressure_raw_get(stmdev_ctx_t *ctx, uint32_t *buff);
+int32_t lps27hhw_pressure_raw_get(const stmdev_ctx_t *ctx, uint32_t *buff);
 
-int32_t lps27hhw_temperature_raw_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_temperature_raw_get(const stmdev_ctx_t *ctx,
                                      int16_t *buff);
 
-int32_t lps27hhw_fifo_pressure_raw_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_fifo_pressure_raw_get(const stmdev_ctx_t *ctx,
                                        uint32_t *buff);
 
-int32_t lps27hhw_fifo_temperature_raw_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_fifo_temperature_raw_get(const stmdev_ctx_t *ctx,
                                           int16_t *buff);
 
-int32_t lps27hhw_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t lps27hhw_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t lps27hhw_reset_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps27hhw_reset_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps27hhw_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps27hhw_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps27hhw_auto_increment_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps27hhw_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps27hhw_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps27hhw_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps27hhw_boot_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps27hhw_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps27hhw_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps27hhw_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -554,9 +552,9 @@ typedef enum
   LPS27HHW_LPF_ODR_DIV_9    = 2,
   LPS27HHW_LPF_ODR_DIV_20   = 3,
 } lps27hhw_lpfp_cfg_t;
-int32_t lps27hhw_lp_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_lp_bandwidth_set(const stmdev_ctx_t *ctx,
                                   lps27hhw_lpfp_cfg_t val);
-int32_t lps27hhw_lp_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_lp_bandwidth_get(const stmdev_ctx_t *ctx,
                                   lps27hhw_lpfp_cfg_t *val);
 
 typedef enum
@@ -564,9 +562,9 @@ typedef enum
   LPS27HHW_I2C_ENABLE    = 0,
   LPS27HHW_I2C_DISABLE   = 1,
 } lps27hhw_i2c_disable_t;
-int32_t lps27hhw_i2c_interface_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_i2c_interface_set(const stmdev_ctx_t *ctx,
                                    lps27hhw_i2c_disable_t val);
-int32_t lps27hhw_i2c_interface_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_i2c_interface_get(const stmdev_ctx_t *ctx,
                                    lps27hhw_i2c_disable_t *val);
 
 typedef enum
@@ -575,9 +573,9 @@ typedef enum
   LPS27HHW_I3C_ENABLE_INT_PIN_ENABLE  = 0x10,
   LPS27HHW_I3C_DISABLE                = 0x11,
 } lps27hhw_i3c_disable_t;
-int32_t lps27hhw_i3c_interface_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_i3c_interface_set(const stmdev_ctx_t *ctx,
                                    lps27hhw_i3c_disable_t val);
-int32_t lps27hhw_i3c_interface_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_i3c_interface_get(const stmdev_ctx_t *ctx,
                                    lps27hhw_i3c_disable_t *val);
 
 typedef enum
@@ -585,13 +583,13 @@ typedef enum
   LPS27HHW_PULL_UP_DISCONNECT    = 0,
   LPS27HHW_PULL_UP_CONNECT       = 1,
 } lps27hhw_pu_en_t;
-int32_t lps27hhw_sdo_sa0_mode_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_sdo_sa0_mode_set(const stmdev_ctx_t *ctx,
                                   lps27hhw_pu_en_t val);
-int32_t lps27hhw_sdo_sa0_mode_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
                                   lps27hhw_pu_en_t *val);
-int32_t lps27hhw_sda_mode_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_sda_mode_set(const stmdev_ctx_t *ctx,
                               lps27hhw_pu_en_t val);
-int32_t lps27hhw_sda_mode_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_sda_mode_get(const stmdev_ctx_t *ctx,
                               lps27hhw_pu_en_t *val);
 
 typedef enum
@@ -599,17 +597,17 @@ typedef enum
   LPS27HHW_SPI_4_WIRE  = 0,
   LPS27HHW_SPI_3_WIRE  = 1,
 } lps27hhw_sim_t;
-int32_t lps27hhw_spi_mode_set(stmdev_ctx_t *ctx, lps27hhw_sim_t val);
-int32_t lps27hhw_spi_mode_get(stmdev_ctx_t *ctx, lps27hhw_sim_t *val);
+int32_t lps27hhw_spi_mode_set(const stmdev_ctx_t *ctx, lps27hhw_sim_t val);
+int32_t lps27hhw_spi_mode_get(const stmdev_ctx_t *ctx, lps27hhw_sim_t *val);
 
 typedef enum
 {
   LPS27HHW_INT_PULSED   = 0,
   LPS27HHW_INT_LATCHED  = 1,
 } lps27hhw_lir_t;
-int32_t lps27hhw_int_notification_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_int_notification_set(const stmdev_ctx_t *ctx,
                                       lps27hhw_lir_t val);
-int32_t lps27hhw_int_notification_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_int_notification_get(const stmdev_ctx_t *ctx,
                                       lps27hhw_lir_t *val);
 
 typedef enum
@@ -617,9 +615,9 @@ typedef enum
   LPS27HHW_PUSH_PULL   = 0,
   LPS27HHW_OPEN_DRAIN  = 1,
 } lps27hhw_pp_od_t;
-int32_t lps27hhw_pin_mode_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_pin_mode_set(const stmdev_ctx_t *ctx,
                               lps27hhw_pp_od_t val);
-int32_t lps27hhw_pin_mode_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_pin_mode_get(const stmdev_ctx_t *ctx,
                               lps27hhw_pp_od_t *val);
 
 typedef enum
@@ -627,14 +625,14 @@ typedef enum
   LPS27HHW_ACTIVE_HIGH = 0,
   LPS27HHW_ACTIVE_LOW  = 1,
 } lps27hhw_int_h_l_t;
-int32_t lps27hhw_pin_polarity_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_pin_polarity_set(const stmdev_ctx_t *ctx,
                                   lps27hhw_int_h_l_t val);
-int32_t lps27hhw_pin_polarity_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_pin_polarity_get(const stmdev_ctx_t *ctx,
                                   lps27hhw_int_h_l_t *val);
 
-int32_t lps27hhw_pin_int_route_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_pin_int_route_set(const stmdev_ctx_t *ctx,
                                    lps27hhw_ctrl_reg3_t *val);
-int32_t lps27hhw_pin_int_route_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_pin_int_route_get(const stmdev_ctx_t *ctx,
                                    lps27hhw_ctrl_reg3_t *val);
 
 typedef enum
@@ -644,13 +642,13 @@ typedef enum
   LPS27HHW_NEGATIVE      = 2,
   LPS27HHW_BOTH          = 3,
 } lps27hhw_pe_t;
-int32_t lps27hhw_int_on_threshold_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_int_on_threshold_set(const stmdev_ctx_t *ctx,
                                       lps27hhw_pe_t val);
-int32_t lps27hhw_int_on_threshold_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_int_on_threshold_get(const stmdev_ctx_t *ctx,
                                       lps27hhw_pe_t *val);
 
-int32_t lps27hhw_int_treshold_set(stmdev_ctx_t *ctx, uint16_t buff);
-int32_t lps27hhw_int_treshold_get(stmdev_ctx_t *ctx, uint16_t *buff);
+int32_t lps27hhw_int_threshold_set(const stmdev_ctx_t *ctx, uint16_t buff);
+int32_t lps27hhw_int_threshold_get(const stmdev_ctx_t *ctx, uint16_t *buff);
 
 typedef enum
 {
@@ -662,40 +660,40 @@ typedef enum
   LPS27HHW_BYPASS_TO_STREAM_MODE  = 6,
   LPS27HHW_STREAM_TO_FIFO_MODE    = 7,
 } lps27hhw_f_mode_t;
-int32_t lps27hhw_fifo_mode_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_fifo_mode_set(const stmdev_ctx_t *ctx,
                                lps27hhw_f_mode_t val);
-int32_t lps27hhw_fifo_mode_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_fifo_mode_get(const stmdev_ctx_t *ctx,
                                lps27hhw_f_mode_t *val);
 
-int32_t lps27hhw_fifo_stop_on_wtm_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps27hhw_fifo_stop_on_wtm_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps27hhw_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
-int32_t lps27hhw_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps27hhw_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps27hhw_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps27hhw_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps27hhw_fifo_data_level_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_fifo_data_level_get(const stmdev_ctx_t *ctx,
                                      uint8_t *buff);
 
-int32_t lps27hhw_fifo_src_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_fifo_src_get(const stmdev_ctx_t *ctx,
                               lps27hhw_fifo_status2_t *val);
 
-int32_t lps27hhw_fifo_full_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps27hhw_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps27hhw_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps27hhw_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps27hhw_fifo_wtm_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps27hhw_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps27hhw_fifo_ovr_on_int_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps27hhw_fifo_ovr_on_int_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lps27hhw_fifo_ovr_on_int_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps27hhw_fifo_ovr_on_int_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lps27hhw_fifo_threshold_on_int_set(stmdev_ctx_t *ctx,
+int32_t lps27hhw_fifo_threshold_on_int_set(const stmdev_ctx_t *ctx,
                                            uint8_t val);
-int32_t lps27hhw_fifo_threshold_on_int_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_fifo_threshold_on_int_get(const stmdev_ctx_t *ctx,
                                            uint8_t *val);
 
-int32_t lps27hhw_fifo_full_on_int_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lps27hhw_fifo_full_on_int_get(stmdev_ctx_t *ctx,
+int32_t lps27hhw_fifo_full_on_int_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps27hhw_fifo_full_on_int_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
 /**

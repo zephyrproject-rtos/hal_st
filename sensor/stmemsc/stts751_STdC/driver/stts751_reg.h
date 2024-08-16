@@ -306,10 +306,10 @@ typedef union
  * them with a custom implementation.
  */
 
-int32_t stts751_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t stts751_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data,
                          uint16_t len);
-int32_t stts751_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t stts751_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
 
@@ -331,9 +331,9 @@ typedef enum
   STTS751_TEMP_ODR_16Hz       = 0x08, /* 9, 10, or 11-bit resolutions only */
   STTS751_TEMP_ODR_32Hz       = 0x09, /* 9 or 10-bit resolutions only */
 } stts751_odr_t;
-int32_t stts751_temp_data_rate_set(stmdev_ctx_t *ctx,
+int32_t stts751_temp_data_rate_set(const stmdev_ctx_t *ctx,
                                    stts751_odr_t val);
-int32_t stts751_temp_data_rate_get(stmdev_ctx_t *ctx,
+int32_t stts751_temp_data_rate_get(const stmdev_ctx_t *ctx,
                                    stts751_odr_t *val);
 
 typedef enum
@@ -343,39 +343,39 @@ typedef enum
   STTS751_11bit     = 1,
   STTS751_12bit     = 3,
 } stts751_tres_t;
-int32_t stts751_resolution_set(stmdev_ctx_t *ctx, stts751_tres_t val);
-int32_t stts751_resolution_get(stmdev_ctx_t *ctx,
+int32_t stts751_resolution_set(const stmdev_ctx_t *ctx, stts751_tres_t val);
+int32_t stts751_resolution_get(const stmdev_ctx_t *ctx,
                                stts751_tres_t *val);
 
-int32_t stts751_status_reg_get(stmdev_ctx_t *ctx,
+int32_t stts751_status_reg_get(const stmdev_ctx_t *ctx,
                                stts751_status_t *val);
 
-int32_t stts751_flag_busy_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t stts751_flag_busy_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t stts751_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t stts751_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t stts751_pin_event_route_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t stts751_pin_event_route_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t stts751_pin_event_route_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t stts751_pin_event_route_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 
-int32_t stts751_high_temperature_threshold_set(stmdev_ctx_t *ctx,
+int32_t stts751_high_temperature_threshold_set(const stmdev_ctx_t *ctx,
                                                int16_t val);
-int32_t stts751_high_temperature_threshold_get(stmdev_ctx_t *ctx,
+int32_t stts751_high_temperature_threshold_get(const stmdev_ctx_t *ctx,
                                                int16_t *val);
 
-int32_t stts751_low_temperature_threshold_set(stmdev_ctx_t *ctx,
+int32_t stts751_low_temperature_threshold_set(const stmdev_ctx_t *ctx,
                                               int16_t val);
-int32_t stts751_low_temperature_threshold_get(stmdev_ctx_t *ctx,
+int32_t stts751_low_temperature_threshold_get(const stmdev_ctx_t *ctx,
                                               int16_t *val);
 
-int32_t stts751_ota_thermal_limit_set(stmdev_ctx_t *ctx, int8_t val);
-int32_t stts751_ota_thermal_limit_get(stmdev_ctx_t *ctx, int8_t *val);
+int32_t stts751_ota_thermal_limit_set(const stmdev_ctx_t *ctx, int8_t val);
+int32_t stts751_ota_thermal_limit_get(const stmdev_ctx_t *ctx, int8_t *val);
 
-int32_t stts751_ota_thermal_hyst_set(stmdev_ctx_t *ctx, int8_t val);
-int32_t stts751_ota_thermal_hyst_get(stmdev_ctx_t *ctx, int8_t *val);
+int32_t stts751_ota_thermal_hyst_set(const stmdev_ctx_t *ctx, int8_t val);
+int32_t stts751_ota_thermal_hyst_get(const stmdev_ctx_t *ctx, int8_t *val);
 
-int32_t stts751_smbus_timeout_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t stts751_smbus_timeout_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t stts751_smbus_timeout_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t stts751_smbus_timeout_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef struct
 {
@@ -383,7 +383,7 @@ typedef struct
   uint8_t manufacturer_id;
   uint8_t revision_id;
 } stts751_id_t;
-int32_t stts751_device_id_get(stmdev_ctx_t *ctx, stts751_id_t *buff);
+int32_t stts751_device_id_get(const stmdev_ctx_t *ctx, stts751_id_t *buff);
 
 /**
   * @}

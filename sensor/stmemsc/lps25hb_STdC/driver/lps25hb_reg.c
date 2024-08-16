@@ -45,11 +45,16 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lps25hb_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lps25hb_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                 uint8_t *data,
                                 uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -66,11 +71,16 @@ int32_t __weak lps25hb_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lps25hb_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lps25hb_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                  uint8_t *data,
                                  uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -121,7 +131,7 @@ float_t lps25hb_from_lsb_to_degc(int16_t lsb)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_ref_set(stmdev_ctx_t *ctx, int32_t val)
+int32_t lps25hb_pressure_ref_set(const stmdev_ctx_t *ctx, int32_t val)
 {
   uint8_t buff[3];
   int32_t ret;
@@ -145,7 +155,7 @@ int32_t lps25hb_pressure_ref_set(stmdev_ctx_t *ctx, int32_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_ref_get(stmdev_ctx_t *ctx, int32_t *val)
+int32_t lps25hb_pressure_ref_get(const stmdev_ctx_t *ctx, int32_t *val)
 {
   uint8_t buff[3];
   int32_t ret;
@@ -166,7 +176,7 @@ int32_t lps25hb_pressure_ref_get(stmdev_ctx_t *ctx, int32_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_avg_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_pressure_avg_set(const stmdev_ctx_t *ctx,
                                  lps25hb_avgp_t val)
 {
   lps25hb_res_conf_t reg;
@@ -191,7 +201,7 @@ int32_t lps25hb_pressure_avg_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_avg_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_pressure_avg_get(const stmdev_ctx_t *ctx,
                                  lps25hb_avgp_t *val)
 {
   lps25hb_res_conf_t reg;
@@ -233,7 +243,7 @@ int32_t lps25hb_pressure_avg_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_temperature_avg_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_temperature_avg_set(const stmdev_ctx_t *ctx,
                                     lps25hb_avgt_t val)
 {
   lps25hb_res_conf_t reg;
@@ -258,7 +268,7 @@ int32_t lps25hb_temperature_avg_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_temperature_avg_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_temperature_avg_get(const stmdev_ctx_t *ctx,
                                     lps25hb_avgt_t *val)
 {
   lps25hb_res_conf_t reg;
@@ -300,7 +310,7 @@ int32_t lps25hb_temperature_avg_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_autozero_rst_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_autozero_rst_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
@@ -324,7 +334,7 @@ int32_t lps25hb_autozero_rst_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_autozero_rst_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_autozero_rst_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
@@ -343,7 +353,7 @@ int32_t lps25hb_autozero_rst_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
@@ -367,7 +377,7 @@ int32_t lps25hb_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
@@ -386,7 +396,7 @@ int32_t lps25hb_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_data_rate_set(stmdev_ctx_t *ctx, lps25hb_odr_t val)
+int32_t lps25hb_data_rate_set(const stmdev_ctx_t *ctx, lps25hb_odr_t val)
 {
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
@@ -410,7 +420,7 @@ int32_t lps25hb_data_rate_set(stmdev_ctx_t *ctx, lps25hb_odr_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_data_rate_get(stmdev_ctx_t *ctx, lps25hb_odr_t *val)
+int32_t lps25hb_data_rate_get(const stmdev_ctx_t *ctx, lps25hb_odr_t *val)
 {
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
@@ -459,7 +469,7 @@ int32_t lps25hb_data_rate_get(stmdev_ctx_t *ctx, lps25hb_odr_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_one_shoot_trigger_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_one_shoot_trigger_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
@@ -483,7 +493,7 @@ int32_t lps25hb_one_shoot_trigger_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_one_shoot_trigger_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_one_shoot_trigger_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
@@ -502,7 +512,7 @@ int32_t lps25hb_one_shoot_trigger_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_autozero_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_autozero_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
@@ -526,7 +536,7 @@ int32_t lps25hb_autozero_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_autozero_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_autozero_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
@@ -546,7 +556,7 @@ int32_t lps25hb_autozero_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_mean_decimator_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_mean_decimator_set(const stmdev_ctx_t *ctx,
                                         uint8_t val)
 {
   lps25hb_ctrl_reg2_t reg;
@@ -572,7 +582,7 @@ int32_t lps25hb_fifo_mean_decimator_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_mean_decimator_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_mean_decimator_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val)
 {
   lps25hb_ctrl_reg2_t reg;
@@ -592,7 +602,7 @@ int32_t lps25hb_fifo_mean_decimator_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_press_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_press_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_status_reg_t reg;
   int32_t ret;
@@ -611,7 +621,7 @@ int32_t lps25hb_press_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_temp_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_temp_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_status_reg_t reg;
   int32_t ret;
@@ -630,7 +640,7 @@ int32_t lps25hb_temp_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_temp_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_temp_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_status_reg_t reg;
   int32_t ret;
@@ -649,7 +659,7 @@ int32_t lps25hb_temp_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_press_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_press_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_status_reg_t reg;
   int32_t ret;
@@ -668,7 +678,7 @@ int32_t lps25hb_press_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_raw_get(stmdev_ctx_t *ctx, uint32_t *buff)
+int32_t lps25hb_pressure_raw_get(const stmdev_ctx_t *ctx, uint32_t *buff)
 {
   uint8_t reg[3];
   int32_t ret;
@@ -690,7 +700,7 @@ int32_t lps25hb_pressure_raw_get(stmdev_ctx_t *ctx, uint32_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *buff)
+int32_t lps25hb_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *buff)
 {
   uint8_t reg[2];
   int32_t ret;
@@ -711,7 +721,7 @@ int32_t lps25hb_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_offset_set(stmdev_ctx_t *ctx, int16_t val)
+int32_t lps25hb_pressure_offset_set(const stmdev_ctx_t *ctx, int16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -732,7 +742,7 @@ int32_t lps25hb_pressure_offset_set(stmdev_ctx_t *ctx, int16_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pressure_offset_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lps25hb_pressure_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -764,7 +774,7 @@ int32_t lps25hb_pressure_offset_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lps25hb_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -781,7 +791,7 @@ int32_t lps25hb_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_reset_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
@@ -805,7 +815,7 @@ int32_t lps25hb_reset_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
@@ -824,7 +834,7 @@ int32_t lps25hb_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_boot_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
@@ -848,7 +858,7 @@ int32_t lps25hb_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
@@ -867,7 +877,7 @@ int32_t lps25hb_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_status_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_status_get(const stmdev_ctx_t *ctx,
                            lps25hb_status_reg_t *val)
 {
   int32_t ret;
@@ -897,7 +907,7 @@ int32_t lps25hb_status_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_generation_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_int_generation_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
@@ -921,7 +931,7 @@ int32_t lps25hb_int_generation_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_generation_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_int_generation_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
@@ -940,7 +950,7 @@ int32_t lps25hb_int_generation_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_pin_mode_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_pin_mode_set(const stmdev_ctx_t *ctx,
                                  lps25hb_int_s_t val)
 {
   lps25hb_ctrl_reg3_t reg;
@@ -965,7 +975,7 @@ int32_t lps25hb_int_pin_mode_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_pin_mode_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_pin_mode_get(const stmdev_ctx_t *ctx,
                                  lps25hb_int_s_t *val)
 {
   lps25hb_ctrl_reg3_t reg;
@@ -1007,7 +1017,7 @@ int32_t lps25hb_int_pin_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pin_mode_set(stmdev_ctx_t *ctx, lps25hb_pp_od_t val)
+int32_t lps25hb_pin_mode_set(const stmdev_ctx_t *ctx, lps25hb_pp_od_t val)
 {
   lps25hb_ctrl_reg3_t reg;
   int32_t ret;
@@ -1031,7 +1041,7 @@ int32_t lps25hb_pin_mode_set(stmdev_ctx_t *ctx, lps25hb_pp_od_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_pin_mode_get(stmdev_ctx_t *ctx, lps25hb_pp_od_t *val)
+int32_t lps25hb_pin_mode_get(const stmdev_ctx_t *ctx, lps25hb_pp_od_t *val)
 {
   lps25hb_ctrl_reg3_t reg;
   int32_t ret;
@@ -1064,7 +1074,7 @@ int32_t lps25hb_pin_mode_get(stmdev_ctx_t *ctx, lps25hb_pp_od_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_polarity_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_polarity_set(const stmdev_ctx_t *ctx,
                                  lps25hb_int_h_l_t val)
 {
   lps25hb_ctrl_reg3_t reg;
@@ -1089,7 +1099,7 @@ int32_t lps25hb_int_polarity_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_polarity_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_polarity_get(const stmdev_ctx_t *ctx,
                                  lps25hb_int_h_l_t *val)
 {
   lps25hb_ctrl_reg3_t reg;
@@ -1123,7 +1133,7 @@ int32_t lps25hb_int_polarity_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_drdy_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_drdy_on_int_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
@@ -1147,7 +1157,7 @@ int32_t lps25hb_drdy_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_drdy_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_drdy_on_int_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
@@ -1166,7 +1176,7 @@ int32_t lps25hb_drdy_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_ovr_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_fifo_ovr_on_int_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
@@ -1190,7 +1200,7 @@ int32_t lps25hb_fifo_ovr_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_ovr_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_fifo_ovr_on_int_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
@@ -1209,7 +1219,7 @@ int32_t lps25hb_fifo_ovr_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_threshold_on_int_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_threshold_on_int_set(const stmdev_ctx_t *ctx,
                                           uint8_t val)
 {
   lps25hb_ctrl_reg4_t reg;
@@ -1234,7 +1244,7 @@ int32_t lps25hb_fifo_threshold_on_int_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_threshold_on_int_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_threshold_on_int_get(const stmdev_ctx_t *ctx,
                                           uint8_t *val)
 {
   lps25hb_ctrl_reg4_t reg;
@@ -1254,7 +1264,7 @@ int32_t lps25hb_fifo_threshold_on_int_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_empty_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_fifo_empty_on_int_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
@@ -1278,7 +1288,7 @@ int32_t lps25hb_fifo_empty_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_empty_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_fifo_empty_on_int_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_ctrl_reg4_t reg;
   int32_t ret;
@@ -1297,7 +1307,7 @@ int32_t lps25hb_fifo_empty_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_sign_of_int_threshold_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_sign_of_int_threshold_set(const stmdev_ctx_t *ctx,
                                           lps25hb_pe_t val)
 {
   lps25hb_interrupt_cfg_t reg;
@@ -1322,7 +1332,7 @@ int32_t lps25hb_sign_of_int_threshold_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_sign_of_int_threshold_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_sign_of_int_threshold_get(const stmdev_ctx_t *ctx,
                                           lps25hb_pe_t *val)
 {
   lps25hb_interrupt_cfg_t reg;
@@ -1364,7 +1374,7 @@ int32_t lps25hb_sign_of_int_threshold_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_notification_mode_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_notification_mode_set(const stmdev_ctx_t *ctx,
                                           lps25hb_lir_t val)
 {
   lps25hb_interrupt_cfg_t reg;
@@ -1389,7 +1399,7 @@ int32_t lps25hb_int_notification_mode_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_notification_mode_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_notification_mode_get(const stmdev_ctx_t *ctx,
                                           lps25hb_lir_t *val)
 {
   lps25hb_interrupt_cfg_t reg;
@@ -1423,7 +1433,7 @@ int32_t lps25hb_int_notification_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_source_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_int_source_get(const stmdev_ctx_t *ctx,
                                lps25hb_int_source_t *val)
 {
   int32_t ret;
@@ -1441,7 +1451,7 @@ int32_t lps25hb_int_source_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_on_press_high_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_int_on_press_high_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_int_source_t reg;
   int32_t ret;
@@ -1460,7 +1470,7 @@ int32_t lps25hb_int_on_press_high_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_on_press_low_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_int_on_press_low_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_int_source_t reg;
   int32_t ret;
@@ -1479,7 +1489,7 @@ int32_t lps25hb_int_on_press_low_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_interrupt_event_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_interrupt_event_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_int_source_t reg;
   int32_t ret;
@@ -1498,7 +1508,7 @@ int32_t lps25hb_interrupt_event_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
+int32_t lps25hb_int_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -1518,7 +1528,7 @@ int32_t lps25hb_int_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_int_threshold_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t lps25hb_int_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -1550,7 +1560,7 @@ int32_t lps25hb_int_threshold_get(stmdev_ctx_t *ctx, uint16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_stop_on_fifo_threshold_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_stop_on_fifo_threshold_set(const stmdev_ctx_t *ctx,
                                            uint8_t val)
 {
   lps25hb_ctrl_reg2_t reg;
@@ -1575,7 +1585,7 @@ int32_t lps25hb_stop_on_fifo_threshold_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_stop_on_fifo_threshold_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_stop_on_fifo_threshold_get(const stmdev_ctx_t *ctx,
                                            uint8_t *val)
 {
   lps25hb_ctrl_reg2_t reg;
@@ -1595,7 +1605,7 @@ int32_t lps25hb_stop_on_fifo_threshold_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_fifo_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
@@ -1619,7 +1629,7 @@ int32_t lps25hb_fifo_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_fifo_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_ctrl_reg2_t reg;
   int32_t ret;
@@ -1638,7 +1648,7 @@ int32_t lps25hb_fifo_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps25hb_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps25hb_fifo_ctrl_t reg;
   int32_t ret;
@@ -1662,7 +1672,7 @@ int32_t lps25hb_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_fifo_ctrl_t reg;
   int32_t ret;
@@ -1681,7 +1691,7 @@ int32_t lps25hb_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_mode_set(stmdev_ctx_t *ctx, lps25hb_f_mode_t val)
+int32_t lps25hb_fifo_mode_set(const stmdev_ctx_t *ctx, lps25hb_f_mode_t val)
 {
   lps25hb_fifo_ctrl_t reg;
   int32_t ret;
@@ -1705,7 +1715,7 @@ int32_t lps25hb_fifo_mode_set(stmdev_ctx_t *ctx, lps25hb_f_mode_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_mode_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_mode_get(const stmdev_ctx_t *ctx,
                               lps25hb_f_mode_t *val)
 {
   lps25hb_fifo_ctrl_t reg;
@@ -1759,7 +1769,7 @@ int32_t lps25hb_fifo_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_status_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_fifo_status_get(const stmdev_ctx_t *ctx,
                                 lps25hb_fifo_status_t *val)
 {
   int32_t ret;
@@ -1777,7 +1787,7 @@ int32_t lps25hb_fifo_status_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_fifo_status_t reg;
   int32_t ret;
@@ -1796,7 +1806,7 @@ int32_t lps25hb_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_empty_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_fifo_empty_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_fifo_status_t reg;
   int32_t ret;
@@ -1815,7 +1825,7 @@ int32_t lps25hb_fifo_empty_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_fifo_status_t reg;
   int32_t ret;
@@ -1834,7 +1844,7 @@ int32_t lps25hb_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_fifo_fth_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps25hb_fifo_fth_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps25hb_fifo_status_t reg;
   int32_t ret;
@@ -1866,7 +1876,7 @@ int32_t lps25hb_fifo_fth_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_spi_mode_set(stmdev_ctx_t *ctx, lps25hb_sim_t val)
+int32_t lps25hb_spi_mode_set(const stmdev_ctx_t *ctx, lps25hb_sim_t val)
 {
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
@@ -1890,7 +1900,7 @@ int32_t lps25hb_spi_mode_set(stmdev_ctx_t *ctx, lps25hb_sim_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_spi_mode_get(stmdev_ctx_t *ctx, lps25hb_sim_t *val)
+int32_t lps25hb_spi_mode_get(const stmdev_ctx_t *ctx, lps25hb_sim_t *val)
 {
   lps25hb_ctrl_reg1_t reg;
   int32_t ret;
@@ -1923,7 +1933,7 @@ int32_t lps25hb_spi_mode_get(stmdev_ctx_t *ctx, lps25hb_sim_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_i2c_interface_set(stmdev_ctx_t *ctx,
+int32_t lps25hb_i2c_interface_set(const stmdev_ctx_t *ctx,
                                   lps25hb_i2c_dis_t val)
 {
   lps25hb_ctrl_reg2_t reg;
@@ -1948,7 +1958,7 @@ int32_t lps25hb_i2c_interface_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lps25hb_i2c_interface_get(stmdev_ctx_t *ctx,
+int32_t lps25hb_i2c_interface_get(const stmdev_ctx_t *ctx,
                                   lps25hb_i2c_dis_t *val)
 {
   lps25hb_ctrl_reg2_t reg;

@@ -46,11 +46,16 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lsm9ds1_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lsm9ds1_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                 uint8_t *data,
                                 uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -67,11 +72,16 @@ int32_t __weak lsm9ds1_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lsm9ds1_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lsm9ds1_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                  uint8_t *data,
                                  uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -171,7 +181,7 @@ float_t lsm9ds1_from_lsb_to_celsius(int16_t lsb)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_full_scale_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_full_scale_set(const stmdev_ctx_t *ctx,
                                   lsm9ds1_gy_fs_t val)
 {
   lsm9ds1_ctrl_reg1_g_t ctrl_reg1_g;
@@ -198,7 +208,7 @@ int32_t lsm9ds1_gy_full_scale_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_full_scale_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_full_scale_get(const stmdev_ctx_t *ctx,
                                   lsm9ds1_gy_fs_t *val)
 {
   lsm9ds1_ctrl_reg1_g_t ctrl_reg1_g;
@@ -238,7 +248,7 @@ int32_t lsm9ds1_gy_full_scale_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_imu_data_rate_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_imu_data_rate_set(const stmdev_ctx_t *ctx,
                                   lsm9ds1_imu_odr_t val)
 {
   lsm9ds1_ctrl_reg1_g_t ctrl_reg1_g;
@@ -294,7 +304,7 @@ int32_t lsm9ds1_imu_data_rate_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_imu_data_rate_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_imu_data_rate_get(const stmdev_ctx_t *ctx,
                                   lsm9ds1_imu_odr_t *val)
 {
   lsm9ds1_ctrl_reg1_g_t ctrl_reg1_g;
@@ -436,7 +446,7 @@ int32_t lsm9ds1_imu_data_rate_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_orient_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_orient_set(const stmdev_ctx_t *ctx,
                               lsm9ds1_gy_orient_t val)
 {
   lsm9ds1_orient_cfg_g_t orient_cfg_g;
@@ -466,7 +476,7 @@ int32_t lsm9ds1_gy_orient_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_orient_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_orient_get(const stmdev_ctx_t *ctx,
                               lsm9ds1_gy_orient_t *val)
 {
   lsm9ds1_orient_cfg_g_t orient_cfg_g;
@@ -490,7 +500,7 @@ int32_t lsm9ds1_gy_orient_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val)
 {
   lsm9ds1_status_reg_t status_reg;
@@ -511,7 +521,7 @@ int32_t lsm9ds1_xl_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val)
 {
   lsm9ds1_status_reg_t status_reg;
@@ -532,7 +542,7 @@ int32_t lsm9ds1_gy_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_temp_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val)
 {
   lsm9ds1_status_reg_t status_reg;
@@ -553,7 +563,7 @@ int32_t lsm9ds1_temp_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_axis_set(stmdev_ctx_t *ctx, lsm9ds1_gy_axis_t val)
+int32_t lsm9ds1_gy_axis_set(const stmdev_ctx_t *ctx, lsm9ds1_gy_axis_t val)
 {
   lsm9ds1_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -579,7 +589,7 @@ int32_t lsm9ds1_gy_axis_set(stmdev_ctx_t *ctx, lsm9ds1_gy_axis_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_axis_get(stmdev_ctx_t *ctx, lsm9ds1_gy_axis_t *val)
+int32_t lsm9ds1_gy_axis_get(const stmdev_ctx_t *ctx, lsm9ds1_gy_axis_t *val)
 {
   lsm9ds1_ctrl_reg4_t ctrl_reg4;
   int32_t ret;
@@ -600,7 +610,7 @@ int32_t lsm9ds1_gy_axis_get(stmdev_ctx_t *ctx, lsm9ds1_gy_axis_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_axis_set(stmdev_ctx_t *ctx, lsm9ds1_xl_axis_t val)
+int32_t lsm9ds1_xl_axis_set(const stmdev_ctx_t *ctx, lsm9ds1_xl_axis_t val)
 {
   lsm9ds1_ctrl_reg5_xl_t ctrl_reg5_xl;
   int32_t ret;
@@ -628,7 +638,7 @@ int32_t lsm9ds1_xl_axis_set(stmdev_ctx_t *ctx, lsm9ds1_xl_axis_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_axis_get(stmdev_ctx_t *ctx, lsm9ds1_xl_axis_t *val)
+int32_t lsm9ds1_xl_axis_get(const stmdev_ctx_t *ctx, lsm9ds1_xl_axis_t *val)
 {
   lsm9ds1_ctrl_reg5_xl_t ctrl_reg5_xl;
   int32_t ret;
@@ -650,7 +660,7 @@ int32_t lsm9ds1_xl_axis_get(stmdev_ctx_t *ctx, lsm9ds1_xl_axis_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_decimation_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_decimation_set(const stmdev_ctx_t *ctx,
                                   lsm9ds1_dec_t val)
 {
   lsm9ds1_ctrl_reg5_xl_t ctrl_reg5_xl;
@@ -677,7 +687,7 @@ int32_t lsm9ds1_xl_decimation_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_decimation_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_decimation_get(const stmdev_ctx_t *ctx,
                                   lsm9ds1_dec_t *val)
 {
   lsm9ds1_ctrl_reg5_xl_t ctrl_reg5_xl;
@@ -720,7 +730,7 @@ int32_t lsm9ds1_xl_decimation_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_full_scale_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_full_scale_set(const stmdev_ctx_t *ctx,
                                   lsm9ds1_xl_fs_t val)
 {
   lsm9ds1_ctrl_reg6_xl_t ctrl_reg6_xl;
@@ -747,7 +757,7 @@ int32_t lsm9ds1_xl_full_scale_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_full_scale_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_full_scale_get(const stmdev_ctx_t *ctx,
                                   lsm9ds1_xl_fs_t *val)
 {
   lsm9ds1_ctrl_reg6_xl_t ctrl_reg6_xl;
@@ -791,7 +801,7 @@ int32_t lsm9ds1_xl_full_scale_get(stmdev_ctx_t *ctx,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_block_data_update_set(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_block_data_update_set(const stmdev_ctx_t *ctx_mag,
                                       stmdev_ctx_t *ctx_imu, uint8_t val)
 {
   lsm9ds1_ctrl_reg8_t ctrl_reg8;
@@ -834,7 +844,7 @@ int32_t lsm9ds1_block_data_update_set(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_block_data_update_get(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_block_data_update_get(const stmdev_ctx_t *ctx_mag,
                                       stmdev_ctx_t *ctx_imu, uint8_t *val)
 {
   lsm9ds1_ctrl_reg8_t ctrl_reg8;
@@ -864,7 +874,7 @@ int32_t lsm9ds1_block_data_update_get(stmdev_ctx_t *ctx_mag,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_offset_set(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lsm9ds1_mag_offset_set(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
@@ -890,7 +900,7 @@ int32_t lsm9ds1_mag_offset_set(stmdev_ctx_t *ctx, int16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_offset_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lsm9ds1_mag_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
@@ -914,7 +924,7 @@ int32_t lsm9ds1_mag_offset_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_data_rate_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_mag_data_rate_set(const stmdev_ctx_t *ctx,
                                   lsm9ds1_mag_data_rate_t val)
 {
   lsm9ds1_ctrl_reg1_m_t ctrl_reg1_m;
@@ -972,7 +982,7 @@ int32_t lsm9ds1_mag_data_rate_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_data_rate_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_mag_data_rate_get(const stmdev_ctx_t *ctx,
                                   lsm9ds1_mag_data_rate_t *val)
 {
   lsm9ds1_ctrl_reg1_m_t ctrl_reg1_m;
@@ -1159,7 +1169,7 @@ int32_t lsm9ds1_mag_data_rate_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_full_scale_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_mag_full_scale_set(const stmdev_ctx_t *ctx,
                                    lsm9ds1_mag_fs_t val)
 {
   lsm9ds1_ctrl_reg2_m_t ctrl_reg2_m;
@@ -1186,7 +1196,7 @@ int32_t lsm9ds1_mag_full_scale_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_full_scale_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_mag_full_scale_get(const stmdev_ctx_t *ctx,
                                    lsm9ds1_mag_fs_t *val)
 {
   lsm9ds1_ctrl_reg2_m_t ctrl_reg2_m;
@@ -1229,7 +1239,7 @@ int32_t lsm9ds1_mag_full_scale_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_mag_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val)
 {
   lsm9ds1_status_reg_m_t status_reg_m;
@@ -1263,7 +1273,7 @@ int32_t lsm9ds1_mag_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lsm9ds1_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -1284,7 +1294,7 @@ int32_t lsm9ds1_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_angular_rate_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lsm9ds1_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
@@ -1309,7 +1319,7 @@ int32_t lsm9ds1_angular_rate_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lsm9ds1_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
@@ -1334,7 +1344,7 @@ int32_t lsm9ds1_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_magnetic_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lsm9ds1_magnetic_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
@@ -1358,7 +1368,7 @@ int32_t lsm9ds1_magnetic_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_magnetic_overflow_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_magnetic_overflow_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_int_src_m_t int_src_m;
   int32_t ret;
@@ -1390,7 +1400,7 @@ int32_t lsm9ds1_magnetic_overflow_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_dev_id_get(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_dev_id_get(const stmdev_ctx_t *ctx_mag,
                            stmdev_ctx_t *ctx_imu,
                            lsm9ds1_id_t *buff)
 {
@@ -1417,7 +1427,7 @@ int32_t lsm9ds1_dev_id_get(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_dev_status_get(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_dev_status_get(const stmdev_ctx_t *ctx_mag,
                                stmdev_ctx_t *ctx_imu,
                                lsm9ds1_status_t *val)
 {
@@ -1444,7 +1454,7 @@ int32_t lsm9ds1_dev_status_get(stmdev_ctx_t *ctx_mag,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_dev_reset_set(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_dev_reset_set(const stmdev_ctx_t *ctx_mag,
                               stmdev_ctx_t *ctx_imu,
                               uint8_t val)
 {
@@ -1487,7 +1497,7 @@ int32_t lsm9ds1_dev_reset_set(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_dev_reset_get(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_dev_reset_get(const stmdev_ctx_t *ctx_mag,
                               stmdev_ctx_t *ctx_imu,
                               uint8_t *val)
 {
@@ -1517,7 +1527,7 @@ int32_t lsm9ds1_dev_reset_get(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_dev_data_format_set(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_dev_data_format_set(const stmdev_ctx_t *ctx_mag,
                                     stmdev_ctx_t *ctx_imu,
                                     lsm9ds1_ble_t val)
 {
@@ -1560,7 +1570,7 @@ int32_t lsm9ds1_dev_data_format_set(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_dev_data_format_get(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_dev_data_format_get(const stmdev_ctx_t *ctx_mag,
                                     stmdev_ctx_t *ctx_imu,
                                     lsm9ds1_ble_t *val)
 {
@@ -1604,7 +1614,7 @@ int32_t lsm9ds1_dev_data_format_get(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_dev_boot_set(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_dev_boot_set(const stmdev_ctx_t *ctx_mag,
                              stmdev_ctx_t *ctx_imu,
                              uint8_t val)
 {
@@ -1647,7 +1657,7 @@ int32_t lsm9ds1_dev_boot_set(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_dev_boot_get(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_dev_boot_get(const stmdev_ctx_t *ctx_mag,
                              stmdev_ctx_t *ctx_imu,
                              uint8_t *val)
 {
@@ -1689,7 +1699,7 @@ int32_t lsm9ds1_dev_boot_get(stmdev_ctx_t *ctx_mag,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_filter_reference_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_filter_reference_set(const stmdev_ctx_t *ctx,
                                         uint8_t *buff)
 {
   int32_t ret;
@@ -1707,7 +1717,7 @@ int32_t lsm9ds1_gy_filter_reference_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_filter_reference_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_filter_reference_get(const stmdev_ctx_t *ctx,
                                         uint8_t *buff)
 {
   int32_t ret;
@@ -1725,7 +1735,7 @@ int32_t lsm9ds1_gy_filter_reference_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_filter_lp_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_filter_lp_bandwidth_set(const stmdev_ctx_t *ctx,
                                            lsm9ds1_gy_lp_bw_t val)
 {
   lsm9ds1_ctrl_reg1_g_t ctrl_reg1_g;
@@ -1752,7 +1762,7 @@ int32_t lsm9ds1_gy_filter_lp_bandwidth_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_filter_lp_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_filter_lp_bandwidth_get(const stmdev_ctx_t *ctx,
                                            lsm9ds1_gy_lp_bw_t *val)
 {
   lsm9ds1_ctrl_reg1_g_t ctrl_reg1_g;
@@ -1795,7 +1805,7 @@ int32_t lsm9ds1_gy_filter_lp_bandwidth_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_filter_out_path_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_filter_out_path_set(const stmdev_ctx_t *ctx,
                                        lsm9ds1_gy_out_path_t val)
 {
   lsm9ds1_ctrl_reg2_g_t ctrl_reg2_g;
@@ -1836,7 +1846,7 @@ int32_t lsm9ds1_gy_filter_out_path_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_filter_out_path_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_filter_out_path_get(const stmdev_ctx_t *ctx,
                                        lsm9ds1_gy_out_path_t *val)
 {
   lsm9ds1_ctrl_reg2_g_t ctrl_reg2_g;
@@ -1886,7 +1896,7 @@ int32_t lsm9ds1_gy_filter_out_path_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_filter_int_path_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_filter_int_path_set(const stmdev_ctx_t *ctx,
                                        lsm9ds1_gy_int_path_t val)
 {
   lsm9ds1_ctrl_reg2_g_t ctrl_reg2_g;
@@ -1927,7 +1937,7 @@ int32_t lsm9ds1_gy_filter_int_path_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_filter_int_path_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_filter_int_path_get(const stmdev_ctx_t *ctx,
                                        lsm9ds1_gy_int_path_t *val)
 {
   lsm9ds1_ctrl_reg2_g_t ctrl_reg2_g;
@@ -1977,7 +1987,7 @@ int32_t lsm9ds1_gy_filter_int_path_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_filter_hp_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_filter_hp_bandwidth_set(const stmdev_ctx_t *ctx,
                                            lsm9ds1_gy_hp_bw_t val)
 {
   lsm9ds1_ctrl_reg3_g_t ctrl_reg3_g;
@@ -2004,7 +2014,7 @@ int32_t lsm9ds1_gy_filter_hp_bandwidth_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_filter_hp_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_filter_hp_bandwidth_get(const stmdev_ctx_t *ctx,
                                            lsm9ds1_gy_hp_bw_t *val)
 {
   lsm9ds1_ctrl_reg3_g_t ctrl_reg3_g;
@@ -2071,7 +2081,7 @@ int32_t lsm9ds1_gy_filter_hp_bandwidth_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_filter_aalias_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_filter_aalias_bandwidth_set(const stmdev_ctx_t *ctx,
                                                lsm9ds1_xl_aa_bw_t val)
 {
   lsm9ds1_ctrl_reg6_xl_t ctrl_reg6_xl;
@@ -2099,7 +2109,7 @@ int32_t lsm9ds1_xl_filter_aalias_bandwidth_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_filter_aalias_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_filter_aalias_bandwidth_get(const stmdev_ctx_t *ctx,
                                                lsm9ds1_xl_aa_bw_t *val)
 {
   lsm9ds1_ctrl_reg6_xl_t ctrl_reg6_xl;
@@ -2146,7 +2156,7 @@ int32_t lsm9ds1_xl_filter_aalias_bandwidth_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_filter_int_path_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_filter_int_path_set(const stmdev_ctx_t *ctx,
                                        lsm9ds1_xl_hp_path_t val)
 {
   lsm9ds1_ctrl_reg7_xl_t ctrl_reg7_xl;
@@ -2173,7 +2183,7 @@ int32_t lsm9ds1_xl_filter_int_path_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_filter_int_path_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_filter_int_path_get(const stmdev_ctx_t *ctx,
                                        lsm9ds1_xl_hp_path_t *val)
 {
   lsm9ds1_ctrl_reg7_xl_t ctrl_reg7_xl;
@@ -2208,7 +2218,7 @@ int32_t lsm9ds1_xl_filter_int_path_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_filter_out_path_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_filter_out_path_set(const stmdev_ctx_t *ctx,
                                        lsm9ds1_xl_out_path_t val)
 {
   lsm9ds1_ctrl_reg7_xl_t ctrl_reg7_xl;
@@ -2235,7 +2245,7 @@ int32_t lsm9ds1_xl_filter_out_path_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_filter_out_path_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_filter_out_path_get(const stmdev_ctx_t *ctx,
                                        lsm9ds1_xl_out_path_t *val)
 {
   lsm9ds1_ctrl_reg7_xl_t ctrl_reg7_xl;
@@ -2271,7 +2281,7 @@ int32_t lsm9ds1_xl_filter_out_path_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_filter_lp_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_filter_lp_bandwidth_set(const stmdev_ctx_t *ctx,
                                            lsm9ds1_xl_lp_bw_t val)
 {
   lsm9ds1_ctrl_reg7_xl_t ctrl_reg7_xl;
@@ -2300,7 +2310,7 @@ int32_t lsm9ds1_xl_filter_lp_bandwidth_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_filter_lp_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_filter_lp_bandwidth_get(const stmdev_ctx_t *ctx,
                                            lsm9ds1_xl_lp_bw_t *val)
 {
   lsm9ds1_ctrl_reg7_xl_t ctrl_reg7_xl;
@@ -2348,7 +2358,7 @@ int32_t lsm9ds1_xl_filter_lp_bandwidth_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_filter_hp_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_filter_hp_bandwidth_set(const stmdev_ctx_t *ctx,
                                            lsm9ds1_xl_hp_bw_t val)
 {
   lsm9ds1_ctrl_reg7_xl_t ctrl_reg7_xl;
@@ -2376,7 +2386,7 @@ int32_t lsm9ds1_xl_filter_hp_bandwidth_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_filter_hp_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_filter_hp_bandwidth_get(const stmdev_ctx_t *ctx,
                                            lsm9ds1_xl_hp_bw_t *val)
 {
   lsm9ds1_ctrl_reg7_xl_t ctrl_reg7_xl;
@@ -2419,7 +2429,7 @@ int32_t lsm9ds1_xl_filter_hp_bandwidth_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_filter_settling_mask_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_filter_settling_mask_set(const stmdev_ctx_t *ctx,
                                          uint8_t val)
 {
   lsm9ds1_ctrl_reg9_t ctrl_reg9;
@@ -2444,7 +2454,7 @@ int32_t lsm9ds1_filter_settling_mask_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_filter_settling_mask_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_filter_settling_mask_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val)
 {
   lsm9ds1_ctrl_reg9_t ctrl_reg9;
@@ -2478,7 +2488,7 @@ int32_t lsm9ds1_filter_settling_mask_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_auto_increment_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lsm9ds1_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm9ds1_ctrl_reg8_t ctrl_reg8;
   int32_t ret;
@@ -2503,7 +2513,7 @@ int32_t lsm9ds1_auto_increment_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_ctrl_reg8_t ctrl_reg8;
   int32_t ret;
@@ -2523,7 +2533,7 @@ int32_t lsm9ds1_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_spi_mode_set(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_spi_mode_set(const stmdev_ctx_t *ctx_mag,
                              stmdev_ctx_t *ctx_imu,
                              lsm9ds1_sim_t val)
 {
@@ -2566,7 +2576,7 @@ int32_t lsm9ds1_spi_mode_set(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_spi_mode_get(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_spi_mode_get(const stmdev_ctx_t *ctx_mag,
                              stmdev_ctx_t *ctx_imu,
                              lsm9ds1_sim_t *val)
 {
@@ -2610,7 +2620,7 @@ int32_t lsm9ds1_spi_mode_get(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_i2c_interface_set(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_i2c_interface_set(const stmdev_ctx_t *ctx_mag,
                                   stmdev_ctx_t *ctx_imu,
                                   lsm9ds1_i2c_dis_t val)
 {
@@ -2653,7 +2663,7 @@ int32_t lsm9ds1_i2c_interface_set(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_i2c_interface_get(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_i2c_interface_get(const stmdev_ctx_t *ctx_mag,
                                   stmdev_ctx_t *ctx_imu,
                                   lsm9ds1_i2c_dis_t *val)
 {
@@ -2709,7 +2719,7 @@ int32_t lsm9ds1_i2c_interface_get(stmdev_ctx_t *ctx_mag,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_logic_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_pin_logic_set(const stmdev_ctx_t *ctx,
                               lsm9ds1_pin_logic_t val)
 {
   lsm9ds1_int_gen_cfg_xl_t int_gen_cfg_xl;
@@ -2750,7 +2760,7 @@ int32_t lsm9ds1_pin_logic_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_logic_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_pin_logic_get(const stmdev_ctx_t *ctx,
                               lsm9ds1_pin_logic_t *val)
 {
   lsm9ds1_int_gen_cfg_xl_t int_gen_cfg_xl;
@@ -2792,7 +2802,7 @@ int32_t lsm9ds1_pin_logic_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_int1_route_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                    lsm9ds1_pin_int1_route_t val)
 {
   lsm9ds1_int1_ctrl_t int1_ctrl;
@@ -2824,7 +2834,7 @@ int32_t lsm9ds1_pin_int1_route_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_int1_route_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                    lsm9ds1_pin_int1_route_t *val)
 {
   lsm9ds1_int1_ctrl_t int1_ctrl;
@@ -2851,7 +2861,7 @@ int32_t lsm9ds1_pin_int1_route_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_int2_route_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                    lsm9ds1_pin_int2_route_t val)
 {
   lsm9ds1_int2_ctrl_t int2_ctrl;
@@ -2882,7 +2892,7 @@ int32_t lsm9ds1_pin_int2_route_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_int2_route_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                    lsm9ds1_pin_int2_route_t *val)
 {
   lsm9ds1_int2_ctrl_t int2_ctrl;
@@ -2909,7 +2919,7 @@ int32_t lsm9ds1_pin_int2_route_get(stmdev_ctx_t *ctx,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_notification_set(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_pin_notification_set(const stmdev_ctx_t *ctx_mag,
                                      stmdev_ctx_t *ctx_imu,
                                      lsm9ds1_lir_t val)
 {
@@ -2966,7 +2976,7 @@ int32_t lsm9ds1_pin_notification_set(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_notification_get(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_pin_notification_get(const stmdev_ctx_t *ctx_mag,
                                      stmdev_ctx_t *ctx_imu,
                                      lsm9ds1_lir_t *val)
 {
@@ -3015,7 +3025,7 @@ int32_t lsm9ds1_pin_notification_get(stmdev_ctx_t *ctx_mag,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_mode_set(stmdev_ctx_t *ctx, lsm9ds1_pp_od_t val)
+int32_t lsm9ds1_pin_mode_set(const stmdev_ctx_t *ctx, lsm9ds1_pp_od_t val)
 {
   lsm9ds1_ctrl_reg8_t ctrl_reg8;
   int32_t ret;
@@ -3039,7 +3049,7 @@ int32_t lsm9ds1_pin_mode_set(stmdev_ctx_t *ctx, lsm9ds1_pp_od_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_mode_get(stmdev_ctx_t *ctx, lsm9ds1_pp_od_t *val)
+int32_t lsm9ds1_pin_mode_get(const stmdev_ctx_t *ctx, lsm9ds1_pp_od_t *val)
 {
   lsm9ds1_ctrl_reg8_t ctrl_reg8;
   int32_t ret;
@@ -3072,7 +3082,7 @@ int32_t lsm9ds1_pin_mode_get(stmdev_ctx_t *ctx, lsm9ds1_pp_od_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_int_m_route_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_pin_int_m_route_set(const stmdev_ctx_t *ctx,
                                     lsm9ds1_pin_m_route_t val)
 {
   lsm9ds1_int_cfg_m_t int_cfg_m;
@@ -3097,7 +3107,7 @@ int32_t lsm9ds1_pin_int_m_route_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_int_m_route_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_pin_int_m_route_get(const stmdev_ctx_t *ctx,
                                     lsm9ds1_pin_m_route_t *val)
 {
   lsm9ds1_int_cfg_m_t int_cfg_m;
@@ -3118,7 +3128,7 @@ int32_t lsm9ds1_pin_int_m_route_get(stmdev_ctx_t *ctx,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_polarity_set(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_pin_polarity_set(const stmdev_ctx_t *ctx_mag,
                                  stmdev_ctx_t *ctx_imu,
                                  lsm9ds1_polarity_t val)
 {
@@ -3161,7 +3171,7 @@ int32_t lsm9ds1_pin_polarity_set(stmdev_ctx_t *ctx_mag,
   * @retval           Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_pin_polarity_get(stmdev_ctx_t *ctx_mag,
+int32_t lsm9ds1_pin_polarity_get(const stmdev_ctx_t *ctx_mag,
                                  stmdev_ctx_t *ctx_imu,
                                  lsm9ds1_polarity_t *val)
 {
@@ -3218,7 +3228,7 @@ int32_t lsm9ds1_pin_polarity_get(stmdev_ctx_t *ctx_mag,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_trshld_axis_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_trshld_axis_set(const stmdev_ctx_t *ctx,
                                    lsm9ds1_xl_trshld_en_t val)
 {
   lsm9ds1_int_gen_cfg_xl_t int_gen_cfg_xl;
@@ -3251,7 +3261,7 @@ int32_t lsm9ds1_xl_trshld_axis_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_trshld_axis_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_trshld_axis_get(const stmdev_ctx_t *ctx,
                                    lsm9ds1_xl_trshld_en_t *val)
 {
   lsm9ds1_int_gen_cfg_xl_t int_gen_cfg_xl;
@@ -3277,7 +3287,7 @@ int32_t lsm9ds1_xl_trshld_axis_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_trshld_set(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lsm9ds1_xl_trshld_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -3294,7 +3304,7 @@ int32_t lsm9ds1_xl_trshld_set(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_trshld_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lsm9ds1_xl_trshld_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -3311,7 +3321,7 @@ int32_t lsm9ds1_xl_trshld_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_trshld_min_sample_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_trshld_min_sample_set(const stmdev_ctx_t *ctx,
                                          uint8_t val)
 {
   lsm9ds1_int_gen_dur_xl_t int_gen_dur_xl;
@@ -3349,7 +3359,7 @@ int32_t lsm9ds1_xl_trshld_min_sample_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_trshld_min_sample_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_trshld_min_sample_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val)
 {
   lsm9ds1_int_gen_dur_xl_t int_gen_dur_xl;
@@ -3370,7 +3380,7 @@ int32_t lsm9ds1_xl_trshld_min_sample_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_src_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_trshld_src_get(const stmdev_ctx_t *ctx,
                                   lsm9ds1_gy_trshld_src_t *val)
 {
   lsm9ds1_int_gen_src_g_t int_gen_src_g;
@@ -3397,7 +3407,7 @@ int32_t lsm9ds1_gy_trshld_src_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_trshld_src_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_xl_trshld_src_get(const stmdev_ctx_t *ctx,
                                   lsm9ds1_xl_trshld_src_t *val)
 {
   lsm9ds1_int_gen_src_xl_t int_gen_src_xl;
@@ -3425,7 +3435,7 @@ int32_t lsm9ds1_xl_trshld_src_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_axis_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_trshld_axis_set(const stmdev_ctx_t *ctx,
                                    lsm9ds1_gy_trshld_en_t val)
 {
   lsm9ds1_int_gen_cfg_g_t int_gen_cfg_g;
@@ -3458,7 +3468,7 @@ int32_t lsm9ds1_gy_trshld_axis_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_axis_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_trshld_axis_get(const stmdev_ctx_t *ctx,
                                    lsm9ds1_gy_trshld_en_t *val)
 {
   lsm9ds1_int_gen_cfg_g_t int_gen_cfg_g;
@@ -3484,7 +3494,7 @@ int32_t lsm9ds1_gy_trshld_axis_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_mode_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_trshld_mode_set(const stmdev_ctx_t *ctx,
                                    lsm9ds1_dcrm_g_t val)
 {
   lsm9ds1_int_gen_ths_xh_g_t int_gen_ths_xh_g;
@@ -3511,7 +3521,7 @@ int32_t lsm9ds1_gy_trshld_mode_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_mode_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_trshld_mode_get(const stmdev_ctx_t *ctx,
                                    lsm9ds1_dcrm_g_t *val)
 {
   lsm9ds1_int_gen_ths_xh_g_t int_gen_ths_xh_g;
@@ -3546,7 +3556,7 @@ int32_t lsm9ds1_gy_trshld_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_x_set(stmdev_ctx_t *ctx, uint16_t val)
+int32_t lsm9ds1_gy_trshld_x_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   lsm9ds1_int_gen_ths_xh_g_t int_gen_ths_xh_g;
   lsm9ds1_int_gen_ths_xl_g_t int_gen_ths_xl_g;
@@ -3586,7 +3596,7 @@ int32_t lsm9ds1_gy_trshld_x_set(stmdev_ctx_t *ctx, uint16_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_x_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t lsm9ds1_gy_trshld_x_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   lsm9ds1_int_gen_ths_xh_g_t int_gen_ths_xh_g;
   lsm9ds1_int_gen_ths_xl_g_t int_gen_ths_xl_g;
@@ -3617,7 +3627,7 @@ int32_t lsm9ds1_gy_trshld_x_get(stmdev_ctx_t *ctx, uint16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_y_set(stmdev_ctx_t *ctx, uint16_t val)
+int32_t lsm9ds1_gy_trshld_y_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   lsm9ds1_int_gen_ths_yh_g_t int_gen_ths_yh_g;
   lsm9ds1_int_gen_ths_yl_g_t int_gen_ths_yl_g;
@@ -3657,7 +3667,7 @@ int32_t lsm9ds1_gy_trshld_y_set(stmdev_ctx_t *ctx, uint16_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_y_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t lsm9ds1_gy_trshld_y_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   lsm9ds1_int_gen_ths_yh_g_t int_gen_ths_yh_g;
   lsm9ds1_int_gen_ths_yl_g_t int_gen_ths_yl_g;
@@ -3687,7 +3697,7 @@ int32_t lsm9ds1_gy_trshld_y_get(stmdev_ctx_t *ctx, uint16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_z_set(stmdev_ctx_t *ctx, uint16_t val)
+int32_t lsm9ds1_gy_trshld_z_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   lsm9ds1_int_gen_ths_zh_g_t int_gen_ths_zh_g;
   lsm9ds1_int_gen_ths_zl_g_t int_gen_ths_zl_g;
@@ -3727,7 +3737,7 @@ int32_t lsm9ds1_gy_trshld_z_set(stmdev_ctx_t *ctx, uint16_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_z_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t lsm9ds1_gy_trshld_z_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   lsm9ds1_int_gen_ths_zh_g_t int_gen_ths_zh_g;
   lsm9ds1_int_gen_ths_zl_g_t int_gen_ths_zl_g;
@@ -3757,7 +3767,7 @@ int32_t lsm9ds1_gy_trshld_z_get(stmdev_ctx_t *ctx, uint16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_min_sample_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_trshld_min_sample_set(const stmdev_ctx_t *ctx,
                                          uint8_t val)
 {
   lsm9ds1_int_gen_dur_g_t int_gen_dur_g;
@@ -3794,7 +3804,7 @@ int32_t lsm9ds1_gy_trshld_min_sample_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_trshld_min_sample_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_gy_trshld_min_sample_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val)
 {
   lsm9ds1_int_gen_dur_g_t int_gen_dur_g;
@@ -3815,7 +3825,7 @@ int32_t lsm9ds1_gy_trshld_min_sample_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_trshld_axis_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_mag_trshld_axis_set(const stmdev_ctx_t *ctx,
                                     lsm9ds1_mag_trshld_axis_t val)
 {
   lsm9ds1_int_cfg_m_t int_cfg_m;
@@ -3842,7 +3852,7 @@ int32_t lsm9ds1_mag_trshld_axis_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_trshld_axis_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_mag_trshld_axis_get(const stmdev_ctx_t *ctx,
                                     lsm9ds1_mag_trshld_axis_t *val)
 {
   lsm9ds1_int_cfg_m_t int_cfg_m;
@@ -3864,7 +3874,7 @@ int32_t lsm9ds1_mag_trshld_axis_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_trshld_src_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_mag_trshld_src_get(const stmdev_ctx_t *ctx,
                                    lsm9ds1_mag_trshld_src_t *val)
 {
   lsm9ds1_int_src_m_t int_src_m;
@@ -3890,7 +3900,7 @@ int32_t lsm9ds1_mag_trshld_src_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_trshld_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_mag_trshld_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_int_ths_l_m_t int_ths_l_m;
   lsm9ds1_int_ths_h_m_t int_ths_h_m;
@@ -3933,7 +3943,7 @@ int32_t lsm9ds1_mag_trshld_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_act_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lsm9ds1_act_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm9ds1_act_ths_t act_ths;
   int32_t ret;
@@ -3957,7 +3967,7 @@ int32_t lsm9ds1_act_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_act_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_act_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_act_ths_t act_ths;
   int32_t ret;
@@ -3976,7 +3986,7 @@ int32_t lsm9ds1_act_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_act_mode_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_act_mode_set(const stmdev_ctx_t *ctx,
                              lsm9ds1_act_mode_t val)
 {
   lsm9ds1_act_ths_t act_ths;
@@ -4013,7 +4023,7 @@ int32_t lsm9ds1_act_mode_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_act_mode_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_act_mode_get(const stmdev_ctx_t *ctx,
                              lsm9ds1_act_mode_t *val)
 {
   lsm9ds1_act_ths_t act_ths;
@@ -4053,7 +4063,7 @@ int32_t lsm9ds1_act_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_act_duration_set(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lsm9ds1_act_duration_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -4070,7 +4080,7 @@ int32_t lsm9ds1_act_duration_set(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_act_duration_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lsm9ds1_act_duration_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -4087,7 +4097,7 @@ int32_t lsm9ds1_act_duration_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_act_src_get(stmdev_ctx_t *ctx, lsm9ds1_inact_t *val)
+int32_t lsm9ds1_act_src_get(const stmdev_ctx_t *ctx, lsm9ds1_inact_t *val)
 {
   lsm9ds1_status_reg_t status_reg;
   int32_t ret;
@@ -4134,7 +4144,7 @@ int32_t lsm9ds1_act_src_get(stmdev_ctx_t *ctx, lsm9ds1_inact_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_6d_mode_set(stmdev_ctx_t *ctx, lsm9ds1_6d_mode_t val)
+int32_t lsm9ds1_6d_mode_set(const stmdev_ctx_t *ctx, lsm9ds1_6d_mode_t val)
 {
   lsm9ds1_int_gen_cfg_xl_t int_gen_cfg_xl;
   lsm9ds1_ctrl_reg4_t ctrl_reg4;
@@ -4175,7 +4185,7 @@ int32_t lsm9ds1_6d_mode_set(stmdev_ctx_t *ctx, lsm9ds1_6d_mode_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_6d_mode_get(stmdev_ctx_t *ctx, lsm9ds1_6d_mode_t *val)
+int32_t lsm9ds1_6d_mode_get(const stmdev_ctx_t *ctx, lsm9ds1_6d_mode_t *val)
 {
   lsm9ds1_int_gen_cfg_xl_t int_gen_cfg_xl;
   lsm9ds1_ctrl_reg4_t ctrl_reg4;
@@ -4229,7 +4239,7 @@ int32_t lsm9ds1_6d_mode_get(stmdev_ctx_t *ctx, lsm9ds1_6d_mode_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_6d_threshold_set(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lsm9ds1_6d_threshold_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -4246,7 +4256,7 @@ int32_t lsm9ds1_6d_threshold_set(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_6d_threshold_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lsm9ds1_6d_threshold_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -4263,7 +4273,7 @@ int32_t lsm9ds1_6d_threshold_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_6d_src_get(stmdev_ctx_t *ctx, lsm9ds1_6d_src_t *val)
+int32_t lsm9ds1_6d_src_get(const stmdev_ctx_t *ctx, lsm9ds1_6d_src_t *val)
 {
   lsm9ds1_int_gen_src_xl_t int_gen_src_xl;
   int32_t ret;
@@ -4303,7 +4313,7 @@ int32_t lsm9ds1_6d_src_get(stmdev_ctx_t *ctx, lsm9ds1_6d_src_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_stop_on_wtm_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lsm9ds1_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm9ds1_ctrl_reg9_t ctrl_reg9;
   int32_t ret;
@@ -4328,7 +4338,7 @@ int32_t lsm9ds1_fifo_stop_on_wtm_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_stop_on_wtm_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_ctrl_reg9_t ctrl_reg9;
   int32_t ret;
@@ -4347,7 +4357,7 @@ int32_t lsm9ds1_fifo_stop_on_wtm_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_mode_set(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_fifo_mode_set(const stmdev_ctx_t *ctx,
                               lsm9ds1_fifo_md_t val)
 {
   lsm9ds1_ctrl_reg9_t ctrl_reg9;
@@ -4384,7 +4394,7 @@ int32_t lsm9ds1_fifo_mode_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_mode_get(stmdev_ctx_t *ctx,
+int32_t lsm9ds1_fifo_mode_get(const stmdev_ctx_t *ctx,
                               lsm9ds1_fifo_md_t *val)
 {
   lsm9ds1_ctrl_reg9_t ctrl_reg9;
@@ -4440,7 +4450,7 @@ int32_t lsm9ds1_fifo_mode_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_temp_batch_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lsm9ds1_fifo_temp_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm9ds1_ctrl_reg9_t ctrl_reg9;
   int32_t ret;
@@ -4464,7 +4474,7 @@ int32_t lsm9ds1_fifo_temp_batch_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_temp_batch_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_fifo_temp_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_ctrl_reg9_t ctrl_reg9;
   int32_t ret;
@@ -4483,7 +4493,7 @@ int32_t lsm9ds1_fifo_temp_batch_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lsm9ds1_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm9ds1_fifo_ctrl_t fifo_ctrl;
   int32_t ret;
@@ -4507,7 +4517,7 @@ int32_t lsm9ds1_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_fifo_ctrl_t fifo_ctrl;
   int32_t ret;
@@ -4526,7 +4536,7 @@ int32_t lsm9ds1_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_full_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_fifo_src_t fifo_src;
   int32_t ret;
@@ -4545,7 +4555,7 @@ int32_t lsm9ds1_fifo_full_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_fifo_src_t fifo_src;
   int32_t ret;
@@ -4564,7 +4574,7 @@ int32_t lsm9ds1_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_fifo_src_t fifo_src;
   int32_t ret;
@@ -4583,7 +4593,7 @@ int32_t lsm9ds1_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_fifo_wtm_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_fifo_src_t fifo_src;
   int32_t ret;
@@ -4615,7 +4625,7 @@ int32_t lsm9ds1_fifo_wtm_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_self_test_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lsm9ds1_xl_self_test_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm9ds1_ctrl_reg10_t ctrl_reg10;
   int32_t ret;
@@ -4641,7 +4651,7 @@ int32_t lsm9ds1_xl_self_test_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_xl_self_test_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_xl_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_ctrl_reg10_t ctrl_reg10;
   int32_t ret;
@@ -4661,7 +4671,7 @@ int32_t lsm9ds1_xl_self_test_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_self_test_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lsm9ds1_gy_self_test_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm9ds1_ctrl_reg10_t ctrl_reg10;
   int32_t ret;
@@ -4687,7 +4697,7 @@ int32_t lsm9ds1_gy_self_test_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_gy_self_test_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_gy_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_ctrl_reg10_t ctrl_reg10;
   int32_t ret;
@@ -4707,7 +4717,7 @@ int32_t lsm9ds1_gy_self_test_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_self_test_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lsm9ds1_mag_self_test_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm9ds1_ctrl_reg1_m_t ctrl_reg1_m;
   int32_t ret;
@@ -4733,7 +4743,7 @@ int32_t lsm9ds1_mag_self_test_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm9ds1_mag_self_test_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm9ds1_mag_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm9ds1_ctrl_reg1_m_t ctrl_reg1_m;
   int32_t ret;

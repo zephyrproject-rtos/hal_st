@@ -19,6 +19,25 @@
 
 #include "sths34pf80_reg.h"
 
+/*
+ * Prototypes of routines used only throughout this driver and not exported
+ * outside as APIs
+ */
+typedef struct
+{
+  uint8_t int_pulsed : 1;
+  uint8_t comp_type : 1;
+  uint8_t sel_abs : 1;
+} sths34pf80_algo_config_t;
+
+static int32_t sths34pf80_reset_algo_bit_set(const stmdev_ctx_t *ctx);
+static int32_t sths34pf80_algo_config_get(const stmdev_ctx_t *ctx, sths34pf80_algo_config_t *val);
+static int32_t sths34pf80_algo_config_set(const stmdev_ctx_t *ctx, sths34pf80_algo_config_t val);
+static int32_t sths34pf80_safe_power_down(const stmdev_ctx_t *ctx, sths34pf80_ctrl1_t *ctrl1);
+static int32_t sths34pf80_odr_safe_set(const stmdev_ctx_t *ctx,
+                                       sths34pf80_ctrl1_t *ctrl1,
+                                       uint8_t odr_new);
+
 /**
   * @defgroup  STHS34PF80
   * @brief     This file provides a set of functions needed to drive the
@@ -50,11 +69,16 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak sths34pf80_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak sths34pf80_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                    uint8_t *data,
                                    uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -71,11 +95,16 @@ int32_t __weak sths34pf80_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak sths34pf80_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak sths34pf80_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                     uint8_t *data,
                                     uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -101,7 +130,7 @@ int32_t __weak sths34pf80_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_device_id_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t sths34pf80_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
 
@@ -118,7 +147,7 @@ int32_t sths34pf80_device_id_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_avg_tobject_num_set(stmdev_ctx_t *ctx, sths34pf80_avg_tobject_num_t val)
+int32_t sths34pf80_avg_tobject_num_set(const stmdev_ctx_t *ctx, sths34pf80_avg_tobject_num_t val)
 {
   sths34pf80_avg_trim_t avg_trim;
   int32_t ret;
@@ -142,7 +171,7 @@ int32_t sths34pf80_avg_tobject_num_set(stmdev_ctx_t *ctx, sths34pf80_avg_tobject
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_avg_tobject_num_get(stmdev_ctx_t *ctx, sths34pf80_avg_tobject_num_t *val)
+int32_t sths34pf80_avg_tobject_num_get(const stmdev_ctx_t *ctx, sths34pf80_avg_tobject_num_t *val)
 {
   sths34pf80_avg_trim_t avg_trim;
   int32_t ret;
@@ -198,7 +227,7 @@ int32_t sths34pf80_avg_tobject_num_get(stmdev_ctx_t *ctx, sths34pf80_avg_tobject
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_avg_tambient_num_set(stmdev_ctx_t *ctx, sths34pf80_avg_tambient_num_t val)
+int32_t sths34pf80_avg_tambient_num_set(const stmdev_ctx_t *ctx, sths34pf80_avg_tambient_num_t val)
 {
   sths34pf80_avg_trim_t avg_trim;
   int32_t ret;
@@ -222,7 +251,7 @@ int32_t sths34pf80_avg_tambient_num_set(stmdev_ctx_t *ctx, sths34pf80_avg_tambie
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_avg_tambient_num_get(stmdev_ctx_t *ctx, sths34pf80_avg_tambient_num_t *val)
+int32_t sths34pf80_avg_tambient_num_get(const stmdev_ctx_t *ctx, sths34pf80_avg_tambient_num_t *val)
 {
   sths34pf80_avg_trim_t avg_trim;
   int32_t ret;
@@ -262,7 +291,7 @@ int32_t sths34pf80_avg_tambient_num_get(stmdev_ctx_t *ctx, sths34pf80_avg_tambie
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_gain_mode_set(stmdev_ctx_t *ctx, sths34pf80_gain_mode_t val)
+int32_t sths34pf80_gain_mode_set(const stmdev_ctx_t *ctx, sths34pf80_gain_mode_t val)
 {
   sths34pf80_ctrl0_t ctrl0;
   int32_t ret;
@@ -286,7 +315,7 @@ int32_t sths34pf80_gain_mode_set(stmdev_ctx_t *ctx, sths34pf80_gain_mode_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_gain_mode_get(stmdev_ctx_t *ctx, sths34pf80_gain_mode_t *val)
+int32_t sths34pf80_gain_mode_get(const stmdev_ctx_t *ctx, sths34pf80_gain_mode_t *val)
 {
   sths34pf80_ctrl0_t ctrl0;
   int32_t ret;
@@ -320,14 +349,14 @@ int32_t sths34pf80_gain_mode_get(stmdev_ctx_t *ctx, sths34pf80_gain_mode_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_sensitivity_set(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t sths34pf80_tobject_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   sths34pf80_sens_data_t data;
   int32_t ret;
 
   data.sens = (*val >= 2048U) ?
-        (*val - 2048U + 8U) / 16U :
-        (*val - 2048U - 8U) / 16U;
+              (*val - 2048U + 8U) / 16U :
+              (*val - 2048U - 8U) / 16U;
   ret = sths34pf80_write_reg(ctx, STHS34PF80_SENS_DATA, (uint8_t *)&data, 1);
   *val = (int8_t)data.sens * 16U + 2048U;
 
@@ -342,7 +371,7 @@ int32_t sths34pf80_tmos_sensitivity_set(stmdev_ctx_t *ctx, uint16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_sensitivity_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t sths34pf80_tobject_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   sths34pf80_sens_data_t data;
   int32_t ret;
@@ -354,56 +383,81 @@ int32_t sths34pf80_tmos_sensitivity_get(stmdev_ctx_t *ctx, uint16_t *val)
 }
 
 /**
-  * @brief  Enter to/Exit from power-down in a safe way
+  * @brief  Enter to power-down in a safe way
   *
   * @param  ctx      read / write interface definitions
-  * @param  ctrl1    Value of CTRL1 register
+  * @param  ctrl1    Pointer to CTRL1 register
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+static int32_t sths34pf80_safe_power_down(const stmdev_ctx_t *ctx, sths34pf80_ctrl1_t *ctrl1)
+{
+  sths34pf80_func_status_t func_status;
+  sths34pf80_drdy_status_t status;
+  int32_t ret;
+
+  /* if sensor is already in power-down then do nothing */
+  if (ctrl1->odr == 0U)
+  {
+    return 0;
+  }
+
+  /* reset the DRDY bit */
+  ret = sths34pf80_read_reg(ctx, STHS34PF80_FUNC_STATUS, (uint8_t *)&func_status, 1);
+
+  /* wait DRDY bit go to '1'. Maximum wait may be up to 4 sec (0.25 Hz) */
+  uint16_t retry = 0U;
+  do
+  {
+    ret += sths34pf80_drdy_status_get(ctx, &status);
+    ctx->mdelay(1);
+  } while (status.drdy == 0U && retry++ < 4000U);
+
+  if (ret != 0 || retry >= 4000U)
+  {
+    return -1;
+  };
+
+  /* perform power-down */
+  ctrl1->odr = 0U;
+  ret += sths34pf80_write_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)ctrl1, 1);
+
+  /* reset the DRDY bit */
+  ret += sths34pf80_read_reg(ctx, STHS34PF80_FUNC_STATUS, (uint8_t *)&func_status, 1);
+
+  return ret;
+}
+
+/**
+  * @brief  Change odr in a safe way
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  ctrl1    Pointer to CTRL1 register
   * @param  odr_new  Value of new odr to be set
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-static int32_t sths34pf80_tmos_odr_check_safe_set(stmdev_ctx_t *ctx,
-                                                  sths34pf80_ctrl1_t ctrl1,
-                                                  uint8_t odr_new)
+static int32_t sths34pf80_odr_safe_set(const stmdev_ctx_t *ctx,
+                                       sths34pf80_ctrl1_t *ctrl1,
+                                       uint8_t odr_new)
 {
-  sths34pf80_func_status_t func_status;
-  sths34pf80_tmos_drdy_status_t status;
-  int32_t ret = 0;
+  int32_t ret;
 
-  if (odr_new > 0U) {
+  /* perform power-down transition in a safe way. */
+  ret = sths34pf80_safe_power_down(ctx, ctrl1);
+
+  if (odr_new > 0U)
+  {
     /*
      * Do a clean reset algo procedure everytime odr is changed to an
      * operative state.
      */
-    ctrl1.odr = 0;
-    ret = sths34pf80_write_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+    ret += sths34pf80_reset_algo_bit_set(ctx);
 
-    ret += sths34pf80_algo_reset(ctx);
-  } else {
-    /* if we need to go to power-down from an operative state
-     * perform the safe power-down.
-     */
-    if ((uint8_t)ctrl1.odr > 0U) {
-      /* reset the DRDY bit */
-      ret = sths34pf80_read_reg(ctx, STHS34PF80_FUNC_STATUS, (uint8_t *)&func_status, 1);
-
-      /* wait DRDY bit go to '1' */
-      do {
-        ret += sths34pf80_tmos_drdy_status_get(ctx, &status);
-
-      } while (status.drdy != 0U);
-
-      /* set ODR to 0 */
-      ctrl1.odr = 0;
-      ret += sths34pf80_write_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
-
-      /* reset the DRDY bit */
-      ret += sths34pf80_read_reg(ctx, STHS34PF80_FUNC_STATUS, (uint8_t *)&func_status, 1);
-    }
+    /* set new odr */
+    ctrl1->odr = (odr_new & 0xfU);
+    ret += sths34pf80_write_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)ctrl1, 1);
   }
-
-  ctrl1.odr = (odr_new & 0xfU);
-  ret += sths34pf80_write_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
 
   return ret;
 }
@@ -412,15 +466,15 @@ static int32_t sths34pf80_tmos_odr_check_safe_set(stmdev_ctx_t *ctx,
   * @brief  Selects the tmos odr.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      TMOS_ODR_OFF, TMOS_ODR_AT_0Hz25, TMOS_ODR_AT_0Hz50, TMOS_ODR_1Hz, TMOS_ODR_2Hz, TMOS_ODR_4Hz, TMOS_ODR_8Hz, TMOS_ODR_15Hz, TMOS_ODR_30Hz,
+  * @param  val      ODR_OFF, ODR_AT_0Hz25, ODR_AT_0Hz50, ODR_1Hz, ODR_2Hz, ODR_4Hz, ODR_8Hz, ODR_15Hz, ODR_30Hz,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_odr_set(stmdev_ctx_t *ctx, sths34pf80_tmos_odr_t val)
+int32_t sths34pf80_odr_set(const stmdev_ctx_t *ctx, sths34pf80_odr_t val)
 {
   sths34pf80_ctrl1_t ctrl1;
   sths34pf80_avg_trim_t avg_trim;
-  sths34pf80_tmos_odr_t max_odr = STHS34PF80_TMOS_ODR_AT_30Hz;
+  sths34pf80_odr_t max_odr = STHS34PF80_ODR_AT_30Hz;
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
@@ -429,28 +483,28 @@ int32_t sths34pf80_tmos_odr_set(stmdev_ctx_t *ctx, sths34pf80_tmos_odr_t val)
   {
     ret = sths34pf80_read_reg(ctx, STHS34PF80_AVG_TRIM, (uint8_t *)&avg_trim, 1);
 
-    switch(avg_trim.avg_tmos)
+    switch (avg_trim.avg_tmos)
     {
       default:
       case STHS34PF80_AVG_TMOS_2:
       case STHS34PF80_AVG_TMOS_8:
       case STHS34PF80_AVG_TMOS_32:
-        max_odr = STHS34PF80_TMOS_ODR_AT_30Hz;
+        max_odr = STHS34PF80_ODR_AT_30Hz;
         break;
       case STHS34PF80_AVG_TMOS_128:
-        max_odr = STHS34PF80_TMOS_ODR_AT_8Hz;
+        max_odr = STHS34PF80_ODR_AT_8Hz;
         break;
       case STHS34PF80_AVG_TMOS_256:
-        max_odr = STHS34PF80_TMOS_ODR_AT_4Hz;
+        max_odr = STHS34PF80_ODR_AT_4Hz;
         break;
       case STHS34PF80_AVG_TMOS_512:
-        max_odr = STHS34PF80_TMOS_ODR_AT_2Hz;
+        max_odr = STHS34PF80_ODR_AT_2Hz;
         break;
       case STHS34PF80_AVG_TMOS_1024:
-        max_odr = STHS34PF80_TMOS_ODR_AT_1Hz;
+        max_odr = STHS34PF80_ODR_AT_1Hz;
         break;
       case STHS34PF80_AVG_TMOS_2048:
-        max_odr = STHS34PF80_TMOS_ODR_AT_0Hz50;
+        max_odr = STHS34PF80_ODR_AT_0Hz50;
         break;
     }
   }
@@ -462,7 +516,7 @@ int32_t sths34pf80_tmos_odr_set(stmdev_ctx_t *ctx, sths34pf80_tmos_odr_t val)
       return -1;
     }
 
-    ret = sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, (uint8_t)val);
+    ret = sths34pf80_odr_safe_set(ctx, &ctrl1, (uint8_t)val);
   }
 
   return ret;
@@ -472,11 +526,11 @@ int32_t sths34pf80_tmos_odr_set(stmdev_ctx_t *ctx, sths34pf80_tmos_odr_t val)
   * @brief  Selects the tmos odr.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      TMOS_ODR_OFF, TMOS_ODR_AT_0Hz25, TMOS_ODR_AT_0Hz50, TMOS_ODR_1Hz, TMOS_ODR_2Hz, TMOS_ODR_4Hz, TMOS_ODR_8Hz, TMOS_ODR_15Hz, TMOS_ODR_30Hz,
+  * @param  val      ODR_OFF, ODR_AT_0Hz25, ODR_AT_0Hz50, ODR_1Hz, ODR_2Hz, ODR_4Hz, ODR_8Hz, ODR_15Hz, ODR_30Hz,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_odr_get(stmdev_ctx_t *ctx, sths34pf80_tmos_odr_t *val)
+int32_t sths34pf80_odr_get(const stmdev_ctx_t *ctx, sths34pf80_odr_t *val)
 {
   sths34pf80_ctrl1_t ctrl1;
   int32_t ret;
@@ -485,44 +539,44 @@ int32_t sths34pf80_tmos_odr_get(stmdev_ctx_t *ctx, sths34pf80_tmos_odr_t *val)
 
   switch (ctrl1.odr)
   {
-    case STHS34PF80_TMOS_ODR_OFF:
-      *val = STHS34PF80_TMOS_ODR_OFF;
+    case STHS34PF80_ODR_OFF:
+      *val = STHS34PF80_ODR_OFF;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_0Hz25:
-      *val = STHS34PF80_TMOS_ODR_AT_0Hz25;
+    case STHS34PF80_ODR_AT_0Hz25:
+      *val = STHS34PF80_ODR_AT_0Hz25;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_0Hz50:
-      *val = STHS34PF80_TMOS_ODR_AT_0Hz50;
+    case STHS34PF80_ODR_AT_0Hz50:
+      *val = STHS34PF80_ODR_AT_0Hz50;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_1Hz:
-      *val = STHS34PF80_TMOS_ODR_AT_1Hz;
+    case STHS34PF80_ODR_AT_1Hz:
+      *val = STHS34PF80_ODR_AT_1Hz;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_2Hz:
-      *val = STHS34PF80_TMOS_ODR_AT_2Hz;
+    case STHS34PF80_ODR_AT_2Hz:
+      *val = STHS34PF80_ODR_AT_2Hz;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_4Hz:
-      *val = STHS34PF80_TMOS_ODR_AT_4Hz;
+    case STHS34PF80_ODR_AT_4Hz:
+      *val = STHS34PF80_ODR_AT_4Hz;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_8Hz:
-      *val = STHS34PF80_TMOS_ODR_AT_8Hz;
+    case STHS34PF80_ODR_AT_8Hz:
+      *val = STHS34PF80_ODR_AT_8Hz;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_15Hz:
-      *val = STHS34PF80_TMOS_ODR_AT_15Hz;
+    case STHS34PF80_ODR_AT_15Hz:
+      *val = STHS34PF80_ODR_AT_15Hz;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_30Hz:
-      *val = STHS34PF80_TMOS_ODR_AT_30Hz;
+    case STHS34PF80_ODR_AT_30Hz:
+      *val = STHS34PF80_ODR_AT_30Hz;
       break;
 
     default:
-      *val = STHS34PF80_TMOS_ODR_OFF;
+      *val = STHS34PF80_ODR_OFF;
       break;
   }
   return ret;
@@ -536,7 +590,7 @@ int32_t sths34pf80_tmos_odr_get(stmdev_ctx_t *ctx, sths34pf80_tmos_odr_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t sths34pf80_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   sths34pf80_ctrl1_t ctrl1;
   int32_t ret;
@@ -560,7 +614,7 @@ int32_t sths34pf80_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t sths34pf80_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   sths34pf80_ctrl1_t ctrl1;
   int32_t ret;
@@ -577,11 +631,11 @@ int32_t sths34pf80_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  Selects data output mode.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      TMOS_IDLE_MODE, TMOS_ONE_SHOT,
+  * @param  val      IDLE_MODE, ONE_SHOT
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_one_shot_set(stmdev_ctx_t *ctx, sths34pf80_tmos_one_shot_t val)
+int32_t sths34pf80_one_shot_set(const stmdev_ctx_t *ctx, sths34pf80_one_shot_t val)
 {
   sths34pf80_ctrl2_t ctrl2;
   int32_t ret;
@@ -601,11 +655,11 @@ int32_t sths34pf80_tmos_one_shot_set(stmdev_ctx_t *ctx, sths34pf80_tmos_one_shot
   * @brief  Selects data output mode.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      TMOS_IDLE_MODE, TMOS_ONE_SHOT,
+  * @param  val      IDLE_MODE, ONE_SHOT
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_one_shot_get(stmdev_ctx_t *ctx, sths34pf80_tmos_one_shot_t *val)
+int32_t sths34pf80_one_shot_get(const stmdev_ctx_t *ctx, sths34pf80_one_shot_t *val)
 {
   sths34pf80_ctrl2_t ctrl2;
   int32_t ret;
@@ -614,16 +668,16 @@ int32_t sths34pf80_tmos_one_shot_get(stmdev_ctx_t *ctx, sths34pf80_tmos_one_shot
 
   switch (ctrl2.one_shot)
   {
-    case STHS34PF80_TMOS_IDLE_MODE:
-      *val = STHS34PF80_TMOS_IDLE_MODE;
+    case STHS34PF80_IDLE_MODE:
+      *val = STHS34PF80_IDLE_MODE;
       break;
 
-    case STHS34PF80_TMOS_ONE_SHOT:
-      *val = STHS34PF80_TMOS_ONE_SHOT;
+    case STHS34PF80_ONE_SHOT:
+      *val = STHS34PF80_ONE_SHOT;
       break;
 
     default:
-      *val = STHS34PF80_TMOS_IDLE_MODE;
+      *val = STHS34PF80_IDLE_MODE;
       break;
   }
   return ret;
@@ -637,7 +691,7 @@ int32_t sths34pf80_tmos_one_shot_get(stmdev_ctx_t *ctx, sths34pf80_tmos_one_shot
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_mem_bank_set(stmdev_ctx_t *ctx, sths34pf80_mem_bank_t val)
+int32_t sths34pf80_mem_bank_set(const stmdev_ctx_t *ctx, sths34pf80_mem_bank_t val)
 {
   sths34pf80_ctrl2_t ctrl2;
   int32_t ret;
@@ -661,7 +715,7 @@ int32_t sths34pf80_mem_bank_set(stmdev_ctx_t *ctx, sths34pf80_mem_bank_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_mem_bank_get(stmdev_ctx_t *ctx, sths34pf80_mem_bank_t *val)
+int32_t sths34pf80_mem_bank_get(const stmdev_ctx_t *ctx, sths34pf80_mem_bank_t *val)
 {
   sths34pf80_ctrl2_t ctrl2;
   int32_t ret;
@@ -693,7 +747,7 @@ int32_t sths34pf80_mem_bank_get(stmdev_ctx_t *ctx, sths34pf80_mem_bank_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_boot_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t sths34pf80_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   sths34pf80_ctrl2_t ctrl2;
   int32_t ret;
@@ -717,7 +771,7 @@ int32_t sths34pf80_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t sths34pf80_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   sths34pf80_ctrl2_t ctrl2;
   int32_t ret;
@@ -736,7 +790,7 @@ int32_t sths34pf80_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_drdy_status_get(stmdev_ctx_t *ctx, sths34pf80_tmos_drdy_status_t *val)
+int32_t sths34pf80_drdy_status_get(const stmdev_ctx_t *ctx, sths34pf80_drdy_status_t *val)
 {
   sths34pf80_status_t status;
   int32_t ret;
@@ -756,7 +810,7 @@ int32_t sths34pf80_tmos_drdy_status_get(stmdev_ctx_t *ctx, sths34pf80_tmos_drdy_
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_func_status_get(stmdev_ctx_t *ctx, sths34pf80_tmos_func_status_t *val)
+int32_t sths34pf80_func_status_get(const stmdev_ctx_t *ctx, sths34pf80_func_status_t *val)
 {
   sths34pf80_func_status_t func_status;
   int32_t ret;
@@ -778,7 +832,7 @@ int32_t sths34pf80_tmos_func_status_get(stmdev_ctx_t *ctx, sths34pf80_tmos_func_
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tobject_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t sths34pf80_tobject_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -799,7 +853,7 @@ int32_t sths34pf80_tobject_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tambient_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t sths34pf80_tambient_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -820,7 +874,7 @@ int32_t sths34pf80_tambient_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tobj_comp_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t sths34pf80_tobj_comp_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -841,7 +895,7 @@ int32_t sths34pf80_tobj_comp_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tpresence_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t sths34pf80_tpresence_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -862,7 +916,7 @@ int32_t sths34pf80_tpresence_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmotion_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t sths34pf80_tmotion_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -883,7 +937,7 @@ int32_t sths34pf80_tmotion_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tamb_shock_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t sths34pf80_tamb_shock_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -915,7 +969,7 @@ int32_t sths34pf80_tamb_shock_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_lpf_m_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val)
+int32_t sths34pf80_lpf_m_bandwidth_set(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val)
 {
   sths34pf80_lpf1_t lpf1;
   int32_t ret;
@@ -939,7 +993,7 @@ int32_t sths34pf80_lpf_m_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwid
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_lpf_m_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val)
+int32_t sths34pf80_lpf_m_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val)
 {
   sths34pf80_lpf1_t lpf1;
   int32_t ret;
@@ -991,7 +1045,7 @@ int32_t sths34pf80_lpf_m_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwid
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_lpf_p_m_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val)
+int32_t sths34pf80_lpf_p_m_bandwidth_set(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val)
 {
   sths34pf80_lpf1_t lpf1;
   int32_t ret;
@@ -1015,7 +1069,7 @@ int32_t sths34pf80_lpf_p_m_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandw
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_lpf_p_m_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val)
+int32_t sths34pf80_lpf_p_m_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val)
 {
   sths34pf80_lpf1_t lpf1;
   int32_t ret;
@@ -1067,7 +1121,7 @@ int32_t sths34pf80_lpf_p_m_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandw
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_lpf_a_t_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val)
+int32_t sths34pf80_lpf_a_t_bandwidth_set(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val)
 {
   sths34pf80_lpf2_t lpf2;
   int32_t ret;
@@ -1091,7 +1145,7 @@ int32_t sths34pf80_lpf_a_t_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandw
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_lpf_a_t_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val)
+int32_t sths34pf80_lpf_a_t_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val)
 {
   sths34pf80_lpf2_t lpf2;
   int32_t ret;
@@ -1143,7 +1197,7 @@ int32_t sths34pf80_lpf_a_t_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandw
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_lpf_p_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val)
+int32_t sths34pf80_lpf_p_bandwidth_set(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val)
 {
   sths34pf80_lpf2_t lpf2;
   int32_t ret;
@@ -1167,7 +1221,7 @@ int32_t sths34pf80_lpf_p_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwid
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_lpf_p_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val)
+int32_t sths34pf80_lpf_p_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val)
 {
   sths34pf80_lpf2_t lpf2;
   int32_t ret;
@@ -1226,11 +1280,11 @@ int32_t sths34pf80_lpf_p_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwid
   * @brief  Selects interrupts to be routed.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      TMOS_INT_HIZ, TMOS_INT_DRDY, TMOS_INT_OR,
+  * @param  val      INT_HIZ, INT_DRDY, INT_OR,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_route_int_set(stmdev_ctx_t *ctx, sths34pf80_tmos_route_int_t val)
+int32_t sths34pf80_route_int_set(const stmdev_ctx_t *ctx, sths34pf80_route_int_t val)
 {
   sths34pf80_ctrl3_t ctrl3;
   int32_t ret;
@@ -1240,7 +1294,8 @@ int32_t sths34pf80_tmos_route_int_set(stmdev_ctx_t *ctx, sths34pf80_tmos_route_i
   if (ret == 0)
   {
     ctrl3.ien = ((uint8_t)val & 0x3U);
-    if (val == STHS34PF80_TMOS_INT_OR) {
+    if (val == STHS34PF80_INT_OR)
+    {
       ctrl3.int_latched = 0; /* guarantee that latched is zero in INT_OR case */
     }
     ret = sths34pf80_write_reg(ctx, STHS34PF80_CTRL3, (uint8_t *)&ctrl3, 1);
@@ -1253,11 +1308,11 @@ int32_t sths34pf80_tmos_route_int_set(stmdev_ctx_t *ctx, sths34pf80_tmos_route_i
   * @brief  Selects interrupts to be routed.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      TMOS_INT_HIZ, TMOS_INT_DRDY, TMOS_INT_OR,
+  * @param  val      INT_HIZ, INT_DRDY, INT_OR,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_route_int_get(stmdev_ctx_t *ctx, sths34pf80_tmos_route_int_t *val)
+int32_t sths34pf80_route_int_get(const stmdev_ctx_t *ctx, sths34pf80_route_int_t *val)
 {
   sths34pf80_ctrl3_t ctrl3;
   int32_t ret;
@@ -1266,20 +1321,20 @@ int32_t sths34pf80_tmos_route_int_get(stmdev_ctx_t *ctx, sths34pf80_tmos_route_i
 
   switch ((ctrl3.ien))
   {
-    case STHS34PF80_TMOS_INT_HIZ:
-      *val = STHS34PF80_TMOS_INT_HIZ;
+    case STHS34PF80_INT_HIZ:
+      *val = STHS34PF80_INT_HIZ;
       break;
 
-    case STHS34PF80_TMOS_INT_DRDY:
-      *val = STHS34PF80_TMOS_INT_DRDY;
+    case STHS34PF80_INT_DRDY:
+      *val = STHS34PF80_INT_DRDY;
       break;
 
-    case STHS34PF80_TMOS_INT_OR:
-      *val = STHS34PF80_TMOS_INT_OR;
+    case STHS34PF80_INT_OR:
+      *val = STHS34PF80_INT_OR;
       break;
 
     default:
-      *val = STHS34PF80_TMOS_INT_HIZ;
+      *val = STHS34PF80_INT_HIZ;
       break;
   }
   return ret;
@@ -1289,11 +1344,11 @@ int32_t sths34pf80_tmos_route_int_get(stmdev_ctx_t *ctx, sths34pf80_tmos_route_i
   * @brief  Selects interrupts output.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      TMOS_INT_NONE, TMOS_INT_TSHOCK, TMOS_INT_MOTION, TMOS_INT_TSHOCK_MOTION, TMOS_INT_PRESENCE, TMOS_INT_TSHOCK_PRESENCE, TMOS_INT_MOTION_PRESENCE, TMOS_INT_ALL,
+  * @param  val      INT_NONE, INT_TSHOCK, INT_MOTION, INT_TSHOCK_MOTION, INT_PRESENCE, INT_TSHOCK_PRESENCE, INT_MOTION_PRESENCE, INT_ALL,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_int_or_set(stmdev_ctx_t *ctx, sths34pf80_tmos_int_or_t val)
+int32_t sths34pf80_int_or_set(const stmdev_ctx_t *ctx, sths34pf80_int_or_t val)
 {
   sths34pf80_ctrl3_t ctrl3;
   int32_t ret;
@@ -1313,11 +1368,11 @@ int32_t sths34pf80_tmos_int_or_set(stmdev_ctx_t *ctx, sths34pf80_tmos_int_or_t v
   * @brief  Selects interrupts output.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      TMOS_INT_NONE, TMOS_INT_TSHOCK, TMOS_INT_MOTION, TMOS_INT_TSHOCK_MOTION, TMOS_INT_PRESENCE, TMOS_INT_TSHOCK_PRESENCE, TMOS_INT_MOTION_PRESENCE, TMOS_INT_ALL,
+  * @param  val      INT_NONE, INT_TSHOCK, INT_MOTION, INT_TSHOCK_MOTION, INT_PRESENCE, INT_TSHOCK_PRESENCE, INT_MOTION_PRESENCE, INT_ALL,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tmos_int_or_get(stmdev_ctx_t *ctx, sths34pf80_tmos_int_or_t *val)
+int32_t sths34pf80_int_or_get(const stmdev_ctx_t *ctx, sths34pf80_int_or_t *val)
 {
   sths34pf80_ctrl3_t ctrl3;
   int32_t ret;
@@ -1326,40 +1381,40 @@ int32_t sths34pf80_tmos_int_or_get(stmdev_ctx_t *ctx, sths34pf80_tmos_int_or_t *
 
   switch ((ctrl3.int_msk))
   {
-    case STHS34PF80_TMOS_INT_NONE:
-      *val = STHS34PF80_TMOS_INT_NONE;
+    case STHS34PF80_INT_NONE:
+      *val = STHS34PF80_INT_NONE;
       break;
 
-    case STHS34PF80_TMOS_INT_TSHOCK:
-      *val = STHS34PF80_TMOS_INT_TSHOCK;
+    case STHS34PF80_INT_TSHOCK:
+      *val = STHS34PF80_INT_TSHOCK;
       break;
 
-    case STHS34PF80_TMOS_INT_MOTION:
-      *val = STHS34PF80_TMOS_INT_MOTION;
+    case STHS34PF80_INT_MOTION:
+      *val = STHS34PF80_INT_MOTION;
       break;
 
-    case STHS34PF80_TMOS_INT_TSHOCK_MOTION:
-      *val = STHS34PF80_TMOS_INT_TSHOCK_MOTION;
+    case STHS34PF80_INT_TSHOCK_MOTION:
+      *val = STHS34PF80_INT_TSHOCK_MOTION;
       break;
 
-    case STHS34PF80_TMOS_INT_PRESENCE:
-      *val = STHS34PF80_TMOS_INT_PRESENCE;
+    case STHS34PF80_INT_PRESENCE:
+      *val = STHS34PF80_INT_PRESENCE;
       break;
 
-    case STHS34PF80_TMOS_INT_TSHOCK_PRESENCE:
-      *val = STHS34PF80_TMOS_INT_TSHOCK_PRESENCE;
+    case STHS34PF80_INT_TSHOCK_PRESENCE:
+      *val = STHS34PF80_INT_TSHOCK_PRESENCE;
       break;
 
-    case STHS34PF80_TMOS_INT_MOTION_PRESENCE:
-      *val = STHS34PF80_TMOS_INT_MOTION_PRESENCE;
+    case STHS34PF80_INT_MOTION_PRESENCE:
+      *val = STHS34PF80_INT_MOTION_PRESENCE;
       break;
 
-    case STHS34PF80_TMOS_INT_ALL:
-      *val = STHS34PF80_TMOS_INT_ALL;
+    case STHS34PF80_INT_ALL:
+      *val = STHS34PF80_INT_ALL;
       break;
 
     default:
-      *val = STHS34PF80_TMOS_INT_NONE;
+      *val = STHS34PF80_INT_NONE;
       break;
   }
   return ret;
@@ -1373,7 +1428,7 @@ int32_t sths34pf80_tmos_int_or_get(stmdev_ctx_t *ctx, sths34pf80_tmos_int_or_t *
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_int_mode_set(stmdev_ctx_t *ctx, sths34pf80_int_mode_t val)
+int32_t sths34pf80_int_mode_set(const stmdev_ctx_t *ctx, sths34pf80_int_mode_t val)
 {
   sths34pf80_ctrl3_t ctrl3;
   int32_t ret;
@@ -1398,7 +1453,7 @@ int32_t sths34pf80_int_mode_set(stmdev_ctx_t *ctx, sths34pf80_int_mode_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_int_mode_get(stmdev_ctx_t *ctx, sths34pf80_int_mode_t *val)
+int32_t sths34pf80_int_mode_get(const stmdev_ctx_t *ctx, sths34pf80_int_mode_t *val)
 {
   sths34pf80_ctrl3_t ctrl3;
   int32_t ret;
@@ -1446,7 +1501,7 @@ int32_t sths34pf80_int_mode_get(stmdev_ctx_t *ctx, sths34pf80_int_mode_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_drdy_mode_set(stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t val)
+int32_t sths34pf80_drdy_mode_set(const stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t val)
 {
   sths34pf80_ctrl3_t ctrl3;
   int32_t ret;
@@ -1470,7 +1525,7 @@ int32_t sths34pf80_drdy_mode_set(stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_drdy_mode_get(stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t *val)
+int32_t sths34pf80_drdy_mode_get(const stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t *val)
 {
   sths34pf80_ctrl3_t ctrl3;
   int32_t ret;
@@ -1515,7 +1570,7 @@ int32_t sths34pf80_drdy_mode_get(stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_func_cfg_write(stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data, uint8_t len)
+int32_t sths34pf80_func_cfg_write(const stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data, uint8_t len)
 {
   sths34pf80_ctrl1_t ctrl1;
   uint8_t odr;
@@ -1526,7 +1581,7 @@ int32_t sths34pf80_func_cfg_write(stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
   odr = ctrl1.odr;
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, 0);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
 
   /* Enable access to embedded functions register */
   ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_EMBED_FUNC_MEM_BANK);
@@ -1552,7 +1607,7 @@ int32_t sths34pf80_func_cfg_write(stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data
   ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_MAIN_MEM_BANK);
 
   /* Set saved odr back */
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, odr);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
   return ret;
 }
@@ -1567,7 +1622,7 @@ int32_t sths34pf80_func_cfg_write(stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_func_cfg_read(stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data, uint8_t len)
+int32_t sths34pf80_func_cfg_read(const stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data, uint8_t len)
 {
   sths34pf80_ctrl1_t ctrl1;
   uint8_t odr;
@@ -1579,7 +1634,7 @@ int32_t sths34pf80_func_cfg_read(stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data,
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
   odr = ctrl1.odr;
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, 0);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
 
   /* Enable access to embedded functions register */
   ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_EMBED_FUNC_MEM_BANK);
@@ -1590,7 +1645,7 @@ int32_t sths34pf80_func_cfg_read(stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data,
 
   for (i = 0; i < len; i++)
   {
-  /* Select register address */
+    /* Select register address */
     reg_addr = addr + i;
     ret += sths34pf80_write_reg(ctx, STHS34PF80_FUNC_CFG_ADDR, &reg_addr, 1);
 
@@ -1606,7 +1661,7 @@ int32_t sths34pf80_func_cfg_read(stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data,
   ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_MAIN_MEM_BANK);
 
   /* Set saved odr back */
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, odr);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
   return ret;
 }
@@ -1619,14 +1674,15 @@ int32_t sths34pf80_func_cfg_read(stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_presence_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
+int32_t sths34pf80_presence_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   sths34pf80_ctrl1_t ctrl1;
   uint8_t odr;
   uint8_t buff[2];
   int32_t ret;
 
-  if ((val & 0x8000U) != 0x0U) {
+  if ((val & 0x8000U) != 0x0U)
+  {
     /* threshold values are on 15 bits */
     return -1;
   }
@@ -1634,16 +1690,16 @@ int32_t sths34pf80_presence_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
   odr = ctrl1.odr;
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, 0);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_PRESENCE_THS, &buff[0], 2);
 
-  ret += sths34pf80_algo_reset(ctx);
+  ret += sths34pf80_reset_algo_bit_set(ctx);
 
   /* Set saved odr back */
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, odr);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
   return ret;
 }
@@ -1656,7 +1712,7 @@ int32_t sths34pf80_presence_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_presence_threshold_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t sths34pf80_presence_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -1677,14 +1733,15 @@ int32_t sths34pf80_presence_threshold_get(stmdev_ctx_t *ctx, uint16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_motion_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
+int32_t sths34pf80_motion_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   sths34pf80_ctrl1_t ctrl1;
   uint8_t odr;
   uint8_t buff[2];
   int32_t ret;
 
-  if ((val & 0x8000U) != 0x0U) {
+  if ((val & 0x8000U) != 0x0U)
+  {
     /* threshold values are on 15 bits */
     return -1;
   }
@@ -1692,16 +1749,16 @@ int32_t sths34pf80_motion_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
   odr = ctrl1.odr;
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, 0);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_MOTION_THS, &buff[0], 2);
 
-  ret += sths34pf80_algo_reset(ctx);
+  ret += sths34pf80_reset_algo_bit_set(ctx);
 
   /* Set saved odr back */
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, odr);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
   return ret;
 }
@@ -1714,7 +1771,7 @@ int32_t sths34pf80_motion_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_motion_threshold_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t sths34pf80_motion_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -1735,14 +1792,15 @@ int32_t sths34pf80_motion_threshold_get(stmdev_ctx_t *ctx, uint16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tambient_shock_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
+int32_t sths34pf80_tambient_shock_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   sths34pf80_ctrl1_t ctrl1;
   uint8_t odr;
   uint8_t buff[2];
   int32_t ret;
 
-  if ((val & 0x8000U) != 0x0U) {
+  if ((val & 0x8000U) != 0x0U)
+  {
     /* threshold values are on 15 bits */
     return -1;
   }
@@ -1750,16 +1808,16 @@ int32_t sths34pf80_tambient_shock_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
   odr = ctrl1.odr;
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, 0);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_TAMB_SHOCK_THS, &buff[0], 2);
 
-  ret += sths34pf80_algo_reset(ctx);
+  ret += sths34pf80_reset_algo_bit_set(ctx);
 
   /* Set saved odr back */
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, odr);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
   return ret;
 }
@@ -1772,7 +1830,7 @@ int32_t sths34pf80_tambient_shock_threshold_set(stmdev_ctx_t *ctx, uint16_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tambient_shock_threshold_get(stmdev_ctx_t *ctx, uint16_t *val)
+int32_t sths34pf80_tambient_shock_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -1793,7 +1851,7 @@ int32_t sths34pf80_tambient_shock_threshold_get(stmdev_ctx_t *ctx, uint16_t *val
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_motion_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t sths34pf80_motion_hysteresis_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   sths34pf80_ctrl1_t ctrl1;
   uint8_t odr;
@@ -1802,14 +1860,14 @@ int32_t sths34pf80_motion_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val)
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
   odr = ctrl1.odr;
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, 0);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
 
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_HYST_MOTION, &val, 1);
 
-  ret += sths34pf80_algo_reset(ctx);
+  ret += sths34pf80_reset_algo_bit_set(ctx);
 
   /* Set saved odr back */
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, odr);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
   return ret;
 }
@@ -1822,7 +1880,7 @@ int32_t sths34pf80_motion_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_motion_hysteresis_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t sths34pf80_motion_hysteresis_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
 
@@ -1839,7 +1897,7 @@ int32_t sths34pf80_motion_hysteresis_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_presence_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t sths34pf80_presence_hysteresis_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   sths34pf80_ctrl1_t ctrl1;
   uint8_t odr;
@@ -1848,14 +1906,14 @@ int32_t sths34pf80_presence_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val)
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
   odr = ctrl1.odr;
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, 0);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
 
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_HYST_PRESENCE, &val, 1);
 
-  ret += sths34pf80_algo_reset(ctx);
+  ret += sths34pf80_reset_algo_bit_set(ctx);
 
   /* Set saved odr back */
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, odr);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
   return ret;
 }
@@ -1868,7 +1926,7 @@ int32_t sths34pf80_presence_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_presence_hysteresis_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t sths34pf80_presence_hysteresis_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
 
@@ -1885,7 +1943,7 @@ int32_t sths34pf80_presence_hysteresis_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tambient_shock_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t sths34pf80_tambient_shock_hysteresis_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   sths34pf80_ctrl1_t ctrl1;
   uint8_t odr;
@@ -1894,14 +1952,14 @@ int32_t sths34pf80_tambient_shock_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val)
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
   odr = ctrl1.odr;
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, 0);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
 
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_HYST_TAMB_SHOCK, &val, 1);
 
-  ret += sths34pf80_algo_reset(ctx);
+  ret += sths34pf80_reset_algo_bit_set(ctx);
 
   /* Set saved odr back */
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, odr);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
   return ret;
 }
@@ -1914,7 +1972,7 @@ int32_t sths34pf80_tambient_shock_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tambient_shock_hysteresis_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t sths34pf80_tambient_shock_hysteresis_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
 
@@ -1922,13 +1980,6 @@ int32_t sths34pf80_tambient_shock_hysteresis_get(stmdev_ctx_t *ctx, uint8_t *val
 
   return ret;
 }
-
-typedef struct
-{
-  uint8_t int_pulsed : 1;
-  uint8_t comp_type : 1;
-  uint8_t sel_abs : 1;
-} sths34pf80_algo_config_t;
 
 /**
   * @brief  Algo configuration.[set]
@@ -1938,7 +1989,7 @@ typedef struct
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-static int32_t sths34pf80_algo_config_set(stmdev_ctx_t *ctx, sths34pf80_algo_config_t val)
+static int32_t sths34pf80_algo_config_set(const stmdev_ctx_t *ctx, sths34pf80_algo_config_t val)
 {
   uint8_t tmp;
   int32_t ret;
@@ -1957,7 +2008,7 @@ static int32_t sths34pf80_algo_config_set(stmdev_ctx_t *ctx, sths34pf80_algo_con
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-static int32_t sths34pf80_algo_config_get(stmdev_ctx_t *ctx, sths34pf80_algo_config_t *val)
+static int32_t sths34pf80_algo_config_get(const stmdev_ctx_t *ctx, sths34pf80_algo_config_t *val)
 {
   uint8_t tmp;
   int32_t ret;
@@ -1978,7 +2029,7 @@ static int32_t sths34pf80_algo_config_get(stmdev_ctx_t *ctx, sths34pf80_algo_con
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tobject_algo_compensation_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t sths34pf80_tobject_algo_compensation_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   sths34pf80_ctrl1_t ctrl1;
   uint8_t odr;
@@ -1988,16 +2039,19 @@ int32_t sths34pf80_tobject_algo_compensation_set(stmdev_ctx_t *ctx, uint8_t val)
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
   odr = ctrl1.odr;
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, 0);
-  if (ret != 0) { return ret; }
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret = sths34pf80_algo_config_get(ctx, &config);
   config.comp_type = val;
   ret += sths34pf80_algo_config_set(ctx, config);
-  ret += sths34pf80_algo_reset(ctx);
+  ret += sths34pf80_reset_algo_bit_set(ctx);
 
   /* Set saved odr back */
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, odr);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
   return ret;
 }
@@ -2010,7 +2064,7 @@ int32_t sths34pf80_tobject_algo_compensation_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_tobject_algo_compensation_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t sths34pf80_tobject_algo_compensation_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   sths34pf80_algo_config_t config;
   int32_t ret;
@@ -2029,7 +2083,7 @@ int32_t sths34pf80_tobject_algo_compensation_get(stmdev_ctx_t *ctx, uint8_t *val
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_presence_abs_value_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t sths34pf80_presence_abs_value_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   sths34pf80_ctrl1_t ctrl1;
   uint8_t odr;
@@ -2039,16 +2093,19 @@ int32_t sths34pf80_presence_abs_value_set(stmdev_ctx_t *ctx, uint8_t val)
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
   odr = ctrl1.odr;
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, 0);
-  if (ret != 0) { return ret; }
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret = sths34pf80_algo_config_get(ctx, &config);
   config.sel_abs = val;
   ret += sths34pf80_algo_config_set(ctx, config);
-  ret += sths34pf80_algo_reset(ctx);
+  ret += sths34pf80_reset_algo_bit_set(ctx);
 
   /* Set saved odr back */
-  ret += sths34pf80_tmos_odr_check_safe_set(ctx, ctrl1, odr);
+  ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
   return ret;
 }
@@ -2061,7 +2118,7 @@ int32_t sths34pf80_presence_abs_value_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_presence_abs_value_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t sths34pf80_presence_abs_value_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   sths34pf80_algo_config_t config;
   int32_t ret;
@@ -2080,7 +2137,7 @@ int32_t sths34pf80_presence_abs_value_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_int_or_pulsed_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t sths34pf80_int_or_pulsed_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   sths34pf80_algo_config_t config;
   int32_t ret;
@@ -2100,13 +2157,46 @@ int32_t sths34pf80_int_or_pulsed_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_int_or_pulsed_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t sths34pf80_int_or_pulsed_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   sths34pf80_algo_config_t config;
   int32_t ret;
 
   ret = sths34pf80_algo_config_get(ctx, &config);
   *val = config.int_pulsed;
+
+  return ret;
+}
+
+/*
+ * Internal routine to reset algo bit
+ */
+static int32_t sths34pf80_reset_algo_bit_set(const stmdev_ctx_t *ctx)
+{
+  sths34pf80_page_rw_t page_rw = {0};
+  int32_t ret;
+
+  /* Enable access to embedded functions register */
+  ret = sths34pf80_mem_bank_set(ctx, STHS34PF80_EMBED_FUNC_MEM_BANK);
+
+  /* Enable write mode */
+  page_rw.func_cfg_write = 1;
+  ret += sths34pf80_write_reg(ctx, STHS34PF80_PAGE_RW, (uint8_t *)&page_rw, 1);
+
+  /* Select register address (it will autoincrement when writing) */
+  uint8_t addr = STHS34PF80_RESET_ALGO;
+  ret += sths34pf80_write_reg(ctx, STHS34PF80_FUNC_CFG_ADDR, &addr, 1);
+
+  /* Write data */
+  uint8_t data = 0x01;
+  ret += sths34pf80_write_reg(ctx, STHS34PF80_FUNC_CFG_DATA, &data, 1);
+
+  /* Disable write mode */
+  page_rw.func_cfg_write = 0;
+  ret += sths34pf80_write_reg(ctx, STHS34PF80_PAGE_RW, (uint8_t *)&page_rw, 1);
+
+  /* Disable access to embedded functions register */
+  ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2119,13 +2209,22 @@ int32_t sths34pf80_int_or_pulsed_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t sths34pf80_algo_reset(stmdev_ctx_t *ctx)
+int32_t sths34pf80_algo_reset(const stmdev_ctx_t *ctx)
 {
-  uint8_t tmp;
+  sths34pf80_ctrl1_t ctrl1;
+  uint8_t odr;
   int32_t ret;
 
-  tmp = 1;
-  ret = sths34pf80_func_cfg_write(ctx, STHS34PF80_RESET_ALGO, &tmp, 1);
+  /* Save current odr and enter PD mode */
+  ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  odr = ctrl1.odr;
+  ret += sths34pf80_safe_power_down(ctx, &ctrl1);
+
+  ret += sths34pf80_reset_algo_bit_set(ctx);
+
+  /* Set saved odr back */
+  ctrl1.odr = odr;
+  ret += sths34pf80_write_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
 
   return ret;
 }

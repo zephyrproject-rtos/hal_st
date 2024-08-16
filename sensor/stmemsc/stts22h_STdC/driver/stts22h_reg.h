@@ -233,24 +233,6 @@ typedef struct
 
 #define STTS22H_TEMP_L_OUT                   0x06U
 #define STTS22H_TEMP_H_OUT                   0x07U
-#define STTS22H_SOFTWARE_RESET               0x0CU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t not_used_01         : 1;
-  uint8_t sw_reset            : 1;
-  uint8_t not_used_02         : 4;
-  uint8_t low_odr_enable      : 1;
-  uint8_t not_used_03         : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used_03         : 1;
-  uint8_t low_odr_enable      : 1;
-  uint8_t not_used_02         : 4;
-  uint8_t sw_reset            : 1;
-  uint8_t not_used_01         : 1;
-#endif /* DRV_BYTE_ORDER */
-} stts22h_software_reset_t;
-
 
 /**
   * @defgroup STTS22H_Register_Union
@@ -270,7 +252,6 @@ typedef union
   stts22h_temp_l_limit_t      temp_l_limit;
   stts22h_ctrl_t              ctrl;
   stts22h_status_t            status;
-  stts22h_software_reset_t    software_reset;
   bitwise_t                   bitwise;
   uint8_t                     byte;
 } stts22h_reg_t;
@@ -293,10 +274,10 @@ typedef union
  * them with a custom implementation.
  */
 
-int32_t stts22h_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t stts22h_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data,
                          uint16_t len);
-int32_t stts22h_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t stts22h_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
 
@@ -312,27 +293,27 @@ typedef enum
   STTS22H_100Hz        = 0x22,
   STTS22H_200Hz        = 0x32,
 } stts22h_odr_temp_t;
-int32_t stts22h_temp_data_rate_set(stmdev_ctx_t *ctx,
+int32_t stts22h_temp_data_rate_set(const stmdev_ctx_t *ctx,
                                    stts22h_odr_temp_t val);
-int32_t stts22h_temp_data_rate_get(stmdev_ctx_t *ctx,
+int32_t stts22h_temp_data_rate_get(const stmdev_ctx_t *ctx,
                                    stts22h_odr_temp_t *val);
 
-int32_t stts22h_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t stts22h_block_data_update_get(stmdev_ctx_t *ctx,
+int32_t stts22h_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t stts22h_block_data_update_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
-int32_t stts22h_temp_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t stts22h_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val);
 
-int32_t stts22h_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t stts22h_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t stts22h_dev_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t stts22h_dev_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
 typedef struct
 {
   uint8_t busy             : 1;
 } stts22h_dev_status_t;
-int32_t stts22h_dev_status_get(stmdev_ctx_t *ctx,
+int32_t stts22h_dev_status_get(const stmdev_ctx_t *ctx,
                                stts22h_dev_status_t *val);
 
 typedef enum
@@ -340,26 +321,26 @@ typedef enum
   STTS22H_SMBUS_TIMEOUT_ENABLE    = 0,
   STTS22H_SMBUS_TIMEOUT_DISABLE   = 1,
 } stts22h_smbus_md_t;
-int32_t stts22h_smbus_interface_set(stmdev_ctx_t *ctx,
+int32_t stts22h_smbus_interface_set(const stmdev_ctx_t *ctx,
                                     stts22h_smbus_md_t val);
-int32_t stts22h_smbus_interface_get(stmdev_ctx_t *ctx,
+int32_t stts22h_smbus_interface_get(const stmdev_ctx_t *ctx,
                                     stts22h_smbus_md_t *val);
 
-int32_t stts22h_auto_increment_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t stts22h_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t stts22h_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t stts22h_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t stts22h_temp_trshld_high_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t stts22h_temp_trshld_high_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t stts22h_temp_trshld_high_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t stts22h_temp_trshld_high_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t stts22h_temp_trshld_low_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t stts22h_temp_trshld_low_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t stts22h_temp_trshld_low_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t stts22h_temp_trshld_low_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef struct
 {
   uint8_t under_thl             : 1;
   uint8_t over_thh              : 1;
 } stts22h_temp_trlhd_src_t;
-int32_t stts22h_temp_trshld_src_get(stmdev_ctx_t *ctx,
+int32_t stts22h_temp_trshld_src_get(const stmdev_ctx_t *ctx,
                                     stts22h_temp_trlhd_src_t *val);
 
 /**

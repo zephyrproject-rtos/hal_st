@@ -46,11 +46,18 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak ilps22qs_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
+int32_t __weak ilps22qs_read_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
                                  uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
+
   ret = ctx->read_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -64,11 +71,18 @@ int32_t __weak ilps22qs_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak ilps22qs_write_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
+int32_t __weak ilps22qs_write_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
                                   uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
+
   ret = ctx->write_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -145,7 +159,7 @@ float_t ilps22qs_from_lsb_to_mv(int32_t lsb)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_id_get(stmdev_ctx_t *ctx, ilps22qs_id_t *val)
+int32_t ilps22qs_id_get(const stmdev_ctx_t *ctx, ilps22qs_id_t *val)
 {
   uint8_t reg;
   int32_t ret;
@@ -164,7 +178,7 @@ int32_t ilps22qs_id_get(stmdev_ctx_t *ctx, ilps22qs_id_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_bus_mode_set(stmdev_ctx_t *ctx, ilps22qs_bus_mode_t *val)
+int32_t ilps22qs_bus_mode_set(const stmdev_ctx_t *ctx, ilps22qs_bus_mode_t *val)
 {
   ilps22qs_i3c_if_ctrl_t i3c_if_ctrl;
   ilps22qs_if_ctrl_t if_ctrl;
@@ -199,7 +213,7 @@ int32_t ilps22qs_bus_mode_set(stmdev_ctx_t *ctx, ilps22qs_bus_mode_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_bus_mode_get(stmdev_ctx_t *ctx, ilps22qs_bus_mode_t *val)
+int32_t ilps22qs_bus_mode_get(const stmdev_ctx_t *ctx, ilps22qs_bus_mode_t *val)
 {
   ilps22qs_i3c_if_ctrl_t i3c_if_ctrl;
   ilps22qs_if_ctrl_t if_ctrl;
@@ -218,9 +232,6 @@ int32_t ilps22qs_bus_mode_get(stmdev_ctx_t *ctx, ilps22qs_bus_mode_t *val)
         break;
       case ILPS22QS_SPI_3W:
         val->interface = ILPS22QS_SPI_3W;
-        break;
-      case ILPS22QS_SPI_4W:
-        val->interface = ILPS22QS_SPI_4W;
         break;
       default:
         val->interface = ILPS22QS_SEL_BY_HW;
@@ -251,7 +262,7 @@ int32_t ilps22qs_bus_mode_get(stmdev_ctx_t *ctx, ilps22qs_bus_mode_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_init_set(stmdev_ctx_t *ctx, ilps22qs_init_t val)
+int32_t ilps22qs_init_set(const stmdev_ctx_t *ctx, ilps22qs_init_t val)
 {
   ilps22qs_ctrl_reg2_t ctrl_reg2;
   ilps22qs_ctrl_reg3_t ctrl_reg3;
@@ -302,7 +313,7 @@ int32_t ilps22qs_init_set(stmdev_ctx_t *ctx, ilps22qs_init_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_status_get(stmdev_ctx_t *ctx, ilps22qs_stat_t *val)
+int32_t ilps22qs_status_get(const stmdev_ctx_t *ctx, ilps22qs_stat_t *val)
 {
   ilps22qs_interrupt_cfg_t interrupt_cfg;
   ilps22qs_int_source_t int_source;
@@ -345,7 +356,7 @@ int32_t ilps22qs_status_get(stmdev_ctx_t *ctx, ilps22qs_stat_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_pin_conf_set(stmdev_ctx_t *ctx, ilps22qs_pin_conf_t *val)
+int32_t ilps22qs_pin_conf_set(const stmdev_ctx_t *ctx, ilps22qs_pin_conf_t *val)
 {
   ilps22qs_if_ctrl_t if_ctrl;
   int32_t ret;
@@ -370,7 +381,7 @@ int32_t ilps22qs_pin_conf_set(stmdev_ctx_t *ctx, ilps22qs_pin_conf_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_pin_conf_get(stmdev_ctx_t *ctx, ilps22qs_pin_conf_t *val)
+int32_t ilps22qs_pin_conf_get(const stmdev_ctx_t *ctx, ilps22qs_pin_conf_t *val)
 {
   ilps22qs_if_ctrl_t if_ctrl;
   int32_t ret;
@@ -391,7 +402,7 @@ int32_t ilps22qs_pin_conf_get(stmdev_ctx_t *ctx, ilps22qs_pin_conf_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_all_sources_get(stmdev_ctx_t *ctx,
+int32_t ilps22qs_all_sources_get(const stmdev_ctx_t *ctx,
                                  ilps22qs_all_sources_t *val)
 {
   ilps22qs_fifo_status2_t fifo_status2;
@@ -432,7 +443,7 @@ int32_t ilps22qs_all_sources_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_mode_set(stmdev_ctx_t *ctx, ilps22qs_md_t *val)
+int32_t ilps22qs_mode_set(const stmdev_ctx_t *ctx, ilps22qs_md_t *val)
 {
   ilps22qs_ctrl_reg1_t ctrl_reg1;
   ilps22qs_ctrl_reg2_t ctrl_reg2;
@@ -511,7 +522,7 @@ int32_t ilps22qs_mode_set(stmdev_ctx_t *ctx, ilps22qs_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_mode_get(stmdev_ctx_t *ctx, ilps22qs_md_t *val)
+int32_t ilps22qs_mode_get(const stmdev_ctx_t *ctx, ilps22qs_md_t *val)
 {
   ilps22qs_ctrl_reg1_t ctrl_reg1;
   ilps22qs_ctrl_reg2_t ctrl_reg2;
@@ -634,7 +645,7 @@ int32_t ilps22qs_mode_get(stmdev_ctx_t *ctx, ilps22qs_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_trigger_sw(stmdev_ctx_t *ctx, ilps22qs_md_t *md)
+int32_t ilps22qs_trigger_sw(const stmdev_ctx_t *ctx, ilps22qs_md_t *md)
 {
   ilps22qs_ctrl_reg2_t ctrl_reg2;
   int32_t ret = 0;
@@ -659,7 +670,7 @@ int32_t ilps22qs_trigger_sw(stmdev_ctx_t *ctx, ilps22qs_md_t *md)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t ilps22qs_ah_qvar_en_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ilps22qs_ah_qvar_en_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ilps22qs_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
@@ -683,7 +694,7 @@ int32_t ilps22qs_ah_qvar_en_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t ilps22qs_ah_qvar_en_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ilps22qs_ah_qvar_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ilps22qs_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
@@ -699,11 +710,11 @@ int32_t ilps22qs_ah_qvar_en_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx   communication interface handler.(ptr)
   * @param  md    the sensor conversion parameters.(ptr)
-  * @param  data  data retrived from the sensor.(ptr)
+  * @param  data  data retrieved from the sensor.(ptr)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_data_get(stmdev_ctx_t *ctx, ilps22qs_md_t *md,
+int32_t ilps22qs_data_get(const stmdev_ctx_t *ctx, ilps22qs_md_t *md,
                           ilps22qs_data_t *data)
 {
   uint8_t buff[5];
@@ -724,6 +735,29 @@ int32_t ilps22qs_data_get(stmdev_ctx_t *ctx, ilps22qs_md_t *md,
       /* data is a pressure sample */
       switch (md->fs)
       {
+        case ILPS22QS_1260hPa:
+          data->pressure.hpa = ilps22qs_from_fs1260_to_hPa(data->pressure.raw);
+          break;
+        case ILPS22QS_4060hPa:
+          data->pressure.hpa = ilps22qs_from_fs4000_to_hPa(data->pressure.raw);
+          break;
+        default:
+          data->pressure.hpa = 0.0f;
+          break;
+      }
+      data->ah_qvar.lsb = 0;
+    }
+    else
+    {
+      /* data is a AH_QVAR sample */
+      data->ah_qvar.lsb = (data->pressure.raw / 256); /* shift 8bit left */
+      data->pressure.hpa = 0.0f;
+    }
+  }
+  else
+  {
+    switch (md->fs)
+    {
       case ILPS22QS_1260hPa:
         data->pressure.hpa = ilps22qs_from_fs1260_to_hPa(data->pressure.raw);
         break;
@@ -733,25 +767,6 @@ int32_t ilps22qs_data_get(stmdev_ctx_t *ctx, ilps22qs_md_t *md,
       default:
         data->pressure.hpa = 0.0f;
         break;
-      }
-      data->ah_qvar.lsb = 0;
-    } else {
-      /* data is a AH_QVAR sample */
-      data->ah_qvar.lsb = (data->pressure.raw / 256); /* shift 8bit left */
-      data->pressure.hpa = 0.0f;
-    }
-  } else {
-    switch (md->fs)
-    {
-    case ILPS22QS_1260hPa:
-      data->pressure.hpa = ilps22qs_from_fs1260_to_hPa(data->pressure.raw);
-      break;
-    case ILPS22QS_4060hPa:
-      data->pressure.hpa = ilps22qs_from_fs4000_to_hPa(data->pressure.raw);
-      break;
-    default:
-      data->pressure.hpa = 0.0f;
-      break;
     }
     data->ah_qvar.lsb = 0;
   }
@@ -765,15 +780,57 @@ int32_t ilps22qs_data_get(stmdev_ctx_t *ctx, ilps22qs_md_t *md,
 }
 
 /**
+  * @brief  Pressure output value.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  buff     buffer that stores data read
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t ilps22qs_pressure_raw_get(const stmdev_ctx_t *ctx, uint32_t *buff)
+{
+  int32_t ret;
+  uint8_t reg[3];
+
+  ret =  ilps22qs_read_reg(ctx, ILPS22QS_PRESS_OUT_XL, reg, 3);
+  *buff = reg[2];
+  *buff = (*buff * 256U) + reg[1];
+  *buff = (*buff * 256U) + reg[0];
+  *buff *= 256U;
+
+  return ret;
+}
+
+/**
+  * @brief  Temperature output value.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  buff     buffer that stores data read
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t ilps22qs_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *buff)
+{
+  int32_t ret;
+  uint8_t reg[2];
+
+  ret =  ilps22qs_read_reg(ctx, ILPS22QS_TEMP_OUT_L, reg, 2);
+  *buff = (int16_t)reg[1];
+  *buff = (*buff * 256) + (int16_t)reg[0];
+
+  return ret;
+}
+
+/**
   * @brief  AH/QVAR data read.[get]
   *
   * @param  ctx   communication interface handler.(ptr)
   * @param  md    the sensor conversion parameters.(ptr)
-  * @param  data  data retrived from the sensor.(ptr)
+  * @param  data  data retrieved from the sensor.(ptr)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_ah_qvar_data_get(stmdev_ctx_t *ctx,
+int32_t ilps22qs_ah_qvar_data_get(const stmdev_ctx_t *ctx,
                                   ilps22qs_ah_qvar_data_t *data)
 {
   uint8_t buff[5];
@@ -814,7 +871,7 @@ int32_t ilps22qs_ah_qvar_data_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_fifo_mode_set(stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val)
+int32_t ilps22qs_fifo_mode_set(const stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val)
 {
   ilps22qs_fifo_ctrl_t fifo_ctrl;
   ilps22qs_fifo_wtm_t fifo_wtm;
@@ -857,7 +914,7 @@ int32_t ilps22qs_fifo_mode_set(stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_fifo_mode_get(stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val)
+int32_t ilps22qs_fifo_mode_get(const stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val)
 {
   ilps22qs_fifo_ctrl_t fifo_ctrl;
   ilps22qs_fifo_wtm_t fifo_wtm;
@@ -908,7 +965,7 @@ int32_t ilps22qs_fifo_mode_get(stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_fifo_level_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ilps22qs_fifo_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ilps22qs_fifo_status1_t fifo_status1;
   int32_t ret;
@@ -928,11 +985,11 @@ int32_t ilps22qs_fifo_level_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @param  md    the sensor conversion parameters.(ptr)
   * @param  fmd   get the FIFO operation mode.(ptr)
   * @param  samp  number of samples stored in FIFO.(ptr)
-  * @param  data  data retrived from FIFO.(ptr)
+  * @param  data  data retrieved from FIFO.(ptr)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_fifo_data_get(stmdev_ctx_t *ctx, uint8_t samp,
+int32_t ilps22qs_fifo_data_get(const stmdev_ctx_t *ctx, uint8_t samp,
                                ilps22qs_md_t *md, ilps22qs_fifo_data_t *data)
 {
   uint8_t fifo_data[3];
@@ -965,25 +1022,29 @@ int32_t ilps22qs_fifo_data_get(stmdev_ctx_t *ctx, uint8_t samp,
             break;
         }
         data[i].lsb = 0;
-      } else {
+      }
+      else
+      {
         /* data is a AH_QVAR sample */
         data[i].lsb = (data[i].raw / 256); /* shift 8bit left */
         data[i].hpa = 0.0f;
       }
-    } else {
-        switch (md->fs)
-        {
-          case ILPS22QS_1260hPa:
-            data[i].hpa = ilps22qs_from_fs1260_to_hPa(data[i].raw);
-            break;
-          case ILPS22QS_4060hPa:
-            data[i].hpa = ilps22qs_from_fs4000_to_hPa(data[i].raw);
-            break;
-          default:
-            data[i].hpa = 0.0f;
-            break;
-        }
-        data[i].lsb = 0;
+    }
+    else
+    {
+      switch (md->fs)
+      {
+        case ILPS22QS_1260hPa:
+          data[i].hpa = ilps22qs_from_fs1260_to_hPa(data[i].raw);
+          break;
+        case ILPS22QS_4060hPa:
+          data[i].hpa = ilps22qs_from_fs4000_to_hPa(data[i].raw);
+          break;
+        default:
+          data[i].hpa = 0.0f;
+          break;
+      }
+      data[i].lsb = 0;
     }
 
   }
@@ -1012,7 +1073,7 @@ int32_t ilps22qs_fifo_data_get(stmdev_ctx_t *ctx, uint8_t samp,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_interrupt_mode_set(stmdev_ctx_t *ctx,
+int32_t ilps22qs_interrupt_mode_set(const stmdev_ctx_t *ctx,
                                     ilps22qs_int_mode_t *val)
 {
   ilps22qs_interrupt_cfg_t interrupt_cfg;
@@ -1037,7 +1098,7 @@ int32_t ilps22qs_interrupt_mode_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_interrupt_mode_get(stmdev_ctx_t *ctx,
+int32_t ilps22qs_interrupt_mode_get(const stmdev_ctx_t *ctx,
                                     ilps22qs_int_mode_t *val)
 {
   ilps22qs_interrupt_cfg_t interrupt_cfg;
@@ -1058,7 +1119,7 @@ int32_t ilps22qs_interrupt_mode_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_ah_qvar_disable(stmdev_ctx_t *ctx)
+int32_t ilps22qs_ah_qvar_disable(const stmdev_ctx_t *ctx)
 {
   uint32_t val = 0;
   int32_t ret;
@@ -1089,7 +1150,7 @@ int32_t ilps22qs_ah_qvar_disable(stmdev_ctx_t *ctx)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_int_on_threshold_mode_set(stmdev_ctx_t *ctx,
+int32_t ilps22qs_int_on_threshold_mode_set(const stmdev_ctx_t *ctx,
                                            ilps22qs_int_th_md_t *val)
 {
   ilps22qs_interrupt_cfg_t interrupt_cfg;
@@ -1127,7 +1188,7 @@ int32_t ilps22qs_int_on_threshold_mode_set(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_int_on_threshold_mode_get(stmdev_ctx_t *ctx,
+int32_t ilps22qs_int_on_threshold_mode_get(const stmdev_ctx_t *ctx,
                                            ilps22qs_int_th_md_t *val)
 {
   ilps22qs_interrupt_cfg_t interrupt_cfg;
@@ -1171,7 +1232,7 @@ int32_t ilps22qs_int_on_threshold_mode_get(stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_reference_mode_set(stmdev_ctx_t *ctx, ilps22qs_ref_md_t *val)
+int32_t ilps22qs_reference_mode_set(const stmdev_ctx_t *ctx, ilps22qs_ref_md_t *val)
 {
   ilps22qs_interrupt_cfg_t interrupt_cfg;
   int32_t ret;
@@ -1201,7 +1262,7 @@ int32_t ilps22qs_reference_mode_set(stmdev_ctx_t *ctx, ilps22qs_ref_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_reference_mode_get(stmdev_ctx_t *ctx, ilps22qs_ref_md_t *val)
+int32_t ilps22qs_reference_mode_get(const stmdev_ctx_t *ctx, ilps22qs_ref_md_t *val)
 {
   ilps22qs_interrupt_cfg_t interrupt_cfg;
   int32_t ret;
@@ -1236,7 +1297,7 @@ int32_t ilps22qs_reference_mode_get(stmdev_ctx_t *ctx, ilps22qs_ref_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_opc_set(stmdev_ctx_t *ctx, int16_t val)
+int32_t ilps22qs_opc_set(const stmdev_ctx_t *ctx, int16_t val)
 {
   uint8_t reg[2];
   int32_t ret;
@@ -1257,7 +1318,7 @@ int32_t ilps22qs_opc_set(stmdev_ctx_t *ctx, int16_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ilps22qs_opc_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t ilps22qs_opc_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t reg[2];
   int32_t ret;
