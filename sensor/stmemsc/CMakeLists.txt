@@ -86,7 +86,8 @@ set(stmems_pids
 
 foreach(stmems_pid ${stmems_pids})
   string(TOUPPER ${stmems_pid} pid_to_upper)
-  if(CONFIG_USE_STDC_${pid_to_upper})
+  string(REPLACE - _ pid_replace_dash_underscore ${pid_to_upper})
+  if(CONFIG_USE_STDC_${pid_replace_dash_underscore})
     zephyr_include_directories(
         ${stmems_pid}_STdC/driver/
         )
