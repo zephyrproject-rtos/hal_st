@@ -1,0 +1,49 @@
+VL53L5CX
+########
+
+Origin:
+   ST Microelectronics
+   https://github.com/STMicroelectronics/x-cube-tof1/tree/main/Drivers/BSP/Components/vl53l5cx/modules
+
+Status:
+   version 3.4.2
+
+Purpose:
+   ST Microelectonics official API to use vl53l5cx sensor.
+
+Description:
+   This library written by STMicroelectronics is dedicated to vl53l5cx time of flight sensor.
+
+   This library is called from the vl53l5cx driver and is kept transparent for user.
+   User is calling a standard Zephyr driver and then the driver makes some calls to this library.
+
+   Driver is extracted without any modification.
+
+   Due to Zephyr rule, the vl53l5_buffer.h is removed from this tree since it contains binary
+   firmware to be loaded into the sensor at initialization. The firmware is fetched as via
+   west blobs instead using command:
+
+       west blobs fetch hal_st
+
+   In order to use this library, you have to:
+      * define CONFIG_HAS_STLIB and CONFIG_VL53L5CX
+      * include vl53l5cx_api.h
+
+Dependencies:
+   This package depends on Zephyr I2C implementation and is linked statically.
+   This library will be used by a standard Zephyr driver.
+
+URL:
+   https://github.com/STMicroelectronics/x-cube-tof1/tree/main/Drivers/BSP/Components/vl53l5cx/modules
+
+commit:
+   version 3.4.2
+
+Maintained-by:
+   External
+
+License:
+   BSD-3-Clause
+
+License Link:
+   https://github.com/STMicroelectronics/x-cube-tof1/blob/main/Drivers/BSP/Components/vl53l5cx/LICENSE.md

@@ -31,6 +31,21 @@ zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_core_support.c)
 zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_register_funcs.c)
 endif()
 
+
+if(CONFIG_VL53L5CX)
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/zephyr/blobs/sensor/vl53l5cx/vl53l5cx_buffers.h")
+message(FATAL_ERROR "Missing required file: please fetch blobs using: west blobs fetch hal_st")
+endif()
+zephyr_include_directories(sensor/vl53l5cx/
+			   sensor/vl53l5cx/zephyr/
+			   zephyr/blobs/sensor/vl53l5cx/
+			   ${PROJECT_SOURCE_DIR}/drivers/sensor/st/vl53l5cx)
+zephyr_library_sources(sensor/vl53l5cx/vl53l5cx_api.c)
+zephyr_library_sources(sensor/vl53l5cx/vl53l5cx_plugin_detection_thresholds.c)
+zephyr_library_sources(sensor/vl53l5cx/vl53l5cx_plugin_motion_indicator.c)
+zephyr_library_sources(sensor/vl53l5cx/vl53l5cx_plugin_xtalk.c)
+endif()
+
 if(CONFIG_AUDIO_DMIC_MPXXDTYY)
 zephyr_include_directories(audio/microphone)
 zephyr_library_sources(audio/microphone/OpenPDMFilter.c)
