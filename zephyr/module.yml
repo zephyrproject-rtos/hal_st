@@ -2,3 +2,11 @@ name: hal_st
 build:
   cmake: .
   kconfig-ext: True
+blobs:
+  - path: sensor/vl53l5cx/vl53l5cx_buffers.h
+    sha256: 073a4f1034d4bb31ac61443e26d4401f3ce8e6fc0cffcac2c83155d1439dd07c
+    type: lib
+    version: '3.4.3'
+    license-path: sensor/vl53l5cx/LICENSE.md
+    url: https://raw.githubusercontent.com/STMicroelectronics/x-cube-tof1/refs/tags/v3.4.3/Drivers/BSP/Components/vl53l5cx/modules/vl53l5cx_buffers.h
+    description: "Firmware image for the VL53L5CX sensor"
