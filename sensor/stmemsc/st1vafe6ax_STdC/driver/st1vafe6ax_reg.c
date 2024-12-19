@@ -7423,7 +7423,7 @@ int32_t st1vafe6ax_mlc_out_get(const stmdev_ctx_t *ctx, st1vafe6ax_mlc_out_t *va
   ret = st1vafe6ax_mem_bank_set(ctx, ST1VAFE6AX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
   {
-    ret = st1vafe6ax_read_reg(ctx, ST1VAFE6AX_MLC1_SRC, (uint8_t *)&val, 4);
+    ret = st1vafe6ax_read_reg(ctx, ST1VAFE6AX_MLC1_SRC, (uint8_t *)val, 4);
   }
 
   ret += st1vafe6ax_mem_bank_set(ctx, ST1VAFE6AX_MAIN_MEM_BANK);

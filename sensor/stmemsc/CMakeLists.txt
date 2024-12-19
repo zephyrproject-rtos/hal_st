@@ -78,6 +78,7 @@ set(stmems_pids
   lsm6dsv32x
   lsm6dsv
   lsm9ds1
+  st1vafe3bx
   st1vafe6ax
   sths34pf80
   stts22h
