@@ -6,7 +6,7 @@ Origin:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 Status:
-   version v2.6
+   version v2.8
 
 Purpose:
    ST Microelectronics standard C platform-independent drivers for MEMS
@@ -25,7 +25,7 @@ Description:
 
    The driver is platform-independent, you only need to define the two
    functions for read and write transactions from the sensor hardware bus
-   (ie. SPI or I2C). In addition you may define a mdelay (milliseconds) 
+   (i.e. SPI or I2C/I3C). In addition you may define a mdelay (milliseconds)
    routine.
 
    Define in your 'xyz' driver code the read and write functions that use the
@@ -55,10 +55,10 @@ Description:
      - ais2ih_STdC          v2.0.1
      - ais328dq_STdC        v2.0.1
      - ais3624dq_STdC       v2.0.1
-     - asm330lhb_STdC       v2.0.1
-     - asm330lhbg1_STdC     v1.0.0
-     - asm330lhh_STdC       v3.1.0
-     - asm330lhhx_STdC      v2.0.0
+     - asm330lhb_STdC       v2.1.0
+     - asm330lhbg1_STdC     v1.1.0
+     - asm330lhh_STdC       v3.2.0
+     - asm330lhhx_STdC      v2.1.0
      - asm330lhhxg1_STdC    v2.0.1
      - h3lis100dl_STdC      v2.0.1
      - h3lis331dl_STdC      v2.0.1
@@ -71,11 +71,11 @@ Description:
      - iis328dq_STdC        v2.0.1
      - iis3dhhc_STdC        v2.0.1
      - iis3dwb_STdC         v2.0.1
-     - ilps22qs_STdC        v3.1.0
-     - ilps28qsw_STdC       v2.1.0
+     - ilps22qs_STdC        v3.1.1
+     - ilps28qsw_STdC       v2.2.0
      - ism303dac_STdC       v2.0.1
-     - ism330bx_STdC        v3.0.0
-     - ism330dhcx_STdC      v2.0.2
+     - ism330bx_STdC        v3.0.1
+     - ism330dhcx_STdC      v2.1.0
      - ism330dlc_STdC       v2.0.1
      - ism330is_STdC        v3.0.1
      - l3gd20h_STdC         v2.0.1
@@ -85,8 +85,8 @@ Description:
      - lis2ds12_STdC        v2.0.1
      - lis2dtw12_STdC       v2.0.1
      - lis2du12_STdC        v2.0.1
-     - lis2dux12_STdC       v2.2.0
-     - lis2duxs12_STdC      v2.2.0
+     - lis2dux12_STdC       v2.3.0
+     - lis2duxs12_STdC      v2.3.0
      - lis2dw12_STdC        v2.0.1
      - lis2hh12_STdC        v2.0.1
      - lis2mdl_STdC         v2.0.1
@@ -96,13 +96,13 @@ Description:
      - lis3dhh_STdC         v2.0.1
      - lis3mdl_STdC         v2.0.1
      - lps22ch_STdC         v2.0.1
-     - lps22df_STdC         v2.1.0
+     - lps22df_STdC         v2.2.0
      - lps22hb_STdC         v2.0.1
      - lps22hh_STdC         v3.0.1
      - lps25hb_STdC         v2.0.1
      - lps27hhtw_STdC       v2.0.1
      - lps27hhw_STdC        v2.0.1
-     - lps28dfw_STdC        v2.1.0
+     - lps28dfw_STdC        v2.2.0
      - lps33k_STdC          v2.0.1
      - lsm303agr_STdC       v2.0.1
      - lsm303ah_STdC        v2.0.1
@@ -110,19 +110,20 @@ Description:
      - lsm6dsl_STdC         v2.0.1
      - lsm6dsm_STdC         v2.0.1
      - lsm6dso16is_STdC     v3.0.1
-     - lsm6dso32_STdC       v2.0.1
-     - lsm6dso32x_STdC      v2.0.1
-     - lsm6dso_STdC         v3.0.2
-     - lsm6dsox_STdC        v3.0.1
-     - lsm6dsr_STdC         v2.0.1
-     - lsm6dsrx_STdC        v2.0.1
+     - lsm6dso32_STdC       v2.1.0
+     - lsm6dso32x_STdC      v2.1.0
+     - lsm6dso_STdC         v3.1.0
+     - lsm6dsox_STdC        v3.1.0
+     - lsm6dsr_STdC         v2.1.0
+     - lsm6dsrx_STdC        v2.1.0
      - lsm6dsv16b_STdC      v3.0.0
-     - lsm6dsv16bx_STdC     v5.0.0
-     - lsm6dsv16x_STdC      v4.0.0
-     - lsm6dsv32x_STdC      v2.0.0
-     - lsm6dsv_STdC         v3.0.0
+     - lsm6dsv16bx_STdC     v5.0.1
+     - lsm6dsv16x_STdC      v4.3.0
+     - lsm6dsv32x_STdC      v2.3.0
+     - lsm6dsv_STdC         v3.3.0
      - lsm9ds1_STdC         v2.0.1
-     - st1vafe6ax_STdC      v2.0.0
+     - st1vafe3bx_STdC      v2.0.0
+     - st1vafe6ax_STdC      v2.0.1
      - sths34pf80_STdC      v3.0.1
      - stts22h_STdC         v2.1.0
      - stts751_STdC         v2.0.1
@@ -132,9 +133,10 @@ Dependencies:
 
 URL:
    https://www.st.com/en/embedded-software/c-driver-mems.html
+   https://github.com/STMicroelectronics/STMems_Standard_C_drivers/tree/v2.8
 
 commit:
-   version v2.3
+   1609395 (tag v2.8)
 
 Maintained-by:
    ST Microelectronics
@@ -144,7 +146,3 @@ License:
 
 License Link:
    https://opensource.org/licenses/BSD-3-Clause
-
-Patch List:
-   * sensor: lsm6dso: Disable -Wmaybe-uninitialized for lsm6dso_mode_set
-     - Modified sensor/stmemsc/lsm6dso_STdC/driver/lsm6dso_reg.c

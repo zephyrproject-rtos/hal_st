@@ -2372,7 +2372,7 @@ int32_t asm330lhb_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
-  ASM330LHB_XL_NOT_BATCHED       =  0,
+  ASM330LHB_XL_NOT_BATCHED        =  0,
   ASM330LHB_XL_BATCHED_AT_12Hz5   =  1,
   ASM330LHB_XL_BATCHED_AT_26Hz    =  2,
   ASM330LHB_XL_BATCHED_AT_52Hz    =  3,
@@ -2399,7 +2399,7 @@ typedef enum
   ASM330LHB_GY_BATCHED_AT_417Hz    = 6,
   ASM330LHB_GY_BATCHED_AT_833Hz    = 7,
   ASM330LHB_GY_BATCHED_AT_1667Hz   = 8,
-  ASM330LHB_GY_BATCHED_AT_6Hz5    = 11,
+  ASM330LHB_GY_BATCHED_AT_6Hz5     = 11,
 } asm330lhb_bdr_gy_t;
 int32_t asm330lhb_fifo_gy_batch_set(const stmdev_ctx_t *ctx,
                                     asm330lhb_bdr_gy_t val);

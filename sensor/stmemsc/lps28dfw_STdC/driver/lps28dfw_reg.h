@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under BSD 3-Clause license,
@@ -168,7 +168,7 @@ typedef struct
   *
   */
 
-/** I2C Device Address 8 bit format **/
+/** I2C Device Address 8 bit format  if SA0=0 -> 0xB9 if SA0=1 -> 0xBB **/
 #define LPS28DFW_I2C_ADD_L               0xB9U
 #define LPS28DFW_I2C_ADD_H               0xBBU
 
@@ -227,7 +227,7 @@ typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01      : 2;
-  uint8_t int_pd_dis      : 1;
+  uint8_t int_pd_dis       : 1;
   uint8_t not_used_02      : 1;
   uint8_t sda_pu_en        : 1;
   uint8_t not_used_03      : 2;
@@ -237,7 +237,7 @@ typedef struct
   uint8_t not_used_03      : 2;
   uint8_t sda_pu_en        : 1;
   uint8_t not_used_02      : 1;
-  uint8_t int_pd_dis      : 1;
+  uint8_t int_pd_dis       : 1;
   uint8_t not_used_01      : 2;
 #endif /* DRV_BYTE_ORDER */
 } lps28dfw_if_ctrl_t;
@@ -363,7 +363,7 @@ typedef struct
   uint8_t refp             : 8;
 } lps28dfw_ref_p_h_t;
 
-#define LPS28DFW_I3C_IF_CTRL_ADD         0x19U
+#define LPS28DFW_I3C_IF_CTRL             0x19U
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
@@ -377,7 +377,7 @@ typedef struct
   uint8_t not_used_02      : 3;
   uint8_t I3C_Bus_Avb_Sel  : 2;
 #endif /* DRV_BYTE_ORDER */
-} lps28dfw_i3c_if_ctrl_add_t;
+} lps28dfw_i3c_if_ctrl_t;
 
 #define LPS28DFW_RPDS_L                  0x1AU
 #define LPS28DFW_RPDS_H                  0x1BU
@@ -446,6 +446,7 @@ typedef struct
 #define LPS28DFW_PRESS_OUT_H             0x2AU
 #define LPS28DFW_TEMP_OUT_L              0x2BU
 #define LPS28DFW_TEMP_OUT_H              0x2CU
+
 #define LPS28DFW_FIFO_DATA_OUT_PRESS_XL  0x78U
 #define LPS28DFW_FIFO_DATA_OUT_PRESS_L   0x79U
 #define LPS28DFW_FIFO_DATA_OUT_PRESS_H   0x7AU
@@ -477,7 +478,7 @@ typedef union
   lps28dfw_fifo_wtm_t         fifo_wtm;
   lps28dfw_ref_p_l_t          ref_p_l;
   lps28dfw_ref_p_h_t          ref_p_h;
-  lps28dfw_i3c_if_ctrl_add_t  i3c_if_ctrl_add;
+  lps28dfw_i3c_if_ctrl_t      i3c_if_ctrl;
   lps28dfw_int_source_t       int_source;
   lps28dfw_fifo_status1_t     fifo_status1;
   lps28dfw_fifo_status2_t     fifo_status2;
@@ -505,7 +506,7 @@ int32_t lps28dfw_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                            uint8_t *data, uint16_t len);
 
 extern float_t lps28dfw_from_fs1260_to_hPa(int32_t lsb);
-extern float_t lps28dfw_from_fs4000_to_hPa(int32_t lsb);
+extern float_t lps28dfw_from_fs4060_to_hPa(int32_t lsb);
 
 extern float_t lps28dfw_from_lsb_to_celsius(int16_t lsb);
 
@@ -523,8 +524,8 @@ typedef enum
 
 typedef enum
 {
-  LPS28DFW_AUTO      = 0x00, /* bus mode select by HW (SPI 3W disable) */
-  LPS28DFW_ALWAYS_ON = 0x01, /* Only SPI: SDO / SDI separated pins */
+  LPS28DFW_AUTO      = 0x00, /* anti-spike filters managed by protocol */
+  LPS28DFW_ALWAYS_ON = 0x01, /* anti-spike filters always on */
 } lps28dfw_filter_t;
 
 typedef enum
@@ -591,7 +592,7 @@ int32_t lps28dfw_all_sources_get(const stmdev_ctx_t *ctx,
 typedef enum
 {
   LPS28DFW_1260hPa = 0x00,
-  LPS28DFW_4000hPa = 0x01,
+  LPS28DFW_4060hPa = 0x01,
 } lps28dfw_fs_t;
 
 typedef enum
@@ -670,7 +671,7 @@ typedef enum
 typedef struct
 {
   lps28dfw_operation_t operation;
-  uint8_t watermark; /* (0 disable) max 128.*/
+  uint8_t watermark : 7; /* (0 disable) max 128.*/
 } lps28dfw_fifo_md_t;
 int32_t lps28dfw_fifo_mode_set(const stmdev_ctx_t *ctx, lps28dfw_fifo_md_t *val);
 int32_t lps28dfw_fifo_mode_get(const stmdev_ctx_t *ctx, lps28dfw_fifo_md_t *val);
@@ -711,7 +712,7 @@ int32_t lps28dfw_pin_int_route_get(const stmdev_ctx_t *ctx,
 typedef struct
 {
   uint16_t threshold;   /* Threshold in hPa * 16 (@1260hPa)
-                         * Threshold in hPa * 8  (@4000hPa)
+                         * Threshold in hPa * 8  (@4060hPa)
                          */
   uint8_t over_th  : 1; /* Pressure data over threshold event */
   uint8_t under_th : 1; /* Pressure data under threshold event */

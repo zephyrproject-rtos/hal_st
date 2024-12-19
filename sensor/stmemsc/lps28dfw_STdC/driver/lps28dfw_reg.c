@@ -6,7 +6,7 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+ * <h2><center>&copy; Copyright (c) 2024 STMicroelectronics.
  * All rights reserved.</center></h2>
  *
  * This software component is licensed by ST under BSD 3-Clause license,
@@ -123,7 +123,7 @@ float_t lps28dfw_from_fs1260_to_hPa(int32_t lsb)
   return ((float_t)lsb / 1048576.0f);   /* 4096.0f * 256 */
 }
 
-float_t lps28dfw_from_fs4000_to_hPa(int32_t lsb)
+float_t lps28dfw_from_fs4060_to_hPa(int32_t lsb)
 {
   return ((float_t)lsb /  524288.0f);   /* 2048.0f * 256 */
 }
@@ -175,7 +175,7 @@ int32_t lps28dfw_id_get(const stmdev_ctx_t *ctx, lps28dfw_id_t *val)
   */
 int32_t lps28dfw_bus_mode_set(const stmdev_ctx_t *ctx, lps28dfw_bus_mode_t *val)
 {
-  lps28dfw_i3c_if_ctrl_add_t i3c_if_ctrl_add;
+  lps28dfw_i3c_if_ctrl_t i3c_if_ctrl;
   lps28dfw_if_ctrl_t if_ctrl;
   int32_t ret;
 
@@ -185,18 +185,22 @@ int32_t lps28dfw_bus_mode_set(const stmdev_ctx_t *ctx, lps28dfw_bus_mode_t *val)
     if_ctrl.int_en_i3c = ((uint8_t)val->interface & 0x04U) >> 2;
     ret = lps28dfw_write_reg(ctx, LPS28DFW_IF_CTRL, (uint8_t *)&if_ctrl, 1);
   }
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_I3C_IF_CTRL,
+                          (uint8_t *)&i3c_if_ctrl, 1);
   if (ret == 0)
   {
-    ret = lps28dfw_read_reg(ctx, LPS28DFW_I3C_IF_CTRL_ADD,
-                            (uint8_t *)&i3c_if_ctrl_add, 1);
+    i3c_if_ctrl.asf_on = (uint8_t)val->filter & 0x01U;
+    i3c_if_ctrl.I3C_Bus_Avb_Sel = (uint8_t)val->bus_avb_time & 0x03U;
+    ret = lps28dfw_write_reg(ctx, LPS28DFW_I3C_IF_CTRL,
+                             (uint8_t *)&i3c_if_ctrl, 1);
   }
-  if (ret == 0)
-  {
-    i3c_if_ctrl_add.asf_on = (uint8_t)val->filter & 0x01U;
-    i3c_if_ctrl_add.I3C_Bus_Avb_Sel = (uint8_t)val->bus_avb_time & 0x03U;
-    ret = lps28dfw_write_reg(ctx, LPS28DFW_I3C_IF_CTRL_ADD,
-                             (uint8_t *)&i3c_if_ctrl_add, 1);
-  }
+
   return ret;
 }
 
@@ -210,15 +214,14 @@ int32_t lps28dfw_bus_mode_set(const stmdev_ctx_t *ctx, lps28dfw_bus_mode_t *val)
   */
 int32_t lps28dfw_bus_mode_get(const stmdev_ctx_t *ctx, lps28dfw_bus_mode_t *val)
 {
-  lps28dfw_i3c_if_ctrl_add_t i3c_if_ctrl_add;
+  lps28dfw_i3c_if_ctrl_t i3c_if_ctrl;
   lps28dfw_if_ctrl_t if_ctrl;
   int32_t ret;
 
-  ret = lps28dfw_read_reg(ctx, LPS28DFW_IF_CTRL, (uint8_t *)&if_ctrl, 1);
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_I3C_IF_CTRL, (uint8_t *)&i3c_if_ctrl, 1);
   if (ret == 0)
   {
-    ret = lps28dfw_read_reg(ctx, LPS28DFW_I3C_IF_CTRL_ADD,
-                            (uint8_t *)&i3c_if_ctrl_add, 1);
+    ret = lps28dfw_read_reg(ctx, LPS28DFW_IF_CTRL, (uint8_t *)&if_ctrl, 1);
 
     switch (if_ctrl.int_en_i3c << 2)
     {
@@ -233,7 +236,7 @@ int32_t lps28dfw_bus_mode_get(const stmdev_ctx_t *ctx, lps28dfw_bus_mode_t *val)
         break;
     }
 
-    switch (i3c_if_ctrl_add.asf_on)
+    switch (i3c_if_ctrl.asf_on)
     {
       case LPS28DFW_AUTO:
         val->filter = LPS28DFW_AUTO;
@@ -246,7 +249,7 @@ int32_t lps28dfw_bus_mode_get(const stmdev_ctx_t *ctx, lps28dfw_bus_mode_t *val)
         break;
     }
 
-    switch (i3c_if_ctrl_add.I3C_Bus_Avb_Sel)
+    switch (i3c_if_ctrl.I3C_Bus_Avb_Sel)
     {
       case LPS28DFW_BUS_AVB_TIME_50us:
         val->bus_avb_time = LPS28DFW_BUS_AVB_TIME_50us;
@@ -265,6 +268,7 @@ int32_t lps28dfw_bus_mode_get(const stmdev_ctx_t *ctx, lps28dfw_bus_mode_t *val)
         break;
     }
   }
+
   return ret;
 }
 
@@ -417,8 +421,8 @@ int32_t lps28dfw_pin_conf_get(const stmdev_ctx_t *ctx, lps28dfw_pin_conf_t *val)
   }
 
   val->int_pull_down = ~if_ctrl.int_pd_dis;
-  val->sda_pull_up  = if_ctrl.sda_pu_en;
   val->int_push_pull  = ~ctrl_reg3.pp_od;
+  val->sda_pull_up  = if_ctrl.sda_pu_en;
 
   return ret;
 }
@@ -489,7 +493,7 @@ int32_t lps28dfw_mode_set(const stmdev_ctx_t *ctx, lps28dfw_md_t *val)
     ctrl_reg1.odr = (uint8_t)val->odr;
     ctrl_reg1.avg = (uint8_t)val->avg;
     ctrl_reg2.en_lpfp = (uint8_t)val->lpf & 0x01U;
-    ctrl_reg2.lfpf_cfg = ((uint8_t)val->lpf & 0x02U) >> 2;
+    ctrl_reg2.lfpf_cfg = ((uint8_t)val->lpf & 0x02U) >> 1;
     ctrl_reg2.fs_mode = (uint8_t)val->fs;
 
     bytecpy(&reg[0], (uint8_t *)&ctrl_reg1);
@@ -527,8 +531,8 @@ int32_t lps28dfw_mode_get(const stmdev_ctx_t *ctx, lps28dfw_md_t *val)
       case LPS28DFW_1260hPa:
         val->fs = LPS28DFW_1260hPa;
         break;
-      case LPS28DFW_4000hPa:
-        val->fs = LPS28DFW_4000hPa;
+      case LPS28DFW_4060hPa:
+        val->fs = LPS28DFW_4060hPa;
         break;
       default:
         val->fs = LPS28DFW_1260hPa;
@@ -615,6 +619,7 @@ int32_t lps28dfw_mode_get(const stmdev_ctx_t *ctx, lps28dfw_md_t *val)
         val->lpf = LPS28DFW_LPF_DISABLE;
         break;
     }
+
   }
   return ret;
 }
@@ -645,7 +650,7 @@ int32_t lps28dfw_trigger_sw(const stmdev_ctx_t *ctx, lps28dfw_md_t *md)
 }
 
 /**
-  * @brief  Software trigger for One-Shot.[get]
+  * @brief  Retrieve sensor data.[get]
   *
   * @param  ctx   communication interface handler.(ptr)
   * @param  md    the sensor conversion parameters.(ptr)
@@ -672,8 +677,8 @@ int32_t lps28dfw_data_get(const stmdev_ctx_t *ctx, lps28dfw_md_t *md,
     case LPS28DFW_1260hPa:
       data->pressure.hpa = lps28dfw_from_fs1260_to_hPa(data->pressure.raw);
       break;
-    case LPS28DFW_4000hPa:
-      data->pressure.hpa = lps28dfw_from_fs4000_to_hPa(data->pressure.raw);
+    case LPS28DFW_4060hPa:
+      data->pressure.hpa = lps28dfw_from_fs4060_to_hPa(data->pressure.raw);
       break;
     default:
       data->pressure.hpa = 0.0f;
@@ -889,14 +894,13 @@ int32_t lps28dfw_fifo_data_get(const stmdev_ctx_t *ctx, uint8_t samp,
       case LPS28DFW_1260hPa:
         data[i].hpa = lps28dfw_from_fs1260_to_hPa(data[i].raw);
         break;
-      case LPS28DFW_4000hPa:
-        data[i].hpa = lps28dfw_from_fs4000_to_hPa(data[i].raw);
+      case LPS28DFW_4060hPa:
+        data[i].hpa = lps28dfw_from_fs4060_to_hPa(data[i].raw);
         break;
       default:
         data[i].hpa = 0.0f;
         break;
     }
-
   }
 
   return ret;

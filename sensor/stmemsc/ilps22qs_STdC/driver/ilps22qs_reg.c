@@ -1,21 +1,21 @@
-/*
- ******************************************************************************
- * @file    ilps22qs_reg.c
- * @author  Sensors Software Solution Team
- * @brief   ILPS22QS driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    ilps22qs_reg.c
+  * @author  Sensors Software Solution Team
+  * @brief   ILPS22QS driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 #include "ilps22qs_reg.h"
 
@@ -240,16 +240,17 @@ int32_t ilps22qs_bus_mode_get(const stmdev_ctx_t *ctx, ilps22qs_bus_mode_t *val)
 
     switch (i3c_if_ctrl.asf_on)
     {
-      case ILPS22QS_AUTO:
-        val->filter = ILPS22QS_AUTO;
+      case ILPS22QS_FILTER_AUTO:
+        val->filter = ILPS22QS_FILTER_AUTO;
         break;
-      case ILPS22QS_ALWAYS_ON:
-        val->filter = ILPS22QS_ALWAYS_ON;
+      case ILPS22QS_FILTER_ALWAYS_ON:
+        val->filter = ILPS22QS_FILTER_ALWAYS_ON;
         break;
       default:
-        val->filter = ILPS22QS_AUTO;
+        val->filter = ILPS22QS_FILTER_AUTO;
         break;
     }
+
   }
   return ret;
 }
@@ -266,7 +267,9 @@ int32_t ilps22qs_init_set(const stmdev_ctx_t *ctx, ilps22qs_init_t val)
 {
   ilps22qs_ctrl_reg2_t ctrl_reg2;
   ilps22qs_ctrl_reg3_t ctrl_reg3;
-  uint8_t reg[2];
+  ilps22qs_int_source_t int_src;
+  ilps22qs_stat_t status;
+  uint8_t reg[2], cnt = 0;
   int32_t ret;
 
   ret = ilps22qs_read_reg(ctx, ILPS22QS_CTRL_REG2, reg, 2);
@@ -281,11 +284,71 @@ int32_t ilps22qs_init_set(const stmdev_ctx_t *ctx, ilps22qs_init_t val)
         ctrl_reg2.boot = PROPERTY_ENABLE;
         ret = ilps22qs_write_reg(ctx, ILPS22QS_CTRL_REG2,
                                  (uint8_t *)&ctrl_reg2, 1);
+        if (ret != 0)
+        {
+          break;
+        }
+
+        do
+        {
+          ret = ilps22qs_read_reg(ctx, ILPS22QS_INT_SOURCE, (uint8_t *)&int_src, 1);
+          if (ret != 0)
+          {
+            break;
+          }
+
+          /* boot procedure ended correctly */
+          if (int_src.boot_on == 0U)
+          {
+            break;
+          }
+
+          if (ctx->mdelay != NULL)
+          {
+            ctx->mdelay(10); /* 10ms of boot time */
+          }
+        } while (cnt++ < 5U);
+
+        if (cnt >= 5U)
+        {
+          ret = -1;  /* boot procedure failed */
+        }
+
         break;
       case ILPS22QS_RESET:
         ctrl_reg2.swreset = PROPERTY_ENABLE;
         ret = ilps22qs_write_reg(ctx, ILPS22QS_CTRL_REG2,
                                  (uint8_t *)&ctrl_reg2, 1);
+        if (ret != 0)
+        {
+          break;
+        }
+
+        do
+        {
+          ret = ilps22qs_status_get(ctx, &status);
+          if (ret != 0)
+          {
+            break;
+          }
+
+          /* sw-reset procedure ended correctly */
+          if (status.sw_reset == 0U)
+          {
+            break;
+          }
+
+          if (ctx->mdelay != NULL)
+          {
+            ctx->mdelay(1); /* should be 50 us */
+          }
+        } while (cnt++ < 5U);
+
+        if (cnt >= 5U)
+        {
+          ret = -1;  /* sw-reset procedure failed */
+        }
+
         break;
       case ILPS22QS_DRV_RDY:
         ctrl_reg2.bdu = PROPERTY_ENABLE;
@@ -631,7 +694,6 @@ int32_t ilps22qs_mode_get(const stmdev_ctx_t *ctx, ilps22qs_md_t *val)
         val->lpf = ILPS22QS_LPF_DISABLE;
         break;
     }
-
     val->interleaved_mode = ctrl_reg3.ah_qvar_p_auto_en;
   }
   return ret;
@@ -706,7 +768,7 @@ int32_t ilps22qs_ah_qvar_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Software trigger for One-Shot.[get]
+  * @brief  Sensor data.[get]
   *
   * @param  ctx   communication interface handler.(ptr)
   * @param  md    the sensor conversion parameters.(ptr)
@@ -770,6 +832,7 @@ int32_t ilps22qs_data_get(const stmdev_ctx_t *ctx, ilps22qs_md_t *md,
     }
     data->ah_qvar.lsb = 0;
   }
+
 
   /* temperature conversion */
   data->heat.raw = (int16_t)buff[4];
@@ -960,7 +1023,6 @@ int32_t ilps22qs_fifo_mode_get(const stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val)
   * @brief  Get the number of samples stored in FIFO.[get]
   *
   * @param  ctx   communication interface handler.(ptr)
-  * @param  md    the sensor conversion parameters.(ptr)
   * @param  val   number of samples stored in FIFO.(ptr)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
@@ -982,9 +1044,8 @@ int32_t ilps22qs_fifo_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  Software trigger for One-Shot.[get]
   *
   * @param  ctx   communication interface handler.(ptr)
-  * @param  md    the sensor conversion parameters.(ptr)
-  * @param  fmd   get the FIFO operation mode.(ptr)
   * @param  samp  number of samples stored in FIFO.(ptr)
+  * @param  md    the sensor conversion parameters.(ptr)
   * @param  data  data retrieved from FIFO.(ptr)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
@@ -1003,7 +1064,6 @@ int32_t ilps22qs_fifo_data_get(const stmdev_ctx_t *ctx, uint8_t samp,
     data[i].raw = (data[i].raw * 256) + (int32_t)fifo_data[1];
     data[i].raw = (data[i].raw * 256) + (int32_t)fifo_data[0];
     data[i].raw = (data[i].raw * 256);
-
     if (md->interleaved_mode == 1U)
     {
       if ((fifo_data[0] & 0x1U) == 0U)
@@ -1046,7 +1106,6 @@ int32_t ilps22qs_fifo_data_get(const stmdev_ctx_t *ctx, uint8_t samp,
       }
       data[i].lsb = 0;
     }
-
   }
 
   return ret;
@@ -1077,10 +1136,10 @@ int32_t ilps22qs_interrupt_mode_set(const stmdev_ctx_t *ctx,
                                     ilps22qs_int_mode_t *val)
 {
   ilps22qs_interrupt_cfg_t interrupt_cfg;
-  int32_t ret;
+  int32_t ret = 0;
 
-  ret = ilps22qs_read_reg(ctx, ILPS22QS_INTERRUPT_CFG,
-                          (uint8_t *)&interrupt_cfg, 1);
+  ret += ilps22qs_read_reg(ctx, ILPS22QS_INTERRUPT_CFG,
+                           (uint8_t *)&interrupt_cfg, 1);
   if (ret == 0)
   {
     interrupt_cfg.lir = val->int_latched ;
@@ -1102,10 +1161,10 @@ int32_t ilps22qs_interrupt_mode_get(const stmdev_ctx_t *ctx,
                                     ilps22qs_int_mode_t *val)
 {
   ilps22qs_interrupt_cfg_t interrupt_cfg;
-  int32_t ret;
+  int32_t ret = 0;
 
-  ret = ilps22qs_read_reg(ctx, ILPS22QS_INTERRUPT_CFG,
-                          (uint8_t *)&interrupt_cfg, 1);
+  ret += ilps22qs_read_reg(ctx, ILPS22QS_INTERRUPT_CFG,
+                           (uint8_t *)&interrupt_cfg, 1);
 
   val->int_latched = interrupt_cfg.lir;
 
@@ -1175,8 +1234,9 @@ int32_t ilps22qs_int_on_threshold_mode_set(const stmdev_ctx_t *ctx,
     bytecpy(&reg[1], (uint8_t *)&ths_p_l);
     bytecpy(&reg[2], (uint8_t *)&ths_p_h);
 
-    ret = ilps22qs_read_reg(ctx, ILPS22QS_INTERRUPT_CFG, reg, 3);
+    ret = ilps22qs_write_reg(ctx, ILPS22QS_INTERRUPT_CFG, reg, 3);
   }
+
   return ret;
 }
 
@@ -1330,6 +1390,11 @@ int32_t ilps22qs_opc_get(const stmdev_ctx_t *ctx, int16_t *val)
 
   return ret;
 }
+
+/**
+  * @}
+  *
+  */
 
 /**
   * @}

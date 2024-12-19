@@ -1,4 +1,4 @@
-/*
+/**
   ******************************************************************************
   * @file    ilps22qs_reg.h
   * @author  Sensors Software Solution Team
@@ -235,7 +235,7 @@ typedef struct
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
   uint8_t not_used_03      : 1;
   uint8_t i2c_i3c_dis      : 1;
-  uint8_t sim              : 1;
+  uint8_t en_spi_read      : 1;
   uint8_t sda_pu_en        : 1;
   uint8_t not_used_02      : 2;
   uint8_t cs_pu_dis        : 1;
@@ -286,17 +286,17 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t if_add_inc             : 1;
-  uint8_t not_used_01            : 4;
-  uint8_t ah_qvar_p_auto_en      : 1;
-  uint8_t not_used_02            : 1;
-  uint8_t ah_qvar_en             : 1;
+  uint8_t if_add_inc       : 1;
+  uint8_t not_used_01      : 4;
+  uint8_t ah_qvar_p_auto_en: 1;
+  uint8_t not_used_02      : 1;
+  uint8_t ah_qvar_en       : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t ah_qvar_en             : 1;
-  uint8_t not_used_02            : 1;
-  uint8_t ah_qvar_p_auto_en      : 1;
-  uint8_t not_used_01            : 4;
-  uint8_t if_add_inc             : 1;
+  uint8_t ah_qvar_en       : 1;
+  uint8_t not_used_02      : 1;
+  uint8_t ah_qvar_p_auto_en: 1;
+  uint8_t not_used_01      : 4;
+  uint8_t if_add_inc       : 1;
 #endif /* DRV_BYTE_ORDER */
 } ilps22qs_ctrl_reg3_t;
 
@@ -304,17 +304,17 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t f_mode                 : 2;
-  uint8_t trig_modes             : 1;
-  uint8_t stop_on_wtm            : 1;
-  uint8_t ah_qvar_p_fifo_en      : 1;
-  uint8_t not_used_01            : 3;
+  uint8_t f_mode           : 2;
+  uint8_t trig_modes       : 1;
+  uint8_t stop_on_wtm      : 1;
+  uint8_t ah_qvar_p_fifo_en: 1;
+  uint8_t not_used_01      : 3;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used_01            : 3;
-  uint8_t ah_qvar_p_fifo_en      : 1;
-  uint8_t stop_on_wtm            : 1;
-  uint8_t trig_modes             : 1;
-  uint8_t f_mode                 : 2;
+  uint8_t not_used_01      : 3;
+  uint8_t ah_qvar_p_fifo_en: 1;
+  uint8_t stop_on_wtm      : 1;
+  uint8_t trig_modes       : 1;
+  uint8_t f_mode           : 2;
 #endif /* DRV_BYTE_ORDER */
 } ilps22qs_fifo_ctrl_t;
 
@@ -483,9 +483,7 @@ int32_t ilps22qs_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
 
 extern float_t ilps22qs_from_fs1260_to_hPa(int32_t lsb);
 extern float_t ilps22qs_from_fs4000_to_hPa(int32_t lsb);
-
 extern float_t ilps22qs_from_lsb_to_celsius(int16_t lsb);
-
 extern float_t ilps22qs_from_lsb_to_mv(int32_t lsb);
 
 typedef struct
@@ -496,14 +494,14 @@ int32_t ilps22qs_id_get(const stmdev_ctx_t *ctx, ilps22qs_id_t *val);
 
 typedef enum
 {
-  ILPS22QS_SEL_BY_HW = 0x00, /* bus mode select by HW (SPI 3W disable) */
-  ILPS22QS_SPI_3W    = 0x03, /* bus mode select by HW (SPI 3W enable) */
+  ILPS22QS_SEL_BY_HW      = 0x00, /* bus mode select by HW (SPI 3W disable) */
+  ILPS22QS_SPI_3W         = 0x03, /* Only SPI: SDO / SDI share the same pin */
 } ilps22qs_interface_t;
 
 typedef enum
 {
-  ILPS22QS_AUTO      = 0x00, /* bus mode select by HW (SPI 3W disable) */
-  ILPS22QS_ALWAYS_ON = 0x01, /* Only SPI: SDO / SDI separated pins */
+  ILPS22QS_FILTER_AUTO      = 0x00, /* Disable anti-spike filters */
+  ILPS22QS_FILTER_ALWAYS_ON = 0x01, /* Enable anti-spike filters */
 } ilps22qs_filter_t;
 
 typedef struct
@@ -537,8 +535,8 @@ int32_t ilps22qs_status_get(const stmdev_ctx_t *ctx, ilps22qs_stat_t *val);
 
 typedef struct
 {
-  uint8_t sda_pull_up : 1; /* 1 = pull-up always disabled */
-  uint8_t cs_pull_up  : 1; /* 1 = pull-up always disabled */
+  uint8_t sda_pull_up : 1; /* 1 = pull-up enabled */
+  uint8_t cs_pull_up  : 1; /* 1 = pull-up enabled */
 } ilps22qs_pin_conf_t;
 int32_t ilps22qs_pin_conf_set(const stmdev_ctx_t *ctx, ilps22qs_pin_conf_t *val);
 int32_t ilps22qs_pin_conf_get(const stmdev_ctx_t *ctx, ilps22qs_pin_conf_t *val);
@@ -554,8 +552,7 @@ typedef struct
   uint8_t fifo_ovr    :  1; /* FIFO overrun */
   uint8_t fifo_th     :  1; /* FIFO threshold reached */
 } ilps22qs_all_sources_t;
-int32_t ilps22qs_all_sources_get(const stmdev_ctx_t *ctx,
-                                 ilps22qs_all_sources_t *val);
+int32_t ilps22qs_all_sources_get(const stmdev_ctx_t *ctx, ilps22qs_all_sources_t *val);
 
 typedef enum
 {
@@ -597,11 +594,11 @@ typedef enum
 
 typedef struct
 {
+  uint8_t interleaved_mode;
   ilps22qs_fs_t fs;
   ilps22qs_odr_t odr;
   ilps22qs_avg_t avg;
   ilps22qs_lpf_t lpf;
-  uint8_t interleaved_mode;
 } ilps22qs_md_t;
 int32_t ilps22qs_mode_set(const stmdev_ctx_t *ctx, ilps22qs_md_t *val);
 int32_t ilps22qs_mode_get(const stmdev_ctx_t *ctx, ilps22qs_md_t *val);
@@ -673,10 +670,8 @@ typedef struct
 {
   uint8_t int_latched  : 1; /* int events are: int on threshold, FIFO */
 } ilps22qs_int_mode_t;
-int32_t ilps22qs_interrupt_mode_set(const stmdev_ctx_t *ctx,
-                                    ilps22qs_int_mode_t *val);
-int32_t ilps22qs_interrupt_mode_get(const stmdev_ctx_t *ctx,
-                                    ilps22qs_int_mode_t *val);
+int32_t ilps22qs_interrupt_mode_set(const stmdev_ctx_t *ctx, ilps22qs_int_mode_t *val);
+int32_t ilps22qs_interrupt_mode_get(const stmdev_ctx_t *ctx, ilps22qs_int_mode_t *val);
 
 int32_t ilps22qs_ah_qvar_disable(const stmdev_ctx_t *ctx);
 int32_t ilps22qs_ah_qvar_en_set(const stmdev_ctx_t *ctx, uint8_t val);

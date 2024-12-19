@@ -358,16 +358,16 @@ typedef struct
 #define LPS22DF_REF_P_L                 0x16U
 typedef struct
 {
-  uint8_t refl             : 8;
+  uint8_t refp             : 8;
 } lps22df_ref_p_l_t;
 
 #define LPS22DF_REF_P_H                 0x17U
 typedef struct
 {
-  uint8_t refl             : 8;
+  uint8_t refp             : 8;
 } lps22df_ref_p_h_t;
 
-#define LPS22DF_I3C_IF_CTRL_ADD         0x19U
+#define LPS22DF_I3C_IF_CTRL             0x19U
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
@@ -381,7 +381,7 @@ typedef struct
   uint8_t not_used_02      : 3;
   uint8_t i3c_bus_avb_sel  : 2;
 #endif /* DRV_BYTE_ORDER */
-} lps22df_i3c_if_ctrl_add_t;
+} lps22df_i3c_if_ctrl_t;
 
 #define LPS22DF_RPDS_L                  0x1AU
 #define LPS22DF_RPDS_H                  0x1BU
@@ -481,7 +481,7 @@ typedef union
   lps22df_fifo_wtm_t         fifo_wtm;
   lps22df_ref_p_l_t          ref_p_l;
   lps22df_ref_p_h_t          ref_p_h;
-  lps22df_i3c_if_ctrl_add_t  i3c_if_ctrl_add;
+  lps22df_i3c_if_ctrl_t      i3c_if_ctrl;
   lps22df_int_source_t       int_source;
   lps22df_fifo_status1_t     fifo_status1;
   lps22df_fifo_status2_t     fifo_status2;
@@ -527,8 +527,8 @@ typedef enum
 
 typedef enum
 {
-  LPS22DF_AUTO      = 0x00, /* bus mode select by HW (SPI 3W disable) */
-  LPS22DF_ALWAYS_ON = 0x01, /* Only SPI: SDO / SDI separated pins */
+  LPS22DF_FILTER_AUTO      = 0x00, /* Disable anti-spike filters */
+  LPS22DF_FILTER_ALWAYS_ON = 0x01, /* Enable anti-spike filters */
 } lps22df_filter_t;
 
 typedef enum
@@ -573,9 +573,9 @@ typedef struct
 {
   uint8_t int_push_pull : 1; /* 1 = push-pull / 0 = open-drain */
   uint8_t int_pull_down : 1; /* 1 = pull-down enabled */
-  uint8_t sda_pull_up : 1; /* 1 = pull-up enabled */
   uint8_t sdo_pull_up : 1; /* 1 = pull-up enabled */
-  uint8_t cs_pull_up : 1; /* 1 = pull-up enabled */
+  uint8_t sda_pull_up : 1; /* 1 = pull-up enabled */
+  uint8_t cs_pull_up  : 1; /* 1 = pull-up enabled */
 } lps22df_pin_conf_t;
 int32_t lps22df_pin_conf_set(const stmdev_ctx_t *ctx, lps22df_pin_conf_t *val);
 int32_t lps22df_pin_conf_get(const stmdev_ctx_t *ctx, lps22df_pin_conf_t *val);
@@ -667,7 +667,7 @@ typedef enum
 typedef struct
 {
   lps22df_operation_t operation;
-  uint8_t watermark; /* (0 disable) max 128.*/
+  uint8_t watermark : 7; /* (0 disable) max 128.*/
 } lps22df_fifo_md_t;
 int32_t lps22df_fifo_mode_set(const stmdev_ctx_t *ctx, lps22df_fifo_md_t *val);
 int32_t lps22df_fifo_mode_get(const stmdev_ctx_t *ctx, lps22df_fifo_md_t *val);

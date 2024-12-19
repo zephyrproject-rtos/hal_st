@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    lsm6dsr_reg.h
-  * @author  Sensors Software Solution Team
+  * @author  Sensor Solutions Software Team
   * @brief   This file contains all the functions prototypes for the
   *          lsm6dsr_reg.c driver.
   ******************************************************************************
@@ -50,7 +50,7 @@ extern "C" {
 /** if _BYTE_ORDER is not defined, choose the endianness of your architecture
   * by uncommenting the define which fits your platform endianness
   */
-//#define DRV_BYTE_ORDER    DRV_BIG_ENDIAN
+/* #define DRV_BYTE_ORDER    DRV_BIG_ENDIAN */
 #define DRV_BYTE_ORDER    DRV_LITTLE_ENDIAN
 
 #else /* defined __BYTE_ORDER__ */
@@ -695,6 +695,7 @@ typedef struct
 #define LSM6DSR_OUTY_H_A                     0x2BU
 #define LSM6DSR_OUTZ_L_A                     0x2CU
 #define LSM6DSR_OUTZ_H_A                     0x2DU
+
 #define LSM6DSR_EMB_FUNC_STATUS_MAINPAGE     0x35U
 typedef struct
 {
@@ -1459,7 +1460,7 @@ typedef struct
   uint8_t fsm15_en                 : 1;
   uint8_t fsm16_en                 : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t fsm16_en                  : 1;
+  uint8_t fsm16_en                 : 1;
   uint8_t fsm15_en                 : 1;
   uint8_t fsm14_en                 : 1;
   uint8_t fsm13_en                 : 1;
@@ -1940,6 +1941,10 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsr_emb_func_init_b_t;
 
+/** @defgroup bitfields page 0 and 1
+  * @{
+  *
+  */
 #define LSM6DSR_MAG_SENSITIVITY_L            0xBAU
 #define LSM6DSR_MAG_SENSITIVITY_H            0xBBU
 #define LSM6DSR_MAG_OFFX_L                   0xC0U
@@ -2014,6 +2019,17 @@ typedef struct
 #define LSM6DSR_PEDO_DEB_STEPS_CONF          0x184U
 #define LSM6DSR_PEDO_SC_DELTAT_L             0x1D0U
 #define LSM6DSR_PEDO_SC_DELTAT_H             0x1D1U
+
+/**
+  * @}
+  *
+  */
+
+/** @defgroup bitfields page sensor_hub
+  * @{
+  *
+  */
+
 #define LSM6DSR_SENSOR_HUB_1                 0x02U
 typedef struct
 {
@@ -2627,6 +2643,11 @@ typedef struct
 } lsm6dsr_status_master_t;
 
 /**
+  * @}
+  *
+  */
+
+/**
   * @defgroup LSM6DSR_Register_Union
   * @brief    This union group all the registers having a bit-field
   *           description.
@@ -2765,8 +2786,8 @@ typedef union
   lsm6dsr_slv3_config_t                   slv3_config;
   lsm6dsr_datawrite_slv0_t                datawrite_slv0;
   lsm6dsr_status_master_t                 status_master;
-  bitwise_t                               bitwise;
-  uint8_t                                 byte;
+  bitwise_t                                 bitwise;
+  uint8_t                                   byte;
 } lsm6dsr_reg_t;
 
 /**
@@ -2786,7 +2807,6 @@ typedef union
  * The __weak directive allows the final application to overwrite
  * them with a custom implementation.
  */
-
 int32_t lsm6dsr_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data,
                          uint16_t len);
@@ -2808,7 +2828,7 @@ float_t lsm6dsr_from_fs4000dps_to_mdps(int16_t lsb);
 
 float_t lsm6dsr_from_lsb_to_celsius(int16_t lsb);
 
-float_t lsm6dsr_from_lsb_to_nsec(int32_t lsb);
+uint64_t lsm6dsr_from_lsb_to_nsec(uint32_t lsb);
 
 typedef enum
 {
@@ -2875,7 +2895,8 @@ int32_t lsm6dsr_gy_data_rate_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_gy_data_rate_get(const stmdev_ctx_t *ctx,
                                  lsm6dsr_odr_g_t *val);
 
-int32_t lsm6dsr_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lsm6dsr_block_data_update_set(const stmdev_ctx_t *ctx,
+                                      uint8_t val);
 int32_t lsm6dsr_block_data_update_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
@@ -2911,14 +2932,14 @@ int32_t lsm6dsr_gy_power_mode_get(const stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  lsm6dsr_all_int_src_t       all_int_src;
-  lsm6dsr_wake_up_src_t       wake_up_src;
-  lsm6dsr_tap_src_t           tap_src;
-  lsm6dsr_d6d_src_t           d6d_src;
-  lsm6dsr_status_reg_t        status_reg;
-  lsm6dsr_emb_func_status_t   emb_func_status;
-  lsm6dsr_fsm_status_a_t      fsm_status_a;
-  lsm6dsr_fsm_status_b_t      fsm_status_b;
+  lsm6dsr_all_int_src_t           all_int_src;
+  lsm6dsr_wake_up_src_t           wake_up_src;
+  lsm6dsr_tap_src_t               tap_src;
+  lsm6dsr_d6d_src_t               d6d_src;
+  lsm6dsr_status_reg_t            status_reg;
+  lsm6dsr_emb_func_status_t       emb_func_status;
+  lsm6dsr_fsm_status_a_t          fsm_status_a;
+  lsm6dsr_fsm_status_b_t          fsm_status_b;
 } lsm6dsr_all_sources_t;
 int32_t lsm6dsr_all_sources_get(const stmdev_ctx_t *ctx,
                                 lsm6dsr_all_sources_t *val);
@@ -2935,14 +2956,20 @@ int32_t lsm6dsr_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val);
 
-int32_t lsm6dsr_xl_usr_offset_x_set(const stmdev_ctx_t *ctx, uint8_t *buff);
-int32_t lsm6dsr_xl_usr_offset_x_get(const stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t lsm6dsr_xl_usr_offset_x_set(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
+int32_t lsm6dsr_xl_usr_offset_x_get(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
 
-int32_t lsm6dsr_xl_usr_offset_y_set(const stmdev_ctx_t *ctx, uint8_t *buff);
-int32_t lsm6dsr_xl_usr_offset_y_get(const stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t lsm6dsr_xl_usr_offset_y_set(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
+int32_t lsm6dsr_xl_usr_offset_y_get(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
 
-int32_t lsm6dsr_xl_usr_offset_z_set(const stmdev_ctx_t *ctx, uint8_t *buff);
-int32_t lsm6dsr_xl_usr_offset_z_get(const stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t lsm6dsr_xl_usr_offset_z_set(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
+int32_t lsm6dsr_xl_usr_offset_z_get(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
 
 int32_t lsm6dsr_xl_usr_offset_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsr_xl_usr_offset_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -2972,7 +2999,7 @@ int32_t lsm6dsr_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
 int32_t lsm6dsr_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t lsm6dsr_fifo_out_raw_get(const stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t lsm6dsr_fifo_out_raw_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t lsm6dsr_odr_cal_reg_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsr_odr_cal_reg_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -3011,7 +3038,7 @@ int32_t lsm6dsr_data_ready_mode_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_data_ready_mode_get(const stmdev_ctx_t *ctx,
                                     lsm6dsr_dataready_pulsed_t *val);
 
-int32_t lsm6dsr_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t lsm6dsr_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t lsm6dsr_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsr_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -3050,10 +3077,8 @@ int32_t lsm6dsr_xl_filter_lp2_get(const stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lsm6dsr_gy_filter_lp1_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsr_gy_filter_lp1_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lsm6dsr_filter_settling_mask_set(const stmdev_ctx_t *ctx,
-                                         uint8_t val);
-int32_t lsm6dsr_filter_settling_mask_get(const stmdev_ctx_t *ctx,
-                                         uint8_t *val);
+int32_t lsm6dsr_filter_settling_mask_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lsm6dsr_filter_settling_mask_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -3331,8 +3356,10 @@ typedef enum
   LSM6DSR_SPI_4_WIRE = 0,
   LSM6DSR_SPI_3_WIRE = 1,
 } lsm6dsr_sim_t;
-int32_t lsm6dsr_spi_mode_set(const stmdev_ctx_t *ctx, lsm6dsr_sim_t val);
-int32_t lsm6dsr_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsr_sim_t *val);
+int32_t lsm6dsr_spi_mode_set(const stmdev_ctx_t *ctx,
+                             lsm6dsr_sim_t val);
+int32_t lsm6dsr_spi_mode_get(const stmdev_ctx_t *ctx,
+                             lsm6dsr_sim_t *val);
 
 typedef enum
 {
@@ -3388,8 +3415,10 @@ typedef enum
   LSM6DSR_PUSH_PULL   = 0,
   LSM6DSR_OPEN_DRAIN  = 1,
 } lsm6dsr_pp_od_t;
-int32_t lsm6dsr_pin_mode_set(const stmdev_ctx_t *ctx, lsm6dsr_pp_od_t val);
-int32_t lsm6dsr_pin_mode_get(const stmdev_ctx_t *ctx, lsm6dsr_pp_od_t *val);
+int32_t lsm6dsr_pin_mode_set(const stmdev_ctx_t *ctx,
+                             lsm6dsr_pp_od_t val);
+int32_t lsm6dsr_pin_mode_get(const stmdev_ctx_t *ctx,
+                             lsm6dsr_pp_od_t *val);
 
 typedef enum
 {
@@ -3427,7 +3456,8 @@ int32_t lsm6dsr_wkup_ths_weight_get(const stmdev_ctx_t *ctx,
                                     lsm6dsr_wake_ths_w_t *val);
 
 int32_t lsm6dsr_wkup_threshold_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_wkup_threshold_get(const stmdev_ctx_t *ctx,
+                                   uint8_t *val);
 
 int32_t lsm6dsr_xl_usr_offset_on_wkup_set(const stmdev_ctx_t *ctx,
                                           uint8_t val);
@@ -3480,8 +3510,10 @@ int32_t lsm6dsr_tap_detection_on_x_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
-int32_t lsm6dsr_tap_threshold_x_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_tap_threshold_x_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_tap_threshold_x_set(const stmdev_ctx_t *ctx,
+                                    uint8_t val);
+int32_t lsm6dsr_tap_threshold_x_get(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
 
 typedef enum
 {
@@ -3497,11 +3529,15 @@ int32_t lsm6dsr_tap_axis_priority_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_tap_axis_priority_get(const stmdev_ctx_t *ctx,
                                       lsm6dsr_tap_priority_t *val);
 
-int32_t lsm6dsr_tap_threshold_y_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_tap_threshold_y_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_tap_threshold_y_set(const stmdev_ctx_t *ctx,
+                                    uint8_t val);
+int32_t lsm6dsr_tap_threshold_y_get(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
 
-int32_t lsm6dsr_tap_threshold_z_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_tap_threshold_z_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_tap_threshold_z_set(const stmdev_ctx_t *ctx,
+                                    uint8_t val);
+int32_t lsm6dsr_tap_threshold_z_get(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
 
 int32_t lsm6dsr_tap_shock_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsr_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -3556,8 +3592,10 @@ int32_t lsm6dsr_ff_threshold_get(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_ff_dur_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsr_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lsm6dsr_fifo_watermark_set(const stmdev_ctx_t *ctx, uint16_t val);
-int32_t lsm6dsr_fifo_watermark_get(const stmdev_ctx_t *ctx, uint16_t *val);
+int32_t lsm6dsr_fifo_watermark_set(const stmdev_ctx_t *ctx,
+                                   uint16_t val);
+int32_t lsm6dsr_fifo_watermark_get(const stmdev_ctx_t *ctx,
+                                   uint16_t *val);
 
 int32_t lsm6dsr_compression_algo_init_set(const stmdev_ctx_t *ctx,
                                           uint8_t val);
@@ -3587,12 +3625,14 @@ int32_t lsm6dsr_compression_algo_real_time_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_compression_algo_real_time_get(const stmdev_ctx_t *ctx,
                                                uint8_t *val);
 
-int32_t lsm6dsr_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx,
+                                     uint8_t val);
+int32_t lsm6dsr_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx,
+                                     uint8_t *val);
 
 typedef enum
 {
-  LSM6DSR_XL_NOT_BATCHED      =  0,
+  LSM6DSR_XL_NOT_BATCHED       =  0,
   LSM6DSR_XL_BATCHED_AT_12Hz5   =  1,
   LSM6DSR_XL_BATCHED_AT_26Hz    =  2,
   LSM6DSR_XL_BATCHED_AT_52Hz    =  3,
@@ -3678,7 +3718,8 @@ int32_t lsm6dsr_fifo_cnt_event_batch_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_fifo_cnt_event_batch_get(const stmdev_ctx_t *ctx,
                                          lsm6dsr_trig_counter_bdr_t *val);
 
-int32_t lsm6dsr_rst_batch_counter_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lsm6dsr_rst_batch_counter_set(const stmdev_ctx_t *ctx,
+                                      uint8_t val);
 int32_t lsm6dsr_rst_batch_counter_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
@@ -3687,12 +3728,14 @@ int32_t lsm6dsr_batch_counter_threshold_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
                                             uint16_t *val);
 
-int32_t lsm6dsr_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val);
+int32_t lsm6dsr_fifo_data_level_get(const stmdev_ctx_t *ctx,
+                                    uint16_t *val);
 
 int32_t lsm6dsr_fifo_status_get(const stmdev_ctx_t *ctx,
                                 lsm6dsr_fifo_status2_t *val);
 
-int32_t lsm6dsr_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_fifo_full_flag_get(const stmdev_ctx_t *ctx,
+                                   uint8_t *val);
 
 int32_t lsm6dsr_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
@@ -3721,25 +3764,35 @@ typedef enum
   LSM6DSR_GAME_ROTATION_TAG,
   LSM6DSR_GEOMAG_ROTATION_TAG,
   LSM6DSR_ROTATION_TAG,
-  LSM6DSR_SENSORHUB_NACK_TAG  = 0x19,
+  LSM6DSR_SENSORHUB_NACK_TAG = 0x19,
 } lsm6dsr_fifo_tag_t;
 int32_t lsm6dsr_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
                                     lsm6dsr_fifo_tag_t *val);
 
-int32_t lsm6dsr_fifo_pedo_batch_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_fifo_pedo_batch_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_fifo_pedo_batch_set(const stmdev_ctx_t *ctx,
+                                    uint8_t val);
+int32_t lsm6dsr_fifo_pedo_batch_get(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
 
-int32_t lsm6dsr_sh_batch_slave_0_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_sh_batch_slave_0_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_sh_batch_slave_0_set(const stmdev_ctx_t *ctx,
+                                     uint8_t val);
+int32_t lsm6dsr_sh_batch_slave_0_get(const stmdev_ctx_t *ctx,
+                                     uint8_t *val);
 
-int32_t lsm6dsr_sh_batch_slave_1_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_sh_batch_slave_1_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_sh_batch_slave_1_set(const stmdev_ctx_t *ctx,
+                                     uint8_t val);
+int32_t lsm6dsr_sh_batch_slave_1_get(const stmdev_ctx_t *ctx,
+                                     uint8_t *val);
 
-int32_t lsm6dsr_sh_batch_slave_2_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_sh_batch_slave_2_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_sh_batch_slave_2_set(const stmdev_ctx_t *ctx,
+                                     uint8_t val);
+int32_t lsm6dsr_sh_batch_slave_2_get(const stmdev_ctx_t *ctx,
+                                     uint8_t *val);
 
-int32_t lsm6dsr_sh_batch_slave_3_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_sh_batch_slave_3_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_sh_batch_slave_3_set(const stmdev_ctx_t *ctx,
+                                     uint8_t val);
+int32_t lsm6dsr_sh_batch_slave_3_get(const stmdev_ctx_t *ctx,
+                                     uint8_t *val);
 
 typedef enum
 {
@@ -3775,14 +3828,20 @@ int32_t lsm6dsr_den_enable_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_den_enable_get(const stmdev_ctx_t *ctx,
                                lsm6dsr_den_xl_g_t *val);
 
-int32_t lsm6dsr_den_mark_axis_x_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_den_mark_axis_x_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_den_mark_axis_x_set(const stmdev_ctx_t *ctx,
+                                    uint8_t val);
+int32_t lsm6dsr_den_mark_axis_x_get(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
 
-int32_t lsm6dsr_den_mark_axis_y_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_den_mark_axis_y_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_den_mark_axis_y_set(const stmdev_ctx_t *ctx,
+                                    uint8_t val);
+int32_t lsm6dsr_den_mark_axis_y_get(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
 
-int32_t lsm6dsr_den_mark_axis_z_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_den_mark_axis_z_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_den_mark_axis_z_set(const stmdev_ctx_t *ctx,
+                                    uint8_t val);
+int32_t lsm6dsr_den_mark_axis_z_get(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
 
 int32_t lsm6dsr_pedo_sens_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsr_pedo_sens_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -3798,12 +3857,13 @@ int32_t lsm6dsr_pedo_mode_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_pedo_mode_get(const stmdev_ctx_t *ctx,
                               lsm6dsr_pedo_mode_t *val);
 
-int32_t lsm6dsr_pedo_step_detect_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_pedo_step_detect_get(const stmdev_ctx_t *ctx,
+                                     uint8_t *val);
 
 int32_t lsm6dsr_pedo_debounce_steps_set(const stmdev_ctx_t *ctx,
-                                        uint8_t *buff);
+                                        uint8_t *val);
 int32_t lsm6dsr_pedo_debounce_steps_get(const stmdev_ctx_t *ctx,
-                                        uint8_t *buff);
+                                        uint8_t *val);
 
 int32_t lsm6dsr_pedo_steps_period_set(const stmdev_ctx_t *ctx,
                                       uint16_t val);
@@ -3842,14 +3902,18 @@ int32_t lsm6dsr_tilt_sens_get(const stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lsm6dsr_tilt_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val);
 
-int32_t lsm6dsr_mag_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t val);
-int32_t lsm6dsr_mag_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *val);
+int32_t lsm6dsr_mag_sensitivity_set(const stmdev_ctx_t *ctx,
+                                    uint16_t val);
+int32_t lsm6dsr_mag_sensitivity_get(const stmdev_ctx_t *ctx,
+                                    uint16_t *val);
 
 int32_t lsm6dsr_mag_offset_set(const stmdev_ctx_t *ctx, int16_t *val);
 int32_t lsm6dsr_mag_offset_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t lsm6dsr_mag_soft_iron_set(const stmdev_ctx_t *ctx, int16_t *val);
-int32_t lsm6dsr_mag_soft_iron_get(const stmdev_ctx_t *ctx, int16_t *val);
+int32_t lsm6dsr_mag_soft_iron_set(const stmdev_ctx_t *ctx,
+                                  uint16_t *val);
+int32_t lsm6dsr_mag_soft_iron_get(const stmdev_ctx_t *ctx,
+                                  uint16_t *val);
 
 typedef enum
 {
@@ -3966,9 +4030,9 @@ int32_t lsm6dsr_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
                                        uint16_t *val);
 
 int32_t lsm6dsr_fsm_number_of_programs_set(const stmdev_ctx_t *ctx,
-                                           uint8_t *buff);
+                                           uint8_t *val);
 int32_t lsm6dsr_fsm_number_of_programs_get(const stmdev_ctx_t *ctx,
-                                           uint8_t *buff);
+                                           uint8_t *val);
 
 int32_t lsm6dsr_fsm_start_address_set(const stmdev_ctx_t *ctx,
                                       uint16_t val);
@@ -3997,7 +4061,8 @@ typedef struct
   lsm6dsr_sensor_hub_18_t  sh_byte_18;
 } lsm6dsr_emb_sh_read_t;
 int32_t lsm6dsr_sh_read_data_raw_get(const stmdev_ctx_t *ctx,
-                                     lsm6dsr_emb_sh_read_t *val);
+                                     lsm6dsr_emb_sh_read_t *val,
+                                     uint8_t len);
 
 typedef enum
 {
@@ -4024,8 +4089,10 @@ int32_t lsm6dsr_sh_pin_mode_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsr_sh_pin_mode_get(const stmdev_ctx_t *ctx,
                                 lsm6dsr_shub_pu_en_t *val);
 
-int32_t lsm6dsr_sh_pass_through_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsr_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsr_sh_pass_through_set(const stmdev_ctx_t *ctx,
+                                    uint8_t val);
+int32_t lsm6dsr_sh_pass_through_get(const stmdev_ctx_t *ctx,
+                                    uint8_t *val);
 
 typedef enum
 {
