@@ -7507,7 +7507,7 @@ int32_t lsm6dsv16bx_mlc_out_get(const stmdev_ctx_t *ctx, lsm6dsv16bx_mlc_out_t *
   ret = lsm6dsv16bx_mem_bank_set(ctx, LSM6DSV16BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
   {
-    ret = lsm6dsv16bx_read_reg(ctx, LSM6DSV16BX_MLC1_SRC, (uint8_t *)&val, 4);
+    ret = lsm6dsv16bx_read_reg(ctx, LSM6DSV16BX_MLC1_SRC, (uint8_t *)val, 4);
   }
 
   ret += lsm6dsv16bx_mem_bank_set(ctx, LSM6DSV16BX_MAIN_MEM_BANK);

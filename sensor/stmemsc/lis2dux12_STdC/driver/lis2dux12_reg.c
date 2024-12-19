@@ -179,7 +179,7 @@ int32_t lis2dux12_init_set(const stmdev_ctx_t *ctx, lis2dux12_init_t val)
           break;
         }
 
-        /* boot procedue ended correctly */
+        /* boot procedure ended correctly */
         if (ctrl4.boot == 0U)
         {
           break;
@@ -212,7 +212,7 @@ int32_t lis2dux12_init_set(const stmdev_ctx_t *ctx, lis2dux12_init_t val)
           break;
         }
 
-        /* sw-reset procedue ended correctly */
+        /* sw-reset procedure ended correctly */
         if (status.sw_reset == 0U)
         {
           break;
@@ -395,13 +395,13 @@ int32_t lis2dux12_mode_set(const stmdev_ctx_t *ctx, const lis2dux12_md_t *val)
       switch (val->bw)
       {
         default:
+        case LIS2DUX12_ODR_div_2:
         case LIS2DUX12_ODR_div_4:
         case LIS2DUX12_ODR_div_8:
-        case LIS2DUX12_ODR_div_16:
           /* value not allowed */
           ret = -1;
           break;
-        case LIS2DUX12_ODR_div_2:
+        case LIS2DUX12_ODR_div_16:
           ctrl5.bw = 0x3;
           break;
       }
@@ -410,15 +410,15 @@ int32_t lis2dux12_mode_set(const stmdev_ctx_t *ctx, const lis2dux12_md_t *val)
       switch (val->bw)
       {
         default:
-        case LIS2DUX12_ODR_div_8:
-        case LIS2DUX12_ODR_div_16:
+        case LIS2DUX12_ODR_div_2:
+        case LIS2DUX12_ODR_div_4:
           /* value not allowed */
           ret = -1;
           break;
-        case LIS2DUX12_ODR_div_2:
+        case LIS2DUX12_ODR_div_8:
           ctrl5.bw = 0x2;
           break;
-        case LIS2DUX12_ODR_div_4:
+        case LIS2DUX12_ODR_div_16:
           ctrl5.bw = 0x3;
           break;
       }
@@ -427,17 +427,17 @@ int32_t lis2dux12_mode_set(const stmdev_ctx_t *ctx, const lis2dux12_md_t *val)
       switch (val->bw)
       {
         default:
-        case LIS2DUX12_ODR_div_16:
+        case LIS2DUX12_ODR_div_2:
           /* value not allowed */
           ret = -1;
           break;
-        case LIS2DUX12_ODR_div_2:
+        case LIS2DUX12_ODR_div_4:
           ctrl5.bw = 0x1;
           break;
-        case LIS2DUX12_ODR_div_4:
+        case LIS2DUX12_ODR_div_8:
           ctrl5.bw = 0x2;
           break;
-        case LIS2DUX12_ODR_div_8:
+        case LIS2DUX12_ODR_div_16:
           ctrl5.bw = 0x3;
           break;
       }
@@ -514,7 +514,7 @@ int32_t lis2dux12_mode_get(const stmdev_ctx_t *ctx, lis2dux12_md_t *val)
       val->odr = LIS2DUX12_25Hz_ULP;
       break;
     case 0x04:
-      val->odr = LIS2DUX12_6Hz_LP;
+      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_6Hz_HP : LIS2DUX12_6Hz_LP;
       break;
     case 0x05:
       val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_12Hz5_HP : LIS2DUX12_12Hz5_LP;
@@ -1060,53 +1060,59 @@ int32_t lis2dux12_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address, uint8_t
   lsb = (uint8_t)address & 0xFFU;
 
   ret = lis2dux12_mem_bank_set(ctx, LIS2DUX12_EMBED_FUNC_MEM_BANK);
-
-  if (ret == 0)
+  if (ret != 0)
   {
-    ret = lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
-    page_rw.page_read = PROPERTY_DISABLE;
-    page_rw.page_write = PROPERTY_ENABLE;
-    ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
-
-    ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
-    page_sel.page_sel = msb;
-    page_sel.not_used0 = 1; // Default value
-    ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
-
-    page_address.page_addr = lsb;
-    ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_ADDRESS, (uint8_t *)&page_address, 1);
-
-    for (i = 0; i < len; i++)
-    {
-      ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_VALUE, &buf[i], 1);
-      lsb++;
-
-      /* Check if page wrap */
-      if (((lsb & 0xFFU) == 0x00U) && (ret == 0))
-      {
-        msb++;
-        ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
-        page_sel.page_sel = msb;
-        page_sel.not_used0 = 1; // Default value
-        ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
-      }
-
-      if (ret != 0)
-      {
-        break;
-      }
-    }
-
-    page_sel.page_sel = 0;
-    page_sel.not_used0 = 1;// Default value
-    ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
-
-    ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
-    page_rw.page_read = PROPERTY_DISABLE;
-    page_rw.page_write = PROPERTY_DISABLE;
-    ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
+    goto exit;
   }
 
+  /* page write */
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
+  page_rw.page_read = PROPERTY_DISABLE;
+  page_rw.page_write = PROPERTY_ENABLE;
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
+
+  /* set page num */
+  ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  page_sel.page_sel = msb;
+  page_sel.not_used0 = 1; // Default value
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
+
+  /* set page addr */
+  page_address.page_addr = lsb;
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_ADDRESS, (uint8_t *)&page_address, 1);
+
+  for (i = 0; i < len; i++)
+  {
+    /* read value */
+    ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_VALUE, &buf[i], 1);
+    lsb++;
+
+    /* Check if page wrap */
+    if (((lsb & 0xFFU) == 0x00U) && (ret == 0))
+    {
+      msb++;
+      ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
+      page_sel.page_sel = msb;
+      page_sel.not_used0 = 1; // Default value
+      ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
+    }
+
+    if (ret != 0)
+    {
+      break;
+    }
+  }
+
+  page_sel.page_sel = 0;
+  page_sel.not_used0 = 1;// Default value
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
+
+  ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
+  page_rw.page_read = PROPERTY_DISABLE;
+  page_rw.page_write = PROPERTY_DISABLE;
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
+
+exit:
   ret += lis2dux12_mem_bank_set(ctx, LIS2DUX12_MAIN_MEM_BANK);
 
   return ret;
@@ -1137,53 +1143,69 @@ int32_t lis2dux12_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t 
   lsb = (uint8_t)address & 0xFFU;
 
   ret = lis2dux12_mem_bank_set(ctx, LIS2DUX12_EMBED_FUNC_MEM_BANK);
-
-  if (ret == 0)
+  if (ret != 0)
   {
-    ret = lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
-    page_rw.page_read = PROPERTY_ENABLE;
-    page_rw.page_write = PROPERTY_DISABLE;
-    ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
-
-    ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
-    page_sel.page_sel = msb;
-    page_sel.not_used0 = 1; // Default value
-    ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
-
-    page_address.page_addr = lsb;
-    ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_ADDRESS, (uint8_t *)&page_address, 1);
-
-    for (i = 0; i < len; i++)
-    {
-      ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_VALUE, &buf[i], 1);
-      lsb++;
-
-      /* Check if page wrap */
-      if (((lsb & 0xFFU) == 0x00U) && (ret == 0))
-      {
-        msb++;
-        ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
-        page_sel.page_sel = msb;
-        page_sel.not_used0 = 1; // Default value
-        ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
-      }
-
-      if (ret != 0)
-      {
-        break;
-      }
-    }
-
-    page_sel.page_sel = 0;
-    page_sel.not_used0 = 1;// Default value
-    ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
-
-    ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
-    page_rw.page_read = PROPERTY_DISABLE;
-    page_rw.page_write = PROPERTY_DISABLE;
-    ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
+    goto exit;
   }
 
+  /* page read */
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
+  page_rw.page_read = PROPERTY_ENABLE;
+  page_rw.page_write = PROPERTY_DISABLE;
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* set page num */
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  page_sel.page_sel = msb;
+  page_sel.not_used0 = 1; // Default value
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  for (i = 0; i < len; i++)
+  {
+    /* Sequential readings are not allowed. Set page address every loop */
+    page_address.page_addr = lsb++;
+    ret = lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_ADDRESS, (uint8_t *)&page_address, 1);
+
+    /* read value */
+    ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_VALUE, &buf[i], 1);
+
+    /* Check if page wrap */
+    if (((lsb & 0xFFU) == 0x00U) && (ret == 0))
+    {
+      msb++;
+      lsb = 0;
+
+      /* set page */
+      ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
+      page_sel.page_sel = msb;
+      page_sel.not_used0 = 1; // Default value
+      ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
+    }
+
+    if (ret != 0)
+    {
+      goto exit;
+    }
+  }
+
+  page_sel.page_sel = 0;
+  page_sel.not_used0 = 1;// Default value
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_SEL, (uint8_t *)&page_sel, 1);
+
+  ret += lis2dux12_read_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
+  page_rw.page_read = PROPERTY_DISABLE;
+  page_rw.page_write = PROPERTY_DISABLE;
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_PAGE_RW, (uint8_t *)&page_rw, 1);
+
+exit:
   ret += lis2dux12_mem_bank_set(ctx, LIS2DUX12_MAIN_MEM_BANK);
 
   return ret;
@@ -1390,7 +1412,7 @@ int32_t lis2dux12_spi_mode_get(const stmdev_ctx_t *ctx, lis2dux12_spi_mode *val)
 
   ret = lis2dux12_read_reg(ctx, LIS2DUX12_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
 
-  switch ((pin_ctrl.h_lactive))
+  switch ((pin_ctrl.sim))
   {
     case 0x0:
       *val = LIS2DUX12_SPI_4_WIRE;
@@ -2105,7 +2127,7 @@ int32_t lis2dux12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2dux12_md_t *m
         data->xl[0].raw[1] = (int16_t)fifo_raw[1] / 16;
         data->xl[0].raw[1] = (data->xl[0].raw[1] + ((int16_t)fifo_raw[2] * 16)) * 16;
         data->xl[0].raw[2] = (int16_t)fifo_raw[3];
-        data->xl[0].raw[2] = data->xl[0].raw[2] + ((int16_t)fifo_raw[4] * 256) * 16;
+        data->xl[0].raw[2] = (data->xl[0].raw[2] + (int16_t)fifo_raw[4] * 256) * 16;
         data->heat.raw = (int16_t)fifo_raw[4] / 16;
         data->heat.raw = (data->heat.raw + ((int16_t)fifo_raw[5] * 16)) * 16;
         data->heat.deg_c = lis2dux12_from_lsb_to_celsius(data->heat.raw);
@@ -2114,8 +2136,8 @@ int32_t lis2dux12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2dux12_md_t *m
       {
         /* A FIFO sample consists of 16-bits 3-axis XL at ODR  */
         data->xl[0].raw[0] = (int16_t)fifo_raw[0] + (int16_t)fifo_raw[1] * 256;
-        data->xl[0].raw[1] = (int16_t)fifo_raw[1] + (int16_t)fifo_raw[3] * 256;
-        data->xl[0].raw[2] = (int16_t)fifo_raw[2] + (int16_t)fifo_raw[5] * 256;
+        data->xl[0].raw[1] = (int16_t)fifo_raw[2] + (int16_t)fifo_raw[3] * 256;
+        data->xl[0].raw[2] = (int16_t)fifo_raw[4] + (int16_t)fifo_raw[5] * 256;
       }
       break;
     case 0x4:
@@ -2391,6 +2413,61 @@ int32_t lis2dux12_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val)
                              (uint8_t *)buff, 2);
   *val = buff[1];
   *val = (*val * 256U) + buff[0];
+
+  return ret;
+}
+
+/**
+  * @brief  smart_power functionality configuration.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      lis2dux12_smart_power_cfg_t structure.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  */
+int32_t lis2dux12_smart_power_set(const stmdev_ctx_t *ctx, lis2dux12_smart_power_cfg_t val)
+{
+  lis2dux12_ctrl1_t ctrl1;
+  lis2dux12_smart_power_ctrl_t smart_power_ctrl;
+  int32_t ret;
+
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_CTRL1, (uint8_t *)&ctrl1, 1);
+  ctrl1.smart_power_en = val.enable;
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_CTRL1, (uint8_t *)&ctrl1, 1);
+
+  if (val.enable == 0)
+  {
+    /* if disabling smart_power no need to set win/dur fields */
+    return ret;
+  }
+
+  smart_power_ctrl.smart_power_ctrl_win = val.window;
+  smart_power_ctrl.smart_power_ctrl_dur = val.duration;
+  ret += lis2dux12_ln_pg_write(ctx, LIS2DUX12_EMB_ADV_PG_0 + LIS2DUX12_SMART_POWER_CTRL,
+                               (uint8_t *)&smart_power_ctrl, 1);
+
+  return ret;
+}
+
+/**
+  * @brief  smart_power functionality configuration.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      lis2dux12_smart_power_cfg_t structure.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  */
+int32_t lis2dux12_smart_power_get(const stmdev_ctx_t *ctx, lis2dux12_smart_power_cfg_t *val)
+{
+  lis2dux12_ctrl1_t ctrl1;
+  lis2dux12_smart_power_ctrl_t smart_power_ctrl;
+  int32_t ret;
+
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_CTRL1, (uint8_t *)&ctrl1, 1);
+  val->enable = ctrl1.smart_power_en;
+
+  ret += lis2dux12_ln_pg_read(ctx, LIS2DUX12_EMB_ADV_PG_0 + LIS2DUX12_SMART_POWER_CTRL,
+                              (uint8_t *)&smart_power_ctrl, 1);
+  val->window = smart_power_ctrl.smart_power_ctrl_win;
+  val->duration = smart_power_ctrl.smart_power_ctrl_dur;
 
   return ret;
 }

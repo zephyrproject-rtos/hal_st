@@ -7487,7 +7487,7 @@ int32_t ism330bx_mlc_out_get(const stmdev_ctx_t *ctx, ism330bx_mlc_out_t *val)
   ret = ism330bx_mem_bank_set(ctx, ISM330BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
   {
-    ret = ism330bx_read_reg(ctx, ISM330BX_MLC1_SRC, (uint8_t *)&val, 4);
+    ret = ism330bx_read_reg(ctx, ISM330BX_MLC1_SRC, (uint8_t *)val, 4);
   }
 
   ret += ism330bx_mem_bank_set(ctx, ISM330BX_MAIN_MEM_BANK);
