@@ -50,7 +50,10 @@ int32_t __weak hts221_read_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t *da
 {
   int32_t ret;
 
-  if (ctx == NULL) return -1;
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -68,12 +71,15 @@ int32_t __weak hts221_read_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t *da
   *
   */
 int32_t __weak hts221_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
-                                uint8_t *data,
+                                const uint8_t *data,
                                 uint16_t len)
 {
   int32_t ret;
 
-  if (ctx == NULL) return -1;
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -857,7 +863,7 @@ int32_t hts221_hum_rh_point_0_get(const stmdev_ctx_t *ctx, float_t *val)
   int32_t ret;
 
   ret = hts221_read_reg(ctx, HTS221_H0_RH_X2, &coeff, 1);
-  *val = coeff / 2.0f;
+  *val = (float_t)coeff / 2.0f;
 
   return ret;
 }
@@ -876,7 +882,7 @@ int32_t hts221_hum_rh_point_1_get(const stmdev_ctx_t *ctx, float_t *val)
   int32_t ret;
 
   ret = hts221_read_reg(ctx, HTS221_H1_RH_X2, &coeff, 1);
-  *val = coeff / 2.0f;
+  *val = (float_t)coeff / 2.0f;
 
   return ret;
 }
@@ -902,7 +908,7 @@ int32_t hts221_temp_deg_point_0_get(const stmdev_ctx_t *ctx, float_t *val)
   {
     ret = hts221_read_reg(ctx, HTS221_T1_T0_MSB, (uint8_t *) &reg, 1);
     coeff_h = reg.t0_msb;
-    *val = ((coeff_h * 256) + coeff_l) / 8.0f;
+    *val = (((float_t)coeff_h * 256.0f) + (float_t)coeff_l) / 8.0f;
   }
 
   return ret;
@@ -929,7 +935,7 @@ int32_t hts221_temp_deg_point_1_get(const stmdev_ctx_t *ctx, float_t *val)
   {
     ret = hts221_read_reg(ctx, HTS221_T1_T0_MSB, (uint8_t *) &reg, 1);
     coeff_h = reg.t1_msb;
-    *val = ((coeff_h * 256) + coeff_l) / 8.0f;
+    *val = (((float_t)coeff_h * 256.0f) + (float_t)coeff_l) / 8.0f;
   }
 
   return ret;
@@ -950,8 +956,8 @@ int32_t hts221_hum_adc_point_0_get(const stmdev_ctx_t *ctx, float_t *val)
   int32_t ret;
 
   ret = hts221_read_reg(ctx, HTS221_H0_T0_OUT_L, coeff_p, 2);
-  coeff = (coeff_p[1] * 256) + coeff_p[0];
-  *val = coeff * 1.0f;
+  coeff = ((int16_t)coeff_p[1] * 256) + (int16_t)coeff_p[0];
+  *val = (float_t)coeff * 1.0f;
 
   return ret;
 }
@@ -971,8 +977,8 @@ int32_t hts221_hum_adc_point_1_get(const stmdev_ctx_t *ctx, float_t *val)
   int32_t ret;
 
   ret = hts221_read_reg(ctx, HTS221_H1_T0_OUT_L, coeff_p, 2);
-  coeff = (coeff_p[1] * 256) + coeff_p[0];
-  *val = coeff * 1.0f;
+  coeff = ((int16_t)coeff_p[1] * 256) + (int16_t)coeff_p[0];
+  *val = (float_t)coeff * 1.0f;
 
   return ret;
 }
@@ -992,8 +998,8 @@ int32_t hts221_temp_adc_point_0_get(const stmdev_ctx_t *ctx, float_t *val)
   int32_t ret;
 
   ret = hts221_read_reg(ctx, HTS221_T0_OUT_L, coeff_p, 2);
-  coeff = (coeff_p[1] * 256) + coeff_p[0];
-  *val = coeff * 1.0f;
+  coeff = ((int16_t)coeff_p[1] * 256) + (int16_t)coeff_p[0];
+  *val = (float_t)coeff * 1.0f;
 
   return ret;
 }
@@ -1013,8 +1019,8 @@ int32_t hts221_temp_adc_point_1_get(const stmdev_ctx_t *ctx, float_t *val)
   int32_t ret;
 
   ret = hts221_read_reg(ctx, HTS221_T1_OUT_L, coeff_p, 2);
-  coeff = (coeff_p[1] * 256) + coeff_p[0];
-  *val = coeff * 1.0f;
+  coeff = ((int16_t)coeff_p[1] * 256) + (int16_t)coeff_p[0];
+  *val = (float_t)coeff * 1.0f;
 
   return ret;
 }

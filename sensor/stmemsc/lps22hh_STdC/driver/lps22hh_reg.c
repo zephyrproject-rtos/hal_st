@@ -73,7 +73,7 @@ int32_t __weak lps22hh_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
   *
   */
 int32_t __weak lps22hh_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
-                                 uint8_t *data,
+                                 const uint8_t *data,
                                  uint16_t len)
 {
   int32_t ret;
@@ -1492,7 +1492,7 @@ int32_t lps22hh_pin_polarity_get(const stmdev_ctx_t *ctx,
   *
   */
 int32_t lps22hh_pin_int_route_set(const stmdev_ctx_t *ctx,
-                                  lps22hh_pin_int_route_t *val)
+                                  lps22hh_pin_int_route_t val)
 {
   lps22hh_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
@@ -1500,10 +1500,10 @@ int32_t lps22hh_pin_int_route_set(const stmdev_ctx_t *ctx,
   ret = lps22hh_read_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
   if (ret == 0)
   {
-    ctrl_reg3.drdy = val->drdy_pres;
-    ctrl_reg3.int_f_wtm = val->fifo_th;
-    ctrl_reg3.int_f_ovr = val->fifo_ovr;
-    ctrl_reg3.int_f_full = val->fifo_full;
+    ctrl_reg3.drdy = val.drdy_pres;
+    ctrl_reg3.int_f_wtm = val.fifo_th;
+    ctrl_reg3.int_f_ovr = val.fifo_ovr;
+    ctrl_reg3.int_f_full = val.fifo_full;
 
     ret = lps22hh_write_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
   }

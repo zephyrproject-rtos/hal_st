@@ -131,33 +131,6 @@ typedef struct
 
 #endif /* MEMS_SHARED_TYPES */
 
-#ifndef MEMS_UCF_SHARED_TYPES
-#define MEMS_UCF_SHARED_TYPES
-
-/** @defgroup    Generic address-data structure definition
-  * @brief       This structure is useful to load a predefined configuration
-  *              of a sensor.
-  *              You can create a sensor configuration by your own or using
-  *              Unico / Unicleo tools available on STMicroelectronics
-  *              web site.
-  *
-  * @{
-  *
-  */
-
-typedef struct
-{
-  uint8_t address;
-  uint8_t data;
-} ucf_line_t;
-
-/**
-  * @}
-  *
-  */
-
-#endif /* MEMS_UCF_SHARED_TYPES */
-
 /**
   * @}
   *
@@ -234,33 +207,6 @@ typedef struct
 #define STTS22H_TEMP_L_OUT                   0x06U
 #define STTS22H_TEMP_H_OUT                   0x07U
 
-/**
-  * @defgroup STTS22H_Register_Union
-  * @brief    This union group all the registers having a bit-field
-  *           description.
-  *           This union is useful but it's not needed by the driver.
-  *
-  *           REMOVING this union you are compliant with:
-  *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
-  *
-  * @{
-  *
-  */
-typedef union
-{
-  stts22h_temp_h_limit_t      temp_h_limit;
-  stts22h_temp_l_limit_t      temp_l_limit;
-  stts22h_ctrl_t              ctrl;
-  stts22h_status_t            status;
-  bitwise_t                   bitwise;
-  uint8_t                     byte;
-} stts22h_reg_t;
-
-/**
-  * @}
-  *
-  */
-
 #ifndef __weak
 #define __weak __attribute__((weak))
 #endif /* __weak */
@@ -278,7 +224,7 @@ int32_t stts22h_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data,
                          uint16_t len);
 int32_t stts22h_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
-                          uint8_t *data,
+                          const uint8_t *data,
                           uint16_t len);
 
 float_t stts22h_from_lsb_to_celsius(int16_t lsb);

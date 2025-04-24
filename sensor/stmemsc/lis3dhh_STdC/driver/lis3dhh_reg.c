@@ -241,6 +241,7 @@ int32_t lis3dhh_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   ret = lis3dhh_read_reg(ctx, LIS3DHH_OUT_TEMP_L, buff, 2);
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
+  *val = (*val / 16);
 
   return ret;
 }

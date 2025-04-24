@@ -22,6 +22,7 @@ set(stmems_pids
   i3g4250d
   iis2dh
   iis2dlpc
+  iis2dulpx
   iis2iclx
   iis2mdc
   iis328dq
@@ -75,7 +76,9 @@ set(stmems_pids
   lsm6dsv16b
   lsm6dsv16bx
   lsm6dsv16x
+  lsm6dsv320x
   lsm6dsv32x
+  lsm6dsv80x
   lsm6dsv
   lsm9ds1
   st1vafe3bx

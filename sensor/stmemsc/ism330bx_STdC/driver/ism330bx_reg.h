@@ -3181,9 +3181,9 @@ int32_t ism330bx_tap_detection_get(const stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t x                             : 1;
-  uint8_t y                             : 1;
-  uint8_t z                             : 1;
+  uint8_t x                             : 5;
+  uint8_t y                             : 5;
+  uint8_t z                             : 5;
 } ism330bx_tap_thresholds_t;
 int32_t ism330bx_tap_thresholds_set(const stmdev_ctx_t *ctx,
                                     ism330bx_tap_thresholds_t val);
@@ -3207,9 +3207,9 @@ int32_t ism330bx_tap_axis_priority_get(const stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t shock                         : 1;
-  uint8_t quiet                         : 1;
-  uint8_t tap_gap                       : 1;
+  uint8_t shock                         : 2;
+  uint8_t quiet                         : 2;
+  uint8_t tap_gap                       : 4;
 } ism330bx_tap_time_windows_t;
 int32_t ism330bx_tap_time_windows_set(const stmdev_ctx_t *ctx,
                                       ism330bx_tap_time_windows_t val);

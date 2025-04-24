@@ -131,33 +131,6 @@ typedef struct
 
 #endif /* MEMS_SHARED_TYPES */
 
-#ifndef MEMS_UCF_SHARED_TYPES
-#define MEMS_UCF_SHARED_TYPES
-
-/** @defgroup    Generic address-data structure definition
-  * @brief       This structure is useful to load a predefined configuration
-  *              of a sensor.
-  *              You can create a sensor configuration by your own or using
-  *              Unico / Unicleo tools available on STMicroelectronics
-  *              web site.
-  *
-  * @{
-  *
-  */
-
-typedef struct
-{
-  uint8_t address;
-  uint8_t data;
-} ucf_line_t;
-
-/**
-  * @}
-  *
-  */
-
-#endif /* MEMS_UCF_SHARED_TYPES */
-
 /**
   * @}
   *
@@ -290,30 +263,6 @@ typedef struct
 #define HTS221_T1_OUT_H            0x3FU
 
 /**
-  * @defgroup HTS221_Register_Union
-  * @brief    This union group all the registers having a bit-field
-  *           description.
-  *           This union is useful but it's not needed by the driver.
-  *
-  *           REMOVING this union you are compliant with:
-  *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
-  *
-  * @{
-  *
-  */
-typedef union
-{
-  hts221_av_conf_t        av_conf;
-  hts221_ctrl_reg1_t      ctrl_reg1;
-  hts221_ctrl_reg2_t      ctrl_reg2;
-  hts221_ctrl_reg3_t      ctrl_reg3;
-  hts221_status_reg_t     status_reg;
-  hts221_t1_t0_msb_t      t1_t0_msb;
-  bitwise_t               bitwise;
-  uint8_t                 byte;
-} hts221_reg_t;
-
-/**
   * @}
   *
   */
@@ -334,7 +283,7 @@ int32_t hts221_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                         uint8_t *data,
                         uint16_t len);
 int32_t hts221_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
-                         uint8_t *data,
+                         const uint8_t *data,
                          uint16_t len);
 
 typedef enum

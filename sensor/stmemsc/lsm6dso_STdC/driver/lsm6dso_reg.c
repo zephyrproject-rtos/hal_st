@@ -53,7 +53,10 @@ int32_t __weak lsm6dso_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
 {
   int32_t ret;
 
-  if (ctx == NULL) return -1;
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -71,12 +74,15 @@ int32_t __weak lsm6dso_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
   *
   */
 int32_t __weak lsm6dso_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
-                                 uint8_t *data,
+                                 const uint8_t *data,
                                  uint16_t len)
 {
   int32_t ret;
 
-  if (ctx == NULL) return -1;
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -1464,15 +1470,21 @@ int32_t lsm6dso_number_of_steps_get(const stmdev_ctx_t *ctx, uint16_t *val)
   int32_t ret;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret = lsm6dso_read_reg(ctx, LSM6DSO_STEP_COUNTER_L, buff, 2);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   *val = buff[1];
   *val = (*val * 256U) +  buff[0];
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -1491,15 +1503,21 @@ int32_t lsm6dso_steps_reset(const stmdev_ctx_t *ctx)
   int32_t ret;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret = lsm6dso_read_reg(ctx, LSM6DSO_EMB_FUNC_SRC, (uint8_t *)&reg, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   reg.pedo_rst_step = PROPERTY_ENABLE;
   ret = lsm6dso_write_reg(ctx, LSM6DSO_EMB_FUNC_SRC, (uint8_t *)&reg, 1);
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -1669,31 +1687,50 @@ int32_t lsm6dso_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
   lsb = (uint8_t)address & 0xFFU;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   /* set page write */
   ret = lsm6dso_read_reg(ctx, LSM6DSO_PAGE_RW, (uint8_t *) &page_rw, 1);
   page_rw.page_rw = 0x02; /* page_write enable*/
   ret += lsm6dso_write_reg(ctx, LSM6DSO_PAGE_RW, (uint8_t *) &page_rw, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   /* select page */
   ret = lsm6dso_read_reg(ctx, LSM6DSO_PAGE_SEL, (uint8_t *) &page_sel, 1);
   page_sel.page_sel = msb;
   page_sel.not_used_01 = 1;
   ret += lsm6dso_write_reg(ctx, LSM6DSO_PAGE_SEL, (uint8_t *) &page_sel, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   /* set page addr */
   page_address.page_addr = lsb;
   ret += lsm6dso_write_reg(ctx, LSM6DSO_PAGE_ADDRESS,
                            (uint8_t *)&page_address, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   for (i = 0; ((i < len) && (ret == 0)); i++)
   {
     ret = lsm6dso_write_reg(ctx, LSM6DSO_PAGE_VALUE, &buf[i], 1);
-    if (ret != 0) { goto exit; }
+    if (ret != 0)
+    {
+      ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+      return ret;
+    }
 
     lsb++;
 
@@ -1702,26 +1739,37 @@ int32_t lsm6dso_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
     {
       msb++;
       ret += lsm6dso_read_reg(ctx, LSM6DSO_PAGE_SEL, (uint8_t *)&page_sel, 1);
-      if (ret != 0) { goto exit; }
+      if (ret != 0)
+      {
+        ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+        return ret;
+      }
 
       page_sel.page_sel = msb;
       page_sel.not_used_01 = 1;
       ret = lsm6dso_write_reg(ctx, LSM6DSO_PAGE_SEL, (uint8_t *)&page_sel, 1);
-      if (ret != 0) { goto exit; }
+      if (ret != 0)
+      {
+        ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+        return ret;
+      }
     }
   }
 
   page_sel.page_sel = 0;
   page_sel.not_used_01 = 1;
   ret = lsm6dso_write_reg(ctx, LSM6DSO_PAGE_SEL, (uint8_t *) &page_sel, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   /* unset page write */
   ret = lsm6dso_read_reg(ctx, LSM6DSO_PAGE_RW, (uint8_t *) &page_rw, 1);
   page_rw.page_rw = 0x00; /* page_write disable */
   ret += lsm6dso_write_reg(ctx, LSM6DSO_PAGE_RW, (uint8_t *) &page_rw, 1);
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -1756,20 +1804,31 @@ int32_t lsm6dso_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t *b
   lsb = (uint8_t)address & 0xFFU;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   /* set page write */
   ret = lsm6dso_read_reg(ctx, LSM6DSO_PAGE_RW, (uint8_t *) &page_rw, 1);
   page_rw.page_rw = 0x01; /* page_read enable*/
   ret += lsm6dso_write_reg(ctx, LSM6DSO_PAGE_RW, (uint8_t *) &page_rw, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   /* select page */
   ret = lsm6dso_read_reg(ctx, LSM6DSO_PAGE_SEL, (uint8_t *) &page_sel, 1);
   page_sel.page_sel = msb;
   page_sel.not_used_01 = 1;
   ret += lsm6dso_write_reg(ctx, LSM6DSO_PAGE_SEL, (uint8_t *) &page_sel, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   for (i = 0; ((i < len) && (ret == 0)); i++)
   {
@@ -1777,10 +1836,18 @@ int32_t lsm6dso_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t *b
     page_address.page_addr = lsb;
     ret = lsm6dso_write_reg(ctx, LSM6DSO_PAGE_ADDRESS,
                             (uint8_t *)&page_address, 1);
-    if (ret != 0) { goto exit; }
+    if (ret != 0)
+    {
+      ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+      return ret;
+    }
 
     ret += lsm6dso_read_reg(ctx, LSM6DSO_PAGE_VALUE, &buf[i], 1);
-    if (ret != 0) { goto exit; }
+    if (ret != 0)
+    {
+      ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+      return ret;
+    }
 
     lsb++;
 
@@ -1789,26 +1856,37 @@ int32_t lsm6dso_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t *b
     {
       msb++;
       ret += lsm6dso_read_reg(ctx, LSM6DSO_PAGE_SEL, (uint8_t *)&page_sel, 1);
-      if (ret != 0) { goto exit; }
+      if (ret != 0)
+      {
+        ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+        return ret;
+      }
 
       page_sel.page_sel = msb;
       page_sel.not_used_01 = 1;
       ret += lsm6dso_write_reg(ctx, LSM6DSO_PAGE_SEL, (uint8_t *)&page_sel, 1);
-      if (ret != 0) { goto exit; }
+      if (ret != 0)
+      {
+        ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+        return ret;
+      }
     }
   }
 
   page_sel.page_sel = 0;
   page_sel.not_used_01 = 1;
   ret = lsm6dso_write_reg(ctx, LSM6DSO_PAGE_SEL, (uint8_t *) &page_sel, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   /* unset page write */
   ret = lsm6dso_read_reg(ctx, LSM6DSO_PAGE_RW, (uint8_t *) &page_rw, 1);
   page_rw.page_rw = 0x00; /* page_write disable */
   ret += lsm6dso_write_reg(ctx, LSM6DSO_PAGE_RW, (uint8_t *) &page_rw, 1);
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -4467,11 +4545,18 @@ int32_t lsm6dso_int_notification_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso_read_reg(ctx, LSM6DSO_TAP_CFG0, (uint8_t *) &tap_cfg0, 1);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
   ret += lsm6dso_read_reg(ctx, LSM6DSO_PAGE_RW, (uint8_t *) &page_rw, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   switch ((page_rw.emb_func_lir << 1) | tap_cfg0.lir)
   {
@@ -4498,7 +4583,6 @@ int32_t lsm6dso_int_notification_get(const stmdev_ctx_t *ctx,
 
   ret += lsm6dso_read_reg(ctx, LSM6DSO_PAGE_RW, (uint8_t *) &page_rw, 1);
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -6725,16 +6809,19 @@ int32_t lsm6dso_fifo_data_level_get(const stmdev_ctx_t *ctx,
                                      uint16_t *val)
 {
   uint8_t reg[2];
-  lsm6dso_fifo_status1_t *fifo_status1 = (lsm6dso_fifo_status1_t *)&reg[0];
-  lsm6dso_fifo_status2_t *fifo_status2 = (lsm6dso_fifo_status2_t *)&reg[1];
+  lsm6dso_fifo_status1_t fifo_status1;
+  lsm6dso_fifo_status2_t fifo_status2;
   int32_t ret;
 
   /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
   ret = lsm6dso_read_reg(ctx, LSM6DSO_FIFO_STATUS1, (uint8_t *)reg, 2);
   if (ret == 0)
   {
-    *val = fifo_status2->diff_fifo;
-    *val = (*val * 256U) + fifo_status1->diff_fifo;
+    bytecpy((uint8_t *)&fifo_status1, &reg[0]);
+    bytecpy((uint8_t *)&fifo_status2, &reg[1]);
+
+    *val = fifo_status2.diff_fifo;
+    *val = (*val * 256U) + fifo_status1.diff_fifo;
   }
 
   return ret;
@@ -6752,14 +6839,15 @@ int32_t lsm6dso_fifo_status_get(const stmdev_ctx_t *ctx,
                                  lsm6dso_fifo_status2_t *val)
 {
   uint8_t reg[2];
-  lsm6dso_fifo_status2_t *fifo_status2 = (lsm6dso_fifo_status2_t *)&reg[1];
+  lsm6dso_fifo_status2_t fifo_status2;
   int32_t ret;
 
   /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
   ret = lsm6dso_read_reg(ctx, LSM6DSO_FIFO_STATUS1, (uint8_t *)reg, 2);
   if (ret == 0)
   {
-    *val = *fifo_status2;
+    bytecpy((uint8_t *)&fifo_status2, &reg[1]);
+    *val = fifo_status2;
   }
 
   return ret;
@@ -6776,14 +6864,15 @@ int32_t lsm6dso_fifo_status_get(const stmdev_ctx_t *ctx,
 int32_t lsm6dso_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   uint8_t reg[2];
-  lsm6dso_fifo_status2_t *fifo_status2 = (lsm6dso_fifo_status2_t *)&reg[1];
+  lsm6dso_fifo_status2_t fifo_status2;
   int32_t ret;
 
   /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
   ret = lsm6dso_read_reg(ctx, LSM6DSO_FIFO_STATUS1, (uint8_t *)reg, 2);
   if (ret == 0)
   {
-    *val = fifo_status2->fifo_full_ia;
+    bytecpy((uint8_t *)&fifo_status2, &reg[1]);
+    *val = fifo_status2.fifo_full_ia;
   }
 
   return ret;
@@ -6801,14 +6890,15 @@ int32_t lsm6dso_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t lsm6dso_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   uint8_t reg[2];
-  lsm6dso_fifo_status2_t *fifo_status2 = (lsm6dso_fifo_status2_t *)&reg[1];
+  lsm6dso_fifo_status2_t fifo_status2;
   int32_t ret;
 
   /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
   ret = lsm6dso_read_reg(ctx, LSM6DSO_FIFO_STATUS1, (uint8_t *)reg, 2);
   if (ret == 0)
   {
-    *val = fifo_status2->fifo_ovr_ia;
+    bytecpy((uint8_t *)&fifo_status2, &reg[1]);
+    *val = fifo_status2.fifo_ovr_ia;
   }
 
   return ret;
@@ -6825,14 +6915,15 @@ int32_t lsm6dso_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t lsm6dso_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   uint8_t reg[2];
-  lsm6dso_fifo_status2_t *fifo_status2 = (lsm6dso_fifo_status2_t *)&reg[1];
+  lsm6dso_fifo_status2_t fifo_status2;
   int32_t ret;
 
   /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
   ret = lsm6dso_read_reg(ctx, LSM6DSO_FIFO_STATUS1, (uint8_t *)reg, 2);
   if (ret == 0)
   {
-    *val = fifo_status2->fifo_wtm_ia;
+    bytecpy((uint8_t *)&fifo_status2, &reg[1]);
+    *val = fifo_status2.fifo_wtm_ia;
   }
 
   return ret;
@@ -7021,9 +7112,9 @@ int32_t lsm6dso_sh_batch_slave_set(const stmdev_ctx_t *ctx, uint8_t idx, uint8_t
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_SENSOR_HUB_BANK);
   if (ret != 0) { return ret; }
 
-  ret = lsm6dso_read_reg(ctx, LSM6DSO_SLV0_CONFIG + 3U*idx, (uint8_t *)&reg, 1);
+  ret = lsm6dso_read_reg(ctx, LSM6DSO_SLV0_CONFIG + (3U*idx), (uint8_t *)&reg, 1);
   reg.batch_ext_sens_0_en = val;
-  ret += lsm6dso_write_reg(ctx, LSM6DSO_SLV0_CONFIG + 3U*idx, (uint8_t *)&reg, 1);
+  ret += lsm6dso_write_reg(ctx, LSM6DSO_SLV0_CONFIG + (3U*idx), (uint8_t *)&reg, 1);
 
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
@@ -7046,7 +7137,7 @@ int32_t lsm6dso_sh_batch_slave_get(const stmdev_ctx_t *ctx, uint8_t idx, uint8_t
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_SENSOR_HUB_BANK);
   if (ret != 0) { return ret; }
 
-  ret = lsm6dso_read_reg(ctx, LSM6DSO_SLV0_CONFIG + 3U*idx, (uint8_t *)&reg, 1);
+  ret = lsm6dso_read_reg(ctx, LSM6DSO_SLV0_CONFIG + (3U*idx), (uint8_t *)&reg, 1);
   *val = reg.batch_ext_sens_0_en;
 
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
@@ -8310,10 +8401,17 @@ int32_t lsm6dso_long_clr_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret = lsm6dso_read_reg(ctx, LSM6DSO_FSM_LONG_COUNTER_CLEAR, (uint8_t *)&reg, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   switch (reg.fsm_lc_clr)
   {
@@ -8334,7 +8432,6 @@ int32_t lsm6dso_long_clr_get(const stmdev_ctx_t *ctx,
        break;
    }
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -8374,17 +8471,23 @@ int32_t lsm6dso_fsm_data_rate_set(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret = lsm6dso_read_reg(ctx, LSM6DSO_EMB_FUNC_ODR_CFG_B, (uint8_t *)&reg, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   reg.not_used_01 = 3; /* set default values */
   reg.not_used_02 = 2; /* set default values */
   reg.fsm_odr = (uint8_t)val;
   ret = lsm6dso_write_reg(ctx, LSM6DSO_EMB_FUNC_ODR_CFG_B, (uint8_t *)&reg, 1);
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -8405,10 +8508,17 @@ int32_t lsm6dso_fsm_data_rate_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret = lsm6dso_read_reg(ctx, LSM6DSO_EMB_FUNC_ODR_CFG_B, (uint8_t *)&reg, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   switch (reg.fsm_odr)
   {
@@ -8433,7 +8543,6 @@ int32_t lsm6dso_fsm_data_rate_get(const stmdev_ctx_t *ctx,
       break;
   }
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -8453,15 +8562,21 @@ int32_t lsm6dso_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret = lsm6dso_read_reg(ctx, LSM6DSO_EMB_FUNC_INIT_B, (uint8_t *)&reg, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   reg.fsm_init = val;
   ret = lsm6dso_write_reg(ctx, LSM6DSO_EMB_FUNC_INIT_B, (uint8_t *)&reg, 1);
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -9172,19 +9287,29 @@ int32_t lsm6dso_sh_cfg_write(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_SENSOR_HUB_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   reg.slave0 = val->slv0_add;
   reg.rw_0 = 0;
   ret = lsm6dso_write_reg(ctx, LSM6DSO_SLV0_ADD, (uint8_t *)&reg, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   ret = lsm6dso_write_reg(ctx, LSM6DSO_SLV0_SUBADD, &(val->slv0_subadd), 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   ret = lsm6dso_write_reg(ctx, LSM6DSO_DATAWRITE_SLV0, &(val->slv0_data), 1);
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -9209,21 +9334,31 @@ int32_t lsm6dso_sh_slv_cfg_read(const stmdev_ctx_t *ctx, uint8_t idx,
   int32_t ret;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_SENSOR_HUB_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   slv0_add.slave0 = val->slv_add;
   slv0_add.rw_0 = 1;
-  ret = lsm6dso_write_reg(ctx, LSM6DSO_SLV0_ADD + idx*3U, (uint8_t *)&slv0_add, 1);
-  if (ret != 0) { goto exit; }
+  ret = lsm6dso_write_reg(ctx, LSM6DSO_SLV0_ADD + (3U*idx), (uint8_t *)&slv0_add, 1);
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
-  ret = lsm6dso_write_reg(ctx, LSM6DSO_SLV0_SUBADD + idx*3U, &(val->slv_subadd), 1);
-  if (ret != 0) { goto exit; }
+  ret = lsm6dso_write_reg(ctx, LSM6DSO_SLV0_SUBADD + (3U*idx), &(val->slv_subadd), 1);
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
-  ret = lsm6dso_read_reg(ctx, LSM6DSO_SLV0_CONFIG + idx*3U, (uint8_t *)&slv0_config, 1);
+  ret = lsm6dso_read_reg(ctx, LSM6DSO_SLV0_CONFIG + (3U*idx), (uint8_t *)&slv0_config, 1);
   slv0_config.slave0_numop = val->slv_len;
-  ret += lsm6dso_write_reg(ctx, LSM6DSO_SLV0_CONFIG + idx*3U, (uint8_t *)&slv0_config, 1);
+  ret += lsm6dso_write_reg(ctx, LSM6DSO_SLV0_CONFIG + (3U*idx), (uint8_t *)&slv0_config, 1);
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -11446,7 +11581,7 @@ int32_t lsm6dso_mode_get(const stmdev_ctx_t *ctx, stmdev_ctx_t *aux_ctx,
   *
   */
 int32_t lsm6dso_data_get(const stmdev_ctx_t *ctx, stmdev_ctx_t *aux_ctx,
-                         lsm6dso_md_t *md, lsm6dso_data_t *data)
+                         const lsm6dso_md_t *md, lsm6dso_data_t *data)
 {
   uint8_t buff[14];
   int32_t ret;
@@ -11624,18 +11759,25 @@ int32_t lsm6dso_data_get(const stmdev_ctx_t *ctx, stmdev_ctx_t *aux_ctx,
   *
   */
 int32_t lsm6dso_embedded_sens_set(const stmdev_ctx_t *ctx,
-                                  lsm6dso_emb_sens_t *val)
+                                  const lsm6dso_emb_sens_t *val)
 {
   lsm6dso_emb_func_en_a_t emb_func_en_a;
   lsm6dso_emb_func_en_b_t emb_func_en_b;
   int32_t ret;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret = lsm6dso_read_reg(ctx, LSM6DSO_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
   ret += lsm6dso_read_reg(ctx, LSM6DSO_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   emb_func_en_b.fsm_en = val->fsm;
   emb_func_en_a.tilt_en = val->tilt;
@@ -11647,7 +11789,6 @@ int32_t lsm6dso_embedded_sens_set(const stmdev_ctx_t *ctx,
   ret = lsm6dso_write_reg(ctx, LSM6DSO_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
   ret += lsm6dso_write_reg(ctx, LSM6DSO_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;
@@ -11703,11 +11844,18 @@ int32_t lsm6dso_embedded_sens_off(const stmdev_ctx_t *ctx)
   int32_t ret;
 
   ret = lsm6dso_mem_bank_set(ctx, LSM6DSO_EMBEDDED_FUNC_BANK);
-  if (ret != 0) { return ret; }
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret = lsm6dso_read_reg(ctx, LSM6DSO_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
   ret += lsm6dso_read_reg(ctx, LSM6DSO_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
-  if (ret != 0) { goto exit; }
+  if (ret != 0)
+  {
+    ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
+    return ret;
+  }
 
   emb_func_en_b.fsm_en = PROPERTY_DISABLE;
   emb_func_en_a.tilt_en = PROPERTY_DISABLE;
@@ -11719,7 +11867,6 @@ int32_t lsm6dso_embedded_sens_off(const stmdev_ctx_t *ctx)
   ret = lsm6dso_write_reg(ctx, LSM6DSO_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
   ret += lsm6dso_write_reg(ctx, LSM6DSO_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
 
-exit:
   ret += lsm6dso_mem_bank_set(ctx, LSM6DSO_USER_BANK);
 
   return ret;

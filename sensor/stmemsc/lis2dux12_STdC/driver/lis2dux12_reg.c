@@ -206,6 +206,11 @@ int32_t lis2dux12_init_set(const stmdev_ctx_t *ctx, lis2dux12_init_t val)
 
       do
       {
+        if (ctx->mdelay != NULL)
+        {
+          ctx->mdelay(1); /* should be 50 us */
+        }
+
         ret = lis2dux12_status_get(ctx, &status);
         if (ret != 0)
         {
@@ -216,11 +221,6 @@ int32_t lis2dux12_init_set(const stmdev_ctx_t *ctx, lis2dux12_init_t val)
         if (status.sw_reset == 0U)
         {
           break;
-        }
-
-        if (ctx->mdelay != NULL)
-        {
-          ctx->mdelay(1); /* should be 50 us */
         }
       } while (cnt++ < 5U);
 
@@ -676,6 +676,43 @@ int32_t lis2dux12_exit_deep_power_down(const stmdev_ctx_t *ctx)
   {
     ctx->mdelay(25); /* See AN5909 - paragraphs 3.1.1.1 and 3.1.1.2 */
   }
+
+  return ret;
+}
+
+/**
+  * @brief  Disable hard-reset from CS.[set]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  md    0: enable hard-reset from CS, 1: disable hard-reset from CS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  */
+int32_t lis2dux12_disable_hard_reset_from_cs_set(const stmdev_ctx_t *ctx, uint8_t val)
+{
+  lis2dux12_fifo_ctrl_t fifo_ctrl;
+  int32_t ret;
+
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+  fifo_ctrl.dis_hard_rst_cs = (val == 1) ? PROPERTY_ENABLE : PROPERTY_DISABLE;
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+
+  return ret;
+}
+
+/**
+  * @brief  Disable hard-reset from CS.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  md    0: enable hard-reset from CS, 1: disable hard-reset from CS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  */
+int32_t lis2dux12_disable_hard_reset_from_cs_get(const stmdev_ctx_t *ctx, uint8_t *val)
+{
+  lis2dux12_fifo_ctrl_t fifo_ctrl;
+  int32_t ret;
+
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+  *val = fifo_ctrl.dis_hard_rst_cs;
 
   return ret;
 }
@@ -1967,18 +2004,15 @@ int32_t lis2dux12_fifo_mode_set(const stmdev_ctx_t *ctx, lis2dux12_fifo_mode_t v
     fifo_wtm.xl_only_fifo = val.xl_only;
 
     /* set batching info */
-    if (val.batch.dec_ts != LIS2DUX12_DEC_TS_OFF)
-    {
-      fifo_batch.dec_ts_batch = (uint8_t)val.batch.dec_ts;
-      fifo_batch.bdr_xl = (uint8_t)val.batch.bdr_xl;
-    }
+    fifo_batch.dec_ts_batch = (uint8_t)val.batch.dec_ts;
+    fifo_batch.bdr_xl = (uint8_t)val.batch.bdr_xl;
 
     fifo_ctrl.cfg_chg_en = val.cfg_change_in_fifo;
 
     /* set watermark */
     if (val.watermark > 0U)
     {
-      fifo_ctrl.stop_on_fth = 1;
+      fifo_ctrl.stop_on_fth = (val.fifo_event == LIS2DUX12_FIFO_EV_WTM) ? 1 : 0;
       fifo_wtm.fth = val.watermark;
     }
 
@@ -2108,7 +2142,7 @@ int32_t lis2dux12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2dux12_md_t *m
 
   switch (fifo_tag.tag_sensor)
   {
-    case 0x3:
+    case LIS2DUX12_XL_ONLY_2X_TAG:
       /* A FIFO sample consists of 2X 8-bits 3-axis XL at ODR/2 */
       ret = lis2dux12_fifo_out_raw_get(ctx, fifo_raw);
       for (i = 0; i < 3; i++)
@@ -2117,7 +2151,7 @@ int32_t lis2dux12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2dux12_md_t *m
         data->xl[1].raw[i] = (int16_t)fifo_raw[3 + i] * 256;
       }
       break;
-    case 0x2:
+    case LIS2DUX12_XL_TEMP_TAG:
       ret = lis2dux12_fifo_out_raw_get(ctx, fifo_raw);
       if (fmd->xl_only == 0x0U)
       {
@@ -2140,7 +2174,7 @@ int32_t lis2dux12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2dux12_md_t *m
         data->xl[0].raw[2] = (int16_t)fifo_raw[4] + (int16_t)fifo_raw[5] * 256;
       }
       break;
-    case 0x4:
+    case LIS2DUX12_TIMESTAMP_TAG:
       ret = lis2dux12_fifo_out_raw_get(ctx, fifo_raw);
 
       data->cfg_chg.cfg_change = fifo_raw[0] >> 7;
@@ -2157,7 +2191,7 @@ int32_t lis2dux12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2dux12_md_t *m
       data->cfg_chg.timestamp = (data->cfg_chg.timestamp * 256U) +  fifo_raw[2];
       break;
 
-    case 0x12:
+    case LIS2DUX12_STEP_COUNTER_TAG:
       ret = lis2dux12_fifo_out_raw_get(ctx, fifo_raw);
 
       data->pedo.steps = fifo_raw[1];
@@ -2170,7 +2204,7 @@ int32_t lis2dux12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2dux12_md_t *m
 
       break;
 
-    case 0x0:
+    case LIS2DUX12_FIFO_EMPTY:
     default:
       /* do nothing */
       break;
