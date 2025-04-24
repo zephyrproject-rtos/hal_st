@@ -46,7 +46,7 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak st1vafe3bx_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak st1vafe3bx_read_reg(const st1vafe3bx_ctx_t *ctx, uint8_t reg,
                                    uint8_t *data, uint16_t len)
 {
   if (ctx == NULL)
@@ -67,7 +67,7 @@ int32_t __weak st1vafe3bx_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak st1vafe3bx_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak st1vafe3bx_write_reg(const st1vafe3bx_ctx_t *ctx, uint8_t reg,
                                     uint8_t *data, uint16_t len)
 {
   if (ctx == NULL)
@@ -134,7 +134,7 @@ float_t st1vafe3bx_from_lsb_to_mv(int16_t lsb)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_device_id_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
 
@@ -151,7 +151,7 @@ int32_t st1vafe3bx_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_init_set(const stmdev_ctx_t *ctx, st1vafe3bx_init_t val)
+int32_t st1vafe3bx_init_set(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_init_t val)
 {
   st1vafe3bx_ctrl1_t ctrl1;
   st1vafe3bx_ctrl4_t ctrl4;
@@ -315,7 +315,7 @@ int32_t st1vafe3bx_init_set(const stmdev_ctx_t *ctx, st1vafe3bx_init_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_smart_power_set(const stmdev_ctx_t *ctx, st1vafe3bx_smart_power_t val)
+int32_t st1vafe3bx_smart_power_set(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_smart_power_t val)
 {
   st1vafe3bx_ctrl1_t ctrl1;
   st1vafe3bx_smart_power_ctrl_t pwr_ctrl;
@@ -346,7 +346,7 @@ int32_t st1vafe3bx_smart_power_set(const stmdev_ctx_t *ctx, st1vafe3bx_smart_pow
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_smart_power_get(const stmdev_ctx_t *ctx, st1vafe3bx_smart_power_t *val)
+int32_t st1vafe3bx_smart_power_get(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_smart_power_t *val)
 {
   st1vafe3bx_ctrl1_t ctrl1;
   st1vafe3bx_smart_power_ctrl_t pwr_ctrl;
@@ -374,7 +374,7 @@ int32_t st1vafe3bx_smart_power_get(const stmdev_ctx_t *ctx, st1vafe3bx_smart_pow
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t *val)
+int32_t st1vafe3bx_status_get(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_status_t *val)
 {
   st1vafe3bx_status_register_t status_register;
   st1vafe3bx_ctrl1_t ctrl1;
@@ -401,7 +401,7 @@ int32_t st1vafe3bx_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_drdy_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t *val)
+int32_t st1vafe3bx_drdy_status_get(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_status_t *val)
 {
   st1vafe3bx_status_register_t status_register;
   int32_t ret;
@@ -420,7 +420,7 @@ int32_t st1vafe3bx_drdy_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t 
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_embedded_status_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_embedded_status_get(const st1vafe3bx_ctx_t *ctx,
                                        st1vafe3bx_embedded_status_t *val)
 {
   st1vafe3bx_emb_func_status_t status;
@@ -447,7 +447,7 @@ int32_t st1vafe3bx_embedded_status_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_data_ready_mode_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_data_ready_mode_set(const st1vafe3bx_ctx_t *ctx,
                                        st1vafe3bx_data_ready_mode_t val)
 {
   st1vafe3bx_ctrl1_t ctrl1;
@@ -472,7 +472,7 @@ int32_t st1vafe3bx_data_ready_mode_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_data_ready_mode_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_data_ready_mode_get(const st1vafe3bx_ctx_t *ctx,
                                        st1vafe3bx_data_ready_mode_t *val)
 {
   st1vafe3bx_ctrl1_t ctrl1;
@@ -505,7 +505,7 @@ int32_t st1vafe3bx_data_ready_mode_get(const stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_mode_set(const stmdev_ctx_t *ctx, const st1vafe3bx_md_t *val)
+int32_t st1vafe3bx_mode_set(const st1vafe3bx_ctx_t *ctx, const st1vafe3bx_md_t *val)
 {
   st1vafe3bx_ctrl3_t ctrl3;
   st1vafe3bx_ctrl5_t ctrl5;
@@ -606,7 +606,7 @@ int32_t st1vafe3bx_mode_set(const stmdev_ctx_t *ctx, const st1vafe3bx_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_mode_get(const stmdev_ctx_t *ctx, st1vafe3bx_md_t *val)
+int32_t st1vafe3bx_mode_get(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_md_t *val)
 {
   st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
   st1vafe3bx_ctrl3_t ctrl3;
@@ -779,7 +779,7 @@ int32_t st1vafe3bx_mode_get(const stmdev_ctx_t *ctx, st1vafe3bx_md_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_exit_deep_power_down(const stmdev_ctx_t *ctx)
+int32_t st1vafe3bx_exit_deep_power_down(const st1vafe3bx_ctx_t *ctx)
 {
   st1vafe3bx_en_device_config_t en_device_config = {0};
   int32_t ret;
@@ -804,7 +804,7 @@ int32_t st1vafe3bx_exit_deep_power_down(const stmdev_ctx_t *ctx)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_trigger_sw(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_trigger_sw(const st1vafe3bx_ctx_t *ctx,
                               const st1vafe3bx_md_t *md)
 {
   st1vafe3bx_ctrl4_t ctrl4;
@@ -822,7 +822,7 @@ int32_t st1vafe3bx_trigger_sw(const stmdev_ctx_t *ctx,
   return ret;
 }
 
-int32_t st1vafe3bx_all_sources_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_all_sources_get(const st1vafe3bx_ctx_t *ctx,
                                    st1vafe3bx_all_sources_t *val)
 {
   st1vafe3bx_status_register_t status;
@@ -877,7 +877,7 @@ int32_t st1vafe3bx_all_sources_get(const stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_xl_data_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_xl_data_get(const st1vafe3bx_ctx_t *ctx,
                                const st1vafe3bx_md_t *md,
                                st1vafe3bx_xl_data_t *data)
 {
@@ -926,18 +926,31 @@ int32_t st1vafe3bx_xl_data_get(const stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ah_bio_data_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_ah_bio_data_get(const st1vafe3bx_ctx_t *ctx,
                                    st1vafe3bx_ah_bio_data_t *data)
 {
-  uint8_t buff[2];
+  uint8_t buff[3];
   int32_t ret;
 
-  ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_OUT_AH_BIO_L, buff, 2);
+  if (ctx->vafe_only == 1)
+  {
+    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_OUT_AH_BIO_L, buff, 2);
 
-  data->raw = (int16_t)buff[1];
-  data->raw = (data->raw * 256U) + (int16_t)buff[0];
+    data->raw = (int16_t)buff[1];
+    data->raw = (data->raw * 256U) + (int16_t)buff[0];
 
-  data->mv = st1vafe3bx_from_lsb_to_mv(data->raw);
+    data->mv = st1vafe3bx_from_lsb_to_mv(data->raw);
+  }
+  else
+  {
+    /* Read and discard also OUT_Z_H reg to clear drdy */
+    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_OUT_AH_BIO_L - 1, buff, 3);
+
+    data->raw = (int16_t)buff[2];
+    data->raw = (data->raw * 256U) + (int16_t)buff[1];
+
+    data->mv = st1vafe3bx_from_lsb_to_mv(data->raw);
+  }
 
   return ret;
 }
@@ -950,7 +963,7 @@ int32_t st1vafe3bx_ah_bio_data_get(const stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_self_test_sign_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_self_test_sign_set(const st1vafe3bx_ctx_t *ctx,
                                       st1vafe3bx_xl_self_test_t val)
 {
   st1vafe3bx_ctrl3_t ctrl3;
@@ -997,7 +1010,7 @@ int32_t st1vafe3bx_self_test_sign_set(const stmdev_ctx_t *ctx,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_self_test_start(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_self_test_start(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   st1vafe3bx_ah_bio_cfg3_t ah_bio_cfg3;
   int32_t ret;
@@ -1025,7 +1038,7 @@ int32_t st1vafe3bx_self_test_start(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_self_test_stop(const stmdev_ctx_t *ctx)
+int32_t st1vafe3bx_self_test_stop(const st1vafe3bx_ctx_t *ctx)
 {
   st1vafe3bx_ah_bio_cfg3_t ah_bio_cfg3;
   int32_t ret;
@@ -1049,7 +1062,7 @@ int32_t st1vafe3bx_self_test_stop(const stmdev_ctx_t *ctx)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_i3c_configure_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_i3c_configure_set(const st1vafe3bx_ctx_t *ctx,
                                      const st1vafe3bx_i3c_cfg_t *val)
 {
   st1vafe3bx_i3c_if_ctrl_t i3c_cfg;
@@ -1077,7 +1090,7 @@ int32_t st1vafe3bx_i3c_configure_set(const stmdev_ctx_t *ctx,
   * @param  val   configuration params
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
-  */int32_t st1vafe3bx_i3c_configure_get(const stmdev_ctx_t *ctx,
+  */int32_t st1vafe3bx_i3c_configure_get(const st1vafe3bx_ctx_t *ctx,
                                          st1vafe3bx_i3c_cfg_t *val)
 {
   st1vafe3bx_i3c_if_ctrl_t i3c_cfg;
@@ -1121,7 +1134,7 @@ int32_t st1vafe3bx_i3c_configure_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_mem_bank_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_mem_bank_set(const st1vafe3bx_ctx_t *ctx,
                                 st1vafe3bx_mem_bank_t val)
 {
   st1vafe3bx_func_cfg_access_t func_cfg_access;
@@ -1149,7 +1162,7 @@ int32_t st1vafe3bx_mem_bank_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_mem_bank_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_mem_bank_get(const st1vafe3bx_ctx_t *ctx,
                                 st1vafe3bx_mem_bank_t *val)
 {
   st1vafe3bx_func_cfg_access_t func_cfg_access;
@@ -1186,7 +1199,7 @@ int32_t st1vafe3bx_mem_bank_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
+int32_t st1vafe3bx_ln_pg_write(const st1vafe3bx_ctx_t *ctx, uint16_t address,
                                uint8_t *buf, uint8_t len)
 {
   st1vafe3bx_page_address_t  page_address;
@@ -1272,7 +1285,7 @@ int32_t st1vafe3bx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address,
+int32_t st1vafe3bx_ln_pg_read(const st1vafe3bx_ctx_t *ctx, uint16_t address,
                               uint8_t *buf, uint8_t len)
 {
   st1vafe3bx_page_address_t  page_address;
@@ -1367,7 +1380,7 @@ int32_t st1vafe3bx_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address,
   * @retval      interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ext_clk_en_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_ext_clk_en_set(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   st1vafe3bx_ext_clk_cfg_t clk;
   int32_t ret;
@@ -1387,7 +1400,7 @@ int32_t st1vafe3bx_ext_clk_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval      interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ext_clk_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_ext_clk_en_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   st1vafe3bx_ext_clk_cfg_t clk;
   int32_t ret;
@@ -1406,7 +1419,7 @@ int32_t st1vafe3bx_ext_clk_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval      interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_pin_conf_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_pin_conf_set(const st1vafe3bx_ctx_t *ctx,
                                 const st1vafe3bx_pin_conf_t *val)
 {
   st1vafe3bx_pin_ctrl_t pin_ctrl;
@@ -1436,7 +1449,7 @@ int32_t st1vafe3bx_pin_conf_set(const stmdev_ctx_t *ctx,
   * @retval      interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_pin_conf_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_pin_conf_get(const st1vafe3bx_ctx_t *ctx,
                                 st1vafe3bx_pin_conf_t *val)
 {
   st1vafe3bx_pin_ctrl_t pin_ctrl;
@@ -1460,7 +1473,7 @@ int32_t st1vafe3bx_pin_conf_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_int_pin_polarity_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_int_pin_polarity_set(const st1vafe3bx_ctx_t *ctx,
                                         st1vafe3bx_int_pin_polarity_t val)
 {
   st1vafe3bx_pin_ctrl_t pin_ctrl;
@@ -1486,7 +1499,7 @@ int32_t st1vafe3bx_int_pin_polarity_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_int_pin_polarity_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_int_pin_polarity_get(const st1vafe3bx_ctx_t *ctx,
                                         st1vafe3bx_int_pin_polarity_t *val)
 {
   st1vafe3bx_pin_ctrl_t pin_ctrl;
@@ -1520,7 +1533,7 @@ int32_t st1vafe3bx_int_pin_polarity_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_spi_mode_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_spi_mode_set(const st1vafe3bx_ctx_t *ctx,
                                 st1vafe3bx_spi_mode val)
 {
   st1vafe3bx_pin_ctrl_t pin_ctrl;
@@ -1546,7 +1559,7 @@ int32_t st1vafe3bx_spi_mode_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_spi_mode_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_spi_mode_get(const st1vafe3bx_ctx_t *ctx,
                                 st1vafe3bx_spi_mode *val)
 {
   st1vafe3bx_pin_ctrl_t pin_ctrl;
@@ -1579,7 +1592,7 @@ int32_t st1vafe3bx_spi_mode_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_pin_int_route_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_pin_int_route_set(const st1vafe3bx_ctx_t *ctx,
                                      const st1vafe3bx_pin_int_route_t *val)
 {
   st1vafe3bx_ctrl1_t ctrl1;
@@ -1637,7 +1650,7 @@ int32_t st1vafe3bx_pin_int_route_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_pin_int_route_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_pin_int_route_get(const st1vafe3bx_ctx_t *ctx,
                                      st1vafe3bx_pin_int_route_t *val)
 {
   st1vafe3bx_ctrl2_t ctrl2;
@@ -1675,7 +1688,7 @@ int32_t st1vafe3bx_pin_int_route_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_emb_pin_int_route_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_emb_pin_int_route_set(const st1vafe3bx_ctx_t *ctx,
                                          const st1vafe3bx_emb_pin_int_route_t *val)
 {
   st1vafe3bx_emb_func_int_t emb_func_int;
@@ -1719,7 +1732,7 @@ int32_t st1vafe3bx_emb_pin_int_route_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_emb_pin_int_route_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_emb_pin_int_route_get(const st1vafe3bx_ctx_t *ctx,
                                          st1vafe3bx_emb_pin_int_route_t *val)
 {
   st1vafe3bx_emb_func_int_t emb_func_int;
@@ -1752,7 +1765,7 @@ int32_t st1vafe3bx_emb_pin_int_route_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_int_config_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_int_config_set(const st1vafe3bx_ctx_t *ctx,
                                   const st1vafe3bx_int_config_t *val)
 {
   st1vafe3bx_interrupt_cfg_t interrupt_cfg;
@@ -1799,7 +1812,7 @@ int32_t st1vafe3bx_int_config_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_int_config_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_int_config_get(const st1vafe3bx_ctx_t *ctx,
                                   st1vafe3bx_int_config_t *val)
 {
   st1vafe3bx_interrupt_cfg_t interrupt_cfg;
@@ -1838,7 +1851,7 @@ int32_t st1vafe3bx_int_config_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_embedded_int_cfg_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_embedded_int_cfg_set(const st1vafe3bx_ctx_t *ctx,
                                         st1vafe3bx_embedded_int_config_t val)
 {
   st1vafe3bx_page_rw_t page_rw;
@@ -1878,7 +1891,7 @@ int32_t st1vafe3bx_embedded_int_cfg_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_embedded_int_cfg_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_embedded_int_cfg_get(const st1vafe3bx_ctx_t *ctx,
                                         st1vafe3bx_embedded_int_config_t *val)
 {
   st1vafe3bx_page_rw_t page_rw;
@@ -1925,7 +1938,7 @@ int32_t st1vafe3bx_embedded_int_cfg_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_fifo_mode_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_fifo_mode_set(const st1vafe3bx_ctx_t *ctx,
                                  st1vafe3bx_fifo_mode_t val)
 {
   st1vafe3bx_ctrl4_t ctrl4;
@@ -1978,11 +1991,8 @@ int32_t st1vafe3bx_fifo_mode_set(const stmdev_ctx_t *ctx,
     fifo_wtm.xl_only_fifo = val.xl_only;
 
     /* set batching info */
-    if (val.batch.dec_ts != ST1VAFE3BX_DEC_TS_OFF)
-    {
-      fifo_batch.dec_ts_batch = (uint8_t)val.batch.dec_ts;
-      fifo_batch.bdr_xl = (uint8_t)val.batch.bdr_xl;
-    }
+    fifo_batch.dec_ts_batch = (uint8_t)val.batch.dec_ts;
+    fifo_batch.bdr_xl = (uint8_t)val.batch.bdr_xl;
 
     fifo_ctrl.cfg_chg_en = val.cfg_change_in_fifo;
 
@@ -2014,7 +2024,7 @@ int32_t st1vafe3bx_fifo_mode_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_fifo_mode_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_fifo_mode_get(const st1vafe3bx_ctx_t *ctx,
                                  st1vafe3bx_fifo_mode_t *val)
 {
   st1vafe3bx_ctrl4_t ctrl4;
@@ -2068,7 +2078,7 @@ int32_t st1vafe3bx_fifo_mode_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
+int32_t st1vafe3bx_fifo_data_level_get(const st1vafe3bx_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff;
   int32_t ret;
@@ -2080,7 +2090,7 @@ int32_t st1vafe3bx_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
   return ret;
 }
 
-int32_t st1vafe3bx_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_fifo_wtm_flag_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   st1vafe3bx_fifo_status1_t fifo_status1;
   int32_t ret;
@@ -2092,7 +2102,7 @@ int32_t st1vafe3bx_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   return ret;
 }
 
-int32_t st1vafe3bx_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_fifo_sensor_tag_get(const st1vafe3bx_ctx_t *ctx,
                                        st1vafe3bx_fifo_sensor_tag_t *val)
 {
   st1vafe3bx_fifo_data_out_tag_t fifo_tag;
@@ -2106,7 +2116,7 @@ int32_t st1vafe3bx_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
   return ret;
 }
 
-int32_t st1vafe3bx_fifo_out_raw_get(const stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t st1vafe3bx_fifo_out_raw_get(const st1vafe3bx_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -2115,7 +2125,7 @@ int32_t st1vafe3bx_fifo_out_raw_get(const stmdev_ctx_t *ctx, uint8_t *buff)
   return ret;
 }
 
-int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_fifo_data_get(const st1vafe3bx_ctx_t *ctx,
                                  const st1vafe3bx_md_t *md,
                                  const st1vafe3bx_fifo_mode_t *fmd,
                                  st1vafe3bx_fifo_data_t *data)
@@ -2271,7 +2281,7 @@ int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ah_bio_config_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_ah_bio_config_set(const st1vafe3bx_ctx_t *ctx,
                                      st1vafe3bx_ah_bio_config_t val)
 {
   st1vafe3bx_ah_bio_cfg1_t cfg1;
@@ -2361,7 +2371,7 @@ int32_t st1vafe3bx_ah_bio_config_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ah_bio_config_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_ah_bio_config_get(const st1vafe3bx_ctx_t *ctx,
                                      st1vafe3bx_ah_bio_config_t *val)
 {
   st1vafe3bx_ah_bio_cfg1_t cfg1;
@@ -2447,7 +2457,7 @@ int32_t st1vafe3bx_ah_bio_config_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx)
+int32_t st1vafe3bx_enter_vafe_only(st1vafe3bx_ctx_t *ctx)
 {
   st1vafe3bx_ah_bio_cfg2_t cfg2;
   int32_t ret;
@@ -2455,6 +2465,11 @@ int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx)
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
   cfg2.ah_bio_en = 1;
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
+
+  if (ret == 0)
+  {
+    ctx->vafe_only = 1;
+  }
 
   return ret;
 }
@@ -2466,7 +2481,7 @@ int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx)
+int32_t st1vafe3bx_exit_vafe_only(st1vafe3bx_ctx_t *ctx)
 {
   st1vafe3bx_ah_bio_cfg2_t cfg2;
   int32_t ret;
@@ -2474,6 +2489,11 @@ int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx)
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
   cfg2.ah_bio_en = 0;
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
+
+  if (ret == 0)
+  {
+    ctx->vafe_only = 0;
+  }
 
   return ret;
 }
@@ -2486,7 +2506,7 @@ int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on)
+int32_t st1vafe3bx_ah_bio_active(const st1vafe3bx_ctx_t *ctx, uint8_t filter_on)
 {
   st1vafe3bx_ah_bio_cfg3_t cfg3;
   st1vafe3bx_ctrl3_t ctrl3;
@@ -2530,7 +2550,7 @@ int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_stpcnt_mode_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_stpcnt_mode_set(const st1vafe3bx_ctx_t *ctx,
                                    st1vafe3bx_stpcnt_mode_t val)
 {
   st1vafe3bx_emb_func_en_a_t emb_func_en_a;
@@ -2586,7 +2606,7 @@ int32_t st1vafe3bx_stpcnt_mode_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_stpcnt_mode_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_stpcnt_mode_get(const st1vafe3bx_ctx_t *ctx,
                                    st1vafe3bx_stpcnt_mode_t *val)
 {
   st1vafe3bx_emb_func_en_a_t emb_func_en_a;
@@ -2615,7 +2635,7 @@ int32_t st1vafe3bx_stpcnt_mode_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_stpcnt_steps_get(const stmdev_ctx_t *ctx, uint16_t *val)
+int32_t st1vafe3bx_stpcnt_steps_get(const st1vafe3bx_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -2638,7 +2658,7 @@ int32_t st1vafe3bx_stpcnt_steps_get(const stmdev_ctx_t *ctx, uint16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_stpcnt_rst_step_set(const stmdev_ctx_t *ctx)
+int32_t st1vafe3bx_stpcnt_rst_step_set(const st1vafe3bx_ctx_t *ctx)
 {
   st1vafe3bx_emb_func_src_t emb_func_src;
   int32_t ret;
@@ -2666,7 +2686,7 @@ int32_t st1vafe3bx_stpcnt_rst_step_set(const stmdev_ctx_t *ctx)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_stpcnt_debounce_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_stpcnt_debounce_set(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   st1vafe3bx_pedo_deb_steps_conf_t pedo_deb_steps_conf;
   int32_t ret;
@@ -2687,7 +2707,7 @@ int32_t st1vafe3bx_stpcnt_debounce_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_stpcnt_debounce_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_stpcnt_debounce_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   st1vafe3bx_pedo_deb_steps_conf_t pedo_deb_steps_conf;
   int32_t ret;
@@ -2708,7 +2728,7 @@ int32_t st1vafe3bx_stpcnt_debounce_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_stpcnt_period_set(const stmdev_ctx_t *ctx, uint16_t val)
+int32_t st1vafe3bx_stpcnt_period_set(const st1vafe3bx_ctx_t *ctx, uint16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -2731,7 +2751,7 @@ int32_t st1vafe3bx_stpcnt_period_set(const stmdev_ctx_t *ctx, uint16_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val)
+int32_t st1vafe3bx_stpcnt_period_get(const st1vafe3bx_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -2764,7 +2784,7 @@ int32_t st1vafe3bx_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_tilt_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_tilt_mode_set(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   st1vafe3bx_emb_func_en_a_t emb_func_en_a;
   int32_t ret;
@@ -2792,7 +2812,7 @@ int32_t st1vafe3bx_tilt_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_tilt_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_tilt_mode_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   st1vafe3bx_emb_func_en_a_t emb_func_en_a;
   int32_t ret;
@@ -2829,7 +2849,7 @@ int32_t st1vafe3bx_tilt_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_sigmot_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_sigmot_mode_set(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   st1vafe3bx_emb_func_en_a_t emb_func_en_a;
   int32_t ret;
@@ -2857,7 +2877,7 @@ int32_t st1vafe3bx_sigmot_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_sigmot_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_sigmot_mode_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   st1vafe3bx_emb_func_en_a_t emb_func_en_a;
   int32_t ret;
@@ -2897,7 +2917,7 @@ int32_t st1vafe3bx_sigmot_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ff_duration_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_ff_duration_set(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   st1vafe3bx_wake_up_dur_t wake_up_dur;
   st1vafe3bx_free_fall_t free_fall;
@@ -2935,7 +2955,7 @@ int32_t st1vafe3bx_ff_duration_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ff_duration_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_ff_duration_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   st1vafe3bx_wake_up_dur_t wake_up_dur;
   st1vafe3bx_free_fall_t free_fall;
@@ -2960,7 +2980,7 @@ int32_t st1vafe3bx_ff_duration_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ff_thresholds_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_ff_thresholds_set(const st1vafe3bx_ctx_t *ctx,
                                      st1vafe3bx_ff_thresholds_t val)
 {
   st1vafe3bx_free_fall_t free_fall;
@@ -2984,7 +3004,7 @@ int32_t st1vafe3bx_ff_thresholds_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_ff_thresholds_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_ff_thresholds_get(const st1vafe3bx_ctx_t *ctx,
                                      st1vafe3bx_ff_thresholds_t *val)
 {
   st1vafe3bx_free_fall_t free_fall;
@@ -3055,7 +3075,7 @@ int32_t st1vafe3bx_ff_thresholds_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_sixd_config_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_sixd_config_set(const st1vafe3bx_ctx_t *ctx,
                                    st1vafe3bx_sixd_config_t val)
 {
   st1vafe3bx_sixd_t sixd;
@@ -3081,7 +3101,7 @@ int32_t st1vafe3bx_sixd_config_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_sixd_config_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_sixd_config_get(const st1vafe3bx_ctx_t *ctx,
                                    st1vafe3bx_sixd_config_t *val)
 {
   st1vafe3bx_sixd_t sixd;
@@ -3137,7 +3157,7 @@ int32_t st1vafe3bx_sixd_config_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_wakeup_config_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_wakeup_config_set(const st1vafe3bx_ctx_t *ctx,
                                      st1vafe3bx_wakeup_config_t val)
 {
   st1vafe3bx_wake_up_ths_t wup_ths;
@@ -3206,7 +3226,7 @@ int32_t st1vafe3bx_wakeup_config_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_wakeup_config_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_wakeup_config_get(const st1vafe3bx_ctx_t *ctx,
                                      st1vafe3bx_wakeup_config_t *val)
 {
   st1vafe3bx_wake_up_ths_t wup_ths;
@@ -3267,7 +3287,7 @@ int32_t st1vafe3bx_wakeup_config_get(const stmdev_ctx_t *ctx,
   *
   */
 
-int32_t st1vafe3bx_tap_config_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_tap_config_set(const st1vafe3bx_ctx_t *ctx,
                                   st1vafe3bx_tap_config_t val)
 {
   st1vafe3bx_tap_cfg0_t tap_cfg0;
@@ -3325,7 +3345,7 @@ int32_t st1vafe3bx_tap_config_set(const stmdev_ctx_t *ctx,
   return ret;
 }
 
-int32_t st1vafe3bx_tap_config_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_tap_config_get(const st1vafe3bx_ctx_t *ctx,
                                   st1vafe3bx_tap_config_t *val)
 {
   st1vafe3bx_tap_cfg0_t tap_cfg0;
@@ -3388,7 +3408,7 @@ int32_t st1vafe3bx_tap_config_get(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_timestamp_set(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   st1vafe3bx_interrupt_cfg_t int_cfg;
   int32_t ret;
@@ -3414,7 +3434,7 @@ int32_t st1vafe3bx_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_timestamp_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   st1vafe3bx_interrupt_cfg_t int_cfg;
   int32_t ret;
@@ -3436,7 +3456,7 @@ int32_t st1vafe3bx_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val)
+int32_t st1vafe3bx_timestamp_raw_get(const st1vafe3bx_ctx_t *ctx, uint32_t *val)
 {
   uint8_t buff[4];
   int32_t ret;
@@ -3472,7 +3492,7 @@ int32_t st1vafe3bx_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_long_cnt_flag_data_ready_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_long_cnt_flag_data_ready_get(const st1vafe3bx_ctx_t *ctx,
                                                 uint8_t *val)
 {
   st1vafe3bx_emb_func_status_t emb_func_status;
@@ -3501,7 +3521,7 @@ int32_t st1vafe3bx_long_cnt_flag_data_ready_get(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_emb_fsm_en_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_emb_fsm_en_set(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   int32_t ret;
 
@@ -3532,7 +3552,7 @@ int32_t st1vafe3bx_emb_fsm_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_emb_fsm_en_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
 
@@ -3563,7 +3583,7 @@ int32_t st1vafe3bx_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_enable_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_enable_set(const st1vafe3bx_ctx_t *ctx,
                                   st1vafe3bx_emb_fsm_enable_t *val)
 {
   st1vafe3bx_emb_func_en_b_t emb_func_en_b;
@@ -3615,7 +3635,7 @@ int32_t st1vafe3bx_fsm_enable_set(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_enable_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_enable_get(const st1vafe3bx_ctx_t *ctx,
                                   st1vafe3bx_emb_fsm_enable_t *val)
 {
   int32_t ret;
@@ -3642,7 +3662,7 @@ int32_t st1vafe3bx_fsm_enable_get(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val)
+int32_t st1vafe3bx_long_cnt_set(const st1vafe3bx_ctx_t *ctx, uint16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -3670,7 +3690,7 @@ int32_t st1vafe3bx_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val)
+int32_t st1vafe3bx_long_cnt_get(const st1vafe3bx_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -3696,7 +3716,7 @@ int32_t st1vafe3bx_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val)
   * @param  val      register FSM_STATUS_MAINPAGE
   *
   */
-int32_t st1vafe3bx_fsm_status_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_status_get(const st1vafe3bx_ctx_t *ctx,
                                   st1vafe3bx_fsm_status_mainpage_t *val)
 {
   return st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FSM_STATUS_MAINPAGE,
@@ -3711,7 +3731,7 @@ int32_t st1vafe3bx_fsm_status_get(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_out_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_fsm_out_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
 
@@ -3735,7 +3755,7 @@ int32_t st1vafe3bx_fsm_out_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_data_rate_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_data_rate_set(const st1vafe3bx_ctx_t *ctx,
                                      st1vafe3bx_fsm_val_odr_t val)
 {
   st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
@@ -3770,7 +3790,7 @@ int32_t st1vafe3bx_fsm_data_rate_set(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_data_rate_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_data_rate_get(const st1vafe3bx_ctx_t *ctx,
                                      st1vafe3bx_fsm_val_odr_t *val)
 {
   st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
@@ -3859,7 +3879,7 @@ int32_t st1vafe3bx_fsm_data_rate_get(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_fsm_init_set(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   st1vafe3bx_emb_func_init_b_t emb_func_init_b;
   int32_t ret;
@@ -3890,7 +3910,7 @@ int32_t st1vafe3bx_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_fsm_init_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   st1vafe3bx_emb_func_init_b_t emb_func_init_b;
   int32_t ret;
@@ -3918,7 +3938,7 @@ int32_t st1vafe3bx_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_fsm_fifo_en_set(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   st1vafe3bx_emb_func_fifo_en_t fifo_reg;
   int32_t ret;
@@ -3947,7 +3967,7 @@ int32_t st1vafe3bx_fsm_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_fsm_fifo_en_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   st1vafe3bx_emb_func_fifo_en_t fifo_reg;
   int32_t ret;
@@ -3977,7 +3997,7 @@ int32_t st1vafe3bx_fsm_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_long_cnt_int_value_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_long_cnt_int_value_set(const st1vafe3bx_ctx_t *ctx,
                                           uint16_t val)
 {
   uint8_t buff[2];
@@ -4001,7 +4021,7 @@ int32_t st1vafe3bx_long_cnt_int_value_set(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_long_cnt_int_value_get(const st1vafe3bx_ctx_t *ctx,
                                           uint16_t *val)
 {
   uint8_t buff[2];
@@ -4022,7 +4042,7 @@ int32_t st1vafe3bx_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_programs_num_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_fsm_programs_num_set(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   int32_t ret;
 
@@ -4039,7 +4059,7 @@ int32_t st1vafe3bx_fsm_programs_num_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_programs_num_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_fsm_programs_num_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
 
@@ -4057,7 +4077,7 @@ int32_t st1vafe3bx_fsm_programs_num_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_start_address_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_start_address_set(const st1vafe3bx_ctx_t *ctx,
                                          uint16_t val)
 {
   uint8_t buff[2];
@@ -4079,7 +4099,7 @@ int32_t st1vafe3bx_fsm_start_address_set(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_fsm_start_address_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_start_address_get(const st1vafe3bx_ctx_t *ctx,
                                          uint16_t *val)
 {
   uint8_t buff[2];
@@ -4114,7 +4134,7 @@ int32_t st1vafe3bx_fsm_start_address_get(const stmdev_ctx_t *ctx,
   *                  in EMB_FUNC_INIT_A
   *
   */
-int32_t st1vafe3bx_mlc_set(const stmdev_ctx_t *ctx, st1vafe3bx_mlc_mode_t val)
+int32_t st1vafe3bx_mlc_set(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_mlc_mode_t val)
 {
   st1vafe3bx_emb_func_en_a_t emb_en_a;
   st1vafe3bx_emb_func_en_b_t emb_en_b;
@@ -4168,7 +4188,7 @@ int32_t st1vafe3bx_mlc_set(const stmdev_ctx_t *ctx, st1vafe3bx_mlc_mode_t val)
   *                  in EMB_FUNC_INIT_A
   *
   */
-int32_t st1vafe3bx_mlc_get(const stmdev_ctx_t *ctx, st1vafe3bx_mlc_mode_t *val)
+int32_t st1vafe3bx_mlc_get(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_mlc_mode_t *val)
 {
   st1vafe3bx_emb_func_en_a_t emb_en_a;
   st1vafe3bx_emb_func_en_b_t emb_en_b;
@@ -4213,7 +4233,7 @@ int32_t st1vafe3bx_mlc_get(const stmdev_ctx_t *ctx, st1vafe3bx_mlc_mode_t *val)
   * @param  val      register MLC_STATUS_MAINPAGE
   *
   */
-int32_t st1vafe3bx_mlc_status_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_mlc_status_get(const st1vafe3bx_ctx_t *ctx,
                                   st1vafe3bx_mlc_status_mainpage_t *val)
 {
   return st1vafe3bx_read_reg(ctx, ST1VAFE3BX_MLC_STATUS_MAINPAGE,
@@ -4227,7 +4247,7 @@ int32_t st1vafe3bx_mlc_status_get(const stmdev_ctx_t *ctx,
   * @param  uint8_t * : buffer that stores data read
   *
   */
-int32_t st1vafe3bx_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t st1vafe3bx_mlc_out_get(const st1vafe3bx_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -4251,7 +4271,7 @@ int32_t st1vafe3bx_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *buff)
   *                  reg EMB_FUNC_ODR_CFG_C
   *
   */
-int32_t st1vafe3bx_mlc_data_rate_set(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_mlc_data_rate_set(const st1vafe3bx_ctx_t *ctx,
                                      st1vafe3bx_mlc_odr_val_t val)
 {
   st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
@@ -4283,7 +4303,7 @@ int32_t st1vafe3bx_mlc_data_rate_set(const stmdev_ctx_t *ctx,
   *                  reg EMB_FUNC_ODR_CFG_C
   *
   */
-int32_t st1vafe3bx_mlc_data_rate_get(const stmdev_ctx_t *ctx,
+int32_t st1vafe3bx_mlc_data_rate_get(const st1vafe3bx_ctx_t *ctx,
                                      st1vafe3bx_mlc_odr_val_t *val)
 {
   st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
@@ -4365,7 +4385,7 @@ int32_t st1vafe3bx_mlc_data_rate_get(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_mlc_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t st1vafe3bx_mlc_fifo_en_set(const st1vafe3bx_ctx_t *ctx, uint8_t val)
 {
   st1vafe3bx_emb_func_fifo_en_t fifo_reg;
   int32_t ret;
@@ -4394,7 +4414,7 @@ int32_t st1vafe3bx_mlc_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t st1vafe3bx_mlc_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t st1vafe3bx_mlc_fifo_en_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val)
 {
   st1vafe3bx_emb_func_fifo_en_t fifo_reg;
   int32_t ret;

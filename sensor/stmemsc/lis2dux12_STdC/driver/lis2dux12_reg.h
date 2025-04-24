@@ -350,13 +350,15 @@ typedef struct
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t fifo_mode                    : 3;
   uint8_t stop_on_fth                  : 1;
-  uint8_t not_used0                    : 2;
+  uint8_t not_used0                    : 1;
+  uint8_t dis_hard_rst_cs              : 1;
   uint8_t fifo_depth                   : 1;
   uint8_t cfg_chg_en                   : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
   uint8_t cfg_chg_en                   : 1;
   uint8_t fifo_depth                   : 1;
-  uint8_t not_used0                    : 2;
+  uint8_t dis_hard_rst_cs              : 1;
+  uint8_t not_used0                    : 1;
   uint8_t stop_on_fth                  : 1;
   uint8_t fifo_mode                    : 3;
 #endif /* DRV_BYTE_ORDER */
@@ -2228,6 +2230,9 @@ int32_t lis2dux12_self_test_stop(const stmdev_ctx_t *ctx);
 int32_t lis2dux12_enter_deep_power_down(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lis2dux12_exit_deep_power_down(const stmdev_ctx_t *ctx);
 
+int32_t lis2dux12_disable_hard_reset_from_cs_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2dux12_disable_hard_reset_from_cs_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
 typedef enum
 {
   LIS2DUX12_I3C_BUS_AVAIL_TIME_20US = 0x0,
@@ -2391,6 +2396,12 @@ typedef enum
   LIS2DUX12_BDR_XL_ODR_OFF         = 0x7,
 } lis2dux12_bdr_xl_t;
 
+typedef enum
+{
+  LIS2DUX12_FIFO_EV_WTM           = 0x0,
+  LIS2DUX12_FIFO_EV_FULL          = 0x1,
+} lis2dux12_fifo_event_t;
+
 typedef struct
 {
   lis2dux12_operation_t operation;
@@ -2398,6 +2409,7 @@ typedef struct
   uint8_t xl_only                      : 1; /* only XL samples (16-bit) are stored in FIFO */
   uint8_t watermark                    : 7; /* (0 disable) max 127 @16bit, even and max 256 @8bit.*/
   uint8_t cfg_change_in_fifo           : 1;
+  lis2dux12_fifo_event_t fifo_event      : 1; /* 0: FIFO watermark, 1: FIFO full */
   struct
   {
     lis2dux12_dec_ts_t dec_ts; /* decimation for timestamp batching*/

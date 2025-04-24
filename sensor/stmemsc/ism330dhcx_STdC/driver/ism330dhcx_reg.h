@@ -131,33 +131,6 @@ typedef struct
 
 #endif /* MEMS_SHARED_TYPES */
 
-#ifndef MEMS_UCF_SHARED_TYPES
-#define MEMS_UCF_SHARED_TYPES
-
-/** @defgroup    Generic address-data structure definition
-  * @brief       This structure is useful to load a predefined configuration
-  *              of a sensor.
-  *              You can create a sensor configuration by your own or using
-  *              Unico / Unicleo tools available on STMicroelectronics
-  *              web site.
-  *
-  * @{
-  *
-  */
-
-typedef struct
-{
-  uint8_t address;
-  uint8_t data;
-} ucf_line_t;
-
-/**
-  * @}
-  *
-  */
-
-#endif /* MEMS_UCF_SHARED_TYPES */
-
 /**
   * @}
   *
@@ -2694,152 +2667,6 @@ typedef struct
   *
   */
 
-/**
-  * @defgroup ISM330DHCX_Register_Union
-  * @brief    This union group all the registers having a bit-field
-  *           description.
-  *           This union is useful but it's not needed by the driver.
-  *
-  *           REMOVING this union you are compliant with:
-  *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
-  *
-  * @{
-  *
-  */
-typedef union
-{
-  ism330dhcx_func_cfg_access_t               func_cfg_access;
-  ism330dhcx_pin_ctrl_t                      pin_ctrl;
-  ism330dhcx_fifo_ctrl1_t                    fifo_ctrl1;
-  ism330dhcx_fifo_ctrl2_t                    fifo_ctrl2;
-  ism330dhcx_fifo_ctrl3_t                    fifo_ctrl3;
-  ism330dhcx_fifo_ctrl4_t                    fifo_ctrl4;
-  ism330dhcx_counter_bdr_reg1_t              counter_bdr_reg1;
-  ism330dhcx_counter_bdr_reg2_t              counter_bdr_reg2;
-  ism330dhcx_int1_ctrl_t                     int1_ctrl;
-  ism330dhcx_int2_ctrl_t                     int2_ctrl;
-  ism330dhcx_ctrl1_xl_t                      ctrl1_xl;
-  ism330dhcx_ctrl2_g_t                       ctrl2_g;
-  ism330dhcx_ctrl3_c_t                       ctrl3_c;
-  ism330dhcx_ctrl4_c_t                       ctrl4_c;
-  ism330dhcx_ctrl5_c_t                       ctrl5_c;
-  ism330dhcx_ctrl6_c_t                       ctrl6_c;
-  ism330dhcx_ctrl7_g_t                       ctrl7_g;
-  ism330dhcx_ctrl8_xl_t                      ctrl8_xl;
-  ism330dhcx_ctrl9_xl_t                      ctrl9_xl;
-  ism330dhcx_ctrl10_c_t                      ctrl10_c;
-  ism330dhcx_all_int_src_t                   all_int_src;
-  ism330dhcx_wake_up_src_t                   wake_up_src;
-  ism330dhcx_tap_src_t                       tap_src;
-  ism330dhcx_d6d_src_t                       d6d_src;
-  ism330dhcx_status_reg_t                    status_reg;
-  ism330dhcx_status_spiaux_t                 status_spiaux;
-  ism330dhcx_fifo_status1_t                  fifo_status1;
-  ism330dhcx_fifo_status2_t                  fifo_status2;
-  ism330dhcx_tap_cfg0_t                      tap_cfg0;
-  ism330dhcx_tap_cfg1_t                      tap_cfg1;
-  ism330dhcx_tap_cfg2_t                      tap_cfg2;
-  ism330dhcx_tap_ths_6d_t                    tap_ths_6d;
-  ism330dhcx_int_dur2_t                      int_dur2;
-  ism330dhcx_wake_up_ths_t                   wake_up_ths;
-  ism330dhcx_wake_up_dur_t                   wake_up_dur;
-  ism330dhcx_free_fall_t                     free_fall;
-  ism330dhcx_md1_cfg_t                       md1_cfg;
-  ism330dhcx_md2_cfg_t                       md2_cfg;
-  ism330dhcx_internal_freq_fine_t            internal_freq_fine;
-  ism330dhcx_int_ois_t                       int_ois;
-  ism330dhcx_ctrl1_ois_t                     ctrl1_ois;
-  ism330dhcx_ctrl2_ois_t                     ctrl2_ois;
-  ism330dhcx_ctrl3_ois_t                     ctrl3_ois;
-  ism330dhcx_fifo_data_out_tag_t             fifo_data_out_tag;
-  ism330dhcx_page_sel_t                      page_sel;
-  ism330dhcx_emb_func_en_a_t                 emb_func_en_a;
-  ism330dhcx_emb_func_en_b_t                 emb_func_en_b;
-  ism330dhcx_page_address_t                  page_address;
-  ism330dhcx_page_value_t                    page_value;
-  ism330dhcx_emb_func_int1_t                 emb_func_int1;
-  ism330dhcx_fsm_int1_a_t                    fsm_int1_a;
-  ism330dhcx_fsm_int1_b_t                    fsm_int1_b;
-  ism330dhcx_mlc_int1_t                      mlc_int1;
-  ism330dhcx_emb_func_int2_t                 emb_func_int2;
-  ism330dhcx_fsm_int2_a_t                    fsm_int2_a;
-  ism330dhcx_fsm_int2_b_t                    fsm_int2_b;
-  ism330dhcx_mlc_int2_t                      mlc_int2;
-  ism330dhcx_emb_func_status_t               emb_func_status;
-  ism330dhcx_fsm_status_a_t                  fsm_status_a;
-  ism330dhcx_fsm_status_b_t                  fsm_status_b;
-  ism330dhcx_mlc_status_mainpage_t           mlc_status_mainpage;
-  ism330dhcx_page_rw_t                       page_rw;
-  ism330dhcx_emb_func_fifo_cfg_t             emb_func_fifo_cfg;
-  ism330dhcx_fsm_enable_a_t                  fsm_enable_a;
-  ism330dhcx_fsm_enable_b_t                  fsm_enable_b;
-  ism330dhcx_fsm_long_counter_clear_t        fsm_long_counter_clear;
-  ism330dhcx_fsm_outs1_t                     fsm_outs1;
-  ism330dhcx_fsm_outs2_t                     fsm_outs2;
-  ism330dhcx_fsm_outs3_t                     fsm_outs3;
-  ism330dhcx_fsm_outs4_t                     fsm_outs4;
-  ism330dhcx_fsm_outs5_t                     fsm_outs5;
-  ism330dhcx_fsm_outs6_t                     fsm_outs6;
-  ism330dhcx_fsm_outs7_t                     fsm_outs7;
-  ism330dhcx_fsm_outs8_t                     fsm_outs8;
-  ism330dhcx_fsm_outs9_t                     fsm_outs9;
-  ism330dhcx_fsm_outs10_t                    fsm_outs10;
-  ism330dhcx_fsm_outs11_t                    fsm_outs11;
-  ism330dhcx_fsm_outs12_t                    fsm_outs12;
-  ism330dhcx_fsm_outs13_t                    fsm_outs13;
-  ism330dhcx_fsm_outs14_t                    fsm_outs14;
-  ism330dhcx_fsm_outs15_t                    fsm_outs15;
-  ism330dhcx_fsm_outs16_t                    fsm_outs16;
-  ism330dhcx_emb_func_odr_cfg_b_t            emb_func_odr_cfg_b;
-  ism330dhcx_emb_func_odr_cfg_c_t            emb_func_odr_cfg_c_t;
-  ism330dhcx_emb_func_src_t                  emb_func_src;
-  ism330dhcx_emb_func_init_a_t               emb_func_init_a;
-  ism330dhcx_emb_func_init_b_t               emb_func_init_b;
-  ism330dhcx_mag_cfg_a_t                     mag_cfg_a;
-  ism330dhcx_mag_cfg_b_t                     mag_cfg_b;
-  ism330dhcx_pedo_cmd_reg_t                  pedo_cmd_reg;
-  ism330dhcx_sensor_hub_1_t                  sensor_hub_1;
-  ism330dhcx_sensor_hub_2_t                  sensor_hub_2;
-  ism330dhcx_sensor_hub_3_t                  sensor_hub_3;
-  ism330dhcx_sensor_hub_4_t                  sensor_hub_4;
-  ism330dhcx_sensor_hub_5_t                  sensor_hub_5;
-  ism330dhcx_sensor_hub_6_t                  sensor_hub_6;
-  ism330dhcx_sensor_hub_7_t                  sensor_hub_7;
-  ism330dhcx_sensor_hub_8_t                  sensor_hub_8;
-  ism330dhcx_sensor_hub_9_t                  sensor_hub_9;
-  ism330dhcx_sensor_hub_10_t                 sensor_hub_10;
-  ism330dhcx_sensor_hub_11_t                 sensor_hub_11;
-  ism330dhcx_sensor_hub_12_t                 sensor_hub_12;
-  ism330dhcx_sensor_hub_13_t                 sensor_hub_13;
-  ism330dhcx_sensor_hub_14_t                 sensor_hub_14;
-  ism330dhcx_sensor_hub_15_t                 sensor_hub_15;
-  ism330dhcx_sensor_hub_16_t                 sensor_hub_16;
-  ism330dhcx_sensor_hub_17_t                 sensor_hub_17;
-  ism330dhcx_sensor_hub_18_t                 sensor_hub_18;
-  ism330dhcx_master_config_t                 master_config;
-  ism330dhcx_slv0_add_t                      slv0_add;
-  ism330dhcx_slv0_subadd_t                   slv0_subadd;
-  ism330dhcx_slv0_config_t                   slv0_config;
-  ism330dhcx_slv1_add_t                      slv1_add;
-  ism330dhcx_slv1_subadd_t                   slv1_subadd;
-  ism330dhcx_slv1_config_t                   slv1_config;
-  ism330dhcx_slv2_add_t                      slv2_add;
-  ism330dhcx_slv2_subadd_t                   slv2_subadd;
-  ism330dhcx_slv2_config_t                   slv2_config;
-  ism330dhcx_slv3_add_t                      slv3_add;
-  ism330dhcx_slv3_subadd_t                   slv3_subadd;
-  ism330dhcx_slv3_config_t                   slv3_config;
-  ism330dhcx_datawrite_slv0_t                datawrite_slv0;
-  ism330dhcx_status_master_t                 status_master;
-  bitwise_t                                 bitwise;
-  uint8_t                                   byte;
-} ism330dhcx_reg_t;
-
-/**
-  * @}
-  *
-  */
-
 #ifndef __weak
 #define __weak __attribute__((weak))
 #endif /* __weak */
@@ -2856,7 +2683,7 @@ int32_t ism330dhcx_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                             uint8_t *data,
                             uint16_t len);
 int32_t ism330dhcx_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
-                             uint8_t *data,
+                             const uint8_t *data,
                              uint16_t len);
 
 float_t ism330dhcx_from_fs2g_to_mg(int16_t lsb);
@@ -3047,8 +2874,6 @@ int32_t ism330dhcx_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
 int32_t ism330dhcx_fifo_out_raw_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism330dhcx_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *val);
-
 int32_t ism330dhcx_device_conf_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism330dhcx_device_conf_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
@@ -3128,8 +2953,8 @@ int32_t ism330dhcx_xl_filter_lp2_get(const stmdev_ctx_t *ctx, uint8_t *val);
 int32_t ism330dhcx_gy_filter_lp1_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism330dhcx_gy_filter_lp1_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism330dhcx_filter_settling_mask_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism330dhcx_filter_settling_mask_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism330dhcx_drdy_mask_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism330dhcx_drdy_mask_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -3189,10 +3014,10 @@ typedef enum
   ISM330DHCX_USE_SLOPE = 0,
   ISM330DHCX_USE_HPF   = 1,
 } ism330dhcx_slope_fds_t;
-int32_t ism330dhcx_xl_hp_path_internal_set(const stmdev_ctx_t *ctx,
-                                           ism330dhcx_slope_fds_t val);
-int32_t ism330dhcx_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
-                                           ism330dhcx_slope_fds_t *val);
+int32_t ism330dhcx_xl_hp_slope_filter_set(const stmdev_ctx_t *ctx,
+                                          ism330dhcx_slope_fds_t val);
+int32_t ism330dhcx_xl_hp_slope_filter_get(const stmdev_ctx_t *ctx,
+                                          ism330dhcx_slope_fds_t *val);
 
 typedef enum
 {
@@ -3202,10 +3027,10 @@ typedef enum
   ISM330DHCX_HP_FILTER_260mHz   = 0x82,
   ISM330DHCX_HP_FILTER_1Hz04    = 0x83,
 } ism330dhcx_hpm_g_t;
-int32_t ism330dhcx_gy_hp_path_internal_set(const stmdev_ctx_t *ctx,
-                                           ism330dhcx_hpm_g_t val);
-int32_t ism330dhcx_gy_hp_path_internal_get(const stmdev_ctx_t *ctx,
-                                           ism330dhcx_hpm_g_t *val);
+int32_t ism330dhcx_gy_hp_filter_set(const stmdev_ctx_t *ctx,
+                                    ism330dhcx_hpm_g_t val);
+int32_t ism330dhcx_gy_hp_filter_get(const stmdev_ctx_t *ctx,
+                                    ism330dhcx_hpm_g_t *val);
 
 typedef enum
 {
@@ -3315,10 +3140,10 @@ typedef enum
   ISM330DHCX_172Hz70 = 2,
   ISM330DHCX_937Hz91 = 3,
 } ism330dhcx_ftype_ois_t;
-int32_t ism330dhcx_aux_gy_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
-                                            ism330dhcx_ftype_ois_t val);
-int32_t ism330dhcx_aux_gy_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
-                                            ism330dhcx_ftype_ois_t *val);
+int32_t ism330dhcx_aux_gy_lp1_filter_set(const stmdev_ctx_t *ctx,
+                                         ism330dhcx_ftype_ois_t val);
+int32_t ism330dhcx_aux_gy_lp1_filter_get(const stmdev_ctx_t *ctx,
+                                         ism330dhcx_ftype_ois_t *val);
 
 typedef enum
 {
@@ -3328,10 +3153,10 @@ typedef enum
   ISM330DHCX_AUX_HP_Hz260   = 0x12,
   ISM330DHCX_AUX_HP_1Hz040  = 0x13,
 } ism330dhcx_hpm_ois_t;
-int32_t ism330dhcx_aux_gy_hp_bandwidth_set(const stmdev_ctx_t *ctx,
-                                           ism330dhcx_hpm_ois_t val);
-int32_t ism330dhcx_aux_gy_hp_bandwidth_get(const stmdev_ctx_t *ctx,
-                                           ism330dhcx_hpm_ois_t *val);
+int32_t ism330dhcx_aux_gy_hp_filter_set(const stmdev_ctx_t *ctx,
+                                        ism330dhcx_hpm_ois_t val);
+int32_t ism330dhcx_aux_gy_hp_filter_get(const stmdev_ctx_t *ctx,
+                                        ism330dhcx_hpm_ois_t *val);
 
 typedef enum
 {
@@ -3489,10 +3314,8 @@ int32_t ism330dhcx_wkup_threshold_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism330dhcx_wkup_threshold_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
-int32_t ism330dhcx_xl_usr_offset_on_wkup_set(const stmdev_ctx_t *ctx,
-                                             uint8_t val);
-int32_t ism330dhcx_xl_usr_offset_on_wkup_get(const stmdev_ctx_t *ctx,
-                                             uint8_t *val);
+int32_t ism330dhcx_xl_usr_off_on_wu_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism330dhcx_xl_usr_off_on_wu_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t ism330dhcx_wkup_dur_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism330dhcx_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -3505,10 +3328,10 @@ typedef enum
   ISM330DHCX_DRIVE_SLEEP_CHG_EVENT = 0,
   ISM330DHCX_DRIVE_SLEEP_STATUS    = 1,
 } ism330dhcx_sleep_status_on_int_t;
-int32_t ism330dhcx_act_pin_notification_set(const stmdev_ctx_t *ctx,
-                                            ism330dhcx_sleep_status_on_int_t val);
-int32_t ism330dhcx_act_pin_notification_get(const stmdev_ctx_t *ctx,
-                                            ism330dhcx_sleep_status_on_int_t *val);
+int32_t ism330dhcx_slp_status_route_set(const stmdev_ctx_t *ctx,
+                                        ism330dhcx_sleep_status_on_int_t val);
+int32_t ism330dhcx_slp_status_route_get(const stmdev_ctx_t *ctx,
+                                        ism330dhcx_sleep_status_on_int_t *val);
 
 typedef enum
 {
@@ -3525,20 +3348,14 @@ int32_t ism330dhcx_act_mode_get(const stmdev_ctx_t *ctx,
 int32_t ism330dhcx_act_sleep_dur_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism330dhcx_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism330dhcx_tap_detection_on_z_set(const stmdev_ctx_t *ctx,
-                                          uint8_t val);
-int32_t ism330dhcx_tap_detection_on_z_get(const stmdev_ctx_t *ctx,
-                                          uint8_t *val);
+int32_t ism330dhcx_tap_detect_on_z_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism330dhcx_tap_detect_on_z_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism330dhcx_tap_detection_on_y_set(const stmdev_ctx_t *ctx,
-                                          uint8_t val);
-int32_t ism330dhcx_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
-                                          uint8_t *val);
+int32_t ism330dhcx_tap_detect_on_y_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism330dhcx_tap_detect_on_y_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism330dhcx_tap_detection_on_x_set(const stmdev_ctx_t *ctx,
-                                          uint8_t val);
-int32_t ism330dhcx_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
-                                          uint8_t *val);
+int32_t ism330dhcx_tap_detect_on_x_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism330dhcx_tap_detect_on_x_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t ism330dhcx_tap_threshold_x_set(const stmdev_ctx_t *ctx,
                                        uint8_t val);
@@ -3627,10 +3444,8 @@ int32_t ism330dhcx_fifo_watermark_set(const stmdev_ctx_t *ctx,
 int32_t ism330dhcx_fifo_watermark_get(const stmdev_ctx_t *ctx,
                                       uint16_t *val);
 
-int32_t ism330dhcx_compression_algo_init_set(const stmdev_ctx_t *ctx,
-                                             uint8_t val);
-int32_t ism330dhcx_compression_algo_init_get(const stmdev_ctx_t *ctx,
-                                             uint8_t *val);
+int32_t ism330dhcx_fifo_compr_init_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism330dhcx_fifo_compr_init_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -3645,15 +3460,11 @@ int32_t ism330dhcx_compression_algo_set(const stmdev_ctx_t *ctx,
 int32_t ism330dhcx_compression_algo_get(const stmdev_ctx_t *ctx,
                                         ism330dhcx_uncoptr_rate_t *val);
 
-int32_t ism330dhcx_fifo_virtual_sens_odr_chg_set(const stmdev_ctx_t *ctx,
-                                                 uint8_t val);
-int32_t ism330dhcx_fifo_virtual_sens_odr_chg_get(const stmdev_ctx_t *ctx,
-                                                 uint8_t *val);
+int32_t ism330dhcx_fifo_odr_chg_batch_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism330dhcx_fifo_odr_chg_batch_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism330dhcx_compression_algo_real_time_set(const stmdev_ctx_t *ctx,
-                                                  uint8_t val);
-int32_t ism330dhcx_compression_algo_real_time_get(const stmdev_ctx_t *ctx,
-                                                  uint8_t *val);
+int32_t ism330dhcx_fifo_compr_rt_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ism330dhcx_fifo_compr_rt_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t ism330dhcx_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx,
                                         uint8_t val);
@@ -3733,30 +3544,28 @@ typedef enum
   ISM330DHCX_DEC_8         = 2,
   ISM330DHCX_DEC_32        = 3,
 } ism330dhcx_odr_ts_batch_t;
-int32_t ism330dhcx_fifo_timestamp_decimation_set(const stmdev_ctx_t *ctx,
-                                                 ism330dhcx_odr_ts_batch_t val);
-int32_t ism330dhcx_fifo_timestamp_decimation_get(const stmdev_ctx_t *ctx,
-                                                 ism330dhcx_odr_ts_batch_t *val);
+int32_t ism330dhcx_fifo_ts_dec_set(const stmdev_ctx_t *ctx,
+                                   ism330dhcx_odr_ts_batch_t val);
+int32_t ism330dhcx_fifo_ts_dec_get(const stmdev_ctx_t *ctx,
+                                   ism330dhcx_odr_ts_batch_t *val);
 
 typedef enum
 {
   ISM330DHCX_XL_BATCH_EVENT   = 0,
   ISM330DHCX_GYRO_BATCH_EVENT = 1,
 } ism330dhcx_trig_counter_bdr_t;
-int32_t ism330dhcx_fifo_cnt_event_batch_set(const stmdev_ctx_t *ctx,
-                                            ism330dhcx_trig_counter_bdr_t val);
-int32_t ism330dhcx_fifo_cnt_event_batch_get(const stmdev_ctx_t *ctx,
-                                            ism330dhcx_trig_counter_bdr_t *val);
+int32_t ism330dhcx_fifo_trig_cnt_bdr_set(const stmdev_ctx_t *ctx,
+                                         ism330dhcx_trig_counter_bdr_t val);
+int32_t ism330dhcx_fifo_trig_cnt_bdr_get(const stmdev_ctx_t *ctx,
+                                         ism330dhcx_trig_counter_bdr_t *val);
 
 int32_t ism330dhcx_rst_batch_counter_set(const stmdev_ctx_t *ctx,
                                          uint8_t val);
 int32_t ism330dhcx_rst_batch_counter_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val);
 
-int32_t ism330dhcx_batch_counter_threshold_set(const stmdev_ctx_t *ctx,
-                                               uint16_t val);
-int32_t ism330dhcx_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
-                                               uint16_t *val);
+int32_t ism330dhcx_batch_counter_th_set(const stmdev_ctx_t *ctx, uint16_t val);
+int32_t ism330dhcx_batch_counter_th_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
 int32_t ism330dhcx_fifo_data_level_get(const stmdev_ctx_t *ctx,
                                        uint16_t *val);
@@ -3879,10 +3688,8 @@ int32_t ism330dhcx_pedo_sens_get(const stmdev_ctx_t *ctx, uint8_t *val);
 int32_t ism330dhcx_pedo_step_detect_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val);
 
-int32_t ism330dhcx_pedo_debounce_steps_set(const stmdev_ctx_t *ctx,
-                                           uint8_t *val);
-int32_t ism330dhcx_pedo_debounce_steps_get(const stmdev_ctx_t *ctx,
-                                           uint8_t *val);
+int32_t ism330dhcx_pedo_deb_steps_set(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism330dhcx_pedo_deb_steps_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t ism330dhcx_pedo_steps_period_set(const stmdev_ctx_t *ctx,
                                          uint16_t val);
@@ -4033,15 +3840,11 @@ int32_t ism330dhcx_fsm_data_rate_get(const stmdev_ctx_t *ctx,
 int32_t ism330dhcx_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism330dhcx_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism330dhcx_long_cnt_int_value_set(const stmdev_ctx_t *ctx,
-                                          uint16_t val);
-int32_t ism330dhcx_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
-                                          uint16_t *val);
+int32_t ism330dhcx_fsm_lc_int_value_set(const stmdev_ctx_t *ctx, uint16_t val);
+int32_t ism330dhcx_fsm_lc_int_value_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
-int32_t ism330dhcx_fsm_number_of_programs_set(const stmdev_ctx_t *ctx,
-                                              uint8_t *val);
-int32_t ism330dhcx_fsm_number_of_programs_get(const stmdev_ctx_t *ctx,
-                                              uint8_t *val);
+int32_t ism330dhcx_fsm_programs_num_set(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ism330dhcx_fsm_programs_num_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t ism330dhcx_fsm_start_address_set(const stmdev_ctx_t *ctx,
                                          uint16_t val);
