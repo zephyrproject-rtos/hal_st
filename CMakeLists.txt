@@ -40,3 +40,6 @@ endif()
 
 # STMEMSC - Hardware Abstraction Layer for ST sensor
 add_subdirectory_ifdef(CONFIG_HAS_STMEMSC sensor/stmemsc)
+
+# Add sensor common include files
+zephyr_include_directories(sensor/inc)
