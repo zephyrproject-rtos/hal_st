@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -184,6 +183,9 @@ int32_t lps22hb_autozero_rst_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_INTERRUPT_CFG,
                          (uint8_t *)&interrupt_cfg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = interrupt_cfg.reset_az;
 
   return ret;
@@ -230,6 +232,9 @@ int32_t lps22hb_autozero_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_INTERRUPT_CFG,
                          (uint8_t *)&interrupt_cfg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = interrupt_cfg.autozero;
 
   return ret;
@@ -276,6 +281,9 @@ int32_t lps22hb_pressure_snap_rst_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_INTERRUPT_CFG,
                          (uint8_t *)&interrupt_cfg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = interrupt_cfg.reset_arp;
 
   return ret;
@@ -322,6 +330,9 @@ int32_t lps22hb_pressure_snap_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_INTERRUPT_CFG,
                          (uint8_t *)&interrupt_cfg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = interrupt_cfg.autorifp;
 
   return ret;
@@ -365,6 +376,9 @@ int32_t lps22hb_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg1.bdu;
 
   return ret;
@@ -410,6 +424,8 @@ int32_t lps22hb_low_pass_filter_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg1.lpfp)
   {
@@ -471,6 +487,8 @@ int32_t lps22hb_data_rate_get(const stmdev_ctx_t *ctx, lps22hb_odr_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg1.odr)
   {
@@ -544,6 +562,9 @@ int32_t lps22hb_one_shoot_trigger_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg2.one_shot;
 
   return ret;
@@ -589,6 +610,9 @@ int32_t lps22hb_pressure_ref_get(const stmdev_ctx_t *ctx, int32_t *val)
   int32_t ret;
 
   ret =  lps22hb_read_reg(ctx, LPS22HB_REF_P_XL, buff, 3);
+
+  if (ret != 0) { return ret; }
+
   *val = (int32_t)buff[2];
   *val = (*val * 256) + (int32_t)buff[1];
   *val = (*val * 256) + (int32_t)buff[0];
@@ -632,6 +656,9 @@ int32_t lps22hb_pressure_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret =  lps22hb_read_reg(ctx, LPS22HB_RPDS_L, buff, 2);
+
+  if (ret != 0) { return ret; }
+
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
 
@@ -652,6 +679,9 @@ int32_t lps22hb_press_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_STATUS, (uint8_t *)&status, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status.p_da;
 
   return ret;
@@ -671,6 +701,9 @@ int32_t lps22hb_temp_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_STATUS, (uint8_t *)&status, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status.t_da;
 
   return ret;
@@ -691,6 +724,9 @@ int32_t lps22hb_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *press_val, uint
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_STATUS, (uint8_t *)&status, 1);
+
+  if (ret != 0) { return ret; }
+
   *press_val = status.p_da;
   *temp_val = status.t_da;
 
@@ -711,6 +747,9 @@ int32_t lps22hb_press_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_STATUS, (uint8_t *)&status, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status.p_or;
 
   return ret;
@@ -730,6 +769,9 @@ int32_t lps22hb_temp_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_STATUS, (uint8_t *)&status, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status.t_or;
 
   return ret;
@@ -749,6 +791,9 @@ int32_t lps22hb_pressure_raw_get(const stmdev_ctx_t *ctx, uint32_t *buff)
   int32_t ret;
 
   ret =  lps22hb_read_reg(ctx, LPS22HB_PRESS_OUT_XL, reg, 3);
+
+  if (ret != 0) { return ret; }
+
   *buff = reg[2];
   *buff = (*buff * 256) + reg[1];
   *buff = (*buff * 256) + reg[0];
@@ -771,6 +816,9 @@ int32_t lps22hb_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *buff)
   int32_t ret;
 
   ret =  lps22hb_read_reg(ctx, LPS22HB_TEMP_OUT_L, (uint8_t *) reg, 2);
+
+  if (ret != 0) { return ret; }
+
   *buff = reg[1];
   *buff = (*buff * 256) + reg[0];
 
@@ -910,6 +958,9 @@ int32_t lps22hb_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg2.swreset;
 
   return ret;
@@ -953,6 +1004,9 @@ int32_t lps22hb_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg2.boot;
 
   return ret;
@@ -996,6 +1050,9 @@ int32_t lps22hb_low_power_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_RES_CONF, (uint8_t *)&res_conf, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = res_conf.lc_en;
 
   return ret;
@@ -1016,6 +1073,9 @@ int32_t lps22hb_boot_status_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_INT_SOURCE,
                          (uint8_t *)&int_source, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = int_source.boot_status;
 
   return ret;
@@ -1095,6 +1155,8 @@ int32_t lps22hb_sign_of_int_threshold_get(const stmdev_ctx_t *ctx,
   ret = lps22hb_read_reg(ctx, LPS22HB_INTERRUPT_CFG,
                          (uint8_t *)&interrupt_cfg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (interrupt_cfg.pe)
   {
     case LPS22HB_NO_THRESHOLD:
@@ -1167,6 +1229,8 @@ int32_t lps22hb_int_notification_mode_get(const stmdev_ctx_t *ctx,
   ret = lps22hb_read_reg(ctx, LPS22HB_INTERRUPT_CFG,
                          (uint8_t *)&interrupt_cfg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (interrupt_cfg.lir)
   {
     case LPS22HB_INT_PULSED:
@@ -1226,6 +1290,9 @@ int32_t lps22hb_int_generation_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_INTERRUPT_CFG,
                          (uint8_t *)&interrupt_cfg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = interrupt_cfg.diff_en;
 
   return ret;
@@ -1265,6 +1332,9 @@ int32_t lps22hb_int_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
   int32_t ret;
 
   ret =  lps22hb_read_reg(ctx, LPS22HB_THS_P_L, (uint8_t *) buff, 2);
+
+  if (ret != 0) { return ret; }
+
   *val = buff[1];
   *val = (*val * 256) + buff[0];
 
@@ -1311,6 +1381,8 @@ int32_t lps22hb_int_pin_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg3.int_s)
   {
@@ -1376,6 +1448,9 @@ int32_t lps22hb_drdy_on_int_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg3.drdy;
 
   return ret;
@@ -1419,6 +1494,9 @@ int32_t lps22hb_fifo_ovr_on_int_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg3.f_ovr;
 
   return ret;
@@ -1464,6 +1542,9 @@ int32_t lps22hb_fifo_threshold_on_int_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg3.f_fth;
 
   return ret;
@@ -1507,6 +1588,9 @@ int32_t lps22hb_fifo_full_on_int_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg3.f_fss5;
 
   return ret;
@@ -1550,6 +1634,8 @@ int32_t lps22hb_pin_mode_get(const stmdev_ctx_t *ctx, lps22hb_pp_od_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg3.pp_od)
   {
@@ -1610,6 +1696,8 @@ int32_t lps22hb_int_polarity_get(const stmdev_ctx_t *ctx,
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg3.int_h_l)
   {
     case LPS22HB_ACTIVE_HIGH:
@@ -1661,6 +1749,9 @@ int32_t lps22hb_int_on_press_high_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_INT_SOURCE,
                          (uint8_t *)&int_source, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = int_source.ph;
 
   return ret;
@@ -1681,6 +1772,9 @@ int32_t lps22hb_int_on_press_low_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_INT_SOURCE,
                          (uint8_t *)&int_source, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = int_source.pl;
 
   return ret;
@@ -1701,6 +1795,9 @@ int32_t lps22hb_interrupt_event_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_INT_SOURCE,
                          (uint8_t *)&int_source, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = int_source.ia;
 
   return ret;
@@ -1759,6 +1856,9 @@ int32_t lps22hb_stop_on_fifo_threshold_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg2.stop_on_fth;
 
   return ret;
@@ -1802,6 +1902,9 @@ int32_t lps22hb_fifo_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg2.fifo_en;
 
   return ret;
@@ -1845,6 +1948,9 @@ int32_t lps22hb_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_ctrl.wtm;
 
   return ret;
@@ -1889,6 +1995,8 @@ int32_t lps22hb_fifo_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (fifo_ctrl.f_mode)
   {
@@ -1943,6 +2051,9 @@ int32_t lps22hb_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_FIFO_STATUS,
                          (uint8_t *)&fifo_status, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_status.fss;
 
   return ret;
@@ -1963,6 +2074,9 @@ int32_t lps22hb_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_FIFO_STATUS,
                          (uint8_t *)&fifo_status, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_status.ovr;
 
   return ret;
@@ -1983,6 +2097,9 @@ int32_t lps22hb_fifo_fth_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps22hb_read_reg(ctx, LPS22HB_FIFO_STATUS,
                          (uint8_t *)&fifo_status, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_status.fth_fifo;
 
   return ret;
@@ -2039,6 +2156,8 @@ int32_t lps22hb_spi_mode_get(const stmdev_ctx_t *ctx, lps22hb_sim_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg1.sim)
   {
@@ -2099,6 +2218,8 @@ int32_t lps22hb_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg2.i2c_dis)
   {
     case LPS22HB_I2C_ENABLE:
@@ -2157,6 +2278,9 @@ int32_t lps22hb_auto_add_inc_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lps22hb_read_reg(ctx, LPS22HB_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg2.if_add_inc;
 
   return ret;
@@ -2171,5 +2295,3 @@ int32_t lps22hb_auto_add_inc_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

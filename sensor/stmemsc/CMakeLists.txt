@@ -35,6 +35,7 @@ set(stmems_pids
   ism330dhcx
   ism330dlc
   ism330is
+  ism6hg256x
   l3gd20h
   lis25ba
   lis2de12

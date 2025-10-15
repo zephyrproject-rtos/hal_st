@@ -7,13 +7,12 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
- * All rights reserved.</center></h2>
+ * Copyright (c) 2022 STMicroelectronics.
+ * All rights reserved.
  *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
  *
  ******************************************************************************
  */
@@ -122,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -2093,7 +2095,6 @@ typedef struct
   uint8_t sw_reset                     : 1; /* Restoring configuration registers */
   uint8_t boot                         : 1; /* Restoring calibration parameters */
   uint8_t drdy                         : 1; /* Accelerometer data ready */
-  uint8_t power_down                   : 1; /* Monitors power-down. */
 } lis2dux12_status_t;
 int32_t lis2dux12_status_get(const stmdev_ctx_t *ctx, lis2dux12_status_t *val);
 
@@ -2172,7 +2173,6 @@ int32_t lis2dux12_trigger_sw(const stmdev_ctx_t *ctx, const lis2dux12_md_t *md);
 typedef struct
 {
   uint8_t drdy                         : 1;
-  uint8_t timestamp                    : 1;
   uint8_t free_fall                    : 1;
   uint8_t wake_up                      : 1;
   uint8_t wake_up_z                    : 1;
@@ -2190,11 +2190,6 @@ typedef struct
   uint8_t six_d_zh                     : 1;
   uint8_t sleep_change                 : 1;
   uint8_t sleep_state                  : 1;
-  uint8_t tilt                         : 1;
-  uint8_t fifo_bdr                     : 1;
-  uint8_t fifo_full                    : 1;
-  uint8_t fifo_ovr                     : 1;
-  uint8_t fifo_th                      : 1;
 } lis2dux12_all_sources_t;
 int32_t lis2dux12_all_sources_get(const stmdev_ctx_t *ctx, lis2dux12_all_sources_t *val);
 
@@ -2407,17 +2402,25 @@ typedef struct
   lis2dux12_operation_t operation;
   lis2dux12_store_t store;
   uint8_t xl_only                      : 1; /* only XL samples (16-bit) are stored in FIFO */
-  uint8_t watermark                    : 7; /* (0 disable) max 127 @16bit, even and max 256 @8bit.*/
   uint8_t cfg_change_in_fifo           : 1;
-  lis2dux12_fifo_event_t fifo_event      : 1; /* 0: FIFO watermark, 1: FIFO full */
-  struct
-  {
-    lis2dux12_dec_ts_t dec_ts; /* decimation for timestamp batching*/
-    lis2dux12_bdr_xl_t bdr_xl; /* accelerometer batch data rate*/
-  } batch;
 } lis2dux12_fifo_mode_t;
 int32_t lis2dux12_fifo_mode_set(const stmdev_ctx_t *ctx, lis2dux12_fifo_mode_t val);
 int32_t lis2dux12_fifo_mode_get(const stmdev_ctx_t *ctx, lis2dux12_fifo_mode_t *val);
+
+int32_t lis2dux12_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2dux12_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
+typedef struct
+{
+  lis2dux12_dec_ts_t dec_ts; /* decimation for timestamp batching*/
+  lis2dux12_bdr_xl_t bdr_xl; /* accelerometer batch data rate*/
+} lis2dux12_fifo_batch_t;
+
+int32_t lis2dux12_fifo_batch_set(const stmdev_ctx_t *ctx, lis2dux12_fifo_batch_t val);
+int32_t lis2dux12_fifo_batch_get(const stmdev_ctx_t *ctx, lis2dux12_fifo_batch_t *val);
+
+int32_t lis2dux12_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, lis2dux12_fifo_event_t val);
+int32_t lis2dux12_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, lis2dux12_fifo_event_t *val);
 
 int32_t lis2dux12_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val);
 int32_t lis2dux12_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -2566,10 +2569,10 @@ typedef enum
 
 typedef enum
 {
-  LIS2DUX12_ODR_NO_CHANGE       = 0,  /* no odr change during inactivity state */
-  LIS2DUX12_ODR_1_6_HZ          = 1,  /* set odr to 1.6Hz during inactivity state */
-  LIS2DUX12_ODR_3_HZ            = 1,  /* set odr to 3Hz during inactivity state */
-  LIS2DUX12_ODR_25_HZ           = 1,  /* set odr to 25Hz during inactivity state */
+  LIS2DUX12_ODR_NO_CHANGE       = 0x0,  /* no odr change during inactivity state */
+  LIS2DUX12_ODR_1_6_HZ          = 0x1,  /* set odr to 1.6Hz during inactivity state */
+  LIS2DUX12_ODR_3_HZ            = 0x2,  /* set odr to 3Hz during inactivity state */
+  LIS2DUX12_ODR_25_HZ           = 0x3,  /* set odr to 25Hz during inactivity state */
 } lis2dux12_inact_odr_t;
 
 typedef struct
@@ -2711,5 +2714,3 @@ int32_t lis2dux12_mlc_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 #endif
 
 #endif /* LIS2DUX12_REGS_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -203,6 +202,8 @@ int32_t lsm6dso32_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL1_XL, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.fs_xl)
   {
     case LSM6DSO32_4g:
@@ -244,7 +245,6 @@ int32_t lsm6dso32_xl_data_rate_set(const stmdev_ctx_t *ctx,
   lsm6dso32_ctrl1_xl_t ctrl1_xl;
   lsm6dso32_ctrl5_c_t ctrl5_c;
   lsm6dso32_ctrl6_c_t ctrl6_c;
-  lsm6dso32_func_cfg_access_t func_cfg_access;
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL1_XL,
@@ -255,12 +255,6 @@ int32_t lsm6dso32_xl_data_rate_set(const stmdev_ctx_t *ctx,
     ctrl1_xl.odr_xl = (uint8_t) LSM6DSO32_XL_ODR_OFF & 0x0FU;
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_CTRL1_XL,
                               (uint8_t *)&ctrl1_xl, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FUNC_CFG_ACCESS,
-                             (uint8_t *)&func_cfg_access, 1);
   }
 
   if (ret == 0)
@@ -318,27 +312,14 @@ int32_t lsm6dso32_xl_data_rate_get(const stmdev_ctx_t *ctx,
   lsm6dso32_ctrl1_xl_t ctrl1_xl;
   lsm6dso32_ctrl5_c_t ctrl5_c;
   lsm6dso32_ctrl6_c_t ctrl6_c;
-  lsm6dso32_func_cfg_access_t func_cfg_access;
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL1_XL,
                            (uint8_t *)&ctrl1_xl, 1);
+  ret += lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL5_C, (uint8_t *) &ctrl5_c, 1);
+  ret += lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL6_C, (uint8_t *) &ctrl6_c, 1);
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FUNC_CFG_ACCESS,
-                             (uint8_t *)&func_cfg_access, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL5_C, (uint8_t *) &ctrl5_c, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL6_C, (uint8_t *) &ctrl6_c, 1);
-  }
+  if (ret != 0) { return ret; }
 
   switch ((ctrl5_c.xl_ulp_en << 5) + (ctrl6_c.xl_hm_mode << 4) +
           ctrl1_xl.odr_xl)
@@ -484,6 +465,8 @@ int32_t lsm6dso32_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL2_G, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.fs_g)
   {
     case LSM6DSO32_250dps:
@@ -578,11 +561,9 @@ int32_t lsm6dso32_gy_data_rate_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
+  ret += lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
-  }
+  if (ret != 0) { return ret; }
 
   switch ((ctrl7_g.g_hm_mode << 4) + ctrl2_g.odr_g)
   {
@@ -698,6 +679,9 @@ int32_t lsm6dso32_block_data_update_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL3_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.bdu;
 
   return ret;
@@ -745,6 +729,8 @@ int32_t lsm6dso32_xl_offset_weight_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL6_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.usr_off_w)
   {
@@ -809,29 +795,26 @@ int32_t lsm6dso32_all_sources_get(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_EMBEDDED_FUNC_BANK);
-  }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_EMB_FUNC_STATUS,
-                             (uint8_t *)&val->emb_func_status, 1);
-  }
+    if (ret == 0)
+    {
+      ret = lsm6dso32_read_reg(ctx, LSM6DSO32_EMB_FUNC_STATUS,
+                               (uint8_t *)&val->emb_func_status, 1);
+    }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FSM_STATUS_A,
-                             (uint8_t *)&val->fsm_status_a, 1);
-  }
+    if (ret == 0)
+    {
+      ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FSM_STATUS_A,
+                               (uint8_t *)&val->fsm_status_a, 1);
+    }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FSM_STATUS_B,
-                             (uint8_t *)&val->fsm_status_b, 1);
-  }
+    if (ret == 0)
+    {
+      ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FSM_STATUS_B,
+                               (uint8_t *)&val->fsm_status_b, 1);
+    }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+    ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -870,6 +853,9 @@ int32_t lsm6dso32_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_STATUS_REG, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.xlda;
 
   return ret;
@@ -890,6 +876,9 @@ int32_t lsm6dso32_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_STATUS_REG, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.gda;
 
   return ret;
@@ -910,6 +899,9 @@ int32_t lsm6dso32_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_STATUS_REG, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.tda;
 
   return ret;
@@ -917,7 +909,7 @@ int32_t lsm6dso32_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Accelerometer X-axis user offset correction expressed in
-  *         two’s complement, weight depends on USR_OFF_W in CTRL6_C (15h).
+  *         two's complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
   * @param  ctx      read / write interface definitions
@@ -936,7 +928,7 @@ int32_t lsm6dso32_xl_usr_offset_x_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -956,7 +948,7 @@ int32_t lsm6dso32_xl_usr_offset_x_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -976,7 +968,7 @@ int32_t lsm6dso32_xl_usr_offset_y_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -996,7 +988,7 @@ int32_t lsm6dso32_xl_usr_offset_y_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer Z-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Z-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -1016,7 +1008,7 @@ int32_t lsm6dso32_xl_usr_offset_z_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer Z-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Z-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -1073,6 +1065,9 @@ int32_t lsm6dso32_xl_usr_offset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL7_G, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.usr_off_on_out;
 
   return ret;
@@ -1129,6 +1124,9 @@ int32_t lsm6dso32_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL10_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.timestamp_en;
 
   return ret;
@@ -1150,6 +1148,9 @@ int32_t lsm6dso32_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TIMESTAMP0, buff, 4);
+
+  if (ret != 0) { return ret; }
+
   *val = buff[3];
   *val = (*val * 256U) +  buff[2];
   *val = (*val * 256U) +  buff[1];
@@ -1212,6 +1213,8 @@ int32_t lsm6dso32_rounding_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL5_C, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.rounding)
   {
     case LSM6DSO32_NO_ROUND:
@@ -1240,7 +1243,7 @@ int32_t lsm6dso32_rounding_mode_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Temperature data output register (r).
-  *         L and H registers together express a 16-bit word in two’s
+  *         L and H registers together express a 16-bit word in two's
   *         complement.[get]
   *
   * @param  ctx      read / write interface definitions
@@ -1254,6 +1257,9 @@ int32_t lsm6dso32_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_OUT_TEMP_L, buff, 2);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
 
@@ -1262,7 +1268,7 @@ int32_t lsm6dso32_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 
 /**
   * @brief  Angular rate sensor. The value is expressed as a 16-bit
-  *         word in two’s complement.[get]
+  *         word in two's complement.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read
@@ -1276,6 +1282,9 @@ int32_t lsm6dso32_angular_rate_raw_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_OUTX_L_G, buff, 6);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1288,7 +1297,7 @@ int32_t lsm6dso32_angular_rate_raw_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Linear acceleration output register.
-  *         The value is expressed as a 16-bit word in two’s complement.[get]
+  *         The value is expressed as a 16-bit word in two's complement.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read
@@ -1302,6 +1311,9 @@ int32_t lsm6dso32_acceleration_raw_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_OUTX_L_A, buff, 6);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1354,8 +1366,9 @@ int32_t lsm6dso32_number_of_steps_get(const stmdev_ctx_t *ctx,
   {
     *val = buff[1];
     *val = (*val * 256U) +  buff[0];
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
+
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -1386,10 +1399,7 @@ int32_t lsm6dso32_steps_reset(const stmdev_ctx_t *ctx)
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -1452,6 +1462,9 @@ int32_t lsm6dso32_odr_cal_reg_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_INTERNAL_FREQ_FINE,
                            (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.freq_fine;
 
   return ret;
@@ -1503,6 +1516,8 @@ int32_t lsm6dso32_mem_bank_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FUNC_CFG_ACCESS,
                            (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.reg_access)
   {
@@ -1569,20 +1584,21 @@ int32_t lsm6dso32_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
 
   /* set page write */
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
-  page_rw.page_rw = 0x02; /* page_write enable*/
-  ret += lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
   if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x02; /* page_write enable*/
+  ret = lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
 
   /* select page */
-  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *) &page_sel, 1);
+  ret += lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *) &page_sel, 1);
+  if (ret != 0) { goto exit; }
   page_sel.page_sel = msb;
   page_sel.not_used_01 = 1;
-  ret += lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *) &page_sel, 1);
+  ret = lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *) &page_sel, 1);
   if (ret != 0) { goto exit; }
 
   /* set page addr */
   page_address.page_addr = lsb;
-  ret += lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_ADDRESS,
+  ret = lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_ADDRESS,
                            (uint8_t *)&page_address, 1);
   if (ret != 0) { goto exit; }
 
@@ -1614,8 +1630,9 @@ int32_t lsm6dso32_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
 
   /* unset page write */
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
+  if (ret != 0) { goto exit; }
   page_rw.page_rw = 0x00; /* page_write disable */
-  ret += lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
+  ret = lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
 
 exit:
   ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
@@ -1656,15 +1673,16 @@ int32_t lsm6dso32_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t 
 
   /* set page write */
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
-  page_rw.page_rw = 0x01; /* page_read enable*/
-  ret += lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
   if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x01; /* page_read enable*/
+  ret = lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
 
   /* select page */
-  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *) &page_sel, 1);
+  ret += lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *) &page_sel, 1);
+  if (ret != 0) { goto exit; }
   page_sel.page_sel = msb;
   page_sel.not_used_01 = 1;
-  ret += lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *) &page_sel, 1);
+  ret = lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *) &page_sel, 1);
   if (ret != 0) { goto exit; }
 
   for (i = 0; ((i < len) && (ret == 0)); i++)
@@ -1675,7 +1693,7 @@ int32_t lsm6dso32_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t 
                             (uint8_t *)&page_address, 1);
     if (ret != 0) { goto exit; }
 
-    ret += lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_VALUE, &buf[i], 1);
+    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_VALUE, &buf[i], 1);
     if (ret != 0) { goto exit; }
 
     lsb++;
@@ -1684,12 +1702,12 @@ int32_t lsm6dso32_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t 
     if (((lsb & 0xFFU) == 0x00U) && (ret == 0))
     {
       msb++;
-      ret += lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *)&page_sel, 1);
+      ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *)&page_sel, 1);
       if (ret != 0) { goto exit; }
 
       page_sel.page_sel = msb;
       page_sel.not_used_01 = 1;
-      ret += lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *)&page_sel, 1);
+      ret = lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_SEL, (uint8_t *)&page_sel, 1);
       if (ret != 0) { goto exit; }
     }
   }
@@ -1701,8 +1719,9 @@ int32_t lsm6dso32_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t 
 
   /* unset page write */
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
+  if (ret != 0) { goto exit; }
   page_rw.page_rw = 0x00; /* page_write disable */
-  ret += lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
+  ret = lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
 
 exit:
   ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
@@ -1756,6 +1775,8 @@ int32_t lsm6dso32_data_ready_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_COUNTER_BDR_REG1,
                            (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.dataready_pulsed)
   {
@@ -1831,6 +1852,9 @@ int32_t lsm6dso32_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL3_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.sw_reset;
 
   return ret;
@@ -1876,6 +1900,9 @@ int32_t lsm6dso32_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL3_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.if_inc;
 
   return ret;
@@ -1919,6 +1946,9 @@ int32_t lsm6dso32_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL3_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.boot;
 
   return ret;
@@ -1964,6 +1994,8 @@ int32_t lsm6dso32_xl_self_test_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL5_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.st_xl)
   {
@@ -2027,6 +2059,8 @@ int32_t lsm6dso32_gy_self_test_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL5_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.st_g)
   {
@@ -2101,6 +2135,9 @@ int32_t lsm6dso32_xl_filter_lp2_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL1_XL, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.lpf2_xl_en;
 
   return ret;
@@ -2148,6 +2185,9 @@ int32_t lsm6dso32_gy_filter_lp1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL4_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.lpf1_sel_g;
 
   return ret;
@@ -2195,6 +2235,9 @@ int32_t lsm6dso32_filter_settling_mask_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL4_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.drdy_mask;
 
   return ret;
@@ -2240,6 +2283,8 @@ int32_t lsm6dso32_gy_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL6_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.ftype)
   {
@@ -2321,6 +2366,9 @@ int32_t lsm6dso32_xl_lp2_on_6d_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL8_XL, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.low_pass_on_6d;
 
   return ret;
@@ -2371,6 +2419,8 @@ int32_t lsm6dso32_xl_hp_path_on_out_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL8_XL, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch ((reg.hp_ref_mode_xl << 5) | (reg.hp_slope_xl_en << 4) |
           reg.hpcf_xl)
@@ -2519,6 +2569,9 @@ int32_t lsm6dso32_xl_fast_settling_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL8_XL, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.fastsettl_mode_xl;
 
   return ret;
@@ -2566,6 +2619,8 @@ int32_t lsm6dso32_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_CFG0, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.slope_fds)
   {
@@ -2628,6 +2683,8 @@ int32_t lsm6dso32_gy_hp_path_internal_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL7_G, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch ((reg.hp_en_g << 7) + reg.hpm_g)
   {
@@ -2714,6 +2771,8 @@ int32_t lsm6dso32_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PIN_CTRL, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.sdo_pu_en)
   {
     case LSM6DSO32_PULL_UP_DISC:
@@ -2771,6 +2830,8 @@ int32_t lsm6dso32_spi_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL3_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.sim)
   {
@@ -2832,6 +2893,8 @@ int32_t lsm6dso32_i2c_interface_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL4_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.i2c_disable)
   {
@@ -2909,12 +2972,11 @@ int32_t lsm6dso32_i3c_disable_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL9_XL,
                            (uint8_t *)&ctrl9_xl, 1);
+  ret += lsm6dso32_read_reg(ctx, LSM6DSO32_I3C_BUS_AVB,
+                           (uint8_t *)&i3c_bus_avb, 1);
 
   if (ret == 0)
   {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_I3C_BUS_AVB,
-                             (uint8_t *)&i3c_bus_avb, 1);
-
     switch ((ctrl9_xl.i3c_disable << 7) | i3c_bus_avb.i3c_bus_avb_sel)
     {
       case LSM6DSO32_I3C_DISABLE:
@@ -2999,6 +3061,8 @@ int32_t lsm6dso32_int1_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_I3C_BUS_AVB, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.pd_dis_int1)
   {
     case LSM6DSO32_PULL_DOWN_DISC:
@@ -3054,10 +3118,7 @@ int32_t lsm6dso32_pin_int1_route_set(const stmdev_ctx_t *ctx,
                               (uint8_t *)&val->fsm_int1_b, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   if (ret == 0)
   {
@@ -3190,10 +3251,7 @@ int32_t lsm6dso32_pin_int1_route_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&val->fsm_int1_b, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   if (ret == 0)
   {
@@ -3246,10 +3304,7 @@ int32_t lsm6dso32_pin_int2_route_set(const stmdev_ctx_t *ctx,
                               (uint8_t *)&val->fsm_int2_b, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   if (ret == 0)
   {
@@ -3382,10 +3437,7 @@ int32_t lsm6dso32_pin_int2_route_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&val->fsm_int2_b, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   if (ret == 0)
   {
@@ -3442,6 +3494,8 @@ int32_t lsm6dso32_pin_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL3_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.pp_od)
   {
@@ -3502,6 +3556,8 @@ int32_t lsm6dso32_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL3_C, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.h_lactive)
   {
     case LSM6DSO32_ACTIVE_HIGH:
@@ -3558,6 +3614,9 @@ int32_t lsm6dso32_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL4_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.int2_on_int1;
 
   return ret;
@@ -3592,23 +3651,20 @@ int32_t lsm6dso32_int_notification_set(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_EMBEDDED_FUNC_BANK);
-  }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
-  }
+    if (ret == 0)
+    {
+      ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
+    }
 
-  if (ret == 0)
-  {
-    page_rw.emb_func_lir = ((uint8_t)val & 0x02U) >> 1;
-    ret = lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_RW,
-                              (uint8_t *) &page_rw, 1);
-  }
+    if (ret == 0)
+    {
+      page_rw.emb_func_lir = ((uint8_t)val & 0x02U) >> 1;
+      ret = lsm6dso32_write_reg(ctx, LSM6DSO32_PAGE_RW,
+                                (uint8_t *) &page_rw, 1);
+    }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+    ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -3635,16 +3691,13 @@ int32_t lsm6dso32_int_notification_get(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_EMBEDDED_FUNC_BANK);
-  }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
-  }
+    if (ret == 0)
+    {
+      ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
+    }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+    ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   if (ret == 0)
@@ -3671,18 +3724,6 @@ int32_t lsm6dso32_int_notification_get(const stmdev_ctx_t *ctx,
         *val = LSM6DSO32_ALL_INT_PULSED;
         break;
     }
-
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_EMBEDDED_FUNC_BANK);
-  }
-
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_PAGE_RW, (uint8_t *) &page_rw, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -3748,6 +3789,8 @@ int32_t lsm6dso32_wkup_ths_weight_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_WAKE_UP_DUR, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.wake_ths_w)
   {
     case LSM6DSO32_LSb_FS_DIV_64:
@@ -3806,6 +3849,9 @@ int32_t lsm6dso32_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_WAKE_UP_THS, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.wk_ths;
 
   return ret;
@@ -3853,6 +3899,9 @@ int32_t lsm6dso32_xl_usr_offset_on_wkup_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_WAKE_UP_THS, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.usr_off_on_wu;
 
   return ret;
@@ -3898,6 +3947,9 @@ int32_t lsm6dso32_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_WAKE_UP_DUR, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.wake_dur;
 
   return ret;
@@ -3954,6 +4006,9 @@ int32_t lsm6dso32_gy_sleep_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL4_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.sleep_g;
 
   return ret;
@@ -4005,6 +4060,8 @@ int32_t lsm6dso32_act_pin_notification_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_CFG0, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.sleep_status_on_int)
   {
@@ -4064,6 +4121,8 @@ int32_t lsm6dso32_act_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_CFG2, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.inact_en)
   {
@@ -4131,6 +4190,9 @@ int32_t lsm6dso32_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_WAKE_UP_DUR, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.sleep_dur;
 
   return ret;
@@ -4189,6 +4251,9 @@ int32_t lsm6dso32_tap_detection_on_z_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_CFG0, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.tap_z_en;
 
   return ret;
@@ -4234,6 +4299,9 @@ int32_t lsm6dso32_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_CFG0, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.tap_y_en;
 
   return ret;
@@ -4279,6 +4347,9 @@ int32_t lsm6dso32_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_CFG0, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.tap_x_en;
 
   return ret;
@@ -4322,6 +4393,9 @@ int32_t lsm6dso32_tap_threshold_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_CFG1, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.tap_ths_x;
 
   return ret;
@@ -4367,6 +4441,8 @@ int32_t lsm6dso32_tap_axis_priority_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_CFG1, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.tap_priority)
   {
@@ -4440,6 +4516,9 @@ int32_t lsm6dso32_tap_threshold_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_CFG2, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.tap_ths_y;
 
   return ret;
@@ -4483,6 +4562,9 @@ int32_t lsm6dso32_tap_threshold_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_THS_6D, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.tap_ths_z;
 
   return ret;
@@ -4536,6 +4618,9 @@ int32_t lsm6dso32_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_INT_DUR2, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.shock;
 
   return ret;
@@ -4591,6 +4676,9 @@ int32_t lsm6dso32_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_INT_DUR2, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.quiet;
 
   return ret;
@@ -4648,6 +4736,9 @@ int32_t lsm6dso32_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_INT_DUR2, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.dur;
 
   return ret;
@@ -4693,6 +4784,8 @@ int32_t lsm6dso32_tap_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_WAKE_UP_THS, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.single_double_tap)
   {
@@ -4766,6 +4859,8 @@ int32_t lsm6dso32_6d_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_THS_6D, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.sixd_ths)
   {
     case LSM6DSO32_DEG_68:
@@ -4822,6 +4917,9 @@ int32_t lsm6dso32_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_TAP_THS_6D, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.d4d_en;
 
   return ret;
@@ -4881,6 +4979,8 @@ int32_t lsm6dso32_ff_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FREE_FALL, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.ff_ths)
   {
     case LSM6DSO32_FF_TSH_312mg:
@@ -4930,13 +5030,13 @@ int32_t lsm6dso32_ff_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
   if (ret == 0)
   {
     wake_up_dur.ff_dur = ((uint8_t)val & 0x20U) >> 5;
-    free_fall.ff_dur = (uint8_t)val & 0x1FU;
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_WAKE_UP_DUR,
                               (uint8_t *)&wake_up_dur, 1);
   }
 
   if (ret == 0)
   {
+    free_fall.ff_dur = (uint8_t)val & 0x1FU;
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_FREE_FALL,
                               (uint8_t *)&free_fall, 1);
   }
@@ -4961,11 +5061,11 @@ int32_t lsm6dso32_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_WAKE_UP_DUR,
                            (uint8_t *)&wake_up_dur, 1);
+  ret += lsm6dso32_read_reg(ctx, LSM6DSO32_FREE_FALL,
+                           (uint8_t *)&free_fall, 1);
 
   if (ret == 0)
   {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FREE_FALL,
-                             (uint8_t *)&free_fall, 1);
     *val = (wake_up_dur.ff_dur << 5) + free_fall.ff_dur;
   }
 
@@ -5004,13 +5104,13 @@ int32_t lsm6dso32_fifo_watermark_set(const stmdev_ctx_t *ctx, uint16_t val)
   if (ret == 0)
   {
     fifo_ctrl1.wtm = 0x00FFU & (uint8_t)val;
-    fifo_ctrl2.wtm = (uint8_t)((0x0100U & val) >> 8);
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_FIFO_CTRL1,
                               (uint8_t *)&fifo_ctrl1, 1);
   }
 
   if (ret == 0)
   {
+    fifo_ctrl2.wtm = (uint8_t)((0x0100U & val) >> 8);
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_FIFO_CTRL2,
                               (uint8_t *)&fifo_ctrl2, 1);
   }
@@ -5034,11 +5134,11 @@ int32_t lsm6dso32_fifo_watermark_get(const stmdev_ctx_t *ctx, uint16_t *val)
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL1,
                            (uint8_t *)&fifo_ctrl1, 1);
+  ret += lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL2,
+                           (uint8_t *)&fifo_ctrl2, 1);
 
   if (ret == 0)
   {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL2,
-                             (uint8_t *)&fifo_ctrl2, 1);
     *val = ((uint16_t)fifo_ctrl2.wtm << 8) + (uint16_t)fifo_ctrl1.wtm;
   }
 
@@ -5075,10 +5175,7 @@ int32_t lsm6dso32_compression_algo_init_set(const stmdev_ctx_t *ctx,
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -5109,8 +5206,9 @@ int32_t lsm6dso32_compression_algo_init_get(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     *val = reg.fifo_compr_init;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
+
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -5146,10 +5244,7 @@ int32_t lsm6dso32_compression_algo_set(const stmdev_ctx_t *ctx,
                               (uint8_t *)&emb_func_en_b, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   if (ret == 0)
   {
@@ -5184,6 +5279,8 @@ int32_t lsm6dso32_compression_algo_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL2, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch ((reg.fifo_compr_rt_en << 2) | reg.uncoptr_rate)
   {
@@ -5255,6 +5352,9 @@ int32_t lsm6dso32_fifo_virtual_sens_odr_chg_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL2, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.odrchg_en;
 
   return ret;
@@ -5301,6 +5401,9 @@ int32_t lsm6dso32_compression_algo_real_time_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL2, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.fifo_compr_rt_en;
 
   return ret;
@@ -5347,6 +5450,9 @@ int32_t lsm6dso32_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL2, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.stop_on_wtm;
 
   return ret;
@@ -5394,6 +5500,8 @@ int32_t lsm6dso32_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL3, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.bdr_xl)
   {
@@ -5496,6 +5604,8 @@ int32_t lsm6dso32_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL3, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.bdr_gy)
   {
     case LSM6DSO32_GY_NOT_BATCHED:
@@ -5595,6 +5705,8 @@ int32_t lsm6dso32_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL4, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.fifo_mode)
   {
     case LSM6DSO32_BYPASS_MODE:
@@ -5672,6 +5784,8 @@ int32_t lsm6dso32_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL4, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.odr_t_batch)
   {
     case LSM6DSO32_TEMP_NOT_BATCHED:
@@ -5742,6 +5856,8 @@ int32_t lsm6dso32_fifo_timestamp_decimation_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_CTRL4, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.odr_ts_batch)
   {
@@ -5817,6 +5933,8 @@ int32_t lsm6dso32_fifo_cnt_event_batch_get(const stmdev_ctx_t *ctx,
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_COUNTER_BDR_REG1,
                            (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.trig_counter_bdr)
   {
     case LSM6DSO32_XL_BATCH_EVENT:
@@ -5882,6 +6000,9 @@ int32_t lsm6dso32_rst_batch_counter_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_COUNTER_BDR_REG1,
                            (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.rst_counter_bdr;
 
   return ret;
@@ -5908,7 +6029,6 @@ int32_t lsm6dso32_batch_counter_threshold_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    counter_bdr_reg2.cnt_bdr_th =  0x00FFU & (uint8_t)val;
     counter_bdr_reg1.cnt_bdr_th = (uint8_t)(0x0700U & val) >> 8;
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_COUNTER_BDR_REG1,
                               (uint8_t *)&counter_bdr_reg1, 1);
@@ -5916,6 +6036,7 @@ int32_t lsm6dso32_batch_counter_threshold_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
+    counter_bdr_reg2.cnt_bdr_th =  0x00FFU & (uint8_t)val;
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_COUNTER_BDR_REG2,
                               (uint8_t *)&counter_bdr_reg2, 1);
   }
@@ -5941,11 +6062,11 @@ int32_t lsm6dso32_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_COUNTER_BDR_REG1,
                            (uint8_t *)&counter_bdr_reg1, 1);
+  ret += lsm6dso32_read_reg(ctx, LSM6DSO32_COUNTER_BDR_REG2,
+                           (uint8_t *)&counter_bdr_reg2, 1);
 
   if (ret == 0)
   {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_COUNTER_BDR_REG2,
-                             (uint8_t *)&counter_bdr_reg2, 1);
     *val = ((uint16_t)counter_bdr_reg1.cnt_bdr_th << 8)
            + (uint16_t)counter_bdr_reg2.cnt_bdr_th;
   }
@@ -5971,6 +6092,7 @@ int32_t lsm6dso32_fifo_data_level_get(const stmdev_ctx_t *ctx,
 
   /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS1, (uint8_t *)reg, 2);
+
   if (ret == 0)
   {
     *val = fifo_status2->diff_fifo;
@@ -5997,6 +6119,7 @@ int32_t lsm6dso32_fifo_status_get(const stmdev_ctx_t *ctx,
 
   /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS1, (uint8_t *)reg, 2);
+
   if (ret == 0)
   {
     *val = *fifo_status2;
@@ -6021,6 +6144,7 @@ int32_t lsm6dso32_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS1, (uint8_t *)reg, 2);
+
   if (ret == 0)
   {
     *val = fifo_status2->fifo_full_ia;
@@ -6046,6 +6170,7 @@ int32_t lsm6dso32_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS1, (uint8_t *)reg, 2);
+
   if (ret == 0)
   {
     *val = fifo_status2->fifo_ovr_ia;
@@ -6070,6 +6195,7 @@ int32_t lsm6dso32_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS1, (uint8_t *)reg, 2);
+
   if (ret == 0)
   {
     *val = fifo_status2->fifo_wtm_ia;
@@ -6094,6 +6220,8 @@ int32_t lsm6dso32_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_DATA_OUT_TAG,
                            (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.tag_sensor)
   {
@@ -6211,10 +6339,7 @@ int32_t lsm6dso32_fifo_pedo_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -6241,10 +6366,11 @@ int32_t lsm6dso32_fifo_pedo_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.pedo_fifo_en;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -6277,10 +6403,7 @@ int32_t lsm6dso32_sh_batch_slave_0_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_SLV0_CONFIG, (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -6307,10 +6430,11 @@ int32_t lsm6dso32_sh_batch_slave_0_get(const stmdev_ctx_t *ctx,
     ret = lsm6dso32_read_reg(ctx, LSM6DSO32_SLV0_CONFIG, (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.batch_ext_sens_0_en;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -6343,10 +6467,7 @@ int32_t lsm6dso32_sh_batch_slave_1_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_SLV1_CONFIG, (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -6374,10 +6495,7 @@ int32_t lsm6dso32_sh_batch_slave_1_get(const stmdev_ctx_t *ctx,
     *val = reg.batch_ext_sens_1_en;
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -6409,10 +6527,7 @@ int32_t lsm6dso32_sh_batch_slave_2_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_SLV2_CONFIG, (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -6439,10 +6554,11 @@ int32_t lsm6dso32_sh_batch_slave_2_get(const stmdev_ctx_t *ctx,
     ret = lsm6dso32_read_reg(ctx, LSM6DSO32_SLV2_CONFIG, (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.batch_ext_sens_2_en;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -6475,10 +6591,7 @@ int32_t lsm6dso32_sh_batch_slave_3_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_SLV3_CONFIG, (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -6505,10 +6618,11 @@ int32_t lsm6dso32_sh_batch_slave_3_get(const stmdev_ctx_t *ctx,
     ret = lsm6dso32_read_reg(ctx, LSM6DSO32_SLV3_CONFIG, (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.batch_ext_sens_3_en;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -6567,6 +6681,8 @@ int32_t lsm6dso32_den_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL6_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.den_mode)
   {
@@ -6639,6 +6755,8 @@ int32_t lsm6dso32_den_polarity_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL9_XL, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.den_lh)
   {
     case LSM6DSO32_DEN_ACT_LOW:
@@ -6697,6 +6815,8 @@ int32_t lsm6dso32_den_enable_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL9_XL, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.den_xl_g)
   {
@@ -6758,6 +6878,9 @@ int32_t lsm6dso32_den_mark_axis_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL9_XL, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.den_z;
 
   return ret;
@@ -6801,6 +6924,9 @@ int32_t lsm6dso32_den_mark_axis_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL9_XL, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.den_y;
 
   return ret;
@@ -6844,6 +6970,9 @@ int32_t lsm6dso32_den_mark_axis_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm6dso32_read_reg(ctx, LSM6DSO32_CTRL9_XL, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.den_x;
 
   return ret;
@@ -6883,39 +7012,36 @@ int32_t lsm6dso32_pedo_sens_set(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_EMBEDDED_FUNC_BANK);
-  }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_EMB_FUNC_EN_A,
-                             (uint8_t *)&emb_func_en_a, 1);
-  }
+    if (ret == 0)
+    {
+      ret = lsm6dso32_read_reg(ctx, LSM6DSO32_EMB_FUNC_EN_A,
+                               (uint8_t *)&emb_func_en_a, 1);
+    }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_EMB_FUNC_EN_B,
-                             (uint8_t *)&emb_func_en_b, 1);
-    emb_func_en_a.pedo_en = (uint8_t)val & 0x01U;
-    emb_func_en_b.pedo_adv_en = ((uint8_t)val & 0x02U) >> 1;
-    pedo_cmd_reg.fp_rejection_en = ((uint8_t)val & 0x10U) >> 4;
-    pedo_cmd_reg.ad_det_en = ((uint8_t)val & 0x20U) >> 5;
-  }
+    if (ret == 0)
+    {
+      ret = lsm6dso32_read_reg(ctx, LSM6DSO32_EMB_FUNC_EN_B,
+                               (uint8_t *)&emb_func_en_b, 1);
+      emb_func_en_a.pedo_en = (uint8_t)val & 0x01U;
+      emb_func_en_b.pedo_adv_en = ((uint8_t)val & 0x02U) >> 1;
+      pedo_cmd_reg.fp_rejection_en = ((uint8_t)val & 0x10U) >> 4;
+      pedo_cmd_reg.ad_det_en = ((uint8_t)val & 0x20U) >> 5;
+    }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_write_reg(ctx, LSM6DSO32_EMB_FUNC_EN_A,
-                              (uint8_t *)&emb_func_en_a, 1);
-  }
+    if (ret == 0)
+    {
+      ret = lsm6dso32_write_reg(ctx, LSM6DSO32_EMB_FUNC_EN_A,
+                                (uint8_t *)&emb_func_en_a, 1);
+    }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_write_reg(ctx, LSM6DSO32_EMB_FUNC_EN_B,
-                              (uint8_t *)&emb_func_en_b, 1);
-  }
+    if (ret == 0)
+    {
+      ret = lsm6dso32_write_reg(ctx, LSM6DSO32_EMB_FUNC_EN_B,
+                                (uint8_t *)&emb_func_en_b, 1);
+    }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+    ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   if (ret == 0)
@@ -6949,24 +7075,23 @@ int32_t lsm6dso32_pedo_sens_get(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_EMBEDDED_FUNC_BANK);
+
+    if (ret == 0)
+    {
+      ret = lsm6dso32_read_reg(ctx, LSM6DSO32_EMB_FUNC_EN_A,
+                               (uint8_t *)&emb_func_en_a, 1);
+    }
+
+    if (ret == 0)
+    {
+      ret = lsm6dso32_read_reg(ctx, LSM6DSO32_EMB_FUNC_EN_B,
+                               (uint8_t *)&emb_func_en_b, 1);
+    }
+
+    ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_EMB_FUNC_EN_A,
-                             (uint8_t *)&emb_func_en_a, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_EMB_FUNC_EN_B,
-                             (uint8_t *)&emb_func_en_b, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  if (ret != 0) { return ret; }
 
   switch ((pedo_cmd_reg.ad_det_en << 5) | (pedo_cmd_reg.fp_rejection_en
                                            << 4) |
@@ -7022,10 +7147,11 @@ int32_t lsm6dso32_pedo_step_detect_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.is_step_det;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -7113,11 +7239,11 @@ int32_t lsm6dso32_pedo_steps_period_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_PEDO_SC_DELTAT_L,
                                   &buff[0]);
+  ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_PEDO_SC_DELTAT_H,
+                                  &buff[1]);
 
   if (ret == 0)
   {
-    ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_PEDO_SC_DELTAT_H,
-                                    &buff[1]);
     *val = buff[1];
     *val = (*val * 256U) +  buff[0];
   }
@@ -7170,6 +7296,8 @@ int32_t lsm6dso32_pedo_int_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_PEDO_CMD_REG,
                                   (uint8_t *)&reg);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.carry_count_en)
   {
@@ -7230,10 +7358,7 @@ int32_t lsm6dso32_motion_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -7259,10 +7384,11 @@ int32_t lsm6dso32_motion_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.sign_motion_en;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -7290,10 +7416,11 @@ int32_t lsm6dso32_motion_flag_data_ready_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.is_sigmot;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -7340,10 +7467,7 @@ int32_t lsm6dso32_tilt_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -7369,10 +7493,11 @@ int32_t lsm6dso32_tilt_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.tilt_en;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -7400,10 +7525,11 @@ int32_t lsm6dso32_tilt_flag_data_ready_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.is_tilt;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -7465,11 +7591,11 @@ int32_t lsm6dso32_mag_sensitivity_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_MAG_SENSITIVITY_L,
                                   &buff[0]);
+  ret += lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_MAG_SENSITIVITY_H,
+                                  &buff[1]);
 
   if (ret == 0)
   {
-    ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_MAG_SENSITIVITY_H,
-                                    &buff[1]);
     *val = buff[1];
     *val = (*val * 256U) +  buff[0];
   }
@@ -7576,6 +7702,10 @@ int32_t lsm6dso32_mag_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
   {
     ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_MAG_OFFZ_H,
                                     &buff[5]);
+  }
+
+  if (ret == 0)
+  {
     val[0] = (int16_t)buff[1];
     val[0] = (val[0] * 256) + (int16_t)buff[0];
     val[1] = (int16_t)buff[3];
@@ -7805,18 +7935,21 @@ int32_t lsm6dso32_mag_soft_iron_get(const stmdev_ctx_t *ctx, int16_t *val)
                                     &buff[index]);
   }
 
-  val[0] = (int16_t)buff[1];
-  val[0] = (val[0] * 256) + (int16_t)buff[0];
-  val[1] = (int16_t)buff[3];
-  val[1] = (val[1] * 256) + (int16_t)buff[2];
-  val[2] = (int16_t)buff[5];
-  val[2] = (val[2] * 256) + (int16_t)buff[4];
-  val[3] = (int16_t)buff[7];
-  val[3] = (val[3] * 256) + (int16_t)buff[6];
-  val[4] = (int16_t)buff[9];
-  val[4] = (val[4] * 256) + (int16_t)buff[8];
-  val[5] = (int16_t)buff[11];
-  val[5] = (val[5] * 256) + (int16_t)buff[10];
+  if (ret == 0)
+  {
+    val[0] = (int16_t)buff[1];
+    val[0] = (val[0] * 256) + (int16_t)buff[0];
+    val[1] = (int16_t)buff[3];
+    val[1] = (val[1] * 256) + (int16_t)buff[2];
+    val[2] = (int16_t)buff[5];
+    val[2] = (val[2] * 256) + (int16_t)buff[4];
+    val[3] = (int16_t)buff[7];
+    val[3] = (val[3] * 256) + (int16_t)buff[6];
+    val[4] = (int16_t)buff[9];
+    val[4] = (val[4] * 256) + (int16_t)buff[8];
+    val[5] = (int16_t)buff[11];
+    val[5] = (val[5] * 256) + (int16_t)buff[10];
+  }
 
   return ret;
 }
@@ -7870,6 +8003,8 @@ int32_t lsm6dso32_mag_z_orient_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_MAG_CFG_A,
                                   (uint8_t *)&reg);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.mag_z_axis)
   {
@@ -7955,6 +8090,8 @@ int32_t lsm6dso32_mag_y_orient_get(const stmdev_ctx_t *ctx,
   ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_MAG_CFG_A,
                                   (uint8_t *)&reg);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.mag_y_axis)
   {
     case LSM6DSO32_Y_EQ_Y:
@@ -8039,6 +8176,8 @@ int32_t lsm6dso32_mag_x_orient_get(const stmdev_ctx_t *ctx,
   ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_MAG_CFG_B,
                                   (uint8_t *)&reg);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.mag_x_axis)
   {
     case LSM6DSO32_X_EQ_Y:
@@ -8109,10 +8248,11 @@ int32_t lsm6dso32_long_cnt_flag_data_ready_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.is_fsm_lc;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -8146,10 +8286,7 @@ int32_t lsm6dso32_emb_fsm_en_set(const stmdev_ctx_t *ctx, uint8_t val)
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8182,10 +8319,7 @@ int32_t lsm6dso32_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8256,10 +8390,7 @@ int32_t lsm6dso32_fsm_enable_set(const stmdev_ctx_t *ctx,
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8285,10 +8416,7 @@ int32_t lsm6dso32_fsm_enable_get(const stmdev_ctx_t *ctx,
                              2);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8316,10 +8444,7 @@ int32_t lsm6dso32_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val)
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_FSM_LONG_COUNTER_L, buff, 2);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8345,9 +8470,10 @@ int32_t lsm6dso32_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val)
     ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FSM_LONG_COUNTER_L, buff, 2);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
     *val = buff[1];
     *val = (*val * 256U) +  buff[0];
   }
@@ -8385,10 +8511,7 @@ int32_t lsm6dso32_long_clr_set(const stmdev_ctx_t *ctx,
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8416,6 +8539,8 @@ int32_t lsm6dso32_long_clr_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     switch (reg.fsm_lc_clr)
@@ -8436,11 +8561,6 @@ int32_t lsm6dso32_long_clr_get(const stmdev_ctx_t *ctx,
         *val = LSM6DSO32_LC_NORMAL;
         break;
     }
-  }
-
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -8467,10 +8587,7 @@ int32_t lsm6dso32_fsm_out_get(const stmdev_ctx_t *ctx,
                              16);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8506,10 +8623,7 @@ int32_t lsm6dso32_fsm_data_rate_set(const stmdev_ctx_t *ctx,
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8536,6 +8650,8 @@ int32_t lsm6dso32_fsm_data_rate_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     switch (reg.fsm_odr)
@@ -8560,8 +8676,6 @@ int32_t lsm6dso32_fsm_data_rate_get(const stmdev_ctx_t *ctx,
         *val = LSM6DSO32_ODR_FSM_12Hz5;
         break;
     }
-
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -8595,10 +8709,7 @@ int32_t lsm6dso32_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val)
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8624,10 +8735,11 @@ int32_t lsm6dso32_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val)
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.fsm_init;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -8683,11 +8795,11 @@ int32_t lsm6dso32_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_FSM_LC_TIMEOUT_L,
                                   &buff[0]);
+  ret += lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_FSM_LC_TIMEOUT_H,
+                                  &buff[1]);
 
   if (ret == 0)
   {
-    ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_FSM_LC_TIMEOUT_H,
-                                    &buff[1]);
     *val = buff[1];
     *val = (*val * 256U) +  buff[0];
   }
@@ -8753,7 +8865,6 @@ int32_t lsm6dso32_fsm_start_address_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    ;
     ret = lsm6dso32_ln_pg_write_byte(ctx, LSM6DSO32_FSM_START_ADD_H,
                                      &buff[1]);
   }
@@ -8778,11 +8889,11 @@ int32_t lsm6dso32_fsm_start_address_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_FSM_START_ADD_L,
                                   &buff[0]);
+  ret += lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_FSM_START_ADD_H,
+                                  &buff[1]);
 
   if (ret == 0)
   {
-    ret = lsm6dso32_ln_pg_read_byte(ctx, LSM6DSO32_FSM_START_ADD_H,
-                                    &buff[1]);
     *val = buff[1];
     *val = (*val * 256U) +  buff[0];
   }
@@ -8824,10 +8935,7 @@ int32_t lsm6dso32_sh_read_data_raw_get(const stmdev_ctx_t *ctx,
                              (uint8_t *) val, 18U);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8861,10 +8969,7 @@ int32_t lsm6dso32_sh_slave_connected_set(const stmdev_ctx_t *ctx,
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8891,6 +8996,8 @@ int32_t lsm6dso32_sh_slave_connected_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     switch (reg.aux_sens_on)
@@ -8915,8 +9022,6 @@ int32_t lsm6dso32_sh_slave_connected_get(const stmdev_ctx_t *ctx,
         *val = LSM6DSO32_SLV_0;
         break;
     }
-
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -8950,10 +9055,7 @@ int32_t lsm6dso32_sh_master_set(const stmdev_ctx_t *ctx, uint8_t val)
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -8979,10 +9081,11 @@ int32_t lsm6dso32_sh_master_get(const stmdev_ctx_t *ctx, uint8_t *val)
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.master_on;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -9017,10 +9120,7 @@ int32_t lsm6dso32_sh_pin_mode_set(const stmdev_ctx_t *ctx,
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9047,6 +9147,8 @@ int32_t lsm6dso32_sh_pin_mode_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     switch (reg.shub_pu_en)
@@ -9063,8 +9165,6 @@ int32_t lsm6dso32_sh_pin_mode_get(const stmdev_ctx_t *ctx,
         *val = LSM6DSO32_EXT_PULL_UP;
         break;
     }
-
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -9099,10 +9199,7 @@ int32_t lsm6dso32_sh_pass_through_set(const stmdev_ctx_t *ctx, uint8_t val)
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9129,10 +9226,11 @@ int32_t lsm6dso32_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.pass_through_mode;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -9167,10 +9265,7 @@ int32_t lsm6dso32_sh_syncro_mode_set(const stmdev_ctx_t *ctx,
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9197,6 +9292,8 @@ int32_t lsm6dso32_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     switch (reg.start_config)
@@ -9213,8 +9310,6 @@ int32_t lsm6dso32_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
         *val = LSM6DSO32_EXT_ON_INT2_PIN;
         break;
     }
-
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -9250,10 +9345,7 @@ int32_t lsm6dso32_sh_write_mode_set(const stmdev_ctx_t *ctx,
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9281,6 +9373,8 @@ int32_t lsm6dso32_sh_write_mode_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     switch (reg.write_once)
@@ -9297,8 +9391,6 @@ int32_t lsm6dso32_sh_write_mode_get(const stmdev_ctx_t *ctx,
         *val = LSM6DSO32_EACH_SH_CYCLE;
         break;
     }
-
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -9338,10 +9430,7 @@ int32_t lsm6dso32_sh_reset_set(const stmdev_ctx_t *ctx)
                               (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9367,10 +9456,11 @@ int32_t lsm6dso32_sh_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
                              (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     *val = reg.rst_master_regs;
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -9403,10 +9493,7 @@ int32_t lsm6dso32_sh_data_rate_set(const stmdev_ctx_t *ctx,
     ret = lsm6dso32_write_reg(ctx, LSM6DSO32_SLV0_CONFIG, (uint8_t *)&reg, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9432,6 +9519,8 @@ int32_t lsm6dso32_sh_data_rate_get(const stmdev_ctx_t *ctx,
     ret = lsm6dso32_read_reg(ctx, LSM6DSO32_SLV0_CONFIG, (uint8_t *)&reg, 1);
   }
 
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
+
   if (ret == 0)
   {
     switch (reg.shub_odr)
@@ -9456,8 +9545,6 @@ int32_t lsm6dso32_sh_data_rate_get(const stmdev_ctx_t *ctx,
         *val = LSM6DSO32_SH_ODR_104Hz;
         break;
     }
-
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
   }
 
   return ret;
@@ -9501,10 +9588,7 @@ int32_t lsm6dso32_sh_cfg_write(const stmdev_ctx_t *ctx,
                               &(val->slv0_data), 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9556,10 +9640,7 @@ int32_t lsm6dso32_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
                               (uint8_t *)&slv0_config, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9611,10 +9692,7 @@ int32_t lsm6dso32_sh_slv1_cfg_read(const stmdev_ctx_t *ctx,
                               (uint8_t *)&slv1_config, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9666,10 +9744,7 @@ int32_t lsm6dso32_sh_slv2_cfg_read(const stmdev_ctx_t *ctx,
                               (uint8_t *)&slv2_config, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9721,10 +9796,7 @@ int32_t lsm6dso32_sh_slv3_cfg_read(const stmdev_ctx_t *ctx,
                               (uint8_t *)&slv3_config, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9750,10 +9822,7 @@ int32_t lsm6dso32_sh_status_get(const stmdev_ctx_t *ctx,
                              (uint8_t *) val, 1);
   }
 
-  if (ret == 0)
-  {
-    ret = lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
-  }
+  ret += lsm6dso32_mem_bank_set(ctx, LSM6DSO32_USER_BANK);
 
   return ret;
 }
@@ -9767,5 +9836,3 @@ int32_t lsm6dso32_sh_status_get(const stmdev_ctx_t *ctx,
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -96,42 +95,42 @@ int32_t __weak iis2dlpc_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
 
 float_t iis2dlpc_from_fs2_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb) * 0.061f;
+  return ((float_t)lsb) * 0.244f;
 }
 
 float_t iis2dlpc_from_fs4_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb) * 0.122f;
+  return ((float_t)lsb) * 0.488f;
 }
 
 float_t iis2dlpc_from_fs8_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb) * 0.244f;
+  return ((float_t)lsb) * 0.976f;
 }
 
 float_t iis2dlpc_from_fs16_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb) * 0.488f;
+  return ((float_t)lsb) * 1.952f;
 }
 
 float_t iis2dlpc_from_fs2_lp1_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb) * 0.061f;
+  return ((float_t)lsb) * 0.976f;
 }
 
 float_t iis2dlpc_from_fs4_lp1_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb) * 0.122f;
+  return ((float_t)lsb) * 1.952f;
 }
 
 float_t iis2dlpc_from_fs8_lp1_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb) * 0.244f;
+  return ((float_t)lsb) * 3.904f;
 }
 
 float_t iis2dlpc_from_fs16_lp1_to_mg(int16_t lsb)
 {
-  return ((float_t)lsb) * 0.488f;
+  return ((float_t)lsb) * 7.808f;
 }
 
 float_t iis2dlpc_from_lsb_to_celsius(int16_t lsb)
@@ -213,11 +212,12 @@ int32_t iis2dlpc_power_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL1, (uint8_t *) &ctrl1, 1);
+  if (ret == 0) {
+    ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL6, (uint8_t *) &ctrl6, 1);
+  }
 
   if (ret == 0)
   {
-    ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL6, (uint8_t *) &ctrl6, 1);
-
     switch (((ctrl6.low_noise << 4) + (ctrl1.mode << 2) +
              ctrl1.lp_mode))
     {
@@ -358,11 +358,13 @@ int32_t iis2dlpc_data_rate_get(const stmdev_ctx_t *ctx, iis2dlpc_odr_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL1, (uint8_t *) &ctrl1, 1);
-
   if (ret == 0)
   {
     ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL3, (uint8_t *) &ctrl3, 1);
+  }
 
+  if (ret == 0)
+  {
     switch ((ctrl3.slp_mode << 4) + ctrl1.odr)
     {
       case IIS2DLPC_XL_ODR_OFF:
@@ -461,7 +463,10 @@ int32_t iis2dlpc_block_data_update_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL2, (uint8_t *) &reg, 1);
-  *val = reg.bdu;
+  if (ret == 0)
+  {
+    *val = reg.bdu;
+  }
 
   return ret;
 }
@@ -563,7 +568,10 @@ int32_t iis2dlpc_flag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_STATUS, (uint8_t *) &reg, 1);
-  *val = reg.drdy;
+  if (ret == 0)
+  {
+    *val = reg.drdy;
+  }
 
   return ret;
 }
@@ -587,7 +595,7 @@ int32_t iis2dlpc_all_sources_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[set]
   *
@@ -606,7 +614,7 @@ int32_t iis2dlpc_usr_offset_x_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[get]
   *
@@ -625,7 +633,7 @@ int32_t iis2dlpc_usr_offset_x_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[set]
   *
@@ -644,7 +652,7 @@ int32_t iis2dlpc_usr_offset_y_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[get]
   *
@@ -663,7 +671,7 @@ int32_t iis2dlpc_usr_offset_y_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Z-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Z-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[set]
   *
@@ -682,7 +690,7 @@ int32_t iis2dlpc_usr_offset_z_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Z-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Z-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[get]
   *
@@ -744,19 +752,22 @@ int32_t iis2dlpc_offset_weight_get(const stmdev_ctx_t *ctx,
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL7, (uint8_t *) &reg, 1);
 
-  switch (reg.usr_off_w)
+  if (ret == 0)
   {
-    case IIS2DLPC_LSb_977ug:
-      *val = IIS2DLPC_LSb_977ug;
-      break;
+    switch (reg.usr_off_w)
+    {
+      case IIS2DLPC_LSb_977ug:
+        *val = IIS2DLPC_LSb_977ug;
+        break;
 
-    case IIS2DLPC_LSb_15mg6:
-      *val = IIS2DLPC_LSb_15mg6;
-      break;
+      case IIS2DLPC_LSb_15mg6:
+        *val = IIS2DLPC_LSb_15mg6;
+        break;
 
-    default:
-      *val = IIS2DLPC_LSb_977ug;
-      break;
+      default:
+        *val = IIS2DLPC_LSb_977ug;
+        break;
+    }
   }
 
   return ret;
@@ -776,7 +787,7 @@ int32_t iis2dlpc_offset_weight_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Temperature data output register (r). L and H registers
-  *         together express a 16-bit word in two’s complement.[get]
+  *         together express a 16-bit word in two's complement.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read
@@ -789,15 +800,18 @@ int32_t iis2dlpc_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_OUT_T_L, buff, 2);
-  *val = (int16_t)buff[1];
-  *val = (*val * 256) + (int16_t)buff[0];
+  if (ret == 0)
+  {
+    *val = (int16_t)buff[1];
+    *val = (*val * 256) + (int16_t)buff[0];
+  }
 
   return ret;
 }
 
 /**
   * @brief  Linear acceleration output register. The value is expressed as
-  *         a 16-bit word in two’s complement.[get]
+  *         a 16-bit word in two's complement.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read
@@ -810,6 +824,8 @@ int32_t iis2dlpc_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_OUT_X_L, buff, 6);
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -889,6 +905,8 @@ int32_t iis2dlpc_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL2, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.if_add_inc;
 
   return ret;
@@ -898,11 +916,10 @@ int32_t iis2dlpc_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  Software reset. Restore the default values in user registers.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of soft_reset in reg CTRL2
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dlpc_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t iis2dlpc_reset_set(const stmdev_ctx_t *ctx)
 {
   iis2dlpc_ctrl2_t reg;
   int32_t ret;
@@ -911,7 +928,7 @@ int32_t iis2dlpc_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    reg.soft_reset = val;
+    reg.soft_reset = PROPERTY_ENABLE;
     ret = iis2dlpc_write_reg(ctx, IIS2DLPC_CTRL2, (uint8_t *) &reg, 1);
   }
 
@@ -932,6 +949,8 @@ int32_t iis2dlpc_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL2, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.soft_reset;
 
   return ret;
@@ -941,11 +960,10 @@ int32_t iis2dlpc_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  Reboot memory content. Reload the calibration parameters.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of boot in reg CTRL2
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dlpc_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t iis2dlpc_boot_set(const stmdev_ctx_t *ctx)
 {
   iis2dlpc_ctrl2_t reg;
   int32_t ret;
@@ -954,7 +972,7 @@ int32_t iis2dlpc_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    reg.boot = val;
+    reg.boot = PROPERTY_ENABLE;
     ret = iis2dlpc_write_reg(ctx, IIS2DLPC_CTRL2, (uint8_t *) &reg, 1);
   }
 
@@ -975,6 +993,8 @@ int32_t iis2dlpc_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL2, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.boot;
 
   return ret;
@@ -1018,6 +1038,7 @@ int32_t iis2dlpc_self_test_get(const stmdev_ctx_t *ctx, iis2dlpc_st_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL3, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.st)
   {
@@ -1081,6 +1102,7 @@ int32_t iis2dlpc_data_ready_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL7, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.drdy_pulsed)
   {
@@ -1171,11 +1193,13 @@ int32_t iis2dlpc_filter_path_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL6, (uint8_t *) &ctrl6, 1);
-
   if (ret == 0)
   {
     ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL7, (uint8_t *) &ctrl_reg7, 1);
+  }
 
+  if (ret == 0)
+  {
     switch ((ctrl6.fds << 4) + ctrl_reg7.usr_off_on_out)
     {
       case IIS2DLPC_LPF_ON_OUT:
@@ -1241,6 +1265,7 @@ int32_t iis2dlpc_filter_bandwidth_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL6, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.bw_filt)
   {
@@ -1306,6 +1331,8 @@ int32_t iis2dlpc_reference_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL7, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.hp_ref_mode;
 
   return ret;
@@ -1362,6 +1389,7 @@ int32_t iis2dlpc_spi_mode_get(const stmdev_ctx_t *ctx, iis2dlpc_sim_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL2, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.sim)
   {
@@ -1422,6 +1450,7 @@ int32_t iis2dlpc_i2c_interface_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL2, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.i2c_disable)
   {
@@ -1481,6 +1510,7 @@ int32_t iis2dlpc_cs_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL2, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.cs_pu_disc)
   {
@@ -1552,6 +1582,7 @@ int32_t iis2dlpc_pin_polarity_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL3, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.h_lactive)
   {
@@ -1611,6 +1642,7 @@ int32_t iis2dlpc_int_notification_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL3, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.lir)
   {
@@ -1669,6 +1701,7 @@ int32_t iis2dlpc_pin_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL3, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.pp_od)
   {
@@ -1713,6 +1746,7 @@ int32_t iis2dlpc_pin_int1_route_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
+	// `interrupts_enable` is set to ENABLE when at least one of the int1/int2 events is active
     if ((ctrl5_int2_pad_ctrl.int2_sleep_state
          | ctrl5_int2_pad_ctrl.int2_sleep_chg
          | val->int1_tap
@@ -1790,6 +1824,7 @@ int32_t iis2dlpc_pin_int2_route_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
+	// `interrupts_enable` is set to ENABLE when at least one of the int1/int2 events is active
     if ((val->int2_sleep_state
          | val->int2_sleep_chg
          | ctrl4_int1_pad.int1_tap
@@ -1879,6 +1914,8 @@ int32_t iis2dlpc_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL7, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.int2_on_int1;
 
   return ret;
@@ -1935,6 +1972,8 @@ int32_t iis2dlpc_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_WAKE_UP_THS, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.wk_ths;
 
   return ret;
@@ -1978,6 +2017,8 @@ int32_t iis2dlpc_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_WAKE_UP_DUR, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.wake_dur;
 
   return ret;
@@ -2023,6 +2064,7 @@ int32_t iis2dlpc_wkup_feed_data_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL7, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.usr_off_on_wu)
   {
@@ -2115,12 +2157,13 @@ int32_t iis2dlpc_act_mode_get(const stmdev_ctx_t *ctx,
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_WAKE_UP_THS,
                           (uint8_t *) &wake_up_ths, 1);
-
   if (ret == 0)
   {
     ret = iis2dlpc_read_reg(ctx, IIS2DLPC_WAKE_UP_DUR,
                             (uint8_t *) &wake_up_dur, 1);
-
+  }
+  if (ret == 0)
+  {
     switch ((wake_up_dur.stationary << 1) + wake_up_ths.sleep_on)
     {
       case IIS2DLPC_NO_DETECTION:
@@ -2182,7 +2225,10 @@ int32_t iis2dlpc_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_WAKE_UP_DUR, (uint8_t *) &reg, 1);
-  *val = reg.sleep_dur;
+  if (ret == 0)
+  {
+    *val = reg.sleep_dur;
+  }
 
   return ret;
 }
@@ -2238,7 +2284,10 @@ int32_t iis2dlpc_tap_threshold_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_TAP_THS_X, (uint8_t *) &reg, 1);
-  *val = reg.tap_thsx;
+  if (ret == 0)
+  {
+    *val = reg.tap_thsx;
+  }
 
   return ret;
 }
@@ -2281,7 +2330,10 @@ int32_t iis2dlpc_tap_threshold_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_TAP_THS_Y, (uint8_t *) &reg, 1);
-  *val = reg.tap_thsy;
+  if (ret == 0)
+  {
+    *val = reg.tap_thsy;
+  }
 
   return ret;
 }
@@ -2326,6 +2378,7 @@ int32_t iis2dlpc_tap_axis_priority_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_TAP_THS_Y, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.tap_prior)
   {
@@ -2399,6 +2452,8 @@ int32_t iis2dlpc_tap_threshold_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_TAP_THS_Z, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.tap_thsz;
 
   return ret;
@@ -2444,6 +2499,8 @@ int32_t iis2dlpc_tap_detection_on_z_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_TAP_THS_Z, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.tap_z_en;
 
   return ret;
@@ -2489,6 +2546,8 @@ int32_t iis2dlpc_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_TAP_THS_Z, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.tap_y_en;
 
   return ret;
@@ -2534,6 +2593,8 @@ int32_t iis2dlpc_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_TAP_THS_Z, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.tap_x_en;
 
   return ret;
@@ -2585,6 +2646,8 @@ int32_t iis2dlpc_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_INT_DUR, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.shock;
 
   return ret;
@@ -2636,6 +2699,8 @@ int32_t iis2dlpc_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_INT_DUR, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.quiet;
 
   return ret;
@@ -2689,6 +2754,8 @@ int32_t iis2dlpc_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_INT_DUR, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.latency;
 
   return ret;
@@ -2734,6 +2801,7 @@ int32_t iis2dlpc_tap_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_WAKE_UP_THS, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.single_double_tap)
   {
@@ -2822,6 +2890,8 @@ int32_t iis2dlpc_6d_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_TAP_THS_X, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg._6d_ths;
 
   return ret;
@@ -2865,6 +2935,8 @@ int32_t iis2dlpc_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_TAP_THS_X, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg._4d_en;
 
   return ret;
@@ -2927,6 +2999,7 @@ int32_t iis2dlpc_6d_feed_data_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_CTRL7, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.lpass_on6d)
   {
@@ -3017,11 +3090,13 @@ int32_t iis2dlpc_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_WAKE_UP_DUR,
                           (uint8_t *) &wake_up_dur, 1);
-
   if (ret == 0)
   {
     ret = iis2dlpc_read_reg(ctx, IIS2DLPC_FREE_FALL,
                             (uint8_t *) &free_fall, 1);
+  }
+  if (ret == 0)
+  {
     *val = (wake_up_dur.ff_dur << 5) + free_fall.ff_dur;
   }
 
@@ -3068,6 +3143,7 @@ int32_t iis2dlpc_ff_threshold_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_FREE_FALL, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.ff_ths)
   {
@@ -3161,6 +3237,8 @@ int32_t iis2dlpc_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_FIFO_CTRL, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.fth;
 
   return ret;
@@ -3206,6 +3284,7 @@ int32_t iis2dlpc_fifo_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_FIFO_CTRL, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.fmode)
   {
@@ -3251,6 +3330,8 @@ int32_t iis2dlpc_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_FIFO_SAMPLES, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.diff;
 
   return ret;
@@ -3269,6 +3350,8 @@ int32_t iis2dlpc_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_FIFO_SAMPLES, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.fifo_ovr;
 
   return ret;
@@ -3287,6 +3370,8 @@ int32_t iis2dlpc_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2dlpc_read_reg(ctx, IIS2DLPC_FIFO_SAMPLES, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.fifo_fth;
 
   return ret;
@@ -3295,5 +3380,3 @@ int32_t iis2dlpc_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

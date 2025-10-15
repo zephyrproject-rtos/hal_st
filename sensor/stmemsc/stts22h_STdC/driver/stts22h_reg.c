@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -162,6 +161,7 @@ int32_t stts22h_temp_data_rate_get(const stmdev_ctx_t *ctx,
 
   ret = stts22h_read_reg(ctx, STTS22H_CTRL,
                          (uint8_t *)&ctrl, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl.one_shot | (ctrl.freerun << 1) | (ctrl.low_odr_start <<
                                                  2) |
@@ -259,6 +259,7 @@ int32_t stts22h_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = stts22h_read_reg(ctx, STTS22H_STATUS, (uint8_t *)&status, 1);
+  if (ret != 0) { return ret; }
 
   if (status.busy == PROPERTY_DISABLE)
   {
@@ -287,7 +288,7 @@ int32_t stts22h_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief   Temperature data output register(r). L and H registers
-  *          together express a 16-bit word in two’s complement..[get]
+  *          together express a 16-bit word in two's complement..[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores the data read.(ptr)
@@ -299,7 +300,20 @@ int32_t stts22h_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   uint8_t buff[2];
   int32_t ret;
 
-  ret = stts22h_read_reg(ctx, STTS22H_TEMP_L_OUT, buff, 2);
+  int has_autoincrement = (ctx->priv_data &&
+                      ((stts22h_priv_t *)(ctx->priv_data))->has_autoincrement == 1);
+
+  if (has_autoincrement == 1) {
+    ret = stts22h_read_reg(ctx, STTS22H_TEMP_L_OUT, buff, 2);
+  }
+  else
+  {
+    ret = stts22h_read_reg(ctx, STTS22H_TEMP_L_OUT, &buff[0], 1);
+    ret = stts22h_read_reg(ctx, STTS22H_TEMP_H_OUT, &buff[1], 1);
+  }
+
+  if (ret != 0) { return ret; }
+
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
 
@@ -350,6 +364,8 @@ int32_t stts22h_dev_status_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = stts22h_read_reg(ctx, STTS22H_STATUS, (uint8_t *)&status, 1);
+  if (ret != 0) { return ret; }
+
   val->busy = status.busy;
 
   return ret;
@@ -409,6 +425,7 @@ int32_t stts22h_smbus_interface_get(const stmdev_ctx_t *ctx,
 
   ret = stts22h_read_reg(ctx, STTS22H_CTRL,
                          (uint8_t *)&ctrl, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl.time_out_dis)
   {
@@ -448,6 +465,10 @@ int32_t stts22h_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
   {
     ctrl.if_add_inc = (uint8_t)val;
     ret = stts22h_write_reg(ctx, STTS22H_CTRL, (uint8_t *)&ctrl, 1);
+    if (ret == 0 && ctx->priv_data != NULL)
+    {
+      ((stts22h_priv_t *)(ctx->priv_data))->has_autoincrement = val;
+    }
   }
 
   return ret;
@@ -464,9 +485,13 @@ int32_t stts22h_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t stts22h_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
+  stts22h_ctrl_t ctrl;
   int32_t ret;
 
-  ret = stts22h_read_reg(ctx, STTS22H_CTRL, (uint8_t *)&val, 1);
+  ret = stts22h_read_reg(ctx, STTS22H_CTRL, (uint8_t *)&ctrl, 1);
+  if (ret != 0) { return ret; }
+
+  *val = ctrl.if_add_inc;
 
   return ret;
 }
@@ -525,6 +550,8 @@ int32_t stts22h_temp_trshld_high_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = stts22h_read_reg(ctx, STTS22H_TEMP_H_LIMIT,
                          (uint8_t *)&temp_h_limit, 1);
+  if (ret != 0) { return ret; }
+
   *val = temp_h_limit.thl;
 
   return ret;
@@ -571,6 +598,8 @@ int32_t stts22h_temp_trshld_low_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = stts22h_read_reg(ctx, STTS22H_TEMP_L_LIMIT,
                          (uint8_t *)&temp_l_limit, 1);
+  if (ret != 0) { return ret; }
+
   *val = temp_l_limit.tll;
 
   return ret;
@@ -591,6 +620,8 @@ int32_t stts22h_temp_trshld_src_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = stts22h_read_reg(ctx, STTS22H_STATUS, (uint8_t *)&status, 1);
+  if (ret != 0) { return ret; }
+
   val->under_thl = status.under_thl;
   val->over_thh = status.over_thh;
 
@@ -606,5 +637,3 @@ int32_t stts22h_temp_trshld_src_get(const stmdev_ctx_t *ctx,
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

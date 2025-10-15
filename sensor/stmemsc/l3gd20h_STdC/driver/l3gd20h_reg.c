@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -169,9 +168,13 @@ int32_t l3gd20h_gy_axis_get(const stmdev_ctx_t *ctx, l3gd20h_gy_axis_t *val)
   l3gd20h_ctrl1_t ctrl1;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL1, (uint8_t *)&ctrl1, 1);
-  val->xen = ctrl1.xen;
-  val->yen = ctrl1.yen;
-  val->zen = ctrl1.zen;
+
+  if (ret == 0)
+  {
+    val->xen = ctrl1.xen;
+    val->yen = ctrl1.yen;
+    val->zen = ctrl1.zen;
+  }
 
   return ret;
 }
@@ -228,11 +231,9 @@ int32_t l3gd20h_gy_data_rate_get(const stmdev_ctx_t *ctx,
   l3gd20h_ctrl1_t ctrl1;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret += l3gd20h_read_reg(ctx, L3GD20H_LOW_ODR, (uint8_t *)&low_odr, 1);
 
-  if (ret == 0)
-  {
-    ret = l3gd20h_read_reg(ctx, L3GD20H_LOW_ODR, (uint8_t *)&low_odr, 1);
-  }
+  if (ret != 0) { return ret; }
 
   switch ((ctrl1.pd << 7) + (low_odr.low_odr << 4) + ctrl1.dr)
   {
@@ -315,6 +316,8 @@ int32_t l3gd20h_gy_full_scale_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL4, (uint8_t *)&ctrl4, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl4.fs)
   {
     case L3GD20H_245dps:
@@ -368,6 +371,9 @@ int32_t l3gd20h_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
   l3gd20h_ctrl4_t ctrl4;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL4, (uint8_t *)&ctrl4, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl4.bdu;
 
   return ret;
@@ -386,6 +392,9 @@ int32_t l3gd20h_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
   l3gd20h_status_t status;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_STATUS, (uint8_t *)&status, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status.zyxda;
 
   return ret;
@@ -405,7 +414,7 @@ int32_t l3gd20h_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Temperature data output register (r). L and H registers together
-  *          express a 16-bit word in two’s complement..[get]
+  *          express a 16-bit word in two's complement..[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores the data read.(ptr)
@@ -422,7 +431,7 @@ int32_t l3gd20h_temperature_raw_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 
 /**
   * @brief  Angular rate sensor. The value is expressed as a 16-bit
-  *          word in two’s complement..[get]
+  *          word in two's complement..[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores the data read.(ptr)
@@ -434,6 +443,8 @@ int32_t l3gd20h_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   uint8_t buff[6];
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_OUT_X_L, buff, 6);
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -511,6 +522,8 @@ int32_t l3gd20h_dev_data_format_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL4, (uint8_t *)&ctrl4, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl4.ble)
   {
     case L3GD20H_LSB_LOW_ADDRESS:
@@ -565,6 +578,9 @@ int32_t l3gd20h_dev_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   l3gd20h_ctrl5_t ctrl5;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL5, (uint8_t *)&ctrl5, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl5.boot;
 
   return ret;
@@ -583,6 +599,9 @@ int32_t l3gd20h_dev_status_get(const stmdev_ctx_t *ctx,
   l3gd20h_status_t status;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_STATUS, (uint8_t *)&status, 1);
+
+  if (ret != 0) { return ret; }
+
   val->xda   = status.xda;
   val->yda   = status.yda;
   val->zda   = status.zda;
@@ -631,6 +650,9 @@ int32_t l3gd20h_dev_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   l3gd20h_low_odr_t low_odr;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_LOW_ODR, (uint8_t *)&low_odr, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = low_odr.sw_res;
 
   return ret;
@@ -688,11 +710,9 @@ int32_t l3gd20h_gy_filter_lp_bandwidth_get(const stmdev_ctx_t *ctx,
   l3gd20h_ctrl1_t ctrl1;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret += l3gd20h_read_reg(ctx, L3GD20H_LOW_ODR, (uint8_t *)&low_odr, 1);
 
-  if (ret == 0)
-  {
-    ret = l3gd20h_read_reg(ctx, L3GD20H_LOW_ODR, (uint8_t *)&low_odr, 1);
-  }
+  if (ret != 0) { return ret; }
 
   switch ((low_odr.low_odr << 7) + (ctrl1.dr << 4) + ctrl1.bw)
   {
@@ -792,10 +812,7 @@ int32_t l3gd20h_gy_filter_hp_bandwidth_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL2, (uint8_t *)&ctrl2, 1);
 
-  if (ret == 0)
-  {
-    ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL2, (uint8_t *)&ctrl2, 1);
-  }
+  if (ret != 0) { return ret; }
 
   switch ((ctrl2.hpm << 4) + ctrl2.hpcf)
   {
@@ -895,6 +912,8 @@ int32_t l3gd20h_gy_filter_out_path_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL5, (uint8_t *)&ctrl5, 1);
 
+  if (ret != 0) { return ret; }
+
   switch ((ctrl5.hpen << 4) + ctrl5.out_sel)
   {
     case L3GD20H_LPF1_OUT:
@@ -961,6 +980,8 @@ int32_t l3gd20h_gy_filter_int_path_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL5,
                          (uint8_t *)&ctrl5, 1);
+
+  if (ret != 0) { return ret; }
 
   switch ((ctrl5.hpen << 4) + ctrl5.ig_sel)
   {
@@ -1072,6 +1093,8 @@ int32_t l3gd20h_spi_mode_get(const stmdev_ctx_t *ctx, l3gd20h_sim_t *val)
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL4, (uint8_t *)&ctrl4, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl4.sim)
   {
     case L3GD20H_SPI_4_WIRE:
@@ -1128,6 +1151,8 @@ int32_t l3gd20h_i2c_interface_get(const stmdev_ctx_t *ctx,
   l3gd20h_low_odr_t low_odr;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_LOW_ODR, (uint8_t *)&low_odr, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (low_odr.i2c_dis)
   {
@@ -1199,6 +1224,9 @@ int32_t l3gd20h_pin_int2_route_get(const stmdev_ctx_t *ctx,
   l3gd20h_ctrl3_t ctrl3;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL3, (uint8_t *)&ctrl3, 1);
+
+  if (ret != 0) { return ret; }
+
   val->int2_empty = ctrl3.int2_empty;
   val->int2_orun = ctrl3.int2_orun;
   val->int2_fth = ctrl3.int2_fth;
@@ -1243,6 +1271,8 @@ int32_t l3gd20h_pin_mode_get(const stmdev_ctx_t *ctx, l3gd20h_pp_od_t *val)
   l3gd20h_ctrl3_t ctrl3;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL3, (uint8_t *)&ctrl3, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl3.pp_od)
   {
@@ -1313,6 +1343,8 @@ int32_t l3gd20h_pin_polarity_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL3, (uint8_t *)&ctrl3, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl3.h_lactive)
   {
     case L3GD20H_ACTIVE_HIGH:
@@ -1370,6 +1402,9 @@ int32_t l3gd20h_pin_int1_route_get(const stmdev_ctx_t *ctx,
   l3gd20h_ctrl3_t ctrl3;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL3, (uint8_t *)&ctrl3, 1);
+
+  if (ret != 0) { return ret; }
+
   val->int1_boot = ctrl3.int1_boot;
   val->int1_ig = ctrl3.int1_ig;
 
@@ -1415,6 +1450,8 @@ int32_t l3gd20h_pin_notification_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_IG_CFG,
                          (uint8_t *)&ig_cfg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ig_cfg.lir)
   {
@@ -1472,6 +1509,8 @@ int32_t l3gd20h_pin_logic_get(const stmdev_ctx_t *ctx,
   l3gd20h_ig_cfg_t ig_cfg;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_IG_CFG, (uint8_t *)&ig_cfg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ig_cfg.and_or)
   {
@@ -1550,6 +1589,9 @@ int32_t l3gd20h_gy_trshld_axis_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_IG_CFG,
                          (uint8_t *)&ig_cfg, 1);
+
+  if (ret != 0) { return ret; }
+
   val->xlie = ig_cfg.xlie;
   val->xhie = ig_cfg.xhie;
   val->ylie = ig_cfg.ylie;
@@ -1574,6 +1616,9 @@ int32_t l3gd20h_gy_trshld_src_get(const stmdev_ctx_t *ctx,
   l3gd20h_ig_src_t ig_src;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_IG_SRC, (uint8_t *)&ig_src, 1);
+
+  if (ret != 0) { return ret; }
+
   val->xl = ig_src.xl;
   val->xh = ig_src.xh;
   val->yl = ig_src.yl;
@@ -1638,6 +1683,9 @@ int32_t l3gd20h_gy_trshld_x_get(const stmdev_ctx_t *ctx, uint16_t *val)
   if (ret == 0)
   {
     ret = l3gd20h_read_reg(ctx, L3GD20H_IG_THS_XH, (uint8_t *)&ig_ths_xh, 1);
+
+    if (ret != 0) { return ret; }
+
     *val = ig_ths_xh.thsx;
     *val = *val / 256U;
     *val += ig_ths_xl.thsx;
@@ -1683,6 +1731,8 @@ int32_t l3gd20h_gy_trshld_mode_get(const stmdev_ctx_t *ctx,
   l3gd20h_ig_ths_xh_t ig_ths_xh;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_IG_THS_XH, (uint8_t *)&ig_ths_xh, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ig_ths_xh.dcrm)
   {
@@ -1755,6 +1805,9 @@ int32_t l3gd20h_gy_trshld_y_get(const stmdev_ctx_t *ctx, uint16_t *val)
   if (ret == 0)
   {
     ret = l3gd20h_read_reg(ctx, L3GD20H_IG_THS_YH, (uint8_t *)&ig_ths_yh, 1);
+
+    if (ret != 0) { return ret; }
+
     *val = ig_ths_yh.thsy;
     *val = *val / 256U;
     *val += ig_ths_yl.thsy;
@@ -1816,6 +1869,9 @@ int32_t l3gd20h_gy_trshld_z_get(const stmdev_ctx_t *ctx, uint16_t *val)
   if (ret == 0)
   {
     ret = l3gd20h_read_reg(ctx, L3GD20H_IG_THS_ZH, (uint8_t *)&ig_ths_zh, 1);
+
+    if (ret != 0) { return ret; }
+
     *val = ig_ths_zh.thsz;
     *val = *val / 256U;
     *val += ig_ths_zh.thsz;
@@ -1876,6 +1932,9 @@ int32_t l3gd20h_gy_trshld_min_sample_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_IG_DURATION,
                          (uint8_t *)&ig_duration, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ig_duration.d;
 
   return ret;
@@ -1929,6 +1988,9 @@ int32_t l3gd20h_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
   l3gd20h_ctrl5_t ctrl5;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL5, (uint8_t *)&ctrl5, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl5.stoponfth;
 
   return ret;
@@ -1983,11 +2045,9 @@ int32_t l3gd20h_fifo_mode_get(const stmdev_ctx_t *ctx,
   l3gd20h_fifo_ctrl_t fifo_ctrl;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+  ret += l3gd20h_read_reg(ctx, L3GD20H_CTRL5, (uint8_t *)&ctrl5, 1);
 
-  if (ret == 0)
-  {
-    ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL5, (uint8_t *)&ctrl5, 1);
-  }
+  if (ret != 0) { return ret; }
 
   switch ((ctrl5.fifo_en << 4) + fifo_ctrl.fm)
   {
@@ -2058,6 +2118,9 @@ int32_t l3gd20h_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
   l3gd20h_fifo_ctrl_t fifo_ctrl;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_ctrl.fth;
 
   return ret;
@@ -2077,6 +2140,9 @@ int32_t l3gd20h_fifo_src_get(const stmdev_ctx_t *ctx,
   l3gd20h_fifo_src_t fifo_src;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_FIFO_SRC, (uint8_t *)&fifo_src, 1);
+
+  if (ret != 0) { return ret; }
+
   val->fss = fifo_src.fss;
   val->empty = fifo_src.empty;
   val->ovrn = fifo_src.ovrn;
@@ -2098,6 +2164,9 @@ int32_t l3gd20h_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
   l3gd20h_fifo_src_t fifo_src;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_FIFO_SRC, (uint8_t *)&fifo_src, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_src.fss;
 
   return ret;
@@ -2116,6 +2185,9 @@ int32_t l3gd20h_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   l3gd20h_fifo_src_t fifo_src;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_FIFO_SRC, (uint8_t *)&fifo_src, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_src.fss;
 
   return ret;
@@ -2134,6 +2206,9 @@ int32_t l3gd20h_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   l3gd20h_fifo_src_t fifo_src;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_FIFO_SRC, (uint8_t *)&fifo_src, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_src.fth;
 
   return ret;
@@ -2201,11 +2276,9 @@ int32_t l3gd20h_den_mode_get(const stmdev_ctx_t *ctx, l3gd20h_den_md_t *val)
   l3gd20h_ctrl4_t ctrl4;
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret += l3gd20h_read_reg(ctx, L3GD20H_CTRL2, (uint8_t *)&ctrl2, 1);
 
-  if (ret == 0)
-  {
-    ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL2, (uint8_t *)&ctrl2, 1);
-  }
+  if (ret != 0) { return ret; }
 
   switch ((ctrl2.lvlen << 2) + (ctrl2.extren << 1) + ctrl4.impen)
   {
@@ -2283,6 +2356,8 @@ int32_t l3gd20h_gy_self_test_get(const stmdev_ctx_t *ctx, l3gd20h_st_t *val)
   int32_t ret;
   ret = l3gd20h_read_reg(ctx, L3GD20H_CTRL4, (uint8_t *)&ctrl4, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl4.st)
   {
     case L3GD20H_ST_DISABLE:
@@ -2314,5 +2389,3 @@ int32_t l3gd20h_gy_self_test_get(const stmdev_ctx_t *ctx, l3gd20h_st_t *val)
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

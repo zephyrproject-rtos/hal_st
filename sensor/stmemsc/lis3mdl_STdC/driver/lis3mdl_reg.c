@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -153,17 +152,13 @@ int32_t lis3mdl_data_rate_set(const stmdev_ctx_t *ctx, lis3mdl_om_t val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+  /* set mode also for z axis, ctrl_reg4 -> omz */
+  ret += lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
 
   if (ret == 0)
   {
     ctrl_reg1.om = (uint8_t)val;
     ret = lis3mdl_write_reg(ctx, LIS3MDL_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
-  }
-
-  if (ret == 0)
-  {
-    /* set mode also for z axis, ctrl_reg4 -> omz */
-    ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
   }
 
   if (ret == 0)
@@ -191,6 +186,8 @@ int32_t lis3mdl_data_rate_get(const stmdev_ctx_t *ctx, lis3mdl_om_t *val)
 
   /* z axis, ctrl_reg4 -> omz is aligned with x/y axis ctrl_reg1 -> om*/
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg1.om)
   {
@@ -372,6 +369,9 @@ int32_t lis3mdl_temperature_meas_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg1.temp_en;
 
   return ret;
@@ -415,6 +415,8 @@ int32_t lis3mdl_full_scale_get(const stmdev_ctx_t *ctx, lis3mdl_fs_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg2.fs)
   {
@@ -483,6 +485,8 @@ int32_t lis3mdl_operating_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg3.md)
   {
     case LIS3MDL_CONTINUOUS_MODE:
@@ -543,6 +547,9 @@ int32_t lis3mdl_fast_low_power_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg3.lp;
 
   return ret;
@@ -586,6 +593,9 @@ int32_t lis3mdl_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg5.bdu;
 
   return ret;
@@ -631,6 +641,9 @@ int32_t lis3mdl_high_part_cycle_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg5.fast_read;
 
   return ret;
@@ -651,6 +664,9 @@ int32_t lis3mdl_mag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_STATUS_REG,
                          (uint8_t *)&status_reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)status_reg.zyxda;
 
   return ret;
@@ -671,6 +687,9 @@ int32_t lis3mdl_mag_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_STATUS_REG,
                          (uint8_t *)&status_reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)status_reg.zyxor;
 
   return ret;
@@ -689,6 +708,9 @@ int32_t lis3mdl_magnetic_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_OUT_X_L, (uint8_t *) buff, 6);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -712,6 +734,9 @@ int32_t lis3mdl_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_TEMP_OUT_L, (uint8_t *) buff, 2);
+
+  if (ret != 0) { return ret; }
+
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
 
@@ -784,6 +809,9 @@ int32_t lis3mdl_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg1.st;
 
   return ret;
@@ -827,6 +855,9 @@ int32_t lis3mdl_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg2.soft_rst;
 
   return ret;
@@ -870,6 +901,9 @@ int32_t lis3mdl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg2.reboot;
 
   return ret;
@@ -913,6 +947,8 @@ int32_t lis3mdl_data_format_get(const stmdev_ctx_t *ctx, lis3mdl_ble_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg4.ble)
   {
@@ -1022,6 +1058,9 @@ int32_t lis3mdl_int_generation_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_CFG, (uint8_t *)&int_cfg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_cfg.ien;
 
   return ret;
@@ -1069,6 +1108,8 @@ int32_t lis3mdl_int_notification_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_CFG, (uint8_t *)&int_cfg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (int_cfg.lir)
   {
@@ -1128,6 +1169,8 @@ int32_t lis3mdl_int_polarity_get(const stmdev_ctx_t *ctx,
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_CFG, (uint8_t *)&int_cfg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (int_cfg.iea)
   {
     case LIS3MDL_ACTIVE_HIGH:
@@ -1184,6 +1227,9 @@ int32_t lis3mdl_int_on_z_ax_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_CFG, (uint8_t *)&int_cfg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_cfg.zien;
 
   return ret;
@@ -1227,6 +1273,9 @@ int32_t lis3mdl_int_on_y_ax_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_CFG, (uint8_t *)&int_cfg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_cfg.yien;
 
   return ret;
@@ -1270,6 +1319,9 @@ int32_t lis3mdl_int_on_x_ax_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_CFG, (uint8_t *)&int_cfg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_cfg.xien;
 
   return ret;
@@ -1304,6 +1356,9 @@ int32_t lis3mdl_interrupt_event_flag_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_SRC, (uint8_t *)&int_src, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_src.int_;
 
   return ret;
@@ -1324,6 +1379,9 @@ int32_t lis3mdl_int_mag_over_range_flag_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_SRC, (uint8_t *)&int_src, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_src.mroi;
 
   return ret;
@@ -1343,6 +1401,9 @@ int32_t lis3mdl_int_neg_z_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_SRC, (uint8_t *)&int_src, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_src.nth_z;
 
   return ret;
@@ -1362,6 +1423,9 @@ int32_t lis3mdl_int_neg_y_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_SRC, (uint8_t *)&int_src, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_src.nth_y;
 
   return ret;
@@ -1380,6 +1444,9 @@ int32_t lis3mdl_int_neg_x_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_SRC, (uint8_t *)&int_src, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_src.nth_x;
 
   return ret;
@@ -1398,6 +1465,9 @@ int32_t lis3mdl_int_pos_z_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_SRC, (uint8_t *)&int_src, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_src.pth_z;
 
   return ret;
@@ -1416,6 +1486,9 @@ int32_t lis3mdl_int_pos_y_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_SRC, (uint8_t *)&int_src, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_src.pth_y;
 
   return ret;
@@ -1434,6 +1507,9 @@ int32_t lis3mdl_int_pos_x_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_SRC, (uint8_t *)&int_src, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_src.pth_x;
 
   return ret;
@@ -1472,6 +1548,9 @@ int32_t lis3mdl_int_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
   int32_t ret;
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_INT_THS_L, buff, 2);
+
+  if (ret != 0) { return ret; }
+
   *val = buff[1];
   *val = (*val * 256U) +  buff[0];
 
@@ -1530,6 +1609,8 @@ int32_t lis3mdl_spi_mode_get(const stmdev_ctx_t *ctx, lis3mdl_sim_t *val)
 
   ret = lis3mdl_read_reg(ctx, LIS3MDL_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg3.sim)
   {
     case LIS3MDL_SPI_4_WIRE:
@@ -1557,5 +1638,3 @@ int32_t lis3mdl_spi_mode_get(const stmdev_ctx_t *ctx, lis3mdl_sim_t *val)
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

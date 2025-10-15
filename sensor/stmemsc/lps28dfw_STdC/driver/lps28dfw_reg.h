@@ -7,13 +7,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2024 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2024 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -122,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -668,13 +670,20 @@ typedef enum
   LPS28DFW_BYPASS_TO_FIFO   = 5, /* Bypass, FIFO on Trigger */
 } lps28dfw_operation_t;
 
-typedef struct
+int32_t lps28dfw_fifo_mode_set(const stmdev_ctx_t *ctx, lps28dfw_operation_t val);
+int32_t lps28dfw_fifo_mode_get(const stmdev_ctx_t *ctx, lps28dfw_operation_t *val);
+
+int32_t lps28dfw_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps28dfw_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
+typedef enum
 {
-  lps28dfw_operation_t operation;
-  uint8_t watermark : 7; /* (0 disable) max 128.*/
-} lps28dfw_fifo_md_t;
-int32_t lps28dfw_fifo_mode_set(const stmdev_ctx_t *ctx, lps28dfw_fifo_md_t *val);
-int32_t lps28dfw_fifo_mode_get(const stmdev_ctx_t *ctx, lps28dfw_fifo_md_t *val);
+  LPS28DFW_FIFO_EV_WTM      = 0x0,
+  LPS28DFW_FIFO_EV_FULL     = 0x1,
+} lps28dfw_fifo_event_t;
+
+int32_t lps28dfw_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, lps28dfw_fifo_event_t val);
+int32_t lps28dfw_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, lps28dfw_fifo_event_t *val);
 
 int32_t lps28dfw_fifo_level_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
@@ -754,5 +763,3 @@ int32_t lps28dfw_opc_get(const stmdev_ctx_t *ctx, int16_t *val);
 #endif
 
 #endif /* LPS28DFW_REGS_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

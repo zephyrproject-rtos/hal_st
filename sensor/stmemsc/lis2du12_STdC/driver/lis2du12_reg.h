@@ -7,13 +7,12 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
- * All rights reserved.</center></h2>
+ * Copyright (c) 2021 STMicroelectronics.
+ * All rights reserved.
  *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
  *
  ******************************************************************************
  */
@@ -122,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -990,7 +992,7 @@ typedef struct
   uint8_t x_en  : 1; /* Detection on X-axis */
   uint8_t y_en  : 1; /* Detection on Y-axis */
   uint8_t z_en  : 1; /* Detection on Z-axis */
-  uint8_t threshold; /* full scale dependent */
+  uint8_t threshold; /* 1 LSB = FS_XL / 2^8 */
   uint8_t duration;  /* 1 LSb: 1 ODR_time */
   struct
   {
@@ -1089,5 +1091,3 @@ int32_t lis2du12_orientation_mode_get(const stmdev_ctx_t *ctx,
 #endif
 
 #endif /* LIS2DU12_REGS_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

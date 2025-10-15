@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -204,6 +203,10 @@ int32_t ism330dlc_xl_full_scale_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL1_XL,
                            (uint8_t *)&ctrl1_xl, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl1_xl.fs_xl)
   {
@@ -272,6 +275,10 @@ int32_t ism330dlc_xl_data_rate_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL1_XL,
                            (uint8_t *)&ctrl1_xl, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl1_xl.odr_xl)
   {
@@ -370,6 +377,11 @@ int32_t ism330dlc_gy_full_scale_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch (ctrl2_g.fs_g)
   {
     case ISM330DLC_250dps:
@@ -438,6 +450,11 @@ int32_t ism330dlc_gy_data_rate_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl2_g_t ctrl2_g;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl2_g.odr_g)
   {
@@ -531,7 +548,10 @@ int32_t ism330dlc_block_data_update_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl3_c_t ctrl3_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
-  *val = ctrl3_c.bdu;
+  if (ret == 0)
+  {
+    *val = ctrl3_c.bdu;
+  }
 
   return ret;
 }
@@ -576,6 +596,10 @@ int32_t ism330dlc_xl_offset_weight_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl6_c_t ctrl6_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl6_c.usr_off_w)
   {
@@ -633,6 +657,10 @@ int32_t ism330dlc_xl_power_mode_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl6_c_t ctrl6_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl6_c.xl_hm_mode)
   {
@@ -694,6 +722,10 @@ int32_t ism330dlc_rounding_on_status_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl7_g_t ctrl7_g;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl7_g.rounding_status)
   {
@@ -751,6 +783,10 @@ int32_t ism330dlc_gy_power_mode_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl7_g_t ctrl7_g;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl7_g.g_hm_mode)
   {
@@ -855,7 +891,10 @@ int32_t ism330dlc_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_STATUS_REG,
                            (uint8_t *)&status_reg, 1);
-  *val = status_reg.xlda;
+  if (ret == 0)
+  {
+    *val = status_reg.xlda;
+  }
 
   return ret;
 }
@@ -875,7 +914,10 @@ int32_t ism330dlc_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_STATUS_REG,
                            (uint8_t *)&status_reg, 1);
-  *val = status_reg.gda;
+  if (ret == 0)
+  {
+    *val = status_reg.gda;
+  }
 
   return ret;
 }
@@ -895,13 +937,16 @@ int32_t ism330dlc_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_STATUS_REG,
                            (uint8_t *)&status_reg, 1);
-  *val = status_reg.tda;
+  if (ret == 0)
+  {
+    *val = status_reg.tda;
+  }
 
   return ret;
 }
 
 /**
-  * @brief  Accelerometer axis user offset correction expressed in two’s
+  * @brief  Accelerometer axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C.
   *         The value must be in the range [-127 127].[set]
   *
@@ -919,7 +964,7 @@ int32_t ism330dlc_xl_usr_offset_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer axis user offset correction xpressed in two’s
+  * @brief  Accelerometer axis user offset correction xpressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C.
   *         The value must be in the range [-127 127].[get]
   *
@@ -995,7 +1040,10 @@ int32_t ism330dlc_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL10_C,
                            (uint8_t *)&ctrl10_c, 1);
-  *val = ctrl10_c.timer_en;
+  if (ret == 0)
+  {
+    *val = ctrl10_c.timer_en;
+  }
 
   return ret;
 }
@@ -1051,6 +1099,10 @@ int32_t ism330dlc_timestamp_res_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_WAKE_UP_DUR,
                            (uint8_t *)&wake_up_dur, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (wake_up_dur.timer_hr)
   {
@@ -1122,6 +1174,10 @@ int32_t ism330dlc_rounding_mode_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl5_c_t ctrl5_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl5_c.rounding)
   {
@@ -1167,7 +1223,7 @@ int32_t ism330dlc_rounding_mode_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Temperature data output register (r). L and H registers together
-  *         express a 16-bit word in two’s complement.[get]
+  *         express a 16-bit word in two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions
   * @param  buff   Buffer that stores data read
@@ -1179,15 +1235,18 @@ int32_t ism330dlc_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   uint8_t buff[2];
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_OUT_TEMP_L, buff, 2);
-  *val = (int16_t)buff[1];
-  *val = (*val * 256) + (int16_t)buff[0];
+  if (ret == 0)
+  {
+    *val = (int16_t)buff[1];
+    *val = (*val * 256) + (int16_t)buff[0];
+  }
 
   return ret;
 }
 
 /**
   * @brief  Angular rate sensor. The value is expressed as a 16-bit word in
-  *         two’s complement.[get]
+  *         two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions
   * @param  buff   Buffer that stores data read
@@ -1200,6 +1259,11 @@ int32_t ism330dlc_angular_rate_raw_get(const stmdev_ctx_t *ctx,
   uint8_t buff[6];
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_OUTX_L_G, buff, 6);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1212,7 +1276,7 @@ int32_t ism330dlc_angular_rate_raw_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Linear acceleration output register. The value is expressed
-  *         as a 16-bit word in two’s complement.[get]
+  *         as a 16-bit word in two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions
   * @param  buff   Buffer that stores data read
@@ -1225,6 +1289,11 @@ int32_t ism330dlc_acceleration_raw_get(const stmdev_ctx_t *ctx,
   uint8_t buff[6];
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_OUTX_L_XL, buff, 6);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1249,6 +1318,11 @@ int32_t ism330dlc_mag_calibrated_raw_get(const stmdev_ctx_t *ctx,
   uint8_t buff[6];
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_OUT_MAG_RAW_X_L, buff, 6);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1333,6 +1407,10 @@ int32_t ism330dlc_mem_bank_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FUNC_CFG_ACCESS,
                            (uint8_t *)&func_cfg_access, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (func_cfg_access.func_cfg_en)
   {
@@ -1389,6 +1467,10 @@ int32_t ism330dlc_data_ready_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_DRDY_PULSE_CFG,
                            (uint8_t *)&drdy_pulse_cfg_g, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (drdy_pulse_cfg_g.drdy_pulsed)
   {
@@ -1460,7 +1542,10 @@ int32_t ism330dlc_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ism330dlc_ctrl3_c_t ctrl3_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
-  *val = ctrl3_c.sw_reset;
+  if (ret == 0)
+  {
+    *val = ctrl3_c.sw_reset;
+  }
 
   return ret;
 }
@@ -1503,6 +1588,10 @@ int32_t ism330dlc_data_format_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl3_c_t ctrl3_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl3_c.ble)
   {
@@ -1560,7 +1649,10 @@ int32_t ism330dlc_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ism330dlc_ctrl3_c_t ctrl3_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
-  *val = ctrl3_c.if_inc;
+  if (ret == 0)
+  {
+    *val = ctrl3_c.if_inc;
+  }
 
   return ret;
 }
@@ -1601,7 +1693,10 @@ int32_t ism330dlc_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ism330dlc_ctrl3_c_t ctrl3_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
-  *val = ctrl3_c.boot;
+  if (ret == 0)
+  {
+    *val = ctrl3_c.boot;
+  }
 
   return ret;
 }
@@ -1644,6 +1739,11 @@ int32_t ism330dlc_xl_self_test_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl5_c_t ctrl5_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl5_c.st_xl)
   {
@@ -1705,6 +1805,11 @@ int32_t ism330dlc_gy_self_test_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl5_c_t ctrl5_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl5_c.st_g)
   {
@@ -1781,7 +1886,11 @@ int32_t ism330dlc_filter_settling_mask_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl4_c_t ctrl4_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
-  *val = ctrl4_c.drdy_mask;
+
+  if (ret == 0)
+  {
+    *val = ctrl4_c.drdy_mask;
+  }
 
   return ret;
 }
@@ -1826,6 +1935,11 @@ int32_t ism330dlc_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
   ism330dlc_tap_cfg_t tap_cfg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_TAP_CFG, (uint8_t *)&tap_cfg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (tap_cfg.slope_fds)
   {
@@ -1901,6 +2015,10 @@ int32_t ism330dlc_xl_filter_analog_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL1_XL,
                            (uint8_t *)&ctrl1_xl, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl1_xl.bw0_xl)
   {
@@ -2005,6 +2123,11 @@ int32_t ism330dlc_xl_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
     {
       ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL1_XL,
                                (uint8_t *)&ctrl1_xl, 1);
+
+      if (ret != 0)
+      {
+        return ret;
+      }
 
       switch (ctrl1_xl.lpf1_bw_sel)
       {
@@ -2166,7 +2289,10 @@ int32_t ism330dlc_xl_reference_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL8_XL,
                            (uint8_t *)&ctrl8_xl, 1);
-  *val = ctrl8_xl.hp_ref_mode;
+  if (ret == 0)
+  {
+    *val = ctrl8_xl.hp_ref_mode;
+  }
 
   return ret;
 }
@@ -2214,6 +2340,11 @@ int32_t ism330dlc_xl_hp_bandwidth_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL8_XL,
                            (uint8_t *)&ctrl8_xl, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   if (ctrl8_xl.hp_slope_xl_en == 0x00U)
   {
@@ -2334,6 +2465,11 @@ int32_t ism330dlc_xl_ui_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
     ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL1_XL,
                              (uint8_t *)&ctrl1_xl, 1);
 
+    if (ret != 0)
+    {
+      return ret;
+    }
+
     switch (ctrl1_xl.lpf1_bw_sel)
     {
       case ISM330DLC_XL_UI_LP1_ODR_DIV_2:
@@ -2389,7 +2525,10 @@ int32_t ism330dlc_xl_ui_slope_get(const stmdev_ctx_t *ctx,  uint8_t *val)
   ism330dlc_ctrl8_xl_t reg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL8_XL, (uint8_t *)&reg, 1);
-  *val = reg.hp_slope_xl_en;
+  if (ret == 0)
+  {
+    *val = reg.hp_slope_xl_en;
+  }
 
   return ret;
 }
@@ -2458,6 +2597,10 @@ int32_t ism330dlc_xl_aux_lp_bandwidth_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl3_ois_t reg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_OIS, (uint8_t *)&reg, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (reg.filter_xl_conf_ois)
   {
@@ -2576,6 +2719,11 @@ int32_t ism330dlc_gy_band_pass_get(const stmdev_ctx_t *ctx,
     {
       ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
+      if (ret != 0)
+      {
+        return ret;
+      }
+
       switch ((ctrl7_g.hp_en_g << 7) + (ctrl7_g.hpm_g << 4) +
               (ctrl4_c.lpf1_sel_g << 3) + ctrl6_c.ftype)
       {
@@ -2689,7 +2837,10 @@ int32_t ism330dlc_gy_ui_high_pass_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ism330dlc_ctrl7_g_t reg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL7_G, (uint8_t *)&reg, 1);
-  *val = reg.hp_en_g;
+  if (ret == 0)
+  {
+    *val = reg.hp_en_g;
+  }
 
   return ret;
 }
@@ -2753,6 +2904,11 @@ int32_t ism330dlc_gy_aux_bandwidth_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl2_ois_t reg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL2_OIS, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((reg.hp_en_ois << 7) + (reg.hpm_ois << 4) +
           reg.ftype_ois)
@@ -2843,7 +2999,10 @@ int32_t ism330dlc_aux_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_STATUS_SPIAUX,
                            (uint8_t *)&reg, 1);
-  *val = reg.xlda;
+  if (ret == 0)
+  {
+    *val = reg.xlda;
+  }
 
   return ret;
 }
@@ -2863,7 +3022,10 @@ int32_t ism330dlc_aux_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_STATUS_SPIAUX,
                            (uint8_t *)&reg, 1);
-  *val = reg.gda;
+  if (ret == 0)
+  {
+    *val = reg.gda;
+  }
 
   return ret;
 }
@@ -2883,7 +3045,10 @@ int32_t ism330dlc_aux_gy_flag_settling_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_STATUS_SPIAUX,
                            (uint8_t *)&reg, 1);
-  *val = reg.gyro_settling;
+  if (ret == 0)
+  {
+    *val = reg.gyro_settling;
+  }
 
   return ret;
 }
@@ -2949,6 +3114,11 @@ int32_t ism330dlc_aux_den_mode_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&ctrl1_ois, 1);
   }
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch ((ctrl1_ois.lvl1_ois << 1) | int_ois.lvl2_ois)
   {
     case ISM330DLC_AUX_DEN_DISABLE:
@@ -3010,7 +3180,10 @@ int32_t ism330dlc_aux_drdy_on_int2_get(const stmdev_ctx_t *ctx,
   ism330dlc_int_ois_t reg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_INT_OIS, (uint8_t *)&reg, 1);
-  *val = reg.int2_drdy_ois;
+  if (ret == 0)
+  {
+    *val = reg.int2_drdy_ois;
+  }
 
   return ret;
 }
@@ -3068,6 +3241,11 @@ int32_t ism330dlc_aux_mode_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl1_ois_t reg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL1_OIS, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((reg.mode4_en << 1) + reg.ois_en_spi2)
   {
@@ -3129,6 +3307,11 @@ int32_t ism330dlc_aux_gy_full_scale_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl1_ois_t reg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL1_OIS, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (reg.fs_g_ois)
   {
@@ -3199,6 +3382,11 @@ int32_t ism330dlc_aux_spi_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL1_OIS, (uint8_t *)&reg, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch (reg.sim_ois)
   {
     case ISM330DLC_AUX_SPI_4_WIRE:
@@ -3255,6 +3443,11 @@ int32_t ism330dlc_aux_data_format_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl1_ois_t reg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL1_OIS, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (reg.ble_ois)
   {
@@ -3319,6 +3512,11 @@ int32_t ism330dlc_aux_gy_clamp_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_OIS, (uint8_t *)&reg, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch (reg.st_ois_clampdis)
   {
     case ISM330DLC_ENABLE_CLAMP:
@@ -3375,6 +3573,11 @@ int32_t ism330dlc_aux_gy_self_test_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl3_ois_t reg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_OIS, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (reg.st_ois)
   {
@@ -3436,6 +3639,11 @@ int32_t ism330dlc_aux_xl_full_scale_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl3_ois_t reg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_OIS, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (reg.fs_xl_ois)
   {
@@ -3501,6 +3709,11 @@ int32_t ism330dlc_aux_den_polarity_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl3_ois_t reg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_OIS, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (reg.den_lh_ois)
   {
@@ -3571,6 +3784,11 @@ int32_t ism330dlc_spi_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch (ctrl3_c.sim)
   {
     case ISM330DLC_SPI_4_WIRE:
@@ -3627,6 +3845,11 @@ int32_t ism330dlc_i2c_interface_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl4_c_t ctrl4_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl4_c.i2c_disable)
   {
@@ -3820,7 +4043,10 @@ int32_t ism330dlc_pin_int1_route_get(const stmdev_ctx_t *ctx,
         val->den_drdy_int1 = ctrl4_c.den_drdy_int1;
         ret = ism330dlc_read_reg(ctx, ISM330DLC_MASTER_CONFIG,
                                  (uint8_t *)&master_config, 1);
-        val->den_drdy_int1 = master_config.drdy_on_int1;
+        if (ret == 0)
+        {
+          val->den_drdy_int1 = master_config.drdy_on_int1;
+        }
       }
     }
   }
@@ -4013,6 +4239,11 @@ int32_t ism330dlc_pin_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch (ctrl3_c.pp_od)
   {
     case ISM330DLC_PUSH_PULL:
@@ -4070,6 +4301,11 @@ int32_t ism330dlc_pin_polarity_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch (ctrl3_c.h_lactive)
   {
     case ISM330DLC_ACTIVE_HIGH:
@@ -4124,7 +4360,10 @@ int32_t ism330dlc_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ism330dlc_ctrl4_c_t ctrl4_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
-  *val = ctrl4_c.int2_on_int1;
+  if (ret == 0)
+  {
+    *val = ctrl4_c.int2_on_int1;
+  }
 
   return ret;
 }
@@ -4167,6 +4406,11 @@ int32_t ism330dlc_int_notification_get(const stmdev_ctx_t *ctx,
   ism330dlc_tap_cfg_t tap_cfg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_TAP_CFG, (uint8_t *)&tap_cfg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (tap_cfg.lir)
   {
@@ -4238,7 +4482,10 @@ int32_t ism330dlc_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_WAKE_UP_THS,
                            (uint8_t *)&wake_up_ths, 1);
-  *val = wake_up_ths.wk_ths;
+  if (ret == 0)
+  {
+    *val = wake_up_ths.wk_ths;
+  }
 
   return ret;
 }
@@ -4282,7 +4529,10 @@ int32_t ism330dlc_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_WAKE_UP_DUR,
                            (uint8_t *)&wake_up_dur, 1);
-  *val = wake_up_dur.wake_dur;
+  if (ret == 0)
+  {
+    *val = wake_up_dur.wake_dur;
+  }
 
   return ret;
 }
@@ -4336,7 +4586,10 @@ int32_t ism330dlc_gy_sleep_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ism330dlc_ctrl4_c_t ctrl4_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
-  *val = ctrl4_c.sleep;
+  if (ret == 0)
+  {
+    *val = ctrl4_c.sleep;
+  }
 
   return ret;
 }
@@ -4379,6 +4632,11 @@ int32_t ism330dlc_act_mode_get(const stmdev_ctx_t *ctx,
   ism330dlc_tap_cfg_t tap_cfg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_TAP_CFG, (uint8_t *)&tap_cfg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (tap_cfg.inact_en)
   {
@@ -4445,7 +4703,10 @@ int32_t ism330dlc_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_WAKE_UP_DUR,
                            (uint8_t *)&wake_up_dur, 1);
-  *val = wake_up_dur.sleep_dur;
+  if (ret == 0)
+  {
+    *val = wake_up_dur.sleep_dur;
+  }
 
   return ret;
 }
@@ -4517,7 +4778,10 @@ int32_t ism330dlc_tap_detection_on_z_get(const stmdev_ctx_t *ctx,
   ism330dlc_tap_cfg_t tap_cfg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_TAP_CFG, (uint8_t *)&tap_cfg, 1);
-  *val = tap_cfg.tap_z_en;
+  if (ret == 0)
+  {
+    *val = tap_cfg.tap_z_en;
+  }
 
   return ret;
 }
@@ -4560,7 +4824,10 @@ int32_t ism330dlc_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
   ism330dlc_tap_cfg_t tap_cfg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_TAP_CFG, (uint8_t *)&tap_cfg, 1);
-  *val = tap_cfg.tap_y_en;
+  if (ret == 0)
+  {
+    *val = tap_cfg.tap_y_en;
+  }
 
   return ret;
 }
@@ -4603,7 +4870,10 @@ int32_t ism330dlc_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
   ism330dlc_tap_cfg_t tap_cfg;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_TAP_CFG, (uint8_t *)&tap_cfg, 1);
-  *val = tap_cfg.tap_x_en;
+  if (ret == 0)
+  {
+    *val = tap_cfg.tap_x_en;
+  }
 
   return ret;
 }
@@ -4647,7 +4917,10 @@ int32_t ism330dlc_tap_threshold_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_TAP_THS_6D,
                            (uint8_t *)&tap_ths_6d, 1);
-  *val = tap_ths_6d.tap_ths;
+  if (ret == 0)
+  {
+    *val = tap_ths_6d.tap_ths;
+  }
 
   return ret;
 }
@@ -4701,7 +4974,10 @@ int32_t ism330dlc_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_INT_DUR2,
                            (uint8_t *)&int_dur2, 1);
-  *val = int_dur2.shock;
+  if (ret == 0)
+  {
+    *val = int_dur2.shock;
+  }
 
   return ret;
 }
@@ -4755,7 +5031,10 @@ int32_t ism330dlc_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_INT_DUR2,
                            (uint8_t *)&int_dur2, 1);
-  *val = int_dur2.quiet;
+  if (ret == 0)
+  {
+    *val = int_dur2.quiet;
+  }
 
   return ret;
 }
@@ -4811,7 +5090,10 @@ int32_t ism330dlc_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_INT_DUR2,
                            (uint8_t *)&int_dur2, 1);
-  *val = int_dur2.dur;
+  if (ret == 0)
+  {
+    *val = int_dur2.dur;
+  }
 
   return ret;
 }
@@ -4857,6 +5139,11 @@ int32_t ism330dlc_tap_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_WAKE_UP_THS,
                            (uint8_t *)&wake_up_ths, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (wake_up_ths.single_double_tap)
   {
@@ -4931,6 +5218,11 @@ int32_t ism330dlc_6d_feed_data_get(const stmdev_ctx_t *ctx,
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL8_XL,
                            (uint8_t *)&ctrl8_xl, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch (ctrl8_xl.low_pass_on_6d)
   {
     case ISM330DLC_ODR_DIV_2_FEED:
@@ -4990,6 +5282,11 @@ int32_t ism330dlc_6d_threshold_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_TAP_THS_6D,
                            (uint8_t *)&tap_ths_6d, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (tap_ths_6d.sixd_ths)
   {
@@ -5056,7 +5353,10 @@ int32_t ism330dlc_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_TAP_THS_6D,
                            (uint8_t *)&tap_ths_6d, 1);
-  *val = tap_ths_6d.d4d_en;
+  if (ret == 0)
+  {
+    *val = tap_ths_6d.d4d_en;
+  }
 
   return ret;
 }
@@ -5135,7 +5435,10 @@ int32_t ism330dlc_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
                              (uint8_t *)&free_fall, 1);
   }
 
-  *val = (wake_up_dur.ff_dur << 5) + free_fall.ff_dur;
+  if (ret == 0)
+  {
+    *val = (wake_up_dur.ff_dur << 5) + free_fall.ff_dur;
+  }
 
   return ret;
 }
@@ -5181,6 +5484,11 @@ int32_t ism330dlc_ff_threshold_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FREE_FALL,
                            (uint8_t *)&free_fall, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (free_fall.ff_ths)
   {
@@ -5292,8 +5600,11 @@ int32_t ism330dlc_fifo_watermark_get(const stmdev_ctx_t *ctx, uint16_t *val)
                              (uint8_t *)&fifo_ctrl2, 1);
   }
 
-  *val = fifo_ctrl2.fth;
-  *val = (*val * 256U) +  fifo_ctrl1.fth;
+  if (ret == 0)
+  {
+    *val = fifo_ctrl2.fth;
+    *val = (*val * 256U) +  fifo_ctrl1.fth;
+  }
 
   return ret;
 }
@@ -5321,8 +5632,12 @@ int32_t ism330dlc_fifo_data_level_get(const stmdev_ctx_t *ctx,
   {
     ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_STATUS2,
                              (uint8_t *)&fifo_status2, 1);
-    *val = fifo_status2.diff_fifo;
-    *val = (*val * 256U) +  fifo_status1.diff_fifo;
+
+    if (ret == 0)
+    {
+      *val = fifo_status2.diff_fifo;
+      *val = (*val * 256U) +  fifo_status1.diff_fifo;
+    }
   }
 
   return ret;
@@ -5342,7 +5657,10 @@ int32_t ism330dlc_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_STATUS2,
                            (uint8_t *)&fifo_status2, 1);
-  *val = fifo_status2.waterm;
+  if (ret == 0)
+  {
+    *val = fifo_status2.waterm;
+  }
 
   return ret;
 }
@@ -5368,8 +5686,11 @@ int32_t ism330dlc_fifo_pattern_get(const stmdev_ctx_t *ctx, uint16_t *val)
   {
     ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_STATUS4,
                              (uint8_t *)&fifo_status4, 1);
-    *val = fifo_status4.fifo_pattern;
-    *val = (*val * 256U) +  fifo_status3.fifo_pattern;
+    if (ret == 0)
+    {
+      *val = fifo_status4.fifo_pattern;
+      *val = (*val * 256U) +  fifo_status3.fifo_pattern;
+    }
   }
 
   return ret;
@@ -5414,7 +5735,10 @@ int32_t ism330dlc_fifo_temp_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_CTRL2,
                            (uint8_t *)&fifo_ctrl2, 1);
-  *val = fifo_ctrl2.fifo_temp_en;
+  if (ret == 0)
+  {
+    *val = fifo_ctrl2.fifo_temp_en;
+  }
 
   return ret;
 }
@@ -5489,6 +5813,11 @@ int32_t ism330dlc_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_CTRL3,
                            (uint8_t *)&fifo_ctrl3, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (fifo_ctrl3.dec_fifo_xl)
   {
@@ -5576,6 +5905,11 @@ int32_t ism330dlc_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_CTRL3,
                            (uint8_t *)&fifo_ctrl3, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch (fifo_ctrl3.dec_fifo_gyro)
   {
     case ISM330DLC_FIFO_GY_DISABLE:
@@ -5661,6 +5995,11 @@ int32_t ism330dlc_fifo_dataset_3_batch_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_CTRL4,
                            (uint8_t *)&fifo_ctrl4, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (fifo_ctrl4.dec_ds3_fifo)
   {
@@ -5748,6 +6087,11 @@ int32_t ism330dlc_fifo_dataset_4_batch_get(const stmdev_ctx_t *ctx,
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_CTRL4,
                            (uint8_t *)&fifo_ctrl4, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch (fifo_ctrl4.dec_ds4_fifo)
   {
     case ISM330DLC_FIFO_DS4_DISABLE:
@@ -5831,7 +6175,10 @@ int32_t ism330dlc_fifo_xl_gy_8bit_format_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_CTRL4,
                            (uint8_t *)&fifo_ctrl4, 1);
-  *val = fifo_ctrl4.only_high_data;
+  if (ret == 0)
+  {
+    *val = fifo_ctrl4.only_high_data;
+  }
 
   return ret;
 }
@@ -5878,7 +6225,10 @@ int32_t ism330dlc_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_CTRL4,
                            (uint8_t *)&fifo_ctrl4, 1);
-  *val = fifo_ctrl4.stop_on_fth;
+  if (ret == 0)
+  {
+    *val = fifo_ctrl4.stop_on_fth;
+  }
 
   return ret;
 }
@@ -5924,6 +6274,11 @@ int32_t ism330dlc_fifo_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_CTRL5,
                            (uint8_t *)&fifo_ctrl5, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (fifo_ctrl5.fifo_mode)
   {
@@ -5996,6 +6351,11 @@ int32_t ism330dlc_fifo_data_rate_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_FIFO_CTRL5,
                            (uint8_t *)&fifo_ctrl5, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (fifo_ctrl5.odr_fifo)
   {
@@ -6103,6 +6463,11 @@ int32_t ism330dlc_den_polarity_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch (ctrl5_c.den_lh)
   {
     case ISM330DLC_DEN_ACT_LOW:
@@ -6159,6 +6524,11 @@ int32_t ism330dlc_den_mode_get(const stmdev_ctx_t *ctx,
   ism330dlc_ctrl6_c_t ctrl6_c;
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl6_c.den_mode)
   {
@@ -6249,6 +6619,11 @@ int32_t ism330dlc_den_enable_get(const stmdev_ctx_t *ctx,
     ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL9_XL,
                              (uint8_t *)&ctrl9_xl, 1);
 
+    if (ret != 0)
+    {
+      return ret;
+    }
+
     switch ((ctrl4_c.den_xl_en << 1) + ctrl9_xl.den_xl_g)
     {
       case ISM330DLC_STAMP_IN_GY_DATA:
@@ -6311,7 +6686,10 @@ int32_t ism330dlc_den_mark_axis_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL9_XL,
                            (uint8_t *)&ctrl9_xl, 1);
-  *val = ctrl9_xl.den_z;
+  if (ret == 0)
+  {
+    *val = ctrl9_xl.den_z;
+  }
 
   return ret;
 }
@@ -6355,7 +6733,10 @@ int32_t ism330dlc_den_mark_axis_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL9_XL,
                            (uint8_t *)&ctrl9_xl, 1);
-  *val = ctrl9_xl.den_y;
+  if (ret == 0)
+  {
+    *val = ctrl9_xl.den_y;
+  }
 
   return ret;
 }
@@ -6399,7 +6780,10 @@ int32_t ism330dlc_den_mark_axis_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL9_XL,
                            (uint8_t *)&ctrl9_xl, 1);
-  *val = ctrl9_xl.den_x;
+  if (ret == 0)
+  {
+    *val = ctrl9_xl.den_x;
+  }
 
   return ret;
 }
@@ -6456,7 +6840,10 @@ int32_t ism330dlc_mag_soft_iron_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_CTRL9_XL,
                            (uint8_t *)&ctrl9_xl, 1);
-  *val = ctrl9_xl.soft_en;
+  if (ret == 0)
+  {
+    *val = ctrl9_xl.soft_en;
+  }
 
   return ret;
 }
@@ -6518,7 +6905,10 @@ int32_t ism330dlc_mag_hard_iron_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_MASTER_CONFIG,
                            (uint8_t *)&master_config, 1);
-  *val = master_config.iron_en;
+  if (ret == 0)
+  {
+    *val = master_config.iron_en;
+  }
 
   return ret;
 }
@@ -6541,12 +6931,9 @@ int32_t ism330dlc_mag_soft_iron_mat_set(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = ism330dlc_write_reg(ctx, ISM330DLC_MAG_SI_XX, buff, 9);
-
-    if (ret == 0)
-    {
-      ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-    }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -6569,19 +6956,16 @@ int32_t ism330dlc_mag_soft_iron_mat_get(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = ism330dlc_read_reg(ctx, ISM330DLC_MAG_SI_XX, buff, 9);
-
-    if (ret == 0)
-    {
-      ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-    }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
 
 /**
   * @brief  Offset for hard-iron compensation register (r/w). The value is
-  *         expressed as a 16-bit word in two’s complement.[set]
+  *         expressed as a 16-bit word in two's complement.[set]
   *
   * @param  ctx    Read / write interface definitions
   * @param  buff   Buffer that contains data to write
@@ -6603,19 +6987,16 @@ int32_t ism330dlc_mag_offset_set(const stmdev_ctx_t *ctx, int16_t *val)
     buff[5] = (uint8_t)((uint16_t)val[2] / 256U);
     buff[4] = (uint8_t)((uint16_t)val[2] - (buff[5] * 256U));
     ret = ism330dlc_write_reg(ctx, ISM330DLC_MAG_OFFX_L, buff, 6);
-
-    if (ret == 0)
-    {
-      ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-    }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
 
 /**
   * @brief  Offset for hard-iron compensation register(r/w).
-  *         The value is expressed as a 16-bit word in two’s complement.[get]
+  *         The value is expressed as a 16-bit word in two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions
   * @param  buff   Buffer that stores data read
@@ -6631,18 +7012,19 @@ int32_t ism330dlc_mag_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
   if (ret == 0)
   {
     ret = ism330dlc_read_reg(ctx, ISM330DLC_MAG_OFFX_L, buff, 6);
-    val[0] = (int16_t)buff[1];
-    val[0] = (val[0] * 256) + (int16_t)buff[0];
-    val[1] = (int16_t)buff[3];
-    val[1] = (val[1] * 256) + (int16_t)buff[2];
-    val[2] = (int16_t)buff[5];
-    val[2] = (val[2] * 256) + (int16_t)buff[4];
 
     if (ret == 0)
     {
-      ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
+      val[0] = (int16_t)buff[1];
+      val[0] = (val[0] * 256) + (int16_t)buff[0];
+      val[1] = (int16_t)buff[3];
+      val[1] = (val[1] * 256) + (int16_t)buff[2];
+      val[2] = (int16_t)buff[5];
+      val[2] = (val[2] * 256) + (int16_t)buff[4];
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -6703,7 +7085,10 @@ int32_t ism330dlc_sh_sync_sens_frame_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_SENSOR_SYNC_TIME_FRAME,
                            (uint8_t *)&sensor_sync_time_frame, 1);
-  *val =  sensor_sync_time_frame.tph;
+  if (ret == 0)
+  {
+    *val =  sensor_sync_time_frame.tph;
+  }
 
   return ret;
 }
@@ -6749,6 +7134,11 @@ int32_t ism330dlc_sh_sync_sens_ratio_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_SENSOR_SYNC_RES_RATIO,
                            (uint8_t *)&sensor_sync_res_ratio, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (sensor_sync_res_ratio.rr)
   {
@@ -6815,7 +7205,10 @@ int32_t ism330dlc_sh_master_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_MASTER_CONFIG,
                            (uint8_t *)&master_config, 1);
-  *val = master_config.master_on;
+  if (ret == 0)
+  {
+    *val = master_config.master_on;
+  }
 
   return ret;
 }
@@ -6859,7 +7252,10 @@ int32_t ism330dlc_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_MASTER_CONFIG,
                            (uint8_t *)&master_config, 1);
-  *val = master_config.pass_through_mode;
+  if (ret == 0)
+  {
+    *val = master_config.pass_through_mode;
+  }
 
   return ret;
 }
@@ -6905,6 +7301,11 @@ int32_t ism330dlc_sh_pin_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_MASTER_CONFIG,
                            (uint8_t *)&master_config, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (master_config.pull_up_en)
   {
@@ -6966,6 +7367,11 @@ int32_t ism330dlc_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
   ret = ism330dlc_read_reg(ctx, ISM330DLC_MASTER_CONFIG,
                            (uint8_t *)&master_config, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch (master_config.start_config)
   {
     case ISM330DLC_XL_GY_DRDY:
@@ -7023,7 +7429,10 @@ int32_t ism330dlc_sh_drdy_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_MASTER_CONFIG,
                            (uint8_t *)&master_config, 1);
-  *val = master_config.drdy_on_int1;
+  if (ret == 0)
+  {
+    *val = master_config.drdy_on_int1;
+  }
 
   return ret;
 }
@@ -7094,7 +7503,10 @@ int32_t ism330dlc_sh_cmd_sens_sync_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_MASTER_CMD_CODE,
                            (uint8_t *)&master_cmd_code, 1);
-  *val = master_cmd_code.master_cmd_code;
+  if (ret == 0)
+  {
+    *val = master_cmd_code.master_cmd_code;
+  }
 
   return ret;
 }
@@ -7142,7 +7554,10 @@ int32_t ism330dlc_sh_spi_sync_error_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330dlc_read_reg(ctx, ISM330DLC_SENS_SYNC_SPI_ERROR_CODE,
                            (uint8_t *)&sens_sync_spi_error_code, 1);
-  *val =  sens_sync_spi_error_code.error_code;
+  if (ret == 0)
+  {
+    *val =  sens_sync_spi_error_code.error_code;
+  }
 
   return ret;
 }
@@ -7172,13 +7587,10 @@ int32_t ism330dlc_sh_num_of_dev_connected_set(const stmdev_ctx_t *ctx,
       slave0_config.aux_sens_on = (uint8_t) val;
       ret = ism330dlc_write_reg(ctx, ISM330DLC_SLAVE0_CONFIG,
                                 (uint8_t *)&slave0_config, 1);
-
-      if (ret == 0)
-      {
-        ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-      }
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7228,9 +7640,10 @@ int32_t ism330dlc_sh_num_of_dev_connected_get(const stmdev_ctx_t *ctx,
           break;
       }
 
-      ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7269,14 +7682,11 @@ int32_t ism330dlc_sh_cfg_write(const stmdev_ctx_t *ctx,
       {
         ret = ism330dlc_write_reg(ctx, ISM330DLC_DATAWRITE_SRC_MODE_SUB_SLV0,
                                   &(val->slv0_data), 1);
-
-        if (ret == 0)
-        {
-          ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-        }
       }
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7322,15 +7732,12 @@ int32_t ism330dlc_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
         {
           ret = ism330dlc_write_reg(ctx, ISM330DLC_SLAVE0_CONFIG,
                                     (uint8_t *)&slave0_config, 1);
-
-          if (ret == 0)
-          {
-            ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-          }
         }
       }
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7376,15 +7783,12 @@ int32_t ism330dlc_sh_slv1_cfg_read(const stmdev_ctx_t *ctx,
         {
           ret = ism330dlc_write_reg(ctx, ISM330DLC_SLAVE1_CONFIG,
                                     (uint8_t *)&slave1_config, 1);
-
-          if (ret == 0)
-          {
-            ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-          }
         }
       }
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7430,15 +7834,12 @@ int32_t ism330dlc_sh_slv2_cfg_read(const stmdev_ctx_t *ctx,
           slave2_config.slave2_numop = val->slv_len;
           ret = ism330dlc_write_reg(ctx, ISM330DLC_SLAVE2_CONFIG,
                                     (uint8_t *)&slave2_config, 1);
-
-          if (ret == 0)
-          {
-            ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-          }
         }
       }
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7484,15 +7885,12 @@ int32_t ism330dlc_sh_slv3_cfg_read(const stmdev_ctx_t *ctx,
           slave3_config.slave3_numop = val->slv_len;
           ret = ism330dlc_write_reg(ctx, ISM330DLC_SLAVE3_CONFIG,
                                     (uint8_t *)&slave3_config, 1);
-
-          if (ret == 0)
-          {
-            ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-          }
         }
       }
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7524,12 +7922,10 @@ int32_t ism330dlc_sh_slave_0_dec_set(const stmdev_ctx_t *ctx,
       ret = ism330dlc_write_reg(ctx, ISM330DLC_SLAVE0_CONFIG,
                                 (uint8_t *)&slave0_config, 1);
 
-      if (ret == 0)
-      {
-        ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-      }
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7579,10 +7975,10 @@ int32_t ism330dlc_sh_slave_0_dec_get(const stmdev_ctx_t *ctx,
           *val = ISM330DLC_SL0_NO_DEC;
           break;
       }
-
-      ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7615,13 +8011,10 @@ int32_t ism330dlc_sh_write_mode_set(const stmdev_ctx_t *ctx,
     {
       ret = ism330dlc_write_reg(ctx, ISM330DLC_SLAVE1_CONFIG,
                                 (uint8_t *)&slave1_config, 1);
-
-      if (ret == 0)
-      {
-        ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-      }
     }
   }
+
+  ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7665,10 +8058,10 @@ int32_t ism330dlc_sh_write_mode_get(const stmdev_ctx_t *ctx,
           *val = ISM330DLC_EACH_SH_CYCLE;
           break;
       }
-
-      ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7699,13 +8092,10 @@ int32_t ism330dlc_sh_slave_1_dec_set(const stmdev_ctx_t *ctx,
       slave1_config.slave1_rate = (uint8_t) val;
       ret = ism330dlc_write_reg(ctx, ISM330DLC_SLAVE1_CONFIG,
                                 (uint8_t *)&slave1_config, 1);
-
-      if (ret == 0)
-      {
-        ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-      }
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7754,10 +8144,10 @@ int32_t ism330dlc_sh_slave_1_dec_get(const stmdev_ctx_t *ctx,
           *val = ISM330DLC_SL1_NO_DEC;
           break;
       }
-
-      ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7788,13 +8178,10 @@ int32_t ism330dlc_sh_slave_2_dec_set(const stmdev_ctx_t *ctx,
       slave2_config.slave2_rate = (uint8_t) val;
       ret = ism330dlc_write_reg(ctx, ISM330DLC_SLAVE2_CONFIG,
                                 (uint8_t *)&slave2_config, 1);
-
-      if (ret == 0)
-      {
-        ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-      }
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7844,10 +8231,10 @@ int32_t ism330dlc_sh_slave_2_dec_get(const stmdev_ctx_t *ctx,
           *val = ISM330DLC_SL2_NO_DEC;
           break;
       }
-
-      ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7879,12 +8266,10 @@ int32_t ism330dlc_sh_slave_3_dec_set(const stmdev_ctx_t *ctx,
       ret = ism330dlc_write_reg(ctx, ISM330DLC_SLAVE3_CONFIG,
                                 (uint8_t *)&slave3_config, 1);
 
-      if (ret == 0)
-      {
-        ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
-      }
     }
   }
+
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
 
   return ret;
 }
@@ -7934,12 +8319,10 @@ int32_t ism330dlc_sh_slave_3_dec_get(const stmdev_ctx_t *ctx,
           *val = ISM330DLC_SL3_NO_DEC;
           break;
       }
-
-      ret = ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
     }
   }
 
+  ret += ism330dlc_mem_bank_set(ctx, ISM330DLC_USER_BANK);
+
   return ret;
 }
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
