@@ -7,13 +7,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -122,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -2060,7 +2062,7 @@ typedef enum
 
   LSM6DSL_HP_DISABLE_LP1_LIGHT        = 0x0A,
   LSM6DSL_HP_DISABLE_LP1_NORMAL       = 0x09,
-  LSM6DSL_HP_DISABLE_LP_STRONG        = 0x08,
+  LSM6DSL_HP_DISABLE_LP1_STRONG        = 0x08,
   LSM6DSL_HP_DISABLE_LP1_AGGRESSIVE   = 0x0B,
 
   LSM6DSL_HP_16mHz_LP1_LIGHT          = 0x8A,
@@ -2742,5 +2744,3 @@ int32_t lsm6dsl_sh_slave_3_dec_get(const stmdev_ctx_t *ctx,
 #endif
 
 #endif /* LSM6DSL_DRIVER_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

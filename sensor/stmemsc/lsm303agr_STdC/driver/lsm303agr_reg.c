@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -225,6 +224,9 @@ int32_t lsm303agr_temp_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_STATUS_REG_AUX_A,
                            (uint8_t *)&status_reg_aux_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status_reg_aux_a.tda;
 
   return ret;
@@ -245,6 +247,9 @@ int32_t lsm303agr_temp_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_STATUS_REG_AUX_A,
                            (uint8_t *)&status_reg_aux_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status_reg_aux_a.tor;
 
   return ret;
@@ -264,6 +269,9 @@ int32_t lsm303agr_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_OUT_TEMP_L_A, buff, 2);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
 
@@ -313,6 +321,8 @@ int32_t lsm303agr_temperature_meas_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_TEMP_CFG_REG_A,
                            (uint8_t *)&temp_cfg_reg_a, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (temp_cfg_reg_a.temp_en)
   {
@@ -412,12 +422,10 @@ int32_t lsm303agr_xl_operating_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG1_A,
                            (uint8_t *)&ctrl_reg1_a, 1);
+  ret += lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG4_A,
+                           (uint8_t *)&ctrl_reg4_a, 1);
 
-  if (ret == 0)
-  {
-    ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG4_A,
-                             (uint8_t *)&ctrl_reg4_a, 1);
-  }
+  if (ret != 0) { return ret; }
 
   if (ctrl_reg1_a.lpen != PROPERTY_DISABLE)
   {
@@ -480,6 +488,8 @@ int32_t lsm303agr_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG1_A,
                            (uint8_t *)&ctrl_reg1_a, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg1_a.odr)
   {
@@ -575,6 +585,9 @@ int32_t lsm303agr_xl_high_pass_on_outputs_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG2_A,
                            (uint8_t *)&ctrl_reg2_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg2_a.fds;
 
   return ret;
@@ -637,6 +650,8 @@ int32_t lsm303agr_xl_high_pass_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG2_A,
                            (uint8_t *)&ctrl_reg2_a, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg2_a.hpcf)
   {
@@ -708,6 +723,8 @@ int32_t lsm303agr_xl_high_pass_mode_get(const stmdev_ctx_t *ctx,
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG2_A,
                            (uint8_t *)&ctrl_reg2_a, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg2_a.hpm)
   {
     case LSM303AGR_NORMAL_WITH_RST:
@@ -778,6 +795,8 @@ int32_t lsm303agr_xl_full_scale_get(const stmdev_ctx_t *ctx,
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG4_A,
                            (uint8_t *)&ctrl_reg4_a, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg4_a.fs)
   {
     case LSM303AGR_2g:
@@ -847,6 +866,9 @@ int32_t lsm303agr_xl_block_data_update_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG4_A,
                            (uint8_t *)&ctrl_reg4_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg4_a.bdu;
 
   return ret;
@@ -905,6 +927,9 @@ int32_t lsm303agr_xl_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_STATUS_REG_A,
                            (uint8_t *)&status_reg_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status_reg_a.zyxda;
 
   return ret;
@@ -925,6 +950,9 @@ int32_t lsm303agr_xl_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_STATUS_REG_A,
                            (uint8_t *)&status_reg_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status_reg_a.zyxor;
 
   return ret;
@@ -945,6 +973,9 @@ int32_t lsm303agr_acceleration_raw_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_OUT_X_L_A, buff, 6);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -960,7 +991,7 @@ int32_t lsm303agr_acceleration_raw_get(const stmdev_ctx_t *ctx,
   *         16-bit number and represent hard-iron
   *         offset in order to compensate environmental
   *         effects. Data format is the same of
-  *         output data raw: two’s complement with
+  *         output data raw: two's complement with
   *         1LSb = 1.5mG. These values act on the
   *         magnetic output data value in order to
   *         delete the environmental offset.[set]
@@ -991,7 +1022,7 @@ int32_t lsm303agr_mag_user_offset_set(const stmdev_ctx_t *ctx, int16_t *val)
   *         16-bit number and represent hard-iron
   *         offset in order to compensate environmental
   *         effects. Data format is the same of
-  *         output data raw: two’s complement with
+  *         output data raw: two's complement with
   *         1LSb = 1.5mG. These values act on the
   *         magnetic output data value in order to
   *         delete the environmental offset.[get]
@@ -1007,6 +1038,9 @@ int32_t lsm303agr_mag_user_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_OFFSET_X_REG_L_M, buff, 6);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1060,6 +1094,8 @@ int32_t lsm303agr_mag_operating_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (cfg_reg_a_m.md)
   {
@@ -1126,6 +1162,8 @@ int32_t lsm303agr_mag_data_rate_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (cfg_reg_a_m.odr)
   {
@@ -1197,6 +1235,8 @@ int32_t lsm303agr_mag_power_mode_get(const stmdev_ctx_t *ctx,
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (cfg_reg_a_m.lp)
   {
     case LSM303AGR_HIGH_RESOLUTION:
@@ -1258,6 +1298,9 @@ int32_t lsm303agr_mag_offset_temp_comp_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = cfg_reg_a_m.comp_temp_en;
 
   return ret;
@@ -1306,6 +1349,8 @@ int32_t lsm303agr_mag_low_pass_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_B_M,
                            (uint8_t *)&cfg_reg_b_m, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (cfg_reg_b_m.lpf)
   {
@@ -1368,6 +1413,8 @@ int32_t lsm303agr_mag_set_rst_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_B_M,
                            (uint8_t *)&cfg_reg_b_m, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (cfg_reg_b_m.set_rst)
   {
@@ -1447,6 +1494,9 @@ int32_t lsm303agr_mag_set_rst_sensor_single_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_B_M,
                            (uint8_t *)&cfg_reg_b_m, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = cfg_reg_b_m.off_canc_one_shot;
 
   return ret;
@@ -1495,6 +1545,9 @@ int32_t lsm303agr_mag_block_data_update_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = cfg_reg_c_m.bdu;
 
   return ret;
@@ -1515,6 +1568,9 @@ int32_t lsm303agr_mag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_STATUS_REG_M,
                            (uint8_t *)&status_reg_m, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status_reg_m.zyxda;
 
   return ret;
@@ -1535,6 +1591,9 @@ int32_t lsm303agr_mag_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_STATUS_REG_M,
                            (uint8_t *)&status_reg_m, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status_reg_m.zyxor;
 
   return ret;
@@ -1554,6 +1613,9 @@ int32_t lsm303agr_magnetic_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_OUTX_L_REG_M, buff, 6);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1637,6 +1699,8 @@ int32_t lsm303agr_xl_self_test_get(const stmdev_ctx_t *ctx,
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG4_A,
                            (uint8_t *)&ctrl_reg4_a, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg4_a.st)
   {
     case LSM303AGR_ST_DISABLE:
@@ -1703,6 +1767,8 @@ int32_t lsm303agr_xl_data_format_get(const stmdev_ctx_t *ctx,
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG4_A,
                            (uint8_t *)&ctrl_reg4_a, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg4_a.ble)
   {
     case LSM303AGR_XL_LSB_AT_LOW_ADD:
@@ -1762,6 +1828,9 @@ int32_t lsm303agr_xl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG5_A,
                            (uint8_t *)&ctrl_reg5_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg5_a.boot;
 
   return ret;
@@ -1843,6 +1912,9 @@ int32_t lsm303agr_mag_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = cfg_reg_a_m.soft_rst;
 
   return ret;
@@ -1889,6 +1961,9 @@ int32_t lsm303agr_mag_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = cfg_reg_a_m.reboot;
 
   return ret;
@@ -1935,6 +2010,9 @@ int32_t lsm303agr_mag_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = cfg_reg_c_m.self_test;
 
   return ret;
@@ -1983,6 +2061,8 @@ int32_t lsm303agr_mag_data_format_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (cfg_reg_c_m.ble)
   {
@@ -2134,6 +2214,9 @@ int32_t lsm303agr_xl_int1_gen_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_INT1_THS_A,
                            (uint8_t *)&int1_ths_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = int1_ths_a.ths;
 
   return ret;
@@ -2184,6 +2267,9 @@ int32_t lsm303agr_xl_int1_gen_duration_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_INT1_DURATION_A,
                            (uint8_t *)&int1_duration_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = int1_duration_a.d;
 
   return ret;
@@ -2303,6 +2389,9 @@ int32_t lsm303agr_xl_int2_gen_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_INT2_THS_A,
                            (uint8_t *)&int2_ths_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = int2_ths_a.ths;
 
   return ret;
@@ -2353,6 +2442,9 @@ int32_t lsm303agr_xl_int2_gen_duration_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_INT2_DURATION_A,
                            (uint8_t *)&int2_duration_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = int2_duration_a.d;
 
   return ret;
@@ -2414,6 +2506,8 @@ int32_t lsm303agr_xl_high_pass_int_conf_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG2_A,
                            (uint8_t *)&ctrl_reg2_a, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg2_a.hp)
   {
@@ -2538,6 +2632,9 @@ int32_t lsm303agr_xl_int2_pin_detect_4d_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG5_A,
                            (uint8_t *)&ctrl_reg5_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg5_a.d4d_int2;
 
   return ret;
@@ -2590,6 +2687,8 @@ int32_t lsm303agr_xl_int2pin_notification_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG5_A,
                            (uint8_t *)&ctrl_reg5_a, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg5_a.lir_int2)
   {
@@ -2654,6 +2753,9 @@ int32_t lsm303agr_xl_int1_pin_detect_4d_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG5_A,
                            (uint8_t *)&ctrl_reg5_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg5_a.d4d_int1;
 
   return ret;
@@ -2706,6 +2808,8 @@ int32_t lsm303agr_xl_int1pin_notification_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG5_A,
                            (uint8_t *)&ctrl_reg5_a, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg5_a.lir_int1)
   {
@@ -2822,6 +2926,8 @@ int32_t lsm303agr_mag_offset_int_conf_get(const stmdev_ctx_t *ctx,
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_B_M,
                            (uint8_t *)&cfg_reg_b_m, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (cfg_reg_b_m.int_on_dataoff)
   {
     case LSM303AGR_CHECK_BEFORE:
@@ -2881,6 +2987,9 @@ int32_t lsm303agr_mag_drdy_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = cfg_reg_c_m.int_mag;
 
   return ret;
@@ -2927,6 +3036,9 @@ int32_t lsm303agr_mag_int_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = cfg_reg_c_m.int_mag_pin;
 
   return ret;
@@ -2992,7 +3104,7 @@ int32_t lsm303agr_mag_int_gen_source_get(const stmdev_ctx_t *ctx,
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
   *         Data format is the same of output
-  *         data raw: two’s complement with
+  *         data raw: two's complement with
   *         1LSb = 1.5mG.[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
@@ -3016,7 +3128,7 @@ int32_t lsm303agr_mag_int_gen_threshold_set(const stmdev_ctx_t *ctx,
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
   *         Data format is the same of output
-  *         data raw: two’s complement with
+  *         data raw: two's complement with
   *         1LSb = 1.5mG.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
@@ -3031,6 +3143,9 @@ int32_t lsm303agr_mag_int_gen_threshold_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_INT_THS_L_REG_M, buff, 2);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
 
@@ -3091,6 +3206,9 @@ int32_t lsm303agr_xl_fifo_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG5_A,
                            (uint8_t *)&ctrl_reg5_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg5_a.fifo_en;
 
   return ret;
@@ -3139,6 +3257,9 @@ int32_t lsm303agr_xl_fifo_watermark_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_FIFO_CTRL_REG_A,
                            (uint8_t *)&fifo_ctrl_reg_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_ctrl_reg_a.fth;
 
   return ret;
@@ -3187,6 +3308,8 @@ int32_t lsm303agr_xl_fifo_trigger_event_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_FIFO_CTRL_REG_A,
                            (uint8_t *)&fifo_ctrl_reg_a, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (fifo_ctrl_reg_a.tr)
   {
@@ -3250,6 +3373,8 @@ int32_t lsm303agr_xl_fifo_mode_get(const stmdev_ctx_t *ctx,
   ret = lsm303agr_read_reg(ctx, LSM303AGR_FIFO_CTRL_REG_A,
                            (uint8_t *)&fifo_ctrl_reg_a, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (fifo_ctrl_reg_a.fm)
   {
     case LSM303AGR_BYPASS_MODE:
@@ -3311,6 +3436,9 @@ int32_t lsm303agr_xl_fifo_data_level_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_FIFO_SRC_REG_A,
                            (uint8_t *)&fifo_src_reg_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_src_reg_a.fss;
 
   return ret;
@@ -3332,6 +3460,9 @@ int32_t lsm303agr_xl_fifo_empty_flag_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_FIFO_SRC_REG_A,
                            (uint8_t *)&fifo_src_reg_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_src_reg_a.empty;
 
   return ret;
@@ -3353,6 +3484,9 @@ int32_t lsm303agr_xl_fifo_ovr_flag_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_FIFO_SRC_REG_A,
                            (uint8_t *)&fifo_src_reg_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_src_reg_a.ovrn_fifo;
 
   return ret;
@@ -3374,6 +3508,9 @@ int32_t lsm303agr_xl_fifo_fth_flag_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_FIFO_SRC_REG_A,
                            (uint8_t *)&fifo_src_reg_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_src_reg_a.wtm;
 
   return ret;
@@ -3489,6 +3626,9 @@ int32_t lsm303agr_tap_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CLICK_THS_A,
                            (uint8_t *)&click_ths_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = click_ths_a.ths;
 
   return ret;
@@ -3539,6 +3679,9 @@ int32_t lsm303agr_shock_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_TIME_LIMIT_A,
                            (uint8_t *)&time_limit_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = time_limit_a.tli;
 
   return ret;
@@ -3590,6 +3733,9 @@ int32_t lsm303agr_quiet_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_TIME_LATENCY_A,
                            (uint8_t *)&time_latency_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = time_latency_a.tla;
 
   return ret;
@@ -3644,6 +3790,9 @@ int32_t lsm303agr_double_tap_timeout_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_TIME_WINDOW_A,
                            (uint8_t *)&time_window_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = time_window_a.tw;
 
   return ret;
@@ -3707,6 +3856,9 @@ int32_t lsm303agr_act_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_ACT_THS_A,
                            (uint8_t *)&act_ths_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = act_ths_a.acth;
 
   return ret;
@@ -3753,6 +3905,9 @@ int32_t lsm303agr_act_timeout_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_ACT_DUR_A,
                            (uint8_t *)&act_dur_a, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = act_dur_a.actd;
 
   return ret;
@@ -3814,6 +3969,8 @@ int32_t lsm303agr_xl_spi_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CTRL_REG4_A,
                            (uint8_t *)&ctrl_reg4_a, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg4_a.spi_enable)
   {
@@ -3877,6 +4034,8 @@ int32_t lsm303agr_mag_i2c_interface_get(const stmdev_ctx_t *ctx,
   ret = lsm303agr_read_reg(ctx, LSM303AGR_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (cfg_reg_c_m.i2c_dis)
   {
     case LSM303AGR_I2C_ENABLE:
@@ -3904,5 +4063,3 @@ int32_t lsm303agr_mag_i2c_interface_get(const stmdev_ctx_t *ctx,
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

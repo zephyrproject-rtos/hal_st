@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -217,6 +216,8 @@ int32_t lsm9ds1_gy_full_scale_get(const stmdev_ctx_t *ctx,
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG1_G,
                          (uint8_t *)&ctrl_reg1_g, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg1_g.fs_g)
   {
     case LSM9DS1_245dps:
@@ -314,18 +315,12 @@ int32_t lsm9ds1_imu_data_rate_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG1_G,
                          (uint8_t *)&ctrl_reg1_g, 1);
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG6_XL,
+                         (uint8_t *)&ctrl_reg6_xl, 1);
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG3_G,
+                         (uint8_t *)&ctrl_reg3_g, 1);
 
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG6_XL,
-                           (uint8_t *)&ctrl_reg6_xl, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG3_G,
-                           (uint8_t *)&ctrl_reg3_g, 1);
-  }
+  if (ret != 0) { return ret; }
 
   switch ((ctrl_reg3_g.lp_mode << 7) | (ctrl_reg6_xl.odr_xl << 4) |
           ctrl_reg1_g.odr_g)
@@ -484,6 +479,8 @@ int32_t lsm9ds1_gy_orient_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_ORIENT_CFG_G,
                          (uint8_t *)&orient_cfg_g, 1);
+  if (ret != 0) { return ret; }
+
   val->orient = orient_cfg_g.orient;
   val->signz_g = orient_cfg_g.signz_g;
   val->signy_g = orient_cfg_g.signy_g;
@@ -508,6 +505,8 @@ int32_t lsm9ds1_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_STATUS_REG,
                          (uint8_t *)&status_reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = status_reg.xlda;
 
   return ret;
@@ -529,6 +528,8 @@ int32_t lsm9ds1_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_STATUS_REG,
                          (uint8_t *)&status_reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = status_reg.gda;
 
   return ret;
@@ -550,6 +551,8 @@ int32_t lsm9ds1_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_STATUS_REG,
                          (uint8_t *)&status_reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = status_reg.tda;
 
   return ret;
@@ -595,6 +598,8 @@ int32_t lsm9ds1_gy_axis_get(const stmdev_ctx_t *ctx, lsm9ds1_gy_axis_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+  if (ret != 0) { return ret; }
+
   val->xen_g = ctrl_reg4.xen_g;
   val->yen_g = ctrl_reg4.yen_g;
   val->zen_g = ctrl_reg4.zen_g;
@@ -645,6 +650,8 @@ int32_t lsm9ds1_xl_axis_get(const stmdev_ctx_t *ctx, lsm9ds1_xl_axis_t *val)
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG5_XL,
                          (uint8_t *)&ctrl_reg5_xl, 1);
+  if (ret != 0) { return ret; }
+
   val->xen_xl = ctrl_reg5_xl.xen_xl;
   val->yen_xl = ctrl_reg5_xl.yen_xl;
   val->zen_xl = ctrl_reg5_xl.zen_xl;
@@ -695,6 +702,7 @@ int32_t lsm9ds1_xl_decimation_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG5_XL,
                          (uint8_t *)&ctrl_reg5_xl, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg5_xl.dec)
   {
@@ -765,6 +773,7 @@ int32_t lsm9ds1_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG6_XL,
                          (uint8_t *)&ctrl_reg6_xl, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg6_xl.fs_xl)
   {
@@ -853,13 +862,11 @@ int32_t lsm9ds1_block_data_update_get(const stmdev_ctx_t *ctx_mag,
 
   ret = lsm9ds1_read_reg(ctx_imu, LSM9DS1_CTRL_REG8,
                          (uint8_t *)&ctrl_reg8, 1);
+  ret += lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG5_M,
+                         (uint8_t *)&ctrl_reg5_m, 1);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG5_M,
-                           (uint8_t *)&ctrl_reg5_m, 1);
-    *val = (uint8_t)(ctrl_reg5_m.bdu & ctrl_reg8.bdu);
-  }
+  *val = (uint8_t)(ctrl_reg5_m.bdu & ctrl_reg8.bdu);
 
   return ret;
 }
@@ -867,7 +874,7 @@ int32_t lsm9ds1_block_data_update_get(const stmdev_ctx_t *ctx_mag,
 /**
   * @brief  This register is a 16-bit register and represents the X offset
   *         used to compensate environmental effects (data is expressed as
-  *         two’s complement).[set]
+  *         two's complement).[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data to be write.(ptr)
@@ -893,7 +900,7 @@ int32_t lsm9ds1_mag_offset_set(const stmdev_ctx_t *ctx, int16_t *val)
 /**
   * @brief  This register is a 16-bit register and represents the X offset
   *         used to compensate environmental effects (data is expressed as
-  *         two’s complement).[get]
+  *         two's complement).[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data read.(ptr)
@@ -906,6 +913,8 @@ int32_t lsm9ds1_mag_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_OFFSET_X_REG_L_M, buff, 6);
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -991,12 +1000,10 @@ int32_t lsm9ds1_mag_data_rate_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG1_M,
                          (uint8_t *)&ctrl_reg1_m, 1);
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG3_M,
+                         (uint8_t *)&ctrl_reg3_m, 1);
 
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG3_M,
-                           (uint8_t *)&ctrl_reg3_m, 1);
-  }
+  if (ret != 0) { return ret; }
 
   switch ((ctrl_reg3_m.md << 6) | (ctrl_reg1_m.om << 4) |
           (ctrl_reg1_m.fast_odr << 3) | ctrl_reg1_m._do)
@@ -1204,6 +1211,7 @@ int32_t lsm9ds1_mag_full_scale_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG2_M,
                          (uint8_t *)&ctrl_reg2_m, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg2_m.fs)
   {
@@ -1247,6 +1255,8 @@ int32_t lsm9ds1_mag_flag_data_ready_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_STATUS_REG_M,
                          (uint8_t *)&status_reg_m, 1);
+  if (ret != 0) { return ret; }
+
   *val = status_reg_m.zyxda;
 
   return ret;
@@ -1266,7 +1276,7 @@ int32_t lsm9ds1_mag_flag_data_ready_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Temperature data output register (r). L and H registers
-  *         together express a 16-bit word in two’s complement.[get]
+  *         together express a 16-bit word in two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores the data read.(ptr)
@@ -1279,6 +1289,8 @@ int32_t lsm9ds1_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_OUT_TEMP_L, buff, 2);
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
 
@@ -1287,7 +1299,7 @@ int32_t lsm9ds1_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 
 /**
   * @brief  Angular rate sensor. The value is expressed as a 16-bit word in
-  *         two’s complement.[get]
+  *         two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores the data read.(ptr)
@@ -1300,6 +1312,8 @@ int32_t lsm9ds1_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_OUT_X_L_G, buff, 6);
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1312,7 +1326,7 @@ int32_t lsm9ds1_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 
 /**
   * @brief  Linear acceleration output register. The value is expressed as
-  *         a 16-bit word in two’s complement.[get]
+  *         a 16-bit word in two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores the data read.(ptr)
@@ -1325,6 +1339,8 @@ int32_t lsm9ds1_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_OUT_X_L_XL, buff, 6);
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1337,7 +1353,7 @@ int32_t lsm9ds1_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 
 /**
   * @brief  Magnetic sensor. The value is expressed as a 16-bit word in
-  *         two’s complement.[get]
+  *         two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores the data read.(ptr)
@@ -1350,6 +1366,8 @@ int32_t lsm9ds1_magnetic_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_OUT_X_L_M, buff, 6);
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1374,6 +1392,8 @@ int32_t lsm9ds1_magnetic_overflow_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_SRC_M, (uint8_t *)&int_src_m, 1);
+  if (ret != 0) { return ret; }
+
   *val = int_src_m.mroi;
 
   return ret;
@@ -1507,13 +1527,11 @@ int32_t lsm9ds1_dev_reset_get(const stmdev_ctx_t *ctx_mag,
 
   ret = lsm9ds1_read_reg(ctx_imu, LSM9DS1_CTRL_REG8,
                          (uint8_t *)&ctrl_reg8, 1);
+  ret += lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG2_M,
+                         (uint8_t *)&ctrl_reg2_m, 1);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG2_M,
-                           (uint8_t *)&ctrl_reg2_m, 1);
-    *val = (uint8_t)(ctrl_reg2_m.soft_rst | ctrl_reg8.sw_reset);
-  }
+  *val = (uint8_t)(ctrl_reg2_m.soft_rst | ctrl_reg8.sw_reset);
 
   return ret;
 }
@@ -1580,12 +1598,9 @@ int32_t lsm9ds1_dev_data_format_get(const stmdev_ctx_t *ctx_mag,
 
   ret = lsm9ds1_read_reg(ctx_imu, LSM9DS1_CTRL_REG8,
                          (uint8_t *)&ctrl_reg8, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG4_M,
-                           (uint8_t *)&ctrl_reg4_m, 1);
-  }
+  ret = lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG4_M,
+                         (uint8_t *)&ctrl_reg4_m, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg8.ble & ctrl_reg4_m.ble)
   {
@@ -1667,13 +1682,11 @@ int32_t lsm9ds1_dev_boot_get(const stmdev_ctx_t *ctx_mag,
 
   ret = lsm9ds1_read_reg(ctx_imu, LSM9DS1_CTRL_REG8,
                          (uint8_t *)&ctrl_reg8, 1);
+  ret += lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG2_M,
+                         (uint8_t *)&ctrl_reg2_m, 1);
 
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG2_M,
-                           (uint8_t *)&ctrl_reg2_m, 1);
-    *val = (uint8_t)ctrl_reg2_m.reboot & ctrl_reg8.boot;
-  }
+  if (ret != 0) { return ret; }
+  *val = (uint8_t)ctrl_reg2_m.reboot & ctrl_reg8.boot;
 
   return ret;
 }
@@ -1770,6 +1783,7 @@ int32_t lsm9ds1_gy_filter_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG1_G,
                          (uint8_t *)&ctrl_reg1_g, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg1_g.bw_g)
   {
@@ -1855,12 +1869,9 @@ int32_t lsm9ds1_gy_filter_out_path_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG2_G,
                          (uint8_t *)&ctrl_reg2_g, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG3_G,
-                           (uint8_t *)&ctrl_reg3_g, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG3_G,
+                         (uint8_t *)&ctrl_reg3_g, 1);
+  if (ret != 0) { return ret; }
 
   switch ((ctrl_reg3_g.hp_en << 4) | ctrl_reg2_g.out_sel)
   {
@@ -1946,12 +1957,9 @@ int32_t lsm9ds1_gy_filter_int_path_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG2_G,
                          (uint8_t *)&ctrl_reg2_g, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG3_G,
-                           (uint8_t *)&ctrl_reg3_g, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG3_G,
+                         (uint8_t *)&ctrl_reg3_g, 1);
+  if (ret != 0) { return ret; }
 
   switch ((ctrl_reg3_g.hp_en << 4) | ctrl_reg2_g.int_sel)
   {
@@ -2022,6 +2030,7 @@ int32_t lsm9ds1_gy_filter_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG3_G,
                          (uint8_t *)&ctrl_reg3_g, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg3_g.hpcf_g)
   {
@@ -2117,6 +2126,7 @@ int32_t lsm9ds1_xl_filter_aalias_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG6_XL,
                          (uint8_t *)&ctrl_reg6_xl, 1);
+  if (ret != 0) { return ret; }
 
   switch ((ctrl_reg6_xl.bw_scal_odr << 4) | ctrl_reg6_xl.bw_xl)
   {
@@ -2191,6 +2201,7 @@ int32_t lsm9ds1_xl_filter_int_path_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG7_XL,
                          (uint8_t *)&ctrl_reg7_xl, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg7_xl.hpis1)
   {
@@ -2253,6 +2264,7 @@ int32_t lsm9ds1_xl_filter_out_path_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG7_XL,
                          (uint8_t *)&ctrl_reg7_xl, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg7_xl.fds)
   {
@@ -2318,6 +2330,7 @@ int32_t lsm9ds1_xl_filter_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG7_XL,
                          (uint8_t *)&ctrl_reg7_xl, 1);
+  if (ret != 0) { return ret; }
 
   switch ((ctrl_reg7_xl.hr << 4) + ctrl_reg7_xl.dcf)
   {
@@ -2394,6 +2407,7 @@ int32_t lsm9ds1_xl_filter_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG7_XL,
                          (uint8_t *)&ctrl_reg7_xl, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg7_xl.dcf)
   {
@@ -2461,6 +2475,8 @@ int32_t lsm9ds1_filter_settling_mask_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG9, (uint8_t *)&ctrl_reg9, 1);
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg9.drdy_mask_bit;
 
   return ret;
@@ -2519,6 +2535,8 @@ int32_t lsm9ds1_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG8, (uint8_t *)&ctrl_reg8, 1);
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg8.if_add_inc;
 
   return ret;
@@ -2586,12 +2604,9 @@ int32_t lsm9ds1_spi_mode_get(const stmdev_ctx_t *ctx_mag,
 
   ret = lsm9ds1_read_reg(ctx_imu, LSM9DS1_CTRL_REG8,
                          (uint8_t *)&ctrl_reg8, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG3_M,
-                           (uint8_t *)&ctrl_reg3_m, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG3_M,
+                         (uint8_t *)&ctrl_reg3_m, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg8.sim & ctrl_reg3_m.sim)
   {
@@ -2673,12 +2688,9 @@ int32_t lsm9ds1_i2c_interface_get(const stmdev_ctx_t *ctx_mag,
 
   ret = lsm9ds1_read_reg(ctx_imu, LSM9DS1_CTRL_REG9,
                          (uint8_t *)&ctrl_reg9, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG3_M,
-                           (uint8_t *)&ctrl_reg3_m, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx_mag, LSM9DS1_CTRL_REG3_M,
+                         (uint8_t *)&ctrl_reg3_m, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg9.i2c_disable & ctrl_reg3_m.i2c_disable)
   {
@@ -2769,12 +2781,9 @@ int32_t lsm9ds1_pin_logic_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_CFG_XL,
                          (uint8_t *)&int_gen_cfg_xl, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_CFG_G,
-                           (uint8_t *)&int_gen_cfg_g, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_CFG_G,
+                         (uint8_t *)&int_gen_cfg_g, 1);
+  if (ret != 0) { return ret; }
 
   switch (int_gen_cfg_xl.aoi_xl & int_gen_cfg_g.aoi_g)
   {
@@ -2841,6 +2850,8 @@ int32_t lsm9ds1_pin_int1_route_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
+  if (ret != 0) { return ret; }
+
   val->int1_drdy_xl = int1_ctrl.int1_drdy_xl;
   val->int1_drdy_g = int1_ctrl.int1_drdy_g;
   val->int1_boot = int1_ctrl.int1_boot;
@@ -2899,6 +2910,8 @@ int32_t lsm9ds1_pin_int2_route_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
+  if (ret != 0) { return ret; }
+
   val->int2_drdy_xl = int2_ctrl.int2_drdy_xl;
   val->int2_inact = int2_ctrl.int2_inact;
   val->int2_fss5 = int2_ctrl.int2_fss5;
@@ -2987,18 +3000,11 @@ int32_t lsm9ds1_pin_notification_get(const stmdev_ctx_t *ctx_mag,
 
   ret = lsm9ds1_read_reg(ctx_imu, LSM9DS1_CTRL_REG4,
                          (uint8_t *)&ctrl_reg4, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx_imu, LSM9DS1_INT_GEN_CFG_G,
-                           (uint8_t *)&int_gen_cfg_g, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx_mag, LSM9DS1_INT_CFG_M,
-                           (uint8_t *)&int_cfg_m, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx_imu, LSM9DS1_INT_GEN_CFG_G,
+                         (uint8_t *)&int_gen_cfg_g, 1);
+  ret += lsm9ds1_read_reg(ctx_mag, LSM9DS1_INT_CFG_M,
+                         (uint8_t *)&int_cfg_m, 1);
+  if (ret != 0) { return ret; }
 
   switch (~int_cfg_m.iel & int_gen_cfg_g.lir_g & ctrl_reg4.lir_xl1)
   {
@@ -3055,6 +3061,7 @@ int32_t lsm9ds1_pin_mode_get(const stmdev_ctx_t *ctx, lsm9ds1_pp_od_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG8, (uint8_t *)&ctrl_reg8, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg8.pp_od)
   {
@@ -3114,6 +3121,8 @@ int32_t lsm9ds1_pin_int_m_route_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_CFG_M, (uint8_t *)&int_cfg_m, 1);
+  if (ret != 0) { return ret; }
+
   val->ien = int_cfg_m.ien;
 
   return ret;
@@ -3181,12 +3190,9 @@ int32_t lsm9ds1_pin_polarity_get(const stmdev_ctx_t *ctx_mag,
 
   ret = lsm9ds1_read_reg(ctx_mag, LSM9DS1_INT_CFG_M,
                          (uint8_t *)&int_cfg_m, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx_imu, LSM9DS1_CTRL_REG8,
-                           (uint8_t *)&ctrl_reg8, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx_imu, LSM9DS1_CTRL_REG8,
+                         (uint8_t *)&ctrl_reg8, 1);
+  if (ret != 0) { return ret; }
 
   switch (int_cfg_m.iea & (~ctrl_reg8.h_lactive))
   {
@@ -3269,6 +3275,8 @@ int32_t lsm9ds1_xl_trshld_axis_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_CFG_XL,
                          (uint8_t *)&int_gen_cfg_xl, 1);
+  if (ret != 0) { return ret; }
+
   val->xlie_xl = int_gen_cfg_xl.xlie_xl;
   val->xhie_xl = int_gen_cfg_xl.xhie_xl;
   val->ylie_xl = int_gen_cfg_xl.ylie_xl;
@@ -3367,6 +3375,8 @@ int32_t lsm9ds1_xl_trshld_min_sample_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_DUR_XL,
                          (uint8_t *)&int_gen_dur_xl, 1);
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_gen_dur_xl.dur_xl;
 
   return ret;
@@ -3388,6 +3398,8 @@ int32_t lsm9ds1_gy_trshld_src_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_SRC_G,
                          (uint8_t *)&int_gen_src_g, 1);
+  if (ret != 0) { return ret; }
+
   val->xl_g = int_gen_src_g.xl_g;
   val->xh_g = int_gen_src_g.xh_g;
   val->yl_g = int_gen_src_g.yl_g;
@@ -3415,6 +3427,8 @@ int32_t lsm9ds1_xl_trshld_src_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_SRC_XL,
                          (uint8_t *)&int_gen_src_xl, 1);
+  if (ret != 0) { return ret; }
+
   val->xl_xl = int_gen_src_xl.xl_xl;
   val->xh_xl = int_gen_src_xl.xh_xl;
   val->yl_xl = int_gen_src_xl.yl_xl;
@@ -3476,6 +3490,8 @@ int32_t lsm9ds1_gy_trshld_axis_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_CFG_G,
                          (uint8_t *)&int_gen_cfg_g, 1);
+  if (ret != 0) { return ret; }
+
   val->xlie_g = int_gen_cfg_g.xlie_g;
   val->xhie_g = int_gen_cfg_g.xhie_g;
   val->ylie_g = int_gen_cfg_g.ylie_g;
@@ -3529,6 +3545,7 @@ int32_t lsm9ds1_gy_trshld_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_THS_XH_G,
                          (uint8_t *)&int_gen_ths_xh_g, 1);
+  if (ret != 0) { return ret; }
 
   switch (int_gen_ths_xh_g.dcrm_g)
   {
@@ -3604,12 +3621,9 @@ int32_t lsm9ds1_gy_trshld_x_get(const stmdev_ctx_t *ctx, uint16_t *val)
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_THS_XH_G,
                          (uint8_t *)&int_gen_ths_xh_g, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_THS_XL_G,
-                           (uint8_t *)&int_gen_ths_xl_g, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_THS_XL_G,
+                         (uint8_t *)&int_gen_ths_xl_g, 1);
+  if (ret != 0) { return ret; }
 
   *val = int_gen_ths_xh_g.ths_g_x;
   *val = *val << 8;
@@ -3675,12 +3689,9 @@ int32_t lsm9ds1_gy_trshld_y_get(const stmdev_ctx_t *ctx, uint16_t *val)
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_THS_YH_G,
                          (uint8_t *)&int_gen_ths_yh_g, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_THS_YL_G,
-                           (uint8_t *)&int_gen_ths_yl_g, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_THS_YL_G,
+                         (uint8_t *)&int_gen_ths_yl_g, 1);
+  if (ret != 0) { return ret; }
 
   *val = (uint8_t)int_gen_ths_yh_g.ths_g_y;
   *val = *val << 8;
@@ -3745,12 +3756,9 @@ int32_t lsm9ds1_gy_trshld_z_get(const stmdev_ctx_t *ctx, uint16_t *val)
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_THS_ZH_G,
                          (uint8_t *)&int_gen_ths_zh_g, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_THS_ZL_G,
-                           (uint8_t *)&int_gen_ths_zl_g, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_THS_ZL_G,
+                         (uint8_t *)&int_gen_ths_zl_g, 1);
+  if (ret != 0) { return ret; }
 
   *val = int_gen_ths_zh_g.ths_g_z;
   *val = *val << 8;
@@ -3812,6 +3820,8 @@ int32_t lsm9ds1_gy_trshld_min_sample_get(const stmdev_ctx_t *ctx,
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_DUR_G,
                          (uint8_t *)&int_gen_dur_g, 1);
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int_gen_dur_g.dur_g;
 
   return ret;
@@ -3859,6 +3869,8 @@ int32_t lsm9ds1_mag_trshld_axis_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_CFG_M, (uint8_t *)&int_cfg_m, 1);
+  if (ret != 0) { return ret; }
+
   val->zien = int_cfg_m.zien;
   val->yien = int_cfg_m.yien;
   val->xien = int_cfg_m.xien;
@@ -3881,6 +3893,8 @@ int32_t lsm9ds1_mag_trshld_src_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_SRC_M, (uint8_t *)&int_src_m, 1);
+  if (ret != 0) { return ret; }
+
   val->_int = int_src_m._int;
   val->nth_z = int_src_m.nth_z;
   val->nth_y = int_src_m.nth_y;
@@ -3908,12 +3922,9 @@ int32_t lsm9ds1_mag_trshld_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_THS_L_M,
                          (uint8_t *)&int_ths_l_m, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_THS_H_M,
-                           (uint8_t *)&int_ths_h_m, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_INT_THS_H_M,
+                         (uint8_t *)&int_ths_h_m, 1);
+  if (ret != 0) { return ret; }
 
   *val = int_ths_h_m.ths;
   *val = *val << 8;
@@ -3973,6 +3984,8 @@ int32_t lsm9ds1_act_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_ACT_THS, (uint8_t *)&act_ths, 1);
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)act_ths.act_ths;
 
   return ret;
@@ -4031,11 +4044,8 @@ int32_t lsm9ds1_act_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_ACT_THS, (uint8_t *)&act_ths, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG9, (uint8_t *)&ctrl_reg9, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG9, (uint8_t *)&ctrl_reg9, 1);
+  if (ret != 0) { return ret; }
 
   switch (act_ths.sleep_on_inact_en & ctrl_reg9.sleep_g)
   {
@@ -4104,6 +4114,7 @@ int32_t lsm9ds1_act_src_get(const stmdev_ctx_t *ctx, lsm9ds1_inact_t *val)
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_STATUS_REG,
                          (uint8_t *)&status_reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (status_reg.inact)
   {
@@ -4193,12 +4204,9 @@ int32_t lsm9ds1_6d_mode_get(const stmdev_ctx_t *ctx, lsm9ds1_6d_mode_t *val)
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_CFG_XL,
                          (uint8_t *)&int_gen_cfg_xl, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG4,
-                           (uint8_t *)&ctrl_reg4, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG4,
+                         (uint8_t *)&ctrl_reg4, 1);
+  if (ret != 0) { return ret; }
 
   switch ((ctrl_reg4._4d_xl1 << 2) | (int_gen_cfg_xl.aoi_xl << 1)
           | int_gen_cfg_xl.aoi_xl)
@@ -4280,6 +4288,8 @@ int32_t lsm9ds1_6d_src_get(const stmdev_ctx_t *ctx, lsm9ds1_6d_src_t *val)
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_INT_GEN_SRC_XL,
                          (uint8_t *)&int_gen_src_xl, 1);
+  if (ret != 0) { return ret; }
+
   val->xl_xl = int_gen_src_xl.xl_xl;
   val->xh_xl = int_gen_src_xl.xh_xl;
   val->yl_xl = int_gen_src_xl.yl_xl;
@@ -4344,6 +4354,8 @@ int32_t lsm9ds1_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG9, (uint8_t *)&ctrl_reg9, 1);
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg9.stop_on_fth;
 
   return ret;
@@ -4402,11 +4414,8 @@ int32_t lsm9ds1_fifo_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG9, (uint8_t *)&ctrl_reg9, 1);
-
-  if (ret == 0)
-  {
-    ret = lsm9ds1_read_reg(ctx, LSM9DS1_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
-  }
+  ret += lsm9ds1_read_reg(ctx, LSM9DS1_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+  if (ret != 0) { return ret; }
 
   switch ((ctrl_reg9.fifo_en << 4) | ctrl_reg9.fifo_en)
   {
@@ -4480,6 +4489,8 @@ int32_t lsm9ds1_fifo_temp_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG9, (uint8_t *)&ctrl_reg9, 1);
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg9.fifo_temp_en;
 
   return ret;
@@ -4523,6 +4534,8 @@ int32_t lsm9ds1_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)fifo_ctrl.fth;
 
   return ret;
@@ -4542,6 +4555,8 @@ int32_t lsm9ds1_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_FIFO_SRC, (uint8_t *)&fifo_src, 1);
+  if (ret != 0) { return ret; }
+
   *val = fifo_src.fss;
 
   return ret;
@@ -4561,6 +4576,8 @@ int32_t lsm9ds1_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_FIFO_SRC, (uint8_t *)&fifo_src, 1);
+  if (ret != 0) { return ret; }
+
   *val = fifo_src.fss;
 
   return ret;
@@ -4580,6 +4597,8 @@ int32_t lsm9ds1_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_FIFO_SRC, (uint8_t *)&fifo_src, 1);
+  if (ret != 0) { return ret; }
+
   *val = fifo_src.ovrn;
 
   return ret;
@@ -4599,6 +4618,8 @@ int32_t lsm9ds1_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_FIFO_SRC, (uint8_t *)&fifo_src, 1);
+  if (ret != 0) { return ret; }
+
   *val = fifo_src.fth;
 
   return ret;
@@ -4658,6 +4679,8 @@ int32_t lsm9ds1_xl_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG10,
                          (uint8_t *)&ctrl_reg10, 1);
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg10.st_xl;
 
   return ret;
@@ -4704,6 +4727,8 @@ int32_t lsm9ds1_gy_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG10,
                          (uint8_t *)&ctrl_reg10, 1);
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg10.st_g;
 
   return ret;
@@ -4750,6 +4775,8 @@ int32_t lsm9ds1_mag_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm9ds1_read_reg(ctx, LSM9DS1_CTRL_REG1_M,
                          (uint8_t *)&ctrl_reg1_m, 1);
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg1_m.st;
 
   return ret;
@@ -4759,5 +4786,3 @@ int32_t lsm9ds1_mag_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -232,7 +231,10 @@ int32_t ism303dac_xl_block_data_update_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL1_A, (uint8_t *)&ctrl1_a, 1);
-  *val = ctrl1_a.bdu;
+  if (ret == 0)
+  {
+    *val = ctrl1_a.bdu;
+  }
 
   return ret;
 }
@@ -280,7 +282,10 @@ int32_t ism303dac_mg_block_data_update_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
-  *val = cfg_reg_c_m.bdu;
+  if (ret == 0)
+  {
+    *val = cfg_reg_c_m.bdu;
+  }
 
   return ret;
 }
@@ -328,6 +333,10 @@ int32_t ism303dac_mg_data_format_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (cfg_reg_c_m.ble)
   {
@@ -387,6 +396,11 @@ int32_t ism303dac_xl_full_scale_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL1_A, (uint8_t *)&ctrl1_a, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl1_a.fs)
   {
@@ -455,6 +469,11 @@ int32_t ism303dac_xl_data_rate_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL1_A, (uint8_t *)&ctrl1_a, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((ctrl1_a.hf_odr << 4) + ctrl1_a.odr)
   {
@@ -594,7 +613,10 @@ int32_t ism303dac_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_STATUS_A,
                            (uint8_t *)&status_a, 1);
-  *val = status_a.drdy;
+  if (ret == 0)
+  {
+    *val = status_a.drdy;
+  }
 
   return ret;
 }
@@ -614,7 +636,10 @@ int32_t ism303dac_mg_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_STATUS_REG_M,
                            (uint8_t *)&status_reg_m, 1);
-  *val = status_reg_m.zyxda;
+  if (ret == 0)
+  {
+    *val = status_reg_m.zyxda;
+  }
 
   return ret;
 }
@@ -634,7 +659,10 @@ int32_t ism303dac_mg_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_STATUS_REG_M,
                            (uint8_t *)&status_reg_m, 1);
-  *val = status_reg_m.zyxor;
+  if (ret == 0)
+  {
+    *val = status_reg_m.zyxor;
+  }
 
   return ret;
 }
@@ -642,7 +670,7 @@ int32_t ism303dac_mg_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  These registers comprise a 3 group of 16-bit number and represent
   *         hard-iron offset in order to compensate environmental effects.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG. These values act on the magnetic output data value
   *         in order to delete the environmental offset.[set]
   *
@@ -670,7 +698,7 @@ int32_t ism303dac_mg_user_offset_set(const stmdev_ctx_t *ctx, uint16_t *val)
 /**
   * @brief  These registers comprise a 3 group of 16-bit number and represent
   *         hard-iron offset in order to compensate environmental effects.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG. These values act on the magnetic output data value
   *         in order to delete the environmental offset.[get]
   *
@@ -685,6 +713,10 @@ int32_t ism303dac_mg_user_offset_get(const stmdev_ctx_t *ctx, uint16_t *val)
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_OFFSET_X_REG_L_M, buff, 6);
+  if (ret != 0)
+  {
+    return ret;
+  }
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -738,6 +770,10 @@ int32_t ism303dac_mg_operating_mode_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (cfg_reg_a_m.md)
   {
@@ -804,6 +840,10 @@ int32_t ism303dac_mg_data_rate_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (cfg_reg_a_m.odr)
   {
@@ -874,6 +914,10 @@ int32_t ism303dac_mg_power_mode_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (cfg_reg_a_m.lp)
   {
@@ -936,7 +980,10 @@ int32_t ism303dac_mg_offset_temp_comp_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
-  *val = cfg_reg_a_m.comp_temp_en;
+  if (ret == 0)
+  {
+    *val = cfg_reg_a_m.comp_temp_en;
+  }
 
   return ret;
 }
@@ -984,6 +1031,10 @@ int32_t ism303dac_mg_set_rst_mode_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_B_M,
                            (uint8_t *)&cfg_reg_b_m, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (cfg_reg_b_m.set_rst)
   {
@@ -1056,7 +1107,10 @@ int32_t ism303dac_mg_set_rst_sensor_single_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_B_M,
                            (uint8_t *)&cfg_reg_b_m, 1);
-  *val = cfg_reg_b_m.off_canc_one_shot;
+  if (ret == 0)
+  {
+    *val = cfg_reg_b_m.off_canc_one_shot;
+  }
 
   return ret;
 }
@@ -1093,7 +1147,7 @@ int32_t ism303dac_acceleration_module_raw_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Temperature data output register (r). L and H registers together
-  *         express a 16-bit word in two’s complement.[get]
+  *         express a 16-bit word in two's complement.[get]
   *
   * @param  ctx    read / write interface definitions.(ptr)
   * @param  buff   buffer that stores data read
@@ -1112,7 +1166,7 @@ int32_t ism303dac_xl_temperature_raw_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Linear acceleration output register. The value is expressed as a
-  *         16-bit word in two’s complement.[get]
+  *         16-bit word in two's complement.[get]
   *
   * @param  ctx    read / write interface definitions.(ptr)
   * @param  buff   buffer that stores data read
@@ -1126,6 +1180,11 @@ int32_t ism303dac_acceleration_raw_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_OUT_X_L_A, buff, 6);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1150,6 +1209,11 @@ int32_t ism303dac_magnetic_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_OUTX_L_REG_M, buff, 6);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1248,7 +1312,10 @@ int32_t ism303dac_xl_auto_increment_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL2_A, (uint8_t *)&ctrl2_a, 1);
-  *val = ctrl2_a.if_add_inc;
+  if (ret == 0)
+  {
+    *val = ctrl2_a.if_add_inc;
+  }
 
   return ret;
 }
@@ -1292,7 +1359,10 @@ int32_t ism303dac_xl_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL2_A, (uint8_t *)&ctrl2_a, 1);
-  *val = ctrl2_a.soft_reset;
+  if (ret == 0)
+  {
+    *val = ctrl2_a.soft_reset;
+  }
 
   return ret;
 }
@@ -1338,7 +1408,10 @@ int32_t ism303dac_mg_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
-  *val = cfg_reg_a_m.soft_rst;
+  if (ret == 0)
+  {
+    *val = cfg_reg_a_m.soft_rst;
+  }
 
   return ret;
 }
@@ -1381,7 +1454,10 @@ int32_t ism303dac_xl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL2_A, (uint8_t *)&ctrl2_a, 1);
-  *val = ctrl2_a.boot;
+  if (ret == 0)
+  {
+    *val = ctrl2_a.boot;
+  }
 
   return ret;
 }
@@ -1427,7 +1503,10 @@ int32_t ism303dac_mg_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_A_M,
                            (uint8_t *)&cfg_reg_a_m, 1);
-  *val = cfg_reg_a_m.reboot;
+  if (ret == 0)
+  {
+    *val = cfg_reg_a_m.reboot;
+  }
 
   return ret;
 }
@@ -1472,6 +1551,10 @@ int32_t ism303dac_xl_self_test_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL3_A, (uint8_t *)&ctrl3_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl3_a.st)
   {
@@ -1536,7 +1619,10 @@ int32_t ism303dac_mg_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
-  *val = cfg_reg_c_m.self_test;
+  if (ret == 0)
+  {
+    *val = cfg_reg_c_m.self_test;
+  }
 
   return ret;
 }
@@ -1581,6 +1667,10 @@ int32_t ism303dac_xl_data_ready_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL5_A, (uint8_t *)&ctrl5_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl5_a.drdy_pulsed)
   {
@@ -1653,6 +1743,10 @@ int32_t ism303dac_xl_hp_path_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL2_A, (uint8_t *)&ctrl2_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl2_a.fds_slope)
   {
@@ -1715,6 +1809,10 @@ int32_t ism303dac_mg_low_pass_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_B_M,
                            (uint8_t *)&cfg_reg_b_m, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (cfg_reg_b_m.lpf)
   {
@@ -1787,6 +1885,10 @@ int32_t ism303dac_xl_spi_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL2_A, (uint8_t *)&ctrl2_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl2_a.sim)
   {
@@ -1846,6 +1948,10 @@ int32_t ism303dac_xl_i2c_interface_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL2_A, (uint8_t *)&ctrl2_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl2_a.i2c_disable)
   {
@@ -1908,6 +2014,10 @@ int32_t ism303dac_mg_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (cfg_reg_c_m.i2c_dis)
   {
@@ -1971,6 +2081,10 @@ int32_t ism303dac_xl_cs_mode_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_FIFO_CTRL_A,
                            (uint8_t *)&fifo_ctrl_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (fifo_ctrl_a.if_cs_pu_dis)
   {
@@ -2043,6 +2157,10 @@ int32_t ism303dac_xl_pin_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL3_A, (uint8_t *)&ctrl3_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl3_a.pp_od)
   {
@@ -2102,6 +2220,10 @@ int32_t ism303dac_xl_pin_polarity_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL3_A, (uint8_t *)&ctrl3_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl3_a.h_lactive)
   {
@@ -2161,6 +2283,10 @@ int32_t ism303dac_xl_int_notification_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL3_A, (uint8_t *)&ctrl3_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl3_a.lir)
   {
@@ -2354,7 +2480,10 @@ int32_t ism303dac_xl_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL5_A, (uint8_t *)&ctrl5_a, 1);
-  *val = ctrl5_a.int2_on_int1;
+  if (ret == 0)
+  {
+    *val = ctrl5_a.int2_on_int1;
+  }
 
   return ret;
 }
@@ -2400,7 +2529,10 @@ int32_t ism303dac_mg_drdy_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
-  *val = cfg_reg_c_m.int_mag;
+  if (ret == 0)
+  {
+    *val = cfg_reg_c_m.int_mag;
+  }
 
   return ret;
 }
@@ -2446,7 +2578,10 @@ int32_t ism303dac_mg_int_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_C_M,
                            (uint8_t *)&cfg_reg_c_m, 1);
-  *val = cfg_reg_c_m.int_mag_pin;
+  if (ret == 0)
+  {
+    *val = cfg_reg_c_m.int_mag_pin;
+  }
 
   return ret;
 }
@@ -2510,7 +2645,7 @@ int32_t ism303dac_mg_int_gen_source_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG.[set]
   *
   * @param  ctx    read / write interface definitions.(ptr)
@@ -2533,7 +2668,7 @@ int32_t ism303dac_mg_int_gen_threshold_set(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG.[get]
   *
   * @param  ctx    read / write interface definitions.(ptr)
@@ -2548,8 +2683,11 @@ int32_t ism303dac_mg_int_gen_threshold_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_INT_THS_L_REG_M, buff, 2);
-  *val = buff[1];
-  *val = (*val * 256U) +  buff[0];
+  if (ret == 0)
+  {
+    *val = buff[1];
+    *val = (*val * 256U) +  buff[0];
+  }
 
   return ret;
 }
@@ -2624,6 +2762,10 @@ int32_t ism303dac_mg_offset_int_conf_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CFG_REG_B_M,
                            (uint8_t *)&cfg_reg_b_m, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (cfg_reg_b_m.int_on_dataoff)
   {
@@ -2686,7 +2828,10 @@ int32_t ism303dac_xl_wkup_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_WAKE_UP_THS_A,
                            (uint8_t *)&wake_up_ths_a, 1);
-  *val = wake_up_ths_a.wu_ths;
+  if (ret == 0)
+  {
+    *val = wake_up_ths_a.wu_ths;
+  }
 
   return ret;
 }
@@ -2732,7 +2877,10 @@ int32_t ism303dac_xl_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_WAKE_UP_DUR_A,
                            (uint8_t *)&wake_up_dur_a, 1);
-  *val = wake_up_dur_a.wu_dur;
+  if (ret == 0)
+  {
+    *val = wake_up_dur_a.wu_dur;
+  }
 
   return ret;
 }
@@ -2791,7 +2939,10 @@ int32_t ism303dac_xl_sleep_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_WAKE_UP_THS_A,
                            (uint8_t *)&wake_up_ths_a, 1);
-  *val = wake_up_ths_a.sleep_on;
+  if (ret == 0)
+  {
+    *val = wake_up_ths_a.sleep_on;
+  }
 
   return ret;
 }
@@ -2838,7 +2989,10 @@ int32_t ism303dac_xl_act_sleep_dur_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_WAKE_UP_DUR_A,
                            (uint8_t *)&wake_up_dur_a, 1);
-  *val = wake_up_dur_a.sleep_dur;
+  if (ret == 0)
+  {
+    *val = wake_up_dur_a.sleep_dur;
+  }
 
   return ret;
 }
@@ -2896,7 +3050,10 @@ int32_t ism303dac_xl_tap_detection_on_z_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL3_A, (uint8_t *)&ctrl3_a, 1);
-  *val = ctrl3_a.tap_z_en;
+  if (ret == 0)
+  {
+    *val = ctrl3_a.tap_z_en;
+  }
 
   return ret;
 }
@@ -2941,7 +3098,10 @@ int32_t ism303dac_xl_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL3_A, (uint8_t *)&ctrl3_a, 1);
-  *val = ctrl3_a.tap_y_en;
+  if (ret == 0)
+  {
+    *val = ctrl3_a.tap_y_en;
+  }
 
   return ret;
 }
@@ -2986,7 +3146,10 @@ int32_t ism303dac_xl_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_CTRL3_A, (uint8_t *)&ctrl3_a, 1);
-  *val = ctrl3_a.tap_x_en;
+  if (ret == 0)
+  {
+    *val = ctrl3_a.tap_x_en;
+  }
 
   return ret;
 }
@@ -3033,7 +3196,10 @@ int32_t ism303dac_xl_tap_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_TAP_6D_THS_A,
                            (uint8_t *)&tap_6d_ths_a, 1);
-  *val = tap_6d_ths_a.tap_ths;
+  if (ret == 0)
+  {
+    *val = tap_6d_ths_a.tap_ths;
+  }
 
   return ret;
 }
@@ -3087,7 +3253,10 @@ int32_t ism303dac_xl_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_INT_DUR_A,
                            (uint8_t *)&int_dur_a, 1);
-  *val = int_dur_a.shock;
+  if (ret == 0)
+  {
+    *val = int_dur_a.shock;
+  }
 
   return ret;
 }
@@ -3141,7 +3310,10 @@ int32_t ism303dac_xl_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_INT_DUR_A,
                            (uint8_t *)&int_dur_a, 1);
-  *val = int_dur_a.quiet;
+  if (ret == 0)
+  {
+    *val = int_dur_a.quiet;
+  }
 
   return ret;
 }
@@ -3197,7 +3369,10 @@ int32_t ism303dac_xl_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_INT_DUR_A,
                            (uint8_t *)&int_dur_a, 1);
-  *val = int_dur_a.lat;
+  if (ret == 0)
+  {
+    *val = int_dur_a.lat;
+  }
 
   return ret;
 }
@@ -3245,6 +3420,10 @@ int32_t ism303dac_xl_tap_mode_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_WAKE_UP_THS_A,
                            (uint8_t *)&wake_up_ths_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (wake_up_ths_a.single_double_tap)
   {
@@ -3338,6 +3517,10 @@ int32_t ism303dac_xl_6d_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_TAP_6D_THS_A,
                            (uint8_t *)&tap_6d_ths_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (tap_6d_ths_a._6d_ths)
   {
@@ -3406,7 +3589,10 @@ int32_t ism303dac_xl_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_TAP_6D_THS_A,
                            (uint8_t *)&tap_6d_ths_a, 1);
-  *val = tap_6d_ths_a._4d_en;
+  if (ret == 0)
+  {
+    *val = tap_6d_ths_a._4d_en;
+  }
 
   return ret;
 }
@@ -3505,7 +3691,10 @@ int32_t ism303dac_xl_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
                              (uint8_t *)&free_fall_a, 1);
   }
 
-  *val = (wake_up_dur_a.ff_dur << 5) + free_fall_a.ff_dur;
+  if (ret == 0)
+  {
+    *val = (wake_up_dur_a.ff_dur << 5) + free_fall_a.ff_dur;
+  }
 
   return ret;
 }
@@ -3551,7 +3740,10 @@ int32_t ism303dac_xl_ff_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_FREE_FALL_A,
                            (uint8_t *)&free_fall_a, 1);
-  *val = free_fall_a.ff_ths;
+  if (ret == 0)
+  {
+    *val = free_fall_a.ff_ths;
+  }
 
   return ret;
 }
@@ -3613,7 +3805,10 @@ int32_t ism303dac_xl_fifo_xl_module_batch_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_FIFO_CTRL_A,
                            (uint8_t *)&fifo_ctrl_a, 1);
-  *val = fifo_ctrl_a.module_to_fifo;
+  if (ret == 0)
+  {
+    *val = fifo_ctrl_a.module_to_fifo;
+  }
 
   return ret;
 }
@@ -3661,6 +3856,10 @@ int32_t ism303dac_xl_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_FIFO_CTRL_A,
                            (uint8_t *)&fifo_ctrl_a, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (fifo_ctrl_a.fmode)
   {
@@ -3744,7 +3943,10 @@ int32_t ism303dac_xl_fifo_full_flag_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_FIFO_SRC_A,
                            (uint8_t *)&fifo_src_a, 1);
-  *val = fifo_src_a.diff;
+  if (ret == 0)
+  {
+    *val = fifo_src_a.diff;
+  }
 
   return ret;
 }
@@ -3765,7 +3967,10 @@ int32_t ism303dac_xl_fifo_ovr_flag_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_FIFO_SRC_A,
                            (uint8_t *)&fifo_src_a, 1);
-  *val = fifo_src_a.fifo_ovr;
+  if (ret == 0)
+  {
+    *val = fifo_src_a.fifo_ovr;
+  }
 
   return ret;
 }
@@ -3786,7 +3991,10 @@ int32_t ism303dac_xl_fifo_wtm_flag_get(const stmdev_ctx_t *ctx,
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_FIFO_SRC_A,
                            (uint8_t *)&fifo_src_a, 1);
-  *val = fifo_src_a.fth;
+  if (ret == 0)
+  {
+    *val = fifo_src_a.fth;
+  }
 
   return ret;
 }
@@ -3813,6 +4021,10 @@ int32_t ism303dac_xl_fifo_data_level_get(const stmdev_ctx_t *ctx,
   {
     ret = ism303dac_read_reg(ctx, ISM303DAC_FIFO_SAMPLES_A,
                              (uint8_t *)&fifo_samples_a, 1);
+  }
+
+  if (ret == 0)
+  {
     *val = fifo_src_a.diff;
     *val = *val << 7;
     *val += fifo_samples_a.diff;
@@ -3893,7 +4105,10 @@ int32_t ism303dac_xl_module_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism303dac_read_reg(ctx, ISM303DAC_FUNC_CTRL_A,
                            (uint8_t *)&func_ctrl_a, 1);
-  *val = func_ctrl_a.module_on;
+  if (ret == 0)
+  {
+    *val = func_ctrl_a.module_on;
+  }
 
   return ret;
 }
@@ -3907,5 +4122,3 @@ int32_t ism303dac_xl_module_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

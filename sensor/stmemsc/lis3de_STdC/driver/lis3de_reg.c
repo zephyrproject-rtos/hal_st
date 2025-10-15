@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -167,6 +166,9 @@ int32_t lis3de_temp_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG_AUX,
                         (uint8_t *)&status_reg_aux, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status_reg_aux._3da;
 
   return ret;
@@ -186,6 +188,9 @@ int32_t lis3de_temp_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG_AUX,
                         (uint8_t *)&status_reg_aux, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status_reg_aux._3or;
 
   return ret;
@@ -233,6 +238,9 @@ int32_t lis3de_adc_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_OUT_ADC1_L, buff, 6);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -294,6 +302,8 @@ int32_t lis3de_aux_adc_get(const stmdev_ctx_t *ctx, lis3de_temp_en_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_TEMP_CFG_REG,
                         (uint8_t *)&temp_cfg_reg, 1);
+
+  if (ret != 0) { return ret; }
 
   if ((temp_cfg_reg.temp_en & temp_cfg_reg.adc_pd) ==
       PROPERTY_ENABLE)
@@ -411,6 +421,8 @@ int32_t lis3de_data_rate_get(const stmdev_ctx_t *ctx, lis3de_odr_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG1, (uint8_t *)&ctrl_reg1, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg1.odr)
   {
     case LIS3DE_POWER_DOWN:
@@ -503,6 +515,9 @@ int32_t lis3de_high_pass_on_outputs_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg2.fds;
 
   return ret;
@@ -560,6 +575,8 @@ int32_t lis3de_high_pass_bandwidth_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg2.hpcf)
   {
@@ -627,6 +644,8 @@ int32_t lis3de_high_pass_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg2.hpm)
   {
     case LIS3DE_NORMAL_WITH_RST:
@@ -692,6 +711,8 @@ int32_t lis3de_full_scale_get(const stmdev_ctx_t *ctx, lis3de_fs_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg4.fs)
   {
     case LIS3DE_2g:
@@ -756,6 +777,9 @@ int32_t lis3de_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg4.bdu;
 
   return ret;
@@ -810,6 +834,9 @@ int32_t lis3de_xl_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG, (uint8_t *)&status_reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status_reg.zyxda;
 
   return ret;
@@ -828,6 +855,9 @@ int32_t lis3de_xl_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_STATUS_REG, (uint8_t *)&status_reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = status_reg.zyxor;
 
   return ret;
@@ -930,6 +960,8 @@ int32_t lis3de_self_test_get(const stmdev_ctx_t *ctx, lis3de_st_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg4.st)
   {
     case LIS3DE_ST_DISABLE:
@@ -990,6 +1022,9 @@ int32_t lis3de_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg5.boot;
 
   return ret;
@@ -1119,6 +1154,9 @@ int32_t lis3de_int1_gen_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_IG1_THS, (uint8_t *)&int1_ths, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int1_ths.ths;
 
   return ret;
@@ -1167,6 +1205,9 @@ int32_t lis3de_int1_gen_duration_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_IG1_DURATION,
                         (uint8_t *)&int1_duration, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int1_duration.d;
 
   return ret;
@@ -1279,6 +1320,9 @@ int32_t lis3de_int2_gen_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_IG2_THS, (uint8_t *)&int2_ths, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int2_ths.ths;
 
   return ret;
@@ -1327,6 +1371,9 @@ int32_t lis3de_int2_gen_duration_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_IG2_DURATION,
                         (uint8_t *)&int2_duration, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)int2_duration.d;
 
   return ret;
@@ -1384,6 +1431,8 @@ int32_t lis3de_high_pass_int_conf_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG2, (uint8_t *)&ctrl_reg2, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg2.hp)
   {
@@ -1503,6 +1552,9 @@ int32_t lis3de_int2_pin_detect_4d_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg5.d4d_ig2;
 
   return ret;
@@ -1552,6 +1604,8 @@ int32_t lis3de_int2_pin_notification_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg5.lir_ig2)
   {
@@ -1611,6 +1665,9 @@ int32_t lis3de_int1_pin_detect_4d_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg5.d4d_ig1;
 
   return ret;
@@ -1658,6 +1715,8 @@ int32_t lis3de_int1_pin_notification_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg5.lir_ig1)
   {
@@ -1762,6 +1821,9 @@ int32_t lis3de_fifo_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)ctrl_reg5.fifo_en;
 
   return ret;
@@ -1808,6 +1870,9 @@ int32_t lis3de_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG,
                         (uint8_t *)&fifo_ctrl_reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)fifo_ctrl_reg.fth;
 
   return ret;
@@ -1856,6 +1921,8 @@ int32_t lis3de_fifo_trigger_event_get(const stmdev_ctx_t *ctx,
 
   ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG,
                         (uint8_t *)&fifo_ctrl_reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (fifo_ctrl_reg.tr)
   {
@@ -1917,6 +1984,8 @@ int32_t lis3de_fifo_mode_get(const stmdev_ctx_t *ctx, lis3de_fm_t *val)
   ret = lis3de_read_reg(ctx, LIS3DE_FIFO_CTRL_REG,
                         (uint8_t *)&fifo_ctrl_reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (fifo_ctrl_reg.fm)
   {
     case LIS3DE_BYPASS_MODE:
@@ -1975,6 +2044,9 @@ int32_t lis3de_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG,
                         (uint8_t *)&fifo_src_reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)fifo_src_reg.fss;
 
   return ret;
@@ -1994,6 +2066,9 @@ int32_t lis3de_fifo_empty_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG,
                         (uint8_t *)&fifo_src_reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)fifo_src_reg.empty;
 
   return ret;
@@ -2013,6 +2088,9 @@ int32_t lis3de_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG,
                         (uint8_t *)&fifo_src_reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)fifo_src_reg.ovrn_fifo;
 
   return ret;
@@ -2032,6 +2110,9 @@ int32_t lis3de_fifo_fth_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_FIFO_SRC_REG,
                         (uint8_t *)&fifo_src_reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)fifo_src_reg.wtm;
 
   return ret;
@@ -2141,6 +2222,9 @@ int32_t lis3de_tap_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CLICK_THS, (uint8_t *)&click_ths, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)click_ths.ths;
 
   return ret;
@@ -2192,6 +2276,8 @@ int32_t lis3de_tap_notification_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_CLICK_THS, (uint8_t *)&click_ths, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (click_ths.lir)
   {
@@ -2253,6 +2339,9 @@ int32_t lis3de_shock_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_TIME_LIMIT, (uint8_t *)&time_limit, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)time_limit.tli;
 
   return ret;
@@ -2305,6 +2394,9 @@ int32_t lis3de_quiet_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_TIME_LATENCY,
                         (uint8_t *)&time_latency, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)time_latency.tla;
 
   return ret;
@@ -2357,6 +2449,9 @@ int32_t lis3de_double_tap_timeout_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_TIME_WINDOW,
                         (uint8_t *)&time_window, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)time_window.tw;
 
   return ret;
@@ -2417,6 +2512,9 @@ int32_t lis3de_act_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_ACT_THS, (uint8_t *)&act_ths, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)act_ths.acth;
 
   return ret;
@@ -2462,6 +2560,9 @@ int32_t lis3de_act_timeout_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis3de_read_reg(ctx, LIS3DE_ACT_DUR, (uint8_t *)&act_dur, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = (uint8_t)act_dur.actd;
 
   return ret;
@@ -2519,6 +2620,8 @@ int32_t lis3de_spi_mode_get(const stmdev_ctx_t *ctx, lis3de_sim_t *val)
 
   ret = lis3de_read_reg(ctx, LIS3DE_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (ctrl_reg4.sim)
   {
     case LIS3DE_SPI_4_WIRE:
@@ -2546,5 +2649,3 @@ int32_t lis3de_spi_mode_get(const stmdev_ctx_t *ctx, lis3de_sim_t *val)
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

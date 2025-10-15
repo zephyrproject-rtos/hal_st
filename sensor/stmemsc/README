@@ -6,7 +6,7 @@ Origin:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 Status:
-   version v2.9.1
+   version v2.11
 
 Purpose:
    ST Microelectronics standard C platform-independent drivers for MEMS
@@ -49,97 +49,98 @@ Description:
 
    Driver versions in this package:
 
-     - a3g4250d_STdC        v2.0.1
-     - ais25ba_STdC         v2.0.1
-     - ais2dw12_STdC        v2.0.1
-     - ais2ih_STdC          v2.0.1
-     - ais328dq_STdC        v2.0.1
-     - ais3624dq_STdC       v2.0.1
-     - asm330lhb_STdC       v2.1.0
-     - asm330lhbg1_STdC     v1.1.0
-     - asm330lhh_STdC       v3.2.0
-     - asm330lhhx_STdC      v2.1.0
-     - asm330lhhxg1_STdC    v2.0.1
-     - h3lis100dl_STdC      v2.0.1
-     - h3lis331dl_STdC      v2.0.1
-     - hts221_STdC          v2.1.0
-     - i3g4250d_STdC        v2.0.1
-     - iis2dh_STdC          v2.0.1
-     - iis2dlpc_STdC        v2.0.1
-     - iis2dulpx_STdC       v1.0.2
-     - iis2iclx_STdC        v2.0.1
-     - iis2mdc_STdC         v2.0.3
-     - iis328dq_STdC        v2.0.1
-     - iis3dhhc_STdC        v2.0.1
-     - iis3dwb_STdC         v2.0.1
-     - ilps22qs_STdC        v3.1.1
-     - ilps28qsw_STdC       v2.2.0
-     - ism303dac_STdC       v2.0.1
-     - ism330bx_STdC        v3.0.2
-     - ism330dhcx_STdC      v2.1.1
-     - ism330dlc_STdC       v2.0.2
-     - ism330is_STdC        v3.0.1
-     - l3gd20h_STdC         v2.0.1
-     - lis25ba_STdC         v2.0.1
-     - lis2de12_STdC        v2.0.1
-     - lis2dh12_STdC        v2.0.1
-     - lis2ds12_STdC        v2.0.1
-     - lis2dtw12_STdC       v2.0.1
-     - lis2du12_STdC        v2.0.1
-     - lis2dux12_STdC       v2.4.1
-     - lis2duxs12_STdC      v2.4.1
-     - lis2dw12_STdC        v2.0.1
-     - lis2hh12_STdC        v2.0.1
-     - lis2mdl_STdC         v2.0.1
-     - lis331dlh_STdC       v2.0.1
-     - lis3de_STdC          v2.0.1
-     - lis3dh_STdC          v2.0.1
-     - lis3dhh_STdC         v2.0.2
-     - lis3mdl_STdC         v2.0.1
-     - lps22ch_STdC         v2.0.1
-     - lps22df_STdC         v2.2.0
-     - lps22hb_STdC         v2.0.2
-     - lps22hh_STdC         v3.0.2
-     - lps25hb_STdC         v2.0.1
-     - lps27hhtw_STdC       v2.0.1
-     - lps27hhw_STdC        v2.0.1
-     - lps28dfw_STdC        v2.2.0
-     - lps33k_STdC          v2.0.1
-     - lsm303agr_STdC       v2.0.1
-     - lsm303ah_STdC        v2.0.1
-     - lsm6ds3tr-c_STdC     v2.0.1
-     - lsm6dsl_STdC         v2.0.1
-     - lsm6dsm_STdC         v2.0.1
-     - lsm6dso16is_STdC     v3.0.1
-     - lsm6dso32_STdC       v2.1.0
-     - lsm6dso32x_STdC      v2.1.0
-     - lsm6dso_STdC         v3.1.1
-     - lsm6dsox_STdC        v3.1.0
-     - lsm6dsr_STdC         v2.1.0
-     - lsm6dsrx_STdC        v2.1.0
-     - lsm6dsv16b_STdC      v3.0.1
-     - lsm6dsv16bx_STdC     v5.0.2
-     - lsm6dsv16x_STdC      v4.3.0
-     - lsm6dsv320x_STdC     v1.1.0
-     - lsm6dsv32x_STdC      v2.3.0
-     - lsm6dsv80x_STdC      v1.1.0
-     - lsm6dsv_STdC         v3.3.0
-     - lsm9ds1_STdC         v2.0.1
-     - st1vafe3bx_STdC      v2.1.1
-     - st1vafe6ax_STdC      v2.0.2
-     - sths34pf80_STdC      v3.0.1
-     - stts22h_STdC         v2.1.1
-     - stts751_STdC         v2.0.1
+     - a3g4250d_STdC        v2.2.0
+     - ais25ba_STdC         v2.2.0
+     - ais2dw12_STdC        v2.2.0
+     - ais2ih_STdC          v2.2.0
+     - ais328dq_STdC        v2.2.0
+     - ais3624dq_STdC       v2.2.0
+     - asm330lhb_STdC       v2.3.0
+     - asm330lhbg1_STdC     v1.3.0
+     - asm330lhh_STdC       v3.4.0
+     - asm330lhhx_STdC      v2.3.0
+     - asm330lhhxg1_STdC    v2.2.1
+     - h3lis100dl_STdC      v2.2.0
+     - h3lis331dl_STdC      v2.2.0
+     - hts221_STdC          v2.3.0
+     - i3g4250d_STdC        v2.2.0
+     - iis2dh_STdC          v2.2.0
+     - iis2dlpc_STdC        v2.2.0
+     - iis2dulpx_STdC       v2.0.0
+     - iis2iclx_STdC        v2.2.0
+     - iis2mdc_STdC         v2.2.0
+     - iis328dq_STdC        v2.2.0
+     - iis3dhhc_STdC        v2.2.0
+     - iis3dwb_STdC         v2.2.0
+     - ilps22qs_STdC        v4.0.0
+     - ilps28qsw_STdC       v3.0.0
+     - ism303dac_STdC       v2.2.0
+     - ism330bx_STdC        v3.2.0
+     - ism330dhcx_STdC      v2.4.0
+     - ism330dlc_STdC       v2.2.0
+     - ism330is_STdC        v3.2.0
+     - ism6hg256x_STdC      v2.0.0
+     - l3gd20h_STdC         v2.2.0
+     - lis25ba_STdC         v2.2.0
+     - lis2de12_STdC        v2.2.0
+     - lis2dh12_STdC        v2.2.0
+     - lis2ds12_STdC        v2.2.0
+     - lis2dtw12_STdC       v2.2.0
+     - lis2du12_STdC        v2.2.0
+     - lis2dux12_STdC       v3.0.0
+     - lis2duxs12_STdC      v3.0.0
+     - lis2dw12_STdC        v2.2.0
+     - lis2hh12_STdC        v2.2.0
+     - lis2mdl_STdC         v2.2.0
+     - lis331dlh_STdC       v2.2.0
+     - lis3de_STdC          v2.2.0
+     - lis3dh_STdC          v2.2.0
+     - lis3dhh_STdC         v2.2.0
+     - lis3mdl_STdC         v2.2.0
+     - lps22ch_STdC         v2.2.0
+     - lps22df_STdC         v2.4.0
+     - lps22hb_STdC         v2.2.0
+     - lps22hh_STdC         v3.2.0
+     - lps25hb_STdC         v2.2.0
+     - lps27hhtw_STdC       v2.2.0
+     - lps27hhw_STdC        v2.2.0
+     - lps28dfw_STdC        v3.0.0
+     - lps33k_STdC          v2.2.0
+     - lsm303agr_STdC       v2.2.0
+     - lsm303ah_STdC        v2.2.0
+     - lsm6ds3tr-c_STdC     v2.2.0
+     - lsm6dsl_STdC         v2.2.0
+     - lsm6dsm_STdC         v2.2.0
+     - lsm6dso16is_STdC     v3.2.0
+     - lsm6dso32_STdC       v2.3.0
+     - lsm6dso32x_STdC      v2.3.0
+     - lsm6dso_STdC         v3.2.1
+     - lsm6dsox_STdC        v3.3.0
+     - lsm6dsr_STdC         v2.3.0
+     - lsm6dsrx_STdC        v2.3.0
+     - lsm6dsv16b_STdC      v3.2.0
+     - lsm6dsv16bx_STdC     v5.2.0
+     - lsm6dsv16x_STdC      v5.0.0
+     - lsm6dsv320x_STdC     v3.0.0
+     - lsm6dsv32x_STdC      v3.0.0
+     - lsm6dsv80x_STdC      v3.0.0
+     - lsm6dsv_STdC         v4.0.0
+     - lsm9ds1_STdC         v2.2.0
+     - st1vafe3bx_STdC      v2.3.0
+     - st1vafe6ax_STdC      v2.2.0
+     - sths34pf80_STdC      v3.2.0
+     - stts22h_STdC         v2.3.0
+     - stts751_STdC         v2.2.0
 
 Dependencies:
     None.
 
 URL:
    https://www.st.com/en/embedded-software/c-driver-mems.html
-   https://github.com/STMicroelectronics/STMems_Standard_C_drivers/tree/v2.9.1
+   https://github.com/STMicroelectronics/STMems_Standard_C_drivers/tree/v2.11
 
 commit:
-   0c1759e4 (tag v2.9.1)
+   7ae811c3 (tag v2.11)
 
 Maintained-by:
    ST Microelectronics

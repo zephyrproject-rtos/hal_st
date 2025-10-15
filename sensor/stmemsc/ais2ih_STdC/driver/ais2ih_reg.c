@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -209,6 +208,7 @@ int32_t ais2ih_power_mode_get(const stmdev_ctx_t *ctx, ais2ih_mode_t *val)
   if (ret == 0)
   {
     ret = ais2ih_read_reg(ctx, AIS2IH_CTRL6, (uint8_t *) &ctrl6, 1);
+    if (ret != 0) return ret;
 
     switch (((ctrl6.low_noise << 4) + (ctrl1.mode << 2) +
              ctrl1.lp_mode))
@@ -349,6 +349,7 @@ int32_t ais2ih_data_rate_get(const stmdev_ctx_t *ctx, ais2ih_odr_t *val)
   if (ret == 0)
   {
     ret = ais2ih_read_reg(ctx, AIS2IH_CTRL3, (uint8_t *) &ctrl3, 1);
+    if (ret != 0) return ret;
 
     switch ((ctrl3.slp_mode << 4) + ctrl1.odr)
     {
@@ -490,6 +491,7 @@ int32_t ais2ih_full_scale_get(const stmdev_ctx_t *ctx, ais2ih_fs_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL6, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.fs)
   {
@@ -572,7 +574,7 @@ int32_t ais2ih_all_sources_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[set]
   *
@@ -591,7 +593,7 @@ int32_t ais2ih_usr_offset_x_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[get]
   *
@@ -610,7 +612,7 @@ int32_t ais2ih_usr_offset_x_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[set]
   *
@@ -629,7 +631,7 @@ int32_t ais2ih_usr_offset_y_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[get]
   *
@@ -648,7 +650,7 @@ int32_t ais2ih_usr_offset_y_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Z-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Z-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[set]
   *
@@ -667,7 +669,7 @@ int32_t ais2ih_usr_offset_z_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Z-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Z-axis user offset correction expressed in two's
   *         complement, weight depends on bit USR_OFF_W. The value must be
   *         in the range [-127 127].[get]
   *
@@ -728,6 +730,7 @@ int32_t ais2ih_offset_weight_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL_REG7, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.usr_off_w)
   {
@@ -761,7 +764,7 @@ int32_t ais2ih_offset_weight_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Temperature data output register (r). L and H registers
-  *         together express a 16-bit word in two’s complement.[get]
+  *         together express a 16-bit word in two's complement.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  val      buffer that stores data read
@@ -774,6 +777,7 @@ int32_t ais2ih_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_OUT_T_L, buff, 2);
+  if (ret != 0) return ret;
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
 
@@ -782,7 +786,7 @@ int32_t ais2ih_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 
 /**
   * @brief  Linear acceleration output register. The value is expressed as
-  *         a 16-bit word in two’s complement.[get]
+  *         a 16-bit word in two's complement.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  val      buffer that stores data read
@@ -795,6 +799,7 @@ int32_t ais2ih_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_OUT_X_L, buff, 6);
+  if (ret != 0) return ret;
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -874,6 +879,7 @@ int32_t ais2ih_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL2, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.if_add_inc;
 
   return ret;
@@ -917,6 +923,7 @@ int32_t ais2ih_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL2, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.soft_reset;
 
   return ret;
@@ -960,6 +967,7 @@ int32_t ais2ih_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL2, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.boot;
 
   return ret;
@@ -1003,6 +1011,7 @@ int32_t ais2ih_self_test_get(const stmdev_ctx_t *ctx, ais2ih_st_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL3, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.st)
   {
@@ -1066,6 +1075,7 @@ int32_t ais2ih_data_ready_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL_REG7, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.drdy_pulsed)
   {
@@ -1153,6 +1163,7 @@ int32_t ais2ih_filter_path_get(const stmdev_ctx_t *ctx, ais2ih_fds_t *val)
   if (ret == 0)
   {
     ret = ais2ih_read_reg(ctx, AIS2IH_CTRL_REG7, (uint8_t *) &ctrl_reg7, 1);
+    if (ret != 0) return ret;
 
     switch ((ctrl6.fds << 4) + ctrl_reg7.usr_off_on_out)
     {
@@ -1219,6 +1230,7 @@ int32_t ais2ih_filter_bandwidth_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL6, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.bw_filt)
   {
@@ -1284,6 +1296,7 @@ int32_t ais2ih_reference_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL_REG7, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.hp_ref_mode;
 
   return ret;
@@ -1400,6 +1413,7 @@ int32_t ais2ih_i2c_interface_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL2, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.i2c_disable)
   {
@@ -1458,6 +1472,7 @@ int32_t ais2ih_cs_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL2, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.cs_pu_disc)
   {
@@ -1529,6 +1544,7 @@ int32_t ais2ih_pin_polarity_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL3, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.h_lactive)
   {
@@ -1588,6 +1604,7 @@ int32_t ais2ih_int_notification_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL3, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.lir)
   {
@@ -1645,6 +1662,7 @@ int32_t ais2ih_pin_mode_get(const stmdev_ctx_t *ctx, ais2ih_pp_od_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL3, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.pp_od)
   {
@@ -1844,6 +1862,7 @@ int32_t ais2ih_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL_REG7, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.int2_on_int1;
 
   return ret;
@@ -1943,6 +1962,7 @@ int32_t ais2ih_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_WAKE_UP_DUR, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.wake_dur;
 
   return ret;
@@ -1988,6 +2008,7 @@ int32_t ais2ih_wkup_feed_data_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL_REG7, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.usr_off_on_wu)
   {
@@ -2084,6 +2105,7 @@ int32_t ais2ih_act_mode_get(const stmdev_ctx_t *ctx, ais2ih_sleep_on_t *val)
   {
     ret = ais2ih_read_reg(ctx, AIS2IH_WAKE_UP_DUR,
                           (uint8_t *) &wake_up_dur, 1);
+    if (ret != 0) return ret;
 
     switch ((wake_up_dur.stationary << 1) + wake_up_ths.sleep_on)
     {
@@ -2146,6 +2168,7 @@ int32_t ais2ih_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_WAKE_UP_DUR, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.sleep_dur;
 
   return ret;
@@ -2202,6 +2225,7 @@ int32_t ais2ih_tap_threshold_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_TAP_THS_X, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.tap_thsx;
 
   return ret;
@@ -2245,6 +2269,7 @@ int32_t ais2ih_tap_threshold_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_TAP_THS_Y, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.tap_thsy;
 
   return ret;
@@ -2290,6 +2315,7 @@ int32_t ais2ih_tap_axis_priority_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_TAP_THS_Y, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.tap_prior)
   {
@@ -2363,6 +2389,7 @@ int32_t ais2ih_tap_threshold_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_TAP_THS_Z, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.tap_thsz;
 
   return ret;
@@ -2406,6 +2433,7 @@ int32_t ais2ih_tap_detection_on_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_TAP_THS_Z, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.tap_z_en;
 
   return ret;
@@ -2449,6 +2477,7 @@ int32_t ais2ih_tap_detection_on_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_TAP_THS_Z, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.tap_y_en;
 
   return ret;
@@ -2492,6 +2521,7 @@ int32_t ais2ih_tap_detection_on_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_TAP_THS_Z, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.tap_x_en;
 
   return ret;
@@ -2543,6 +2573,7 @@ int32_t ais2ih_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_INT_DUR, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.shock;
 
   return ret;
@@ -2594,6 +2625,7 @@ int32_t ais2ih_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_INT_DUR, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.quiet;
 
   return ret;
@@ -2647,6 +2679,7 @@ int32_t ais2ih_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_INT_DUR, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.latency;
 
   return ret;
@@ -2692,6 +2725,7 @@ int32_t ais2ih_tap_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_WAKE_UP_THS, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.single_double_tap)
   {
@@ -2779,6 +2813,7 @@ int32_t ais2ih_6d_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_TAP_THS_X, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg._6d_ths;
 
   return ret;
@@ -2822,6 +2857,7 @@ int32_t ais2ih_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_TAP_THS_X, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg._4d_en;
 
   return ret;
@@ -2883,6 +2919,7 @@ int32_t ais2ih_6d_feed_data_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_CTRL_REG7, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.lpass_on6d)
   {
@@ -2975,6 +3012,7 @@ int32_t ais2ih_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   if (ret == 0)
   {
     ret = ais2ih_read_reg(ctx, AIS2IH_FREE_FALL, (uint8_t *) &free_fall, 1);
+    if (ret != 0) return ret;
     *val = (wake_up_dur.ff_dur << 5) + free_fall.ff_dur;
   }
 
@@ -3021,6 +3059,7 @@ int32_t ais2ih_ff_threshold_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_FREE_FALL, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.ff_ths)
   {
@@ -3114,6 +3153,7 @@ int32_t ais2ih_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_FIFO_CTRL, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.fth;
 
   return ret;
@@ -3157,6 +3197,7 @@ int32_t ais2ih_fifo_mode_get(const stmdev_ctx_t *ctx, ais2ih_fmode_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_FIFO_CTRL, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
 
   switch (reg.fmode)
   {
@@ -3202,6 +3243,7 @@ int32_t ais2ih_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_FIFO_SAMPLES, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.diff;
 
   return ret;
@@ -3220,6 +3262,7 @@ int32_t ais2ih_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_FIFO_SAMPLES, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.fifo_ovr;
 
   return ret;
@@ -3238,6 +3281,7 @@ int32_t ais2ih_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ais2ih_read_reg(ctx, AIS2IH_FIFO_SAMPLES, (uint8_t *) &reg, 1);
+  if (ret != 0) return ret;
   *val = reg.fifo_fth;
 
   return ret;
@@ -3252,5 +3296,3 @@ int32_t ais2ih_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

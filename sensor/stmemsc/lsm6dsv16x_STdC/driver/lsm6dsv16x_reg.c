@@ -6,17 +6,17 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2024 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2024 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
 
+#include <string.h>
 #include "lsm6dsv16x_reg.h"
 
 /**
@@ -439,9 +439,9 @@ int32_t lsm6dsv16x_reset_set(const stmdev_ctx_t *ctx, lsm6dsv16x_reset_t val)
     return ret;
   }
 
-  ctrl3.boot = ((uint8_t)val & 0x04U) >> 2;
-  ctrl3.sw_reset = ((uint8_t)val & 0x02U) >> 1;
-  func_cfg_access.sw_por = (uint8_t)val & 0x01U;
+  ctrl3.boot = (val == LSM6DSV16X_RESTORE_CAL_PARAM) ? 1 : 0;
+  ctrl3.sw_reset = (val == LSM6DSV16X_RESTORE_CTRL_REGS) ? 1 : 0;
+  func_cfg_access.sw_por = (val == LSM6DSV16X_GLOBAL_RST) ? 1 : 0;
 
   ret = lsm6dsv16x_write_reg(ctx, LSM6DSV16X_CTRL3, (uint8_t *)&ctrl3, 1);
   ret += lsm6dsv16x_write_reg(ctx, LSM6DSV16X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
@@ -1957,12 +1957,6 @@ int32_t lsm6dsv16x_pin_int1_route_set(const stmdev_ctx_t *ctx,
   lsm6dsv16x_md1_cfg_t            md1_cfg;
   int32_t ret;
 
-  /* not available on INT1 */
-  if (val->drdy_temp == 1)
-  {
-    return -1;
-  }
-
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
   if (ret != 0)
   {
@@ -2017,6 +2011,8 @@ int32_t lsm6dsv16x_pin_int1_route_get(const stmdev_ctx_t *ctx,
   lsm6dsv16x_md1_cfg_t            md1_cfg;
   int32_t ret;
 
+  memset(val, 0x0, sizeof(lsm6dsv16x_pin_int_route_t));
+
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
   if (ret != 0)
   {
@@ -2064,6 +2060,8 @@ int32_t lsm6dsv16x_pin_int2_route_set(const stmdev_ctx_t *ctx,
   lsm6dsv16x_ctrl7_t              ctrl7;
   lsm6dsv16x_md2_cfg_t            md2_cfg;
   int32_t ret;
+
+  memset(val, 0x0, sizeof(lsm6dsv16x_pin_int_route_t));
 
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
   if (ret != 0)
@@ -3820,7 +3818,7 @@ int32_t lsm6dsv16x_fifo_compress_algo_real_time_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv16x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t lsm6dsv16x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, lsm6dsv16x_fifo_event_t val)
 {
   lsm6dsv16x_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
@@ -3828,7 +3826,7 @@ int32_t lsm6dsv16x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   if (ret == 0)
   {
-    fifo_ctrl2.stop_on_wtm = val;
+    fifo_ctrl2.stop_on_wtm = (val == LSM6DSV16X_FIFO_EV_WTM) ? 1 : 0;
     ret = lsm6dsv16x_write_reg(ctx, LSM6DSV16X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   }
 
@@ -3843,13 +3841,16 @@ int32_t lsm6dsv16x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv16x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm6dsv16x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, lsm6dsv16x_fifo_event_t *val)
 {
   lsm6dsv16x_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
 
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
-  *val = fifo_ctrl2.stop_on_wtm;
+  if (ret == 0)
+  {
+    *val = (fifo_ctrl2.stop_on_wtm == 1) ? LSM6DSV16X_FIFO_EV_WTM : LSM6DSV16X_FIFO_EV_FULL;
+  }
 
   return ret;
 }

@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -125,7 +124,7 @@ float_t lis2mdl_from_lsb_to_celsius(int16_t lsb)
 /**
   * @brief  These registers comprise a 3 group of 16-bit number and represent
   *         hard-iron offset in order to compensate environmental effects.
-  *         Data format is the same of output data raw: two’s complement
+  *         Data format is the same of output data raw: two's complement
   *         with 1LSb = 1.5mG. These values act on the magnetic output data
   *         value in order to delete the environmental offset.[set]
   *
@@ -153,7 +152,7 @@ int32_t lis2mdl_mag_user_offset_set(const stmdev_ctx_t *ctx, int16_t *val)
 /**
   * @brief  These registers comprise a 3 group of 16-bit number and represent
   *         hard-iron offset in order to compensate environmental effects.
-  *         Data format is the same of output data raw: two’s complement
+  *         Data format is the same of output data raw: two's complement
   *         with 1LSb = 1.5mG. These values act on the magnetic output data
   *         value in order to delete the environmental offset.[get]
   *
@@ -168,6 +167,9 @@ int32_t lis2mdl_mag_user_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_OFFSET_X_REG_L, buff, 6);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -218,6 +220,8 @@ int32_t lis2mdl_operating_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.md)
   {
@@ -279,6 +283,8 @@ int32_t lis2mdl_data_rate_get(const stmdev_ctx_t *ctx, lis2mdl_odr_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.odr)
   {
@@ -345,6 +351,8 @@ int32_t lis2mdl_power_mode_get(const stmdev_ctx_t *ctx, lis2mdl_lp_t *val)
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.lp)
   {
     case LIS2MDL_HIGH_RESOLUTION:
@@ -401,6 +409,9 @@ int32_t lis2mdl_offset_temp_comp_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.comp_temp_en;
 
   return ret;
@@ -446,6 +457,8 @@ int32_t lis2mdl_low_pass_bandwidth_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.lpf)
   {
@@ -505,6 +518,8 @@ int32_t lis2mdl_set_rst_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.set_rst)
   {
@@ -576,6 +591,9 @@ int32_t lis2mdl_set_rst_sensor_single_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.off_canc_one_shot;
 
   return ret;
@@ -619,6 +637,9 @@ int32_t lis2mdl_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.bdu;
 
   return ret;
@@ -638,6 +659,9 @@ int32_t lis2mdl_mag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_STATUS_REG, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.zyxda;
 
   return ret;
@@ -657,6 +681,9 @@ int32_t lis2mdl_mag_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_STATUS_REG, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.zyxor;
 
   return ret;
@@ -676,6 +703,9 @@ int32_t lis2mdl_magnetic_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_OUTX_L_REG, buff, 6);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -700,6 +730,9 @@ int32_t lis2mdl_temperature_raw_get(const stmdev_ctx_t *ctx,  int16_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_TEMP_OUT_L_REG, buff, 2);
+
+  if (ret != 0) { return ret; }
+
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
 
@@ -773,6 +806,9 @@ int32_t lis2mdl_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.soft_rst;
 
   return ret;
@@ -816,6 +852,9 @@ int32_t lis2mdl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.reboot;
 
   return ret;
@@ -859,6 +898,9 @@ int32_t lis2mdl_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.self_test;
 
   return ret;
@@ -902,6 +944,8 @@ int32_t lis2mdl_data_format_get(const stmdev_ctx_t *ctx, lis2mdl_ble_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.ble)
   {
@@ -994,6 +1038,8 @@ int32_t lis2mdl_offset_int_conf_get(const stmdev_ctx_t *ctx,
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.int_on_dataoff)
   {
     case LIS2MDL_CHECK_BEFORE:
@@ -1050,6 +1096,9 @@ int32_t lis2mdl_drdy_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.drdy_on_pin;
 
   return ret;
@@ -1093,6 +1142,9 @@ int32_t lis2mdl_int_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.int_on_pin;
 
   return ret;
@@ -1154,7 +1206,7 @@ int32_t lis2mdl_int_gen_source_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG.[set]
   *
   * @param  ctx   read / write interface definitions.(ptr)
@@ -1176,7 +1228,7 @@ int32_t lis2mdl_int_gen_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG.[get]
   *
   * @param  ctx   read / write interface definitions.(ptr)
@@ -1190,6 +1242,9 @@ int32_t lis2mdl_int_gen_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_INT_THS_L_REG, buff, 2);
+
+  if (ret != 0) { return ret; }
+
   *val = buff[1];
   *val = (*val * 256U) +  buff[0];
 
@@ -1247,6 +1302,8 @@ int32_t lis2mdl_spi_mode_get(const stmdev_ctx_t *ctx, lis2mdl_sim_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg._4wspi)
   {
@@ -1307,6 +1364,8 @@ int32_t lis2mdl_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.i2c_dis)
   {
     case LIS2MDL_I2C_ENABLE:
@@ -1329,5 +1388,3 @@ int32_t lis2mdl_i2c_interface_get(const stmdev_ctx_t *ctx,
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

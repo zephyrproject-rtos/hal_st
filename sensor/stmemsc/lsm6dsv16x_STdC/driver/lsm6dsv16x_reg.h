@@ -7,13 +7,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2024 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2024 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -122,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -3916,10 +3918,11 @@ int32_t lsm6dsv16x_xl_offset_mg_get(const stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  LSM6DSV16X_READY             = 0x0,
-  LSM6DSV16X_GLOBAL_RST        = 0x1,
-  LSM6DSV16X_RESTORE_CAL_PARAM = 0x2,
-  LSM6DSV16X_RESTORE_CTRL_REGS = 0x4,
+  LSM6DSV16X_READY             = 0x0, /* No active reset in progress */
+  LSM6DSV16X_GLOBAL_RST        = 0x1, /* Complete reset: boot, software reset,
+                                    embedded functions, and internal filters */
+  LSM6DSV16X_RESTORE_CAL_PARAM = 0x2, /* Reload trimming parameters */
+  LSM6DSV16X_RESTORE_CTRL_REGS = 0x4, /* Reset control registers to default values */
 } lsm6dsv16x_reset_t;
 int32_t lsm6dsv16x_reset_set(const stmdev_ctx_t *ctx, lsm6dsv16x_reset_t val);
 int32_t lsm6dsv16x_reset_get(const stmdev_ctx_t *ctx, lsm6dsv16x_reset_t *val);
@@ -4367,8 +4370,14 @@ int32_t lsm6dsv16x_fifo_compress_algo_real_time_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsv16x_fifo_compress_algo_real_time_get(const stmdev_ctx_t *ctx,
                                                     uint8_t *val);
 
-int32_t lsm6dsv16x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsv16x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val);
+typedef enum
+{
+  LSM6DSV16X_FIFO_EV_WTM             = 0x0,
+  LSM6DSV16X_FIFO_EV_FULL            = 0x1,
+} lsm6dsv16x_fifo_event_t;
+
+int32_t lsm6dsv16x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, lsm6dsv16x_fifo_event_t val);
+int32_t lsm6dsv16x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, lsm6dsv16x_fifo_event_t *val);
 
 typedef enum
 {
@@ -5339,5 +5348,3 @@ int32_t lsm6dsv16x_act_wkup_time_windows_get(const stmdev_ctx_t *ctx,
 #endif
 
 #endif /*LSM6DSV16X_DRIVER_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

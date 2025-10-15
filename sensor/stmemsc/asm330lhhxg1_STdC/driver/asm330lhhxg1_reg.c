@@ -6,13 +6,12 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
+ * Copyright (c) 2020 STMicroelectronics.
+ * All rights reserved.
  *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
  *
  ******************************************************************************
  */
@@ -204,6 +203,8 @@ int32_t asm330lhhxg1_xl_full_scale_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
+  if (ret != 0) { return ret; }
+
   switch (ctrl1_xl.fs_xl)
   {
     case ASM330LHHXG1_2g:
@@ -361,11 +362,11 @@ int32_t asm330lhhxg1_xl_data_rate_set(const stmdev_ctx_t *ctx,
   mlc_enable = PROPERTY_DISABLE;
   if (ret == 0)
   {
-    ret =  asm330lhhxg1_mlc_get(ctx, &mlc_enable);
+    ret = asm330lhhxg1_mlc_get(ctx, &mlc_enable);
     if (mlc_enable == PROPERTY_ENABLE)
     {
 
-      ret =  asm330lhhxg1_mlc_data_rate_get(ctx, &mlc_odr);
+      ret += asm330lhhxg1_mlc_data_rate_get(ctx, &mlc_odr);
       if (ret == 0)
       {
         switch (mlc_odr)
@@ -482,6 +483,8 @@ int32_t asm330lhhxg1_xl_data_rate_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
+  if (ret != 0) { return ret; }
+
   switch (ctrl1_xl.odr_xl)
   {
     case ASM330LHHXG1_XL_ODR_OFF:
@@ -565,6 +568,8 @@ int32_t asm330lhhxg1_gy_full_scale_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
+  if (ret != 0) { return ret; }
+
   switch (ctrl2_g.fs_g)
   {
     case ASM330LHHXG1_125dps:
@@ -728,11 +733,11 @@ int32_t asm330lhhxg1_gy_data_rate_set(const stmdev_ctx_t *ctx,
   mlc_enable = PROPERTY_DISABLE;
   if (ret == 0)
   {
-    ret =  asm330lhhxg1_mlc_get(ctx, &mlc_enable);
+    ret = asm330lhhxg1_mlc_get(ctx, &mlc_enable);
     if (mlc_enable == PROPERTY_ENABLE)
     {
 
-      ret =  asm330lhhxg1_mlc_data_rate_get(ctx, &mlc_odr);
+      ret += asm330lhhxg1_mlc_data_rate_get(ctx, &mlc_odr);
       if (ret == 0)
       {
         switch (mlc_odr)
@@ -850,6 +855,8 @@ int32_t asm330lhhxg1_gy_data_rate_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
+  if (ret != 0) { return ret; }
+
   switch (ctrl2_g.odr_g)
   {
     case ASM330LHHXG1_GY_ODR_OFF:
@@ -928,6 +935,8 @@ int32_t asm330lhhxg1_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
+  if (ret != 0) { return ret; }
+
   *val = ctrl3_c.bdu;
 
   return ret;
@@ -973,6 +982,7 @@ int32_t asm330lhhxg1_xl_offset_weight_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl6_c.usr_off_w)
   {
@@ -1027,6 +1037,8 @@ int32_t asm330lhhxg1_xl_power_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
+  if (ret != 0) { return ret; }
+
   switch (ctrl6_c.xl_hm_mode)
   {
     case ASM330LHHXG1_HIGH_PERFORMANCE_MD:
@@ -1080,6 +1092,8 @@ int32_t asm330lhhxg1_gy_power_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
+  if (ret != 0) { return ret; }
+
   switch (ctrl7_g.g_hm_mode)
   {
     case ASM330LHHXG1_GY_HIGH_PERFORMANCE:
@@ -1151,10 +1165,7 @@ int32_t asm330lhhxg1_all_sources_get(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_MLC_STATUS,
                               (uint8_t *)&val->mlc_status, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
 
   return ret;
 }
@@ -1190,6 +1201,8 @@ int32_t asm330lhhxg1_xl_flag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *va
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_STATUS_REG,
                             (uint8_t *)&status_reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = status_reg.xlda;
 
   return ret;
@@ -1210,6 +1223,8 @@ int32_t asm330lhhxg1_gy_flag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *va
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_STATUS_REG,
                             (uint8_t *)&status_reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = status_reg.gda;
 
   return ret;
@@ -1230,13 +1245,15 @@ int32_t asm330lhhxg1_temp_flag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_STATUS_REG,
                             (uint8_t *)&status_reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = status_reg.tda;
 
   return ret;
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -1253,7 +1270,7 @@ int32_t asm330lhhxg1_xl_usr_offset_x_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -1270,7 +1287,7 @@ int32_t asm330lhhxg1_xl_usr_offset_x_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -1287,7 +1304,7 @@ int32_t asm330lhhxg1_xl_usr_offset_y_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -1304,7 +1321,7 @@ int32_t asm330lhhxg1_xl_usr_offset_y_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Z-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Z-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -1321,7 +1338,7 @@ int32_t asm330lhhxg1_xl_usr_offset_z_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -1373,6 +1390,8 @@ int32_t asm330lhhxg1_xl_usr_offset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
+  if (ret != 0) { return ret; }
+
   *val = ctrl7_g.usr_off_on_out;
 
   return ret;
@@ -1442,6 +1461,8 @@ int32_t asm330lhhxg1_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
+  if (ret != 0) { return ret; }
+
   *val = ctrl10_c.timestamp_en;
 
   return ret;
@@ -1463,6 +1484,8 @@ int32_t asm330lhhxg1_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_TIMESTAMP0, buff, 4);
+  if (ret != 0) { return ret; }
+
   *val = buff[3];
   *val = (*val * 256U) +  buff[2];
   *val = (*val * 256U) +  buff[1];
@@ -1521,6 +1544,8 @@ int32_t asm330lhhxg1_rounding_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
+  if (ret != 0) { return ret; }
+
   switch (ctrl5_c.rounding)
   {
     case ASM330LHHXG1_NO_ROUND:
@@ -1544,7 +1569,7 @@ int32_t asm330lhhxg1_rounding_mode_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Temperature data output register (r).
-  *         L and H registers together express a 16-bit word in two’s
+  *         L and H registers together express a 16-bit word in two's
   *         complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
@@ -1558,6 +1583,8 @@ int32_t asm330lhhxg1_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_OUT_TEMP_L, buff, 2);
+  if (ret != 0) { return ret; }
+
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
 
@@ -1566,7 +1593,7 @@ int32_t asm330lhhxg1_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 
 /**
   * @brief  Angular rate sensor. The value is expressed as a 16-bit
-  *         word in two’s complement.[get]
+  *         word in two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data read
@@ -1578,6 +1605,7 @@ int32_t asm330lhhxg1_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   uint8_t buff[6];
   int32_t ret;
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_OUTX_L_G, buff, 6);
+  if (ret != 0) { return ret; }
 
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
@@ -1591,7 +1619,7 @@ int32_t asm330lhhxg1_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 
 /**
   * @brief  Linear acceleration output register. The value is expressed as a
-  *         16-bit word in two’s complement.[get]
+  *         16-bit word in two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data read
@@ -1603,6 +1631,7 @@ int32_t asm330lhhxg1_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   uint8_t buff[6];
   int32_t ret;
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_OUTX_L_A, buff, 6);
+  if (ret != 0) { return ret; }
 
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
@@ -1684,6 +1713,8 @@ int32_t asm330lhhxg1_odr_cal_reg_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_INTERNAL_FREQ_FINE,
                             (uint8_t *)&internal_freq_fine, 1);
+  if (ret != 0) { return ret; }
+
   *val = internal_freq_fine.freq_fine;
 
   return ret;
@@ -1732,6 +1763,8 @@ int32_t asm330lhhxg1_mem_bank_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FUNC_CFG_ACCESS,
                             (uint8_t *)&func_cfg_access, 1);
+  if (ret != 0) { return ret; }
+
   switch (func_cfg_access.reg_access)
   {
     case ASM330LHHXG1_USER_BANK:
@@ -1768,49 +1801,43 @@ int32_t asm330lhhxg1_ln_pg_write_byte(const stmdev_ctx_t *ctx, uint16_t add,
   int32_t ret;
 
   ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_EMBEDDED_FUNC_BANK);
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x02U; /* page_write enable */
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_SEL, (uint8_t *)&page_sel, 1);
-  }
-  if (ret == 0)
-  {
-    page_sel.page_sel = (uint8_t)((add / 256U) & 0x0FU);
-    page_sel.not_used_01 = 1;
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_SEL,
-                               (uint8_t *)&page_sel, 1);
-  }
-  if (ret == 0)
-  {
-    page_address.page_addr = (uint8_t)(add - (page_sel.page_sel * 256U));
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_ADDRESS,
-                               (uint8_t *)&page_address, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_VALUE, val, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x00; /* page_write disable */
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+  if (ret != 0) { goto exit; }
+
+  /* set page write */
+  ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x02U; /* page_write enable */
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+
+  /* select page */
+  ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  if (ret != 0) { goto exit; }
+  page_sel.page_sel = (uint8_t)((add / 256U) & 0x0FU);
+  page_sel.not_used_01 = 1;
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_SEL,
+                             (uint8_t *)&page_sel, 1);
+  if (ret != 0) { goto exit; }
+
+  /* set page addr */
+  page_address.page_addr = (uint8_t)(add - (page_sel.page_sel * 256U));
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_ADDRESS,
+                             (uint8_t *)&page_address, 1);
+  if (ret != 0) { goto exit; }
+
+  /* write */
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_VALUE, val, 1);
+  if (ret != 0) { goto exit; }
+
+  /* unset page write */
+  ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x00; /* page_write disable */
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+
+exit:
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -1838,78 +1865,66 @@ int32_t asm330lhhxg1_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t add,
   lsb = (uint8_t)(add - (msb * 256U));
 
   ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_EMBEDDED_FUNC_BANK);
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x02U; /* page_write enable*/
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_SEL, (uint8_t *)&page_sel, 1);
-  }
-  if (ret == 0)
-  {
-    page_sel.page_sel = msb;
-    page_sel.not_used_01 = 1;
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_SEL,
-                               (uint8_t *)&page_sel, 1);
-  }
-  if (ret == 0)
-  {
-    page_address.page_addr = lsb;
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_ADDRESS,
-                               (uint8_t *)&page_address, 1);
-  }
+  if (ret != 0) { goto exit; }
+
+  /* set page write */
+  ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x02U; /* page_write enable*/
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+
+  /* select page */
+  ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  if (ret != 0) { goto exit; }
+  page_sel.page_sel = msb;
+  page_sel.not_used_01 = 1; // Default value
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_SEL,
+                             (uint8_t *)&page_sel, 1);
+  if (ret != 0) { goto exit; }
+
+  /* set page addr */
+  page_address.page_addr = lsb;
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_ADDRESS,
+                             (uint8_t *)&page_address, 1);
+  if (ret != 0) { goto exit; }
+
   for (i = 0; i < len; i++)
   {
-    if (ret == 0)
+    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_VALUE, &buf[i], 1);
+    if (ret != 0) { goto exit; }
+
+    lsb++;
+    /* Check if page wrap */
+    if (lsb == 0x00U)
     {
-      ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_VALUE, &buf[i], 1);
-      if (ret == 0)
-      {
-        /* Check if page wrap */
-        if (lsb == 0x00U)
-        {
-          msb++;
-          ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_SEL,
-                                    (uint8_t *)&page_sel, 1);
-        }
-        lsb++;
-      }
-      if (ret == 0)
-      {
-        page_sel.page_sel = msb;
-        page_sel.not_used_01 = 1;
-        ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_SEL,
-                                   (uint8_t *)&page_sel, 1);
-      }
+      msb++;
+      ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_SEL,
+                                (uint8_t *)&page_sel, 1);
+      if (ret != 0) { goto exit; }
+      page_sel.page_sel = msb;
+      page_sel.not_used_01 = 1;
+      ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_SEL,
+                                (uint8_t *)&page_sel, 1);
+      if (ret != 0) { goto exit; }
     }
   }
 
-  if (ret == 0)
-  {
-    page_sel.page_sel = 0;
-    page_sel.not_used_01 = 1;
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_SEL,
-                               (uint8_t *)&page_sel, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x00U; /* page_write disable */
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+  page_sel.page_sel = 0;
+  page_sel.not_used_01 = 1;
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_SEL,
+                             (uint8_t *)&page_sel, 1);
+  if (ret != 0) { goto exit; }
+
+  /* unset page write */
+  ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x00U; /* page_write disable */
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+
+exit:
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -1931,49 +1946,43 @@ int32_t asm330lhhxg1_ln_pg_read_byte(const stmdev_ctx_t *ctx, uint16_t add,
   int32_t ret;
 
   ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_EMBEDDED_FUNC_BANK);
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x01U; /* page_read enable*/
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_SEL, (uint8_t *)&page_sel, 1);
-  }
-  if (ret == 0)
-  {
-    page_sel.page_sel = (uint8_t)((add / 256U) & 0x0FU);
-    page_sel.not_used_01 = 1;
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_SEL,
-                               (uint8_t *)&page_sel, 1);
-  }
-  if (ret == 0)
-  {
-    page_address.page_addr = (uint8_t)(add - (page_sel.page_sel * 256U));
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_ADDRESS,
-                               (uint8_t *)&page_address, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_VALUE, val, 2);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x00U; /* page_read disable */
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+  if (ret != 0) { goto exit; }
+
+  /* set page write */
+  ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x01U; /* page_read enable */
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+
+  /* select page */
+  ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  if (ret != 0) { goto exit; }
+  page_sel.page_sel = (uint8_t)((add / 256U) & 0x0FU);
+  page_sel.not_used_01 = 1;
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_SEL,
+                             (uint8_t *)&page_sel, 1);
+  if (ret != 0) { goto exit; }
+
+  /* set page addr */
+  page_address.page_addr = (uint8_t)(add - (page_sel.page_sel * 256U));
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_ADDRESS,
+                             (uint8_t *)&page_address, 1);
+  if (ret != 0) { goto exit; }
+
+  /* read page value */
+  ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_VALUE, val, 1);
+  if (ret != 0) { goto exit; }
+
+  /* unset page write */
+  ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x00U; /* page_read disable */
+  ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+
+exit:
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -2020,6 +2029,8 @@ int32_t asm330lhhxg1_data_ready_mode_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_COUNTER_BDR_REG1,
                             (uint8_t *)&counter_bdr_reg1, 1);
+  if (ret != 0) { goto exit; }
+
   switch (counter_bdr_reg1.dataready_pulsed)
   {
     case ASM330LHHXG1_DRDY_LATCHED:
@@ -2032,6 +2043,8 @@ int32_t asm330lhhxg1_data_ready_mode_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHXG1_DRDY_LATCHED;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -2086,8 +2099,11 @@ int32_t asm330lhhxg1_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
+  if (ret != 0) { goto exit; }
+
   *val = ctrl3_c.sw_reset;
 
+exit:
   return ret;
 }
 
@@ -2129,8 +2145,11 @@ int32_t asm330lhhxg1_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
+  if (ret != 0) { goto exit; }
+
   *val = ctrl3_c.if_inc;
 
+exit:
   return ret;
 }
 
@@ -2170,8 +2189,11 @@ int32_t asm330lhhxg1_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
+  if (ret != 0) { goto exit; }
+
   *val = ctrl3_c.boot;
 
+exit:
   return ret;
 }
 
@@ -2215,6 +2237,7 @@ int32_t asm330lhhxg1_xl_self_test_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
+  if (ret != 0) { goto exit; }
 
   switch (ctrl5_c.st_xl)
   {
@@ -2231,6 +2254,8 @@ int32_t asm330lhhxg1_xl_self_test_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHXG1_XL_ST_DISABLE;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -2272,6 +2297,7 @@ int32_t asm330lhhxg1_gy_self_test_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
+  if (ret != 0) { goto exit; }
 
   switch (ctrl5_c.st_g)
   {
@@ -2288,6 +2314,8 @@ int32_t asm330lhhxg1_gy_self_test_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHXG1_GY_ST_DISABLE;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -2341,8 +2369,11 @@ int32_t asm330lhhxg1_xl_filter_lp2_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
+  if (ret != 0) { goto exit; }
+
   *val = ctrl1_xl.lpf2_xl_en;
 
+exit:
   return ret;
 }
 
@@ -2384,8 +2415,11 @@ int32_t asm330lhhxg1_gy_filter_lp1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
+  if (ret != 0) { goto exit; }
+
   *val = ctrl4_c.lpf1_sel_g;
 
+exit:
   return ret;
 }
 
@@ -2428,8 +2462,11 @@ int32_t asm330lhhxg1_filter_settling_mask_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
+  if (ret != 0) { goto exit; }
+
   *val = ctrl4_c.drdy_mask;
 
+exit:
   return ret;
 }
 
@@ -2471,6 +2508,7 @@ int32_t asm330lhhxg1_gy_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
+  if (ret != 0) { goto exit; }
 
   switch (ctrl6_c.ftype)
   {
@@ -2502,6 +2540,8 @@ int32_t asm330lhhxg1_gy_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHXG1_ULTRA_LIGHT;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -2542,8 +2582,11 @@ int32_t asm330lhhxg1_xl_lp2_on_6d_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
+  if (ret != 0) { goto exit; }
+
   *val = ctrl8_xl.low_pass_on_6d;
 
+exit:
   return ret;
 }
 
@@ -2590,6 +2633,8 @@ int32_t asm330lhhxg1_xl_hp_path_on_out_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
+  if (ret != 0) { goto exit; }
+
   switch (((ctrl8_xl.hp_ref_mode_xl << 5) + (ctrl8_xl.hp_slope_xl_en << 4) +
            ctrl8_xl.hpcf_xl))
   {
@@ -2666,6 +2711,8 @@ int32_t asm330lhhxg1_xl_hp_path_on_out_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHXG1_HP_PATH_DISABLE_ON_OUT;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -2710,8 +2757,11 @@ int32_t asm330lhhxg1_xl_fast_settling_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
+  if (ret != 0) { goto exit; }
+
   *val = ctrl8_xl.fastsettl_mode_xl;
 
+exit:
   return ret;
 }
 
@@ -2756,6 +2806,8 @@ int32_t asm330lhhxg1_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_INT_CFG0, (uint8_t *)&int_cfg0, 1);
+  if (ret != 0) { goto exit; }
+
   switch (int_cfg0.slope_fds)
   {
     case ASM330LHHXG1_USE_SLOPE:
@@ -2768,6 +2820,8 @@ int32_t asm330lhhxg1_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHXG1_USE_SLOPE;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -2812,6 +2866,7 @@ int32_t asm330lhhxg1_gy_hp_path_internal_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
+  if (ret != 0) { goto exit; }
 
   switch ((ctrl7_g.hp_en_g << 7) + ctrl7_g.hpm_g)
   {
@@ -2834,6 +2889,8 @@ int32_t asm330lhhxg1_gy_hp_path_internal_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHXG1_HP_FILTER_NONE;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -2888,6 +2945,7 @@ int32_t asm330lhhxg1_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  if (ret != 0) { goto exit; }
 
   switch (pin_ctrl.sdo_pu_en)
   {
@@ -2901,6 +2959,8 @@ int32_t asm330lhhxg1_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHXG1_PULL_UP_DISC;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -2943,6 +3003,7 @@ int32_t asm330lhhxg1_int1_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_I3C_BUS_AVB, (uint8_t *)&i3c_bus_avb, 1);
+  if (ret != 0) { goto exit; }
 
   switch (i3c_bus_avb.pd_dis_int1)
   {
@@ -2956,6 +3017,8 @@ int32_t asm330lhhxg1_int1_mode_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHXG1_PULL_DOWN_CONNECT;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -2995,6 +3058,7 @@ int32_t asm330lhhxg1_spi_mode_get(const stmdev_ctx_t *ctx, asm330lhhxg1_sim_t *v
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
+  if (ret != 0) { goto exit; }
 
   switch (ctrl3_c.sim)
   {
@@ -3008,6 +3072,8 @@ int32_t asm330lhhxg1_spi_mode_get(const stmdev_ctx_t *ctx, asm330lhhxg1_sim_t *v
       *val = ASM330LHHXG1_SPI_4_WIRE;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -3049,6 +3115,7 @@ int32_t asm330lhhxg1_i2c_interface_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
+  if (ret != 0) { goto exit; }
 
   switch (ctrl4_c.i2c_disable)
   {
@@ -3062,6 +3129,8 @@ int32_t asm330lhhxg1_i2c_interface_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHXG1_I2C_ENABLE;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -3117,11 +3186,10 @@ int32_t asm330lhhxg1_i3c_disable_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_I3C_BUS_AVB,
-                              (uint8_t *)&i3c_bus_avb, 1);
-  }
+  ret += asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_I3C_BUS_AVB,
+                            (uint8_t *)&i3c_bus_avb, 1);
+  if (ret != 0) { goto exit; }
+
   switch ((ctrl9_xl.i3c_disable << 7) + i3c_bus_avb.i3c_bus_avb_sel)
   {
     case ASM330LHHXG1_I3C_DISABLE:
@@ -3143,6 +3211,8 @@ int32_t asm330lhhxg1_i3c_disable_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHXG1_I3C_DISABLE;
       break;
   }
+
+exit:
   return ret;
 }
 
@@ -3196,10 +3266,7 @@ int32_t asm330lhhxg1_pin_int1_route_set(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_FSM_INT1_B,
                                (uint8_t *)&val->fsm_int1_b, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
 
   if (ret == 0)
   {
@@ -3323,10 +3390,9 @@ int32_t asm330lhhxg1_pin_int1_route_get(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FSM_INT1_B,
                               (uint8_t *)&val->fsm_int1_b, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   if (ret == 0)
   {
 
@@ -3377,10 +3443,7 @@ int32_t asm330lhhxg1_pin_int2_route_set(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_FSM_INT2_B,
                                (uint8_t *)&val->fsm_int2_b, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
 
   if (ret == 0)
   {
@@ -3504,10 +3567,9 @@ int32_t asm330lhhxg1_pin_int2_route_get(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FSM_INT2_B,
                               (uint8_t *)&val->fsm_int2_b, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   if (ret == 0)
   {
 
@@ -3557,6 +3619,7 @@ int32_t asm330lhhxg1_pin_mode_get(const stmdev_ctx_t *ctx, asm330lhhxg1_pp_od_t 
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl3_c.pp_od)
   {
@@ -3611,6 +3674,7 @@ int32_t asm330lhhxg1_pin_polarity_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl3_c.h_lactive)
   {
@@ -3663,6 +3727,8 @@ int32_t asm330lhhxg1_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
+  if (ret != 0) { return ret; }
+
   *val = ctrl4_c.int2_on_int1;
 
   return ret;
@@ -3694,20 +3760,20 @@ int32_t asm330lhhxg1_int_notification_set(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_EMBEDDED_FUNC_BANK);
+
+    if (ret == 0)
+    {
+      ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+    }
+    if (ret == 0)
+    {
+      page_rw.emb_func_lir = ((uint8_t)val & 0x02U) >> 1;
+      ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+    }
+
+    ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    page_rw.emb_func_lir = ((uint8_t)val & 0x02U) >> 1;
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
   return ret;
 }
 
@@ -3732,15 +3798,17 @@ int32_t asm330lhhxg1_int_notification_get(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_EMBEDDED_FUNC_BANK);
+
+    if (ret == 0)
+    {
+      ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
+    }
+
+    ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  if (ret != 0) { return ret; }
+
   switch ((page_rw.emb_func_lir << 1) + int_cfg0.lir)
   {
     case ASM330LHHXG1_ALL_INT_PULSED:
@@ -3820,6 +3888,7 @@ int32_t asm330lhhxg1_wkup_ths_weight_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_WAKE_UP_DUR,
                             (uint8_t *)&wake_up_dur, 1);
+  if (ret != 0) { return ret; }
 
   switch (wake_up_dur.wake_ths_w)
   {
@@ -3877,6 +3946,8 @@ int32_t asm330lhhxg1_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_WAKE_UP_THS,
                             (uint8_t *)&wake_up_ths, 1);
+  if (ret != 0) { return ret; }
+
   *val = wake_up_ths.wk_ths;
 
   return ret;
@@ -3922,6 +3993,8 @@ int32_t asm330lhhxg1_xl_usr_offset_on_wkup_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_WAKE_UP_THS,
                             (uint8_t *)&wake_up_ths, 1);
+  if (ret != 0) { return ret; }
+
   *val = wake_up_ths.usr_off_on_wu;
 
   return ret;
@@ -3966,6 +4039,8 @@ int32_t asm330lhhxg1_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_WAKE_UP_DUR,
                             (uint8_t *)&wake_up_dur, 1);
+  if (ret != 0) { return ret; }
+
   *val = wake_up_dur.wake_dur;
 
   return ret;
@@ -4020,6 +4095,8 @@ int32_t asm330lhhxg1_gy_sleep_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
+  if (ret != 0) { return ret; }
+
   *val = ctrl4_c.sleep_g;
 
   return ret;
@@ -4068,6 +4145,8 @@ int32_t asm330lhhxg1_act_pin_notification_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_INT_CFG0, (uint8_t *)&int_cfg0, 1);
+  if (ret != 0) { return ret; }
+
   switch (int_cfg0. sleep_status_on_int)
   {
     case ASM330LHHXG1_DRIVE_SLEEP_CHG_EVENT:
@@ -4120,6 +4199,7 @@ int32_t asm330lhhxg1_act_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_INT_CFG1, (uint8_t *)&int_cfg1, 1);
+  if (ret != 0) { return ret; }
 
   switch (int_cfg1.inact_en)
   {
@@ -4181,6 +4261,8 @@ int32_t asm330lhhxg1_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_WAKE_UP_DUR,
                             (uint8_t *)&wake_up_dur, 1);
+  if (ret != 0) { return ret; }
+
   *val = wake_up_dur.sleep_dur;
 
   return ret;
@@ -4240,6 +4322,7 @@ int32_t asm330lhhxg1_6d_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_THS_6D,
                             (uint8_t *)&ths_6d, 1);
+  if (ret != 0) { return ret; }
 
   switch (ths_6d.sixd_ths)
   {
@@ -4301,6 +4384,8 @@ int32_t asm330lhhxg1_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_THS_6D,
                             (uint8_t *)&ths_6d, 1);
+  if (ret != 0) { return ret; }
+
   *val = ths_6d.d4d_en;
 
   return ret;
@@ -4358,6 +4443,7 @@ int32_t asm330lhhxg1_ff_threshold_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FREE_FALL, (uint8_t *)&free_fall, 1);
+  if (ret != 0) { return ret; }
 
   switch (free_fall.ff_ths)
   {
@@ -4445,11 +4531,10 @@ int32_t asm330lhhxg1_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_WAKE_UP_DUR,
                             (uint8_t *)&wake_up_dur, 1);
 
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FREE_FALL,
-                              (uint8_t *)&free_fall, 1);
-  }
+  ret += asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FREE_FALL,
+                            (uint8_t *)&free_fall, 1);
+
+  if (ret != 0) { return ret; }
   *val = (wake_up_dur.ff_dur << 5) + free_fall.ff_dur;
 
   return ret;
@@ -4516,11 +4601,11 @@ int32_t asm330lhhxg1_fifo_watermark_get(const stmdev_ctx_t *ctx, uint16_t *val)
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_CTRL2,
                             (uint8_t *)&fifo_ctrl2, 1);
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_CTRL1,
-                              (uint8_t *)&fifo_ctrl1, 1);
-  }
+  ret += asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_CTRL1,
+                            (uint8_t *)&fifo_ctrl1, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = fifo_ctrl2.wtm;
   *val = (*val * 256U) +  fifo_ctrl1.wtm;
   return ret;
@@ -4568,6 +4653,8 @@ int32_t asm330lhhxg1_fifo_virtual_sens_odr_chg_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_CTRL2,
                             (uint8_t *)&fifo_ctrl2, 1);
+  if (ret != 0) { return ret; }
+
   *val = fifo_ctrl2.odrchg_en;
 
   return ret;
@@ -4614,6 +4701,8 @@ int32_t asm330lhhxg1_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_CTRL2,
                             (uint8_t *)&fifo_ctrl2, 1);
+  if (ret != 0) { return ret; }
+
   *val = fifo_ctrl2.stop_on_wtm;
 
   return ret;
@@ -4662,6 +4751,7 @@ int32_t asm330lhhxg1_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_CTRL3,
                             (uint8_t *)&fifo_ctrl3, 1);
+  if (ret != 0) { return ret; }
 
   switch (fifo_ctrl3.bdr_xl)
   {
@@ -4751,6 +4841,7 @@ int32_t asm330lhhxg1_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_CTRL3,
                             (uint8_t *)&fifo_ctrl3, 1);
+  if (ret != 0) { return ret; }
 
   switch (fifo_ctrl3.bdr_gy)
   {
@@ -4838,6 +4929,7 @@ int32_t asm330lhhxg1_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_CTRL4,
                             (uint8_t *)&fifo_ctrl4, 1);
+  if (ret != 0) { return ret; }
 
   switch (fifo_ctrl4.fifo_mode)
   {
@@ -4909,6 +5001,7 @@ int32_t asm330lhhxg1_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_CTRL4,
                             (uint8_t *)&fifo_ctrl4, 1);
+  if (ret != 0) { return ret; }
 
   switch (fifo_ctrl4.odr_t_batch)
   {
@@ -4977,6 +5070,7 @@ int32_t asm330lhhxg1_fifo_timestamp_decimation_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_CTRL4,
                             (uint8_t *)&fifo_ctrl4, 1);
+  if (ret != 0) { return ret; }
 
   switch (fifo_ctrl4.dec_ts_batch)
   {
@@ -5044,6 +5138,7 @@ int32_t asm330lhhxg1_fifo_cnt_event_batch_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_COUNTER_BDR_REG1,
                             (uint8_t *)&counter_bdr_reg1, 1);
+  if (ret != 0) { return ret; }
 
   switch (counter_bdr_reg1.trig_counter_bdr)
   {
@@ -5101,6 +5196,8 @@ int32_t asm330lhhxg1_rst_batch_counter_get(const stmdev_ctx_t *ctx, uint8_t *val
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_COUNTER_BDR_REG1,
                             (uint8_t *)&counter_bdr_reg1, 1);
+  if (ret != 0) { return ret; }
+
   *val = counter_bdr_reg1.rst_counter_bdr;
 
   return ret;
@@ -5156,11 +5253,9 @@ int32_t asm330lhhxg1_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_COUNTER_BDR_REG1,
                             (uint8_t *)&counter_bdr_reg1, 1);
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_COUNTER_BDR_REG2,
-                              (uint8_t *)&counter_bdr_reg2, 1);
-  }
+  ret += asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_COUNTER_BDR_REG2,
+                            (uint8_t *)&counter_bdr_reg2, 1);
+  if (ret != 0) { return ret; }
 
   *val = counter_bdr_reg1.cnt_bdr_th;
   *val = (*val * 256U) +  counter_bdr_reg2.cnt_bdr_th;
@@ -5183,14 +5278,12 @@ int32_t asm330lhhxg1_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_STATUS1,
                             (uint8_t *)&fifo_status1, 1);
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_STATUS2,
-                              (uint8_t *)&fifo_status2, 1);
+  ret += asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_STATUS2,
+                            (uint8_t *)&fifo_status2, 1);
+  if (ret != 0) { return ret; }
 
-    *val = fifo_status2.diff_fifo;
-    *val = (*val * 256U) + fifo_status1.diff_fifo;
-  }
+  *val = fifo_status2.diff_fifo;
+  *val = (*val * 256U) + fifo_status1.diff_fifo;
   return ret;
 }
 
@@ -5225,6 +5318,8 @@ int32_t asm330lhhxg1_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_STATUS2,
                             (uint8_t *)&fifo_status2, 1);
+  if (ret != 0) { return ret; }
+
   *val = fifo_status2.fifo_full_ia;
 
   return ret;
@@ -5246,6 +5341,8 @@ int32_t asm330lhhxg1_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_STATUS2,
                             (uint8_t *)&fifo_status2, 1);
+  if (ret != 0) { return ret; }
+
   *val = fifo_status2. fifo_ovr_ia;
 
   return ret;
@@ -5266,6 +5363,8 @@ int32_t asm330lhhxg1_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_STATUS2,
                             (uint8_t *)&fifo_status2, 1);
+  if (ret != 0) { return ret; }
+
   *val = fifo_status2.fifo_wtm_ia;
 
   return ret;
@@ -5287,6 +5386,7 @@ int32_t asm330lhhxg1_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FIFO_DATA_OUT_TAG,
                             (uint8_t *)&fifo_data_out_tag, 1);
+  if (ret != 0) { return ret; }
 
   switch (fifo_data_out_tag.tag_sensor)
   {
@@ -5353,10 +5453,9 @@ int32_t asm330lhhxg1_sh_batch_slave_0_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_SLV0_CONFIG,
                                (uint8_t *)&slv0_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -5384,8 +5483,10 @@ int32_t asm330lhhxg1_sh_batch_slave_0_get(const stmdev_ctx_t *ctx, uint8_t *val)
   if (ret == 0)
   {
     *val = slv0_config. batch_ext_sens_0_en;
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
   }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -5415,10 +5516,9 @@ int32_t asm330lhhxg1_sh_batch_slave_1_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_SLV1_CONFIG,
                                (uint8_t *)&slv1_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -5442,12 +5542,14 @@ int32_t asm330lhhxg1_sh_batch_slave_1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   {
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_SLV1_CONFIG,
                               (uint8_t *)&slv1_config, 1);
-    *val = slv1_config. batch_ext_sens_1_en;
+    if (ret == 0)
+    {
+      *val = slv1_config. batch_ext_sens_1_en;
+    }
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -5478,10 +5580,9 @@ int32_t asm330lhhxg1_sh_batch_slave_2_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_SLV2_CONFIG,
                                (uint8_t *)&slv2_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -5508,8 +5609,10 @@ int32_t asm330lhhxg1_sh_batch_slave_2_get(const stmdev_ctx_t *ctx, uint8_t *val)
   if (ret == 0)
   {
     *val = slv2_config. batch_ext_sens_2_en;
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
   }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -5539,10 +5642,9 @@ int32_t asm330lhhxg1_sh_batch_slave_3_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_SLV3_CONFIG,
                                (uint8_t *)&slv3_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -5566,12 +5668,15 @@ int32_t asm330lhhxg1_sh_batch_slave_3_get(const stmdev_ctx_t *ctx, uint8_t *val)
   {
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_SLV3_CONFIG,
                               (uint8_t *)&slv3_config, 1);
-    *val = slv3_config. batch_ext_sens_3_en;
+
+    if (ret == 0)
+    {
+      *val = slv3_config. batch_ext_sens_3_en;
+    }
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -5625,6 +5730,7 @@ int32_t asm330lhhxg1_den_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl6_c.den_mode)
   {
@@ -5689,6 +5795,7 @@ int32_t asm330lhhxg1_den_polarity_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl9_xl.den_lh)
   {
@@ -5744,6 +5851,7 @@ int32_t asm330lhhxg1_den_enable_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl9_xl.den_xl_g)
   {
@@ -5800,6 +5908,8 @@ int32_t asm330lhhxg1_den_mark_axis_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
+  if (ret != 0) { return ret; }
+
   *val = ctrl9_xl.den_z;
 
   return ret;
@@ -5842,6 +5952,8 @@ int32_t asm330lhhxg1_den_mark_axis_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
+  if (ret != 0) { return ret; }
+
   *val = ctrl9_xl.den_y;
 
   return ret;
@@ -5883,6 +5995,8 @@ int32_t asm330lhhxg1_den_mark_axis_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
+  if (ret != 0) { return ret; }
+
   *val = ctrl9_xl.den_x;
 
   return ret;
@@ -5941,8 +6055,12 @@ int32_t asm330lhhxg1_mag_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *val)
   if (ret == 0)
   {
     ret = asm330lhhxg1_ln_pg_read_byte(ctx, ASM330LHHXG1_MAG_SENSITIVITY_H, &buff[1]);
-    *val = buff[1];
-    *val = (*val * 256U) +  buff[0];
+
+    if (ret == 0)
+    {
+      *val = buff[1];
+      *val = (*val * 256U) +  buff[0];
+    }
   }
   return ret;
 }
@@ -6219,6 +6337,8 @@ int32_t asm330lhhxg1_mag_soft_iron_get(const stmdev_ctx_t *ctx, uint16_t *val)
     ret = asm330lhhxg1_ln_pg_read_byte(ctx, ASM330LHHXG1_MAG_SI_ZZ_H, &buff[i]);
   }
 
+  if (ret != 0) { return ret; }
+
   val[0] = buff[1];
   val[0] = (val[0] * 256U) +  buff[0];
   val[1] = buff[3];
@@ -6278,6 +6398,7 @@ int32_t asm330lhhxg1_mag_z_orient_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = asm330lhhxg1_ln_pg_read_byte(ctx, ASM330LHHXG1_MAG_CFG_A,
                                    (uint8_t *)&mag_cfg_a);
+  if (ret != 0) { return ret; }
 
   switch (mag_cfg_a.mag_z_axis)
   {
@@ -6350,6 +6471,7 @@ int32_t asm330lhhxg1_mag_y_orient_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_ln_pg_read_byte(ctx, ASM330LHHXG1_MAG_CFG_A,
                                    (uint8_t *)&mag_cfg_a);
+  if (ret != 0) { return ret; }
 
   switch (mag_cfg_a.mag_y_axis)
   {
@@ -6421,6 +6543,7 @@ int32_t asm330lhhxg1_mag_x_orient_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_ln_pg_read_byte(ctx, ASM330LHHXG1_MAG_CFG_B,
                                    (uint8_t *)&mag_cfg_b);
+  if (ret != 0) { return ret; }
 
   switch (mag_cfg_b.mag_x_axis)
   {
@@ -6479,8 +6602,9 @@ int32_t asm330lhhxg1_fsm_status_get(const stmdev_ctx_t *ctx,
 
   ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FSM_STATUS_A_MAINPAGE,
                             (uint8_t *)&status_a, 1);
-  ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FSM_STATUS_B_MAINPAGE,
+  ret += asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FSM_STATUS_B_MAINPAGE,
                             (uint8_t *)&status_b, 1);
+  if (ret != 0) { return ret; }
 
   val->fsm1 = status_a.is_fsm1;
   val->fsm2 = status_a.is_fsm2;
@@ -6516,10 +6640,9 @@ int32_t asm330lhhxg1_fsm_out_get(const stmdev_ctx_t *ctx, uint8_t *buff)
   {
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FSM_OUTS1, buff, 16);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -6547,8 +6670,10 @@ int32_t asm330lhhxg1_long_cnt_flag_data_ready_get(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     *val = emb_func_status.is_fsm_lc;
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
   }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -6563,7 +6688,14 @@ int32_t asm330lhhxg1_emb_func_clk_dis_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_SEL,
                               (uint8_t *)&page_sel, 1);
 
-    page_sel.emb_func_clk_dis = val;
+    if (ret == 0)
+    {
+      page_sel.emb_func_clk_dis = val;
+      page_sel.not_used_01 = 1; // Default value
+
+      ret += asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_PAGE_SEL,
+                                (uint8_t *)&page_sel, 1);
+    }
   }
 
   ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
@@ -6582,7 +6714,10 @@ int32_t asm330lhhxg1_emb_func_clk_dis_get(const stmdev_ctx_t *ctx, uint8_t *val)
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_PAGE_SEL,
                               (uint8_t *)&page_sel, 1);
 
-    *val = page_sel.emb_func_clk_dis;
+    if (ret == 0)
+    {
+      *val = page_sel.emb_func_clk_dis;
+    }
   }
 
   ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
@@ -6616,10 +6751,9 @@ int32_t asm330lhhxg1_emb_fsm_en_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_EMB_FUNC_EN_B,
                                (uint8_t *)&emb_func_en_b, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -6645,13 +6779,10 @@ int32_t asm330lhhxg1_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   if (ret == 0)
   {
     *val = emb_func_en_b.fsm_en;
-    ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_EMB_FUNC_EN_B,
-                               (uint8_t *)&emb_func_en_b, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -6716,10 +6847,9 @@ int32_t asm330lhhxg1_fsm_enable_set(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_EMB_FUNC_EN_B,
                                (uint8_t *)&emb_func_en_b, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -6747,10 +6877,9 @@ int32_t asm330lhhxg1_fsm_enable_get(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FSM_ENABLE_B,
                               (uint8_t *)&val->fsm_enable_b, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -6776,10 +6905,9 @@ int32_t asm330lhhxg1_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val)
   {
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_FSM_LONG_COUNTER_L, buff, 2);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -6801,13 +6929,16 @@ int32_t asm330lhhxg1_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val)
   if (ret == 0)
   {
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FSM_LONG_COUNTER_L, buff, 2);
-    *val = buff[1];
-    *val = (*val * 256U) +  buff[0];
+
+    if (ret == 0)
+    {
+      *val = buff[1];
+      *val = (*val * 256U) +  buff[0];
+    }
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -6838,10 +6969,9 @@ int32_t asm330lhhxg1_long_clr_set(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_FSM_LONG_COUNTER_CLEAR,
                                (uint8_t *)&fsm_long_counter_clear, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -6866,10 +6996,10 @@ int32_t asm330lhhxg1_long_clr_get(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_FSM_LONG_COUNTER_CLEAR,
                               (uint8_t *)&fsm_long_counter_clear, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
+  if (ret != 0) { return ret; }
+
   switch (fsm_long_counter_clear.fsm_lc_clr)
   {
     case ASM330LHHXG1_LC_NORMAL:
@@ -6917,10 +7047,9 @@ int32_t asm330lhhxg1_fsm_data_rate_set(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_EMB_FUNC_ODR_CFG_B,
                                (uint8_t *)&emb_func_odr_cfg_b, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -6945,10 +7074,10 @@ int32_t asm330lhhxg1_fsm_data_rate_get(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_EMB_FUNC_ODR_CFG_B,
                               (uint8_t *)&emb_func_odr_cfg_b, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
+  if (ret != 0) { return ret; }
+
   switch (emb_func_odr_cfg_b.fsm_odr)
   {
     case ASM330LHHXG1_ODR_FSM_12Hz5:
@@ -6996,10 +7125,9 @@ int32_t asm330lhhxg1_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_EMB_FUNC_INIT_B,
                                (uint8_t *)&emb_func_init_b, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7025,8 +7153,10 @@ int32_t asm330lhhxg1_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val)
   if (ret == 0)
   {
     *val = emb_func_init_b.fsm_init;
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
   }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7080,8 +7210,12 @@ int32_t asm330lhhxg1_long_cnt_int_value_get(const stmdev_ctx_t *ctx, uint16_t *v
   {
     ret = asm330lhhxg1_ln_pg_read_byte(ctx, ASM330LHHXG1_FSM_LC_TIMEOUT_H,
                                      &buff[1]);
-    *val = buff[1];
-    *val = (*val * 256U) +  buff[0];
+
+    if (ret == 0)
+    {
+      *val = buff[1];
+      *val = (*val * 256U) +  buff[0];
+    }
   }
   return ret;
 }
@@ -7168,8 +7302,11 @@ int32_t asm330lhhxg1_fsm_start_address_get(const stmdev_ctx_t *ctx, uint16_t *va
   if (ret == 0)
   {
     ret = asm330lhhxg1_ln_pg_read_byte(ctx, ASM330LHHXG1_FSM_START_ADD_H, &buff[1]);
-    *val = buff[1];
-    *val = (*val * 256U) +  buff[0];
+    if (ret == 0)
+    {
+      *val = buff[1];
+      *val = (*val * 256U) +  buff[0];
+    }
   }
   return ret;
 }
@@ -7222,10 +7359,9 @@ int32_t asm330lhhxg1_mlc_set(const stmdev_ctx_t *ctx, uint8_t val)
                                  (uint8_t *)&reg, 1);
     }
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7249,9 +7385,11 @@ int32_t asm330lhhxg1_mlc_get(const stmdev_ctx_t *ctx, uint8_t *val)
   }
   if (ret == 0)
   {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
     *val  = reg.mlc_en;
   }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7295,10 +7433,8 @@ int32_t asm330lhhxg1_mlc_data_rate_set(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_EMB_FUNC_ODR_CFG_C,
                                (uint8_t *)&reg, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
 
   return ret;
 }
@@ -7343,8 +7479,10 @@ int32_t asm330lhhxg1_mlc_data_rate_get(const stmdev_ctx_t *ctx,
         *val = ASM330LHHXG1_ODR_PRGS_12Hz5;
         break;
     }
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
   }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7404,7 +7542,7 @@ int32_t asm330lhhxg1_mlc_init_get(const stmdev_ctx_t *ctx, uint8_t *val)
     *val = emb_func_init_b.mlc_init;
   }
 
-  ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
 
   return ret;
 }
@@ -7424,10 +7562,9 @@ int32_t asm330lhhxg1_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *buff)
   {
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_MLC0_SRC, buff, 8);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7475,8 +7612,11 @@ int32_t asm330lhhxg1_mlc_mag_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *
   {
     ret = asm330lhhxg1_ln_pg_read_byte(ctx, ASM330LHHXG1_MLC_MAG_SENSITIVITY_H,
                                      &buff[1]);
-    *val = buff[1];
-    *val = (*val * 256U) +  buff[0];
+    if (ret == 0)
+    {
+      *val = buff[1];
+      *val = (*val * 256U) +  buff[0];
+    }
   }
   return ret;
 }
@@ -7513,10 +7653,9 @@ int32_t asm330lhhxg1_sh_read_data_raw_get(const stmdev_ctx_t *ctx,
   {
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_SENSOR_HUB_1, (uint8_t *)val, 18);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7547,10 +7686,9 @@ int32_t asm330lhhxg1_sh_slave_connected_set(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                                (uint8_t *)&master_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7575,10 +7713,11 @@ int32_t asm330lhhxg1_sh_slave_connected_get(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                               (uint8_t *)&master_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
+  if (ret != 0) { return ret; }
+
   switch (master_config.aux_sens_on)
   {
     case ASM330LHHXG1_SLV_0:
@@ -7626,10 +7765,9 @@ int32_t asm330lhhxg1_sh_master_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                                (uint8_t *)&master_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7656,8 +7794,10 @@ int32_t asm330lhhxg1_sh_master_get(const stmdev_ctx_t *ctx, uint8_t *val)
   if (ret == 0)
   {
     *val = master_config.master_on;
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
   }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7688,10 +7828,9 @@ int32_t asm330lhhxg1_sh_pin_mode_set(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                                (uint8_t *)&master_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7715,10 +7854,10 @@ int32_t asm330lhhxg1_sh_pin_mode_get(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                               (uint8_t *)&master_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+  if (ret != 0) { return ret; }
+
   switch (master_config.shub_pu_en)
   {
     case ASM330LHHXG1_EXT_PULL_UP:
@@ -7760,10 +7899,9 @@ int32_t asm330lhhxg1_sh_pass_through_set(const stmdev_ctx_t *ctx, uint8_t val)
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                                (uint8_t *)&master_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7790,8 +7928,10 @@ int32_t asm330lhhxg1_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
   if (ret == 0)
   {
     *val = master_config.pass_through_mode;
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
   }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7822,10 +7962,9 @@ int32_t asm330lhhxg1_sh_syncro_mode_set(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                                (uint8_t *)&master_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7850,10 +7989,10 @@ int32_t asm330lhhxg1_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                               (uint8_t *)&master_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
+  if (ret != 0) { return ret; }
+
   switch (master_config.start_config)
   {
     case ASM330LHHXG1_EXT_ON_INT2_PIN:
@@ -7897,10 +8036,8 @@ int32_t asm330lhhxg1_sh_write_mode_set(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                                (uint8_t *)&master_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -7926,10 +8063,10 @@ int32_t asm330lhhxg1_sh_write_mode_get(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                               (uint8_t *)&master_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
+  if (ret != 0) { return ret; }
+
   switch (master_config.write_once)
   {
     case ASM330LHHXG1_EACH_SH_CYCLE:
@@ -7976,10 +8113,9 @@ int32_t asm330lhhxg1_sh_reset_set(const stmdev_ctx_t *ctx)
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                                (uint8_t *)&master_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -8002,12 +8138,14 @@ int32_t asm330lhhxg1_sh_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   {
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_MASTER_CONFIG,
                               (uint8_t *)&master_config, 1);
-    *val = master_config.rst_master_regs;
   }
   if (ret == 0)
   {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+    *val = master_config.rst_master_regs;
   }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -8038,10 +8176,9 @@ int32_t asm330lhhxg1_sh_data_rate_set(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_SLV0_CONFIG,
                                (uint8_t *)&slv0_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -8066,10 +8203,11 @@ int32_t asm330lhhxg1_sh_data_rate_get(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_SLV0_CONFIG,
                               (uint8_t *)&slv0_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
+  if (ret != 0) { return ret; }
+
   switch (slv0_config.shub_odr)
   {
     case ASM330LHHXG1_SH_ODR_104Hz:
@@ -8127,10 +8265,9 @@ int32_t asm330lhhxg1_sh_cfg_write(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_DATAWRITE_SLV0,
                                (uint8_t *) & (val->slv0_data), 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -8177,10 +8314,9 @@ int32_t asm330lhhxg1_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_SLV0_CONFIG,
                                (uint8_t *)&slv0_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -8225,10 +8361,9 @@ int32_t asm330lhhxg1_sh_slv1_cfg_read(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_SLV1_CONFIG,
                                (uint8_t *)&slv1_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -8275,10 +8410,9 @@ int32_t asm330lhhxg1_sh_slv2_cfg_read(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_SLV2_CONFIG,
                                (uint8_t *)&slv2_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -8325,10 +8459,9 @@ int32_t asm330lhhxg1_sh_slv3_cfg_read(const stmdev_ctx_t *ctx,
     ret = asm330lhhxg1_write_reg(ctx, ASM330LHHXG1_SLV3_CONFIG,
                                (uint8_t *)&slv3_config, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -8351,10 +8484,9 @@ int32_t asm330lhhxg1_sh_status_get(const stmdev_ctx_t *ctx,
   {
     ret = asm330lhhxg1_read_reg(ctx, ASM330LHHXG1_STATUS_MASTER, (uint8_t *)val, 1);
   }
-  if (ret == 0)
-  {
-    ret = asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
-  }
+
+  ret += asm330lhhxg1_mem_bank_set(ctx, ASM330LHHXG1_USER_BANK);
+
   return ret;
 }
 
@@ -8367,5 +8499,3 @@ int32_t asm330lhhxg1_sh_status_get(const stmdev_ctx_t *ctx,
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    lsm6dsv320x_reg.c
+  * @file    ism6hg256x_reg.c
   * @author  Sensors Software Solution Team
-  * @brief   LSM6DSV320X driver file
+  * @brief   ISM6HG256X driver file
   ******************************************************************************
   * @attention
   *
@@ -16,12 +16,12 @@
   ******************************************************************************
   */
 
-#include "lsm6dsv320x_reg.h"
+#include "ism6hg256x_reg.h"
 
 /**
-  * @defgroup  LSM6DSV320X
+  * @defgroup  ISM6HG256X
   * @brief     This file provides a set of functions needed to drive the
-  *            lsm6dsv320x enhanced inertial module.
+  *            ism6hg256x enhanced inertial module.
   * @{
   *
   */
@@ -45,9 +45,9 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lsm6dsv320x_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
-                                    uint8_t *data,
-                                    uint16_t len)
+int32_t __weak ism6hg256x_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
+                                   uint8_t *data,
+                                   uint16_t len)
 {
   int32_t ret;
 
@@ -71,9 +71,9 @@ int32_t __weak lsm6dsv320x_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lsm6dsv320x_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
-                                     uint8_t *data,
-                                     uint16_t len)
+int32_t __weak ism6hg256x_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
+                                    uint8_t *data,
+                                    uint16_t len)
 {
   int32_t ret;
 
@@ -118,112 +118,107 @@ static void bytecpy(uint8_t *target, uint8_t *source)
   * @{
   *
   */
-float_t lsm6dsv320x_from_sflp_to_mg(int16_t lsb)
+float_t ism6hg256x_from_sflp_to_mg(int16_t lsb)
 {
   return ((float_t)lsb) * 0.061f;
 }
 
-float_t lsm6dsv320x_from_fs2_to_mg(int16_t lsb)
+float_t ism6hg256x_from_fs2_to_mg(int16_t lsb)
 {
   return ((float_t)lsb) * 0.061f;
 }
 
-float_t lsm6dsv320x_from_fs4_to_mg(int16_t lsb)
+float_t ism6hg256x_from_fs4_to_mg(int16_t lsb)
 {
   return ((float_t)lsb) * 0.122f;
 }
 
-float_t lsm6dsv320x_from_fs8_to_mg(int16_t lsb)
+float_t ism6hg256x_from_fs8_to_mg(int16_t lsb)
 {
   return ((float_t)lsb) * 0.244f;
 }
 
-float_t lsm6dsv320x_from_fs16_to_mg(int16_t lsb)
+float_t ism6hg256x_from_fs16_to_mg(int16_t lsb)
 {
   return ((float_t)lsb) * 0.488f;
 }
 
-float_t lsm6dsv320x_from_fs32_to_mg(int16_t lsb)
+float_t ism6hg256x_from_fs32_to_mg(int16_t lsb)
 {
   return ((float_t)lsb) * 0.976f;
 }
 
-float_t lsm6dsv320x_from_fs64_to_mg(int16_t lsb)
+float_t ism6hg256x_from_fs64_to_mg(int16_t lsb)
 {
   return ((float_t)lsb) * 1.952f;
 }
 
-float_t lsm6dsv320x_from_fs128_to_mg(int16_t lsb)
+float_t ism6hg256x_from_fs128_to_mg(int16_t lsb)
 {
   return ((float_t)lsb) * 3.904f;
 }
 
-float_t lsm6dsv320x_from_fs256_to_mg(int16_t lsb)
-{
-  return ((float_t)lsb) * 7.808f;
-}
-
-float_t lsm6dsv320x_from_fs320_to_mg(int16_t lsb)
+float_t ism6hg256x_from_fs256_to_mg(int16_t lsb)
 {
   return ((float_t)lsb) * 10.417f;
 }
 
-float_t lsm6dsv320x_from_fs125_to_mdps(int16_t lsb)
+float_t ism6hg256x_from_fs125_to_mdps(int16_t lsb)
 {
   return ((float_t)lsb) * 4.375f;
 }
-float_t lsm6dsv320x_from_fs250_to_mdps(int16_t lsb)
+float_t ism6hg256x_from_fs250_to_mdps(int16_t lsb)
 {
   return ((float_t)lsb) * 8.750f;
 }
 
-float_t lsm6dsv320x_from_fs500_to_mdps(int16_t lsb)
+float_t ism6hg256x_from_fs500_to_mdps(int16_t lsb)
 {
   return ((float_t)lsb) * 17.50f;
 }
 
-float_t lsm6dsv320x_from_fs1000_to_mdps(int16_t lsb)
+float_t ism6hg256x_from_fs1000_to_mdps(int16_t lsb)
 {
   return ((float_t)lsb) * 35.0f;
 }
 
-float_t lsm6dsv320x_from_fs2000_to_mdps(int16_t lsb)
+float_t ism6hg256x_from_fs2000_to_mdps(int16_t lsb)
 {
   return ((float_t)lsb) * 70.0f;
 }
 
-float_t lsm6dsv320x_from_fs4000_to_mdps(int16_t lsb)
+float_t ism6hg256x_from_fs4000_to_mdps(int16_t lsb)
 {
   return ((float_t)lsb) * 140.0f;
 }
 
-float_t lsm6dsv320x_from_lsb_to_celsius(int16_t lsb)
+float_t ism6hg256x_from_lsb_to_celsius(int16_t lsb)
 {
   return (((float_t)lsb / 256.0f) + 25.0f);
 }
 
-uint64_t lsm6dsv320x_from_lsb_to_nsec(uint32_t lsb)
+uint64_t ism6hg256x_from_lsb_to_nsec(uint32_t lsb)
 {
   return ((uint64_t)lsb * 21700);
 }
 
-float_t lsm6dsv320x_from_lsb_to_mv(int16_t lsb)
+float_t ism6hg256x_from_lsb_to_mv(int16_t lsb)
 {
   return ((float_t)lsb) / 78.0f;
 }
 
-float_t lsm6dsv320x_from_gbias_lsb_to_mdps(int16_t lsb)
+float_t ism6hg256x_from_gbias_lsb_to_mdps(int16_t lsb)
 {
   return ((float_t)lsb) * 4.375f;
 }
 
-float_t lsm6dsv320x_from_gravity_lsb_to_mg(int16_t lsb)
+float_t ism6hg256x_from_gravity_lsb_to_mg(int16_t lsb)
 {
   return ((float_t)lsb) * 0.061f;
 }
 
 static float_t npy_half_to_float(uint16_t h);
-float_t lsm6dsv320x_from_quaternion_lsb_to_float(uint16_t lsb)
+float_t ism6hg256x_from_quaternion_lsb_to_float(uint16_t lsb)
 {
   return npy_half_to_float(lsb);
 }
@@ -236,7 +231,7 @@ static uint32_t npy_halfbits_to_floatbits(uint16_t h);
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-uint32_t lsm6dsv320x_from_f16_to_f32(uint16_t val)
+uint32_t ism6hg256x_from_f16_to_f32(uint16_t val)
 {
   return npy_halfbits_to_floatbits(val);
 }
@@ -262,16 +257,16 @@ uint32_t lsm6dsv320x_from_f16_to_f32(uint16_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_offset_on_out_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_xl_offset_on_out_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   if (ret == 0)
   {
     ctrl9.usr_off_on_out = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   }
 
   return ret;
@@ -285,12 +280,12 @@ int32_t lsm6dsv320x_xl_offset_on_out_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_offset_on_out_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_xl_offset_on_out_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   if (ret != 0)
   {
     return ret;
@@ -308,19 +303,19 @@ int32_t lsm6dsv320x_xl_offset_on_out_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_offset_mg_set(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_xl_offset_mg_t val)
+int32_t ism6hg256x_xl_offset_mg_set(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_xl_offset_mg_t val)
 {
-  lsm6dsv320x_z_ofs_usr_t z_ofs_usr;
-  lsm6dsv320x_y_ofs_usr_t y_ofs_usr;
-  lsm6dsv320x_x_ofs_usr_t x_ofs_usr;
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_z_ofs_usr_t z_ofs_usr;
+  ism6hg256x_y_ofs_usr_t y_ofs_usr;
+  ism6hg256x_x_ofs_usr_t x_ofs_usr;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
   float_t tmp;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_Y_OFS_USR, (uint8_t *)&y_ofs_usr, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_X_OFS_USR, (uint8_t *)&x_ofs_usr, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_Y_OFS_USR, (uint8_t *)&y_ofs_usr, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_X_OFS_USR, (uint8_t *)&x_ofs_usr, 1);
   if (ret != 0)
   {
     return ret;
@@ -365,10 +360,10 @@ int32_t lsm6dsv320x_xl_offset_mg_set(const stmdev_ctx_t *ctx,
     x_ofs_usr.x_ofs_usr = 0xFFU;
   }
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_Y_OFS_USR, (uint8_t *)&y_ofs_usr, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_X_OFS_USR, (uint8_t *)&x_ofs_usr, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_Y_OFS_USR, (uint8_t *)&y_ofs_usr, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_X_OFS_USR, (uint8_t *)&x_ofs_usr, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
 
   return ret;
 }
@@ -381,19 +376,19 @@ int32_t lsm6dsv320x_xl_offset_mg_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_offset_mg_get(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_xl_offset_mg_t *val)
+int32_t ism6hg256x_xl_offset_mg_get(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_xl_offset_mg_t *val)
 {
-  lsm6dsv320x_z_ofs_usr_t z_ofs_usr;
-  lsm6dsv320x_y_ofs_usr_t y_ofs_usr;
-  lsm6dsv320x_x_ofs_usr_t x_ofs_usr;
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_z_ofs_usr_t z_ofs_usr;
+  ism6hg256x_y_ofs_usr_t y_ofs_usr;
+  ism6hg256x_x_ofs_usr_t x_ofs_usr;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_Y_OFS_USR, (uint8_t *)&y_ofs_usr, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_X_OFS_USR, (uint8_t *)&x_ofs_usr, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_Y_OFS_USR, (uint8_t *)&y_ofs_usr, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_X_OFS_USR, (uint8_t *)&x_ofs_usr, 1);
   if (ret != 0)
   {
     return ret;
@@ -423,17 +418,17 @@ int32_t lsm6dsv320x_xl_offset_mg_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_hg_xl_offset_mg_set(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_xl_offset_mg_t val)
+int32_t ism6hg256x_hg_xl_offset_mg_set(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_xl_offset_mg_t val)
 {
-  lsm6dsv320x_hg_z_ofs_usr_t z_ofs_usr;
-  lsm6dsv320x_hg_y_ofs_usr_t y_ofs_usr;
-  lsm6dsv320x_hg_x_ofs_usr_t x_ofs_usr;
-  lsm6dsv320x_ctrl1_xl_hg_t  ctrl1_xl_hg;
+  ism6hg256x_hg_z_ofs_usr_t z_ofs_usr;
+  ism6hg256x_hg_y_ofs_usr_t y_ofs_usr;
+  ism6hg256x_hg_x_ofs_usr_t x_ofs_usr;
+  ism6hg256x_ctrl1_xl_hg_t  ctrl1_xl_hg;
   int32_t ret;
   float_t tmp;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
   if (ret != 0)
   {
     return ret;
@@ -462,10 +457,10 @@ int32_t lsm6dsv320x_hg_xl_offset_mg_set(const stmdev_ctx_t *ctx,
     x_ofs_usr.xl_hg_x_ofs_usr = 0xFFU;
   }
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_XL_HG_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_XL_HG_Y_OFS_USR, (uint8_t *)&y_ofs_usr, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_XL_HG_X_OFS_USR, (uint8_t *)&x_ofs_usr, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_XL_HG_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_XL_HG_Y_OFS_USR, (uint8_t *)&y_ofs_usr, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_XL_HG_X_OFS_USR, (uint8_t *)&x_ofs_usr, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
 
   return ret;
 }
@@ -478,19 +473,19 @@ int32_t lsm6dsv320x_hg_xl_offset_mg_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_hg_xl_offset_mg_get(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_xl_offset_mg_t *val)
+int32_t ism6hg256x_hg_xl_offset_mg_get(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_xl_offset_mg_t *val)
 {
-  lsm6dsv320x_hg_z_ofs_usr_t z_ofs_usr;
-  lsm6dsv320x_hg_y_ofs_usr_t y_ofs_usr;
-  lsm6dsv320x_hg_x_ofs_usr_t x_ofs_usr;
-  lsm6dsv320x_ctrl1_xl_hg_t  ctrl1_xl_hg;
+  ism6hg256x_hg_z_ofs_usr_t z_ofs_usr;
+  ism6hg256x_hg_y_ofs_usr_t y_ofs_usr;
+  ism6hg256x_hg_x_ofs_usr_t x_ofs_usr;
+  ism6hg256x_ctrl1_xl_hg_t  ctrl1_xl_hg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_XL_HG_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_XL_HG_Y_OFS_USR, (uint8_t *)&y_ofs_usr, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_XL_HG_X_OFS_USR, (uint8_t *)&x_ofs_usr, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_XL_HG_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_XL_HG_Y_OFS_USR, (uint8_t *)&y_ofs_usr, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_XL_HG_X_OFS_USR, (uint8_t *)&x_ofs_usr, 1);
   if (ret != 0)
   {
     return ret;
@@ -525,25 +520,25 @@ int32_t lsm6dsv320x_hg_xl_offset_mg_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_reset_set(const stmdev_ctx_t *ctx, lsm6dsv320x_reset_t val)
+int32_t ism6hg256x_reset_set(const stmdev_ctx_t *ctx, ism6hg256x_reset_t val)
 {
-  lsm6dsv320x_func_cfg_access_t func_cfg_access;
-  lsm6dsv320x_ctrl3_t ctrl3;
+  ism6hg256x_func_cfg_access_t func_cfg_access;
+  ism6hg256x_ctrl3_t ctrl3;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL3, (uint8_t *)&ctrl3, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  ctrl3.boot = (val == LSM6DSV320X_RESTORE_CAL_PARAM) ? 1 : 0;
-  ctrl3.sw_reset = (val == LSM6DSV320X_RESTORE_CTRL_REGS) ? 1 : 0;
-  func_cfg_access.sw_por = (val == LSM6DSV320X_GLOBAL_RST) ? 1 : 0;
+  ctrl3.boot = (val == ISM6HG256X_RESTORE_CAL_PARAM) ? 1 : 0;
+  ctrl3.sw_reset = (val == ISM6HG256X_RESTORE_CTRL_REGS) ? 1 : 0;
+  func_cfg_access.sw_por = (val == ISM6HG256X_GLOBAL_RST) ? 1 : 0;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL3, (uint8_t *)&ctrl3, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
 
   return ret;
 }
@@ -556,14 +551,14 @@ int32_t lsm6dsv320x_reset_set(const stmdev_ctx_t *ctx, lsm6dsv320x_reset_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_reset_get(const stmdev_ctx_t *ctx, lsm6dsv320x_reset_t *val)
+int32_t ism6hg256x_reset_get(const stmdev_ctx_t *ctx, ism6hg256x_reset_t *val)
 {
-  lsm6dsv320x_func_cfg_access_t func_cfg_access;
-  lsm6dsv320x_ctrl3_t ctrl3;
+  ism6hg256x_func_cfg_access_t func_cfg_access;
+  ism6hg256x_ctrl3_t ctrl3;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL3, (uint8_t *)&ctrl3, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   if (ret != 0)
   {
     return ret;
@@ -571,24 +566,24 @@ int32_t lsm6dsv320x_reset_get(const stmdev_ctx_t *ctx, lsm6dsv320x_reset_t *val)
 
   switch ((ctrl3.sw_reset << 2) + (ctrl3.boot << 1) + func_cfg_access.sw_por)
   {
-    case LSM6DSV320X_READY:
-      *val = LSM6DSV320X_READY;
+    case ISM6HG256X_READY:
+      *val = ISM6HG256X_READY;
       break;
 
-    case LSM6DSV320X_GLOBAL_RST:
-      *val = LSM6DSV320X_GLOBAL_RST;
+    case ISM6HG256X_GLOBAL_RST:
+      *val = ISM6HG256X_GLOBAL_RST;
       break;
 
-    case LSM6DSV320X_RESTORE_CAL_PARAM:
-      *val = LSM6DSV320X_RESTORE_CAL_PARAM;
+    case ISM6HG256X_RESTORE_CAL_PARAM:
+      *val = ISM6HG256X_RESTORE_CAL_PARAM;
       break;
 
-    case LSM6DSV320X_RESTORE_CTRL_REGS:
-      *val = LSM6DSV320X_RESTORE_CTRL_REGS;
+    case ISM6HG256X_RESTORE_CTRL_REGS:
+      *val = ISM6HG256X_RESTORE_CTRL_REGS;
       break;
 
     default:
-      *val = LSM6DSV320X_GLOBAL_RST;
+      *val = ISM6HG256X_GLOBAL_RST;
       break;
   }
 
@@ -603,12 +598,12 @@ int32_t lsm6dsv320x_reset_get(const stmdev_ctx_t *ctx, lsm6dsv320x_reset_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_mem_bank_set(const stmdev_ctx_t *ctx, lsm6dsv320x_mem_bank_t val)
+int32_t ism6hg256x_mem_bank_set(const stmdev_ctx_t *ctx, ism6hg256x_mem_bank_t val)
 {
-  lsm6dsv320x_func_cfg_access_t func_cfg_access;
+  ism6hg256x_func_cfg_access_t func_cfg_access;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   if (ret != 0)
   {
     return ret;
@@ -616,7 +611,7 @@ int32_t lsm6dsv320x_mem_bank_set(const stmdev_ctx_t *ctx, lsm6dsv320x_mem_bank_t
 
   func_cfg_access.shub_reg_access = ((uint8_t)val & 0x02U) >> 1;
   func_cfg_access.emb_func_reg_access = (uint8_t)val & 0x01U;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
 
   return ret;
 }
@@ -629,12 +624,12 @@ int32_t lsm6dsv320x_mem_bank_set(const stmdev_ctx_t *ctx, lsm6dsv320x_mem_bank_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_mem_bank_get(const stmdev_ctx_t *ctx, lsm6dsv320x_mem_bank_t *val)
+int32_t ism6hg256x_mem_bank_get(const stmdev_ctx_t *ctx, ism6hg256x_mem_bank_t *val)
 {
-  lsm6dsv320x_func_cfg_access_t func_cfg_access;
+  ism6hg256x_func_cfg_access_t func_cfg_access;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   if (ret != 0)
   {
     return ret;
@@ -642,20 +637,20 @@ int32_t lsm6dsv320x_mem_bank_get(const stmdev_ctx_t *ctx, lsm6dsv320x_mem_bank_t
 
   switch ((func_cfg_access.shub_reg_access << 1) + func_cfg_access.emb_func_reg_access)
   {
-    case LSM6DSV320X_MAIN_MEM_BANK:
-      *val = LSM6DSV320X_MAIN_MEM_BANK;
+    case ISM6HG256X_MAIN_MEM_BANK:
+      *val = ISM6HG256X_MAIN_MEM_BANK;
       break;
 
-    case LSM6DSV320X_EMBED_FUNC_MEM_BANK:
-      *val = LSM6DSV320X_EMBED_FUNC_MEM_BANK;
+    case ISM6HG256X_EMBED_FUNC_MEM_BANK:
+      *val = ISM6HG256X_EMBED_FUNC_MEM_BANK;
       break;
 
-    case LSM6DSV320X_SENSOR_HUB_MEM_BANK:
-      *val = LSM6DSV320X_SENSOR_HUB_MEM_BANK;
+    case ISM6HG256X_SENSOR_HUB_MEM_BANK:
+      *val = ISM6HG256X_SENSOR_HUB_MEM_BANK;
       break;
 
     default:
-      *val = LSM6DSV320X_MAIN_MEM_BANK;
+      *val = ISM6HG256X_MAIN_MEM_BANK;
       break;
   }
 
@@ -670,11 +665,11 @@ int32_t lsm6dsv320x_mem_bank_get(const stmdev_ctx_t *ctx, lsm6dsv320x_mem_bank_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WHO_AM_I, val, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_WHO_AM_I, val, 1);
 
   return ret;
 }
@@ -683,26 +678,26 @@ int32_t lsm6dsv320x_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  Accelerometer output data rate (ODR) selection.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_data_rate_t enum
+  * @param  val      ism6hg256x_data_rate_t enum
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_data_rate_set(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_data_rate_t val)
+int32_t ism6hg256x_xl_data_rate_set(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_data_rate_t val)
 {
-  lsm6dsv320x_ctrl1_t ctrl1;
-  lsm6dsv320x_haodr_cfg_t haodr;
+  ism6hg256x_ctrl1_t ctrl1;
+  ism6hg256x_haodr_cfg_t haodr;
   uint8_t sel;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL1, (uint8_t *)&ctrl1, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   ctrl1.odr_xl = (uint8_t)val & 0x0Fu;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL1, (uint8_t *)&ctrl1, 1);
   if (ret != 0)
   {
     return ret;
@@ -711,13 +706,13 @@ int32_t lsm6dsv320x_xl_data_rate_set(const stmdev_ctx_t *ctx,
   sel = ((uint8_t)val >> 4) & 0xFU;
   if (sel != 0U)
   {
-    ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HAODR_CFG, (uint8_t *)&haodr, 1);
+    ret += ism6hg256x_read_reg(ctx, ISM6HG256X_HAODR_CFG, (uint8_t *)&haodr, 1);
     if (ret != 0)
     {
       return ret;
     }
     haodr.haodr_sel = sel;
-    ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_HAODR_CFG, (uint8_t *)&haodr, 1);
+    ret += ism6hg256x_write_reg(ctx, ISM6HG256X_HAODR_CFG, (uint8_t *)&haodr, 1);
   }
 
   return ret;
@@ -727,20 +722,20 @@ int32_t lsm6dsv320x_xl_data_rate_set(const stmdev_ctx_t *ctx,
   * @brief  Accelerometer output data rate (ODR) selection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_data_rate_t enum
+  * @param  val      ism6hg256x_data_rate_t enum
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_data_rate_t *val)
+int32_t ism6hg256x_xl_data_rate_get(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_data_rate_t *val)
 {
-  lsm6dsv320x_ctrl1_t ctrl1;
-  lsm6dsv320x_haodr_cfg_t haodr;
+  ism6hg256x_ctrl1_t ctrl1;
+  ism6hg256x_haodr_cfg_t haodr;
   uint8_t sel;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL1, (uint8_t *)&ctrl1, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HAODR_CFG, (uint8_t *)&haodr, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_HAODR_CFG, (uint8_t *)&haodr, 1);
   if (ret != 0)
   {
     return ret;
@@ -750,210 +745,210 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1.odr_xl)
   {
-    case LSM6DSV320X_ODR_OFF:
-      *val = LSM6DSV320X_ODR_OFF;
+    case ISM6HG256X_ODR_OFF:
+      *val = ISM6HG256X_ODR_OFF;
       break;
 
-    case LSM6DSV320X_ODR_AT_1Hz875:
-      *val = LSM6DSV320X_ODR_AT_1Hz875;
+    case ISM6HG256X_ODR_AT_1Hz875:
+      *val = ISM6HG256X_ODR_AT_1Hz875;
       break;
 
-    case LSM6DSV320X_ODR_AT_7Hz5:
-      *val = LSM6DSV320X_ODR_AT_7Hz5;
+    case ISM6HG256X_ODR_AT_7Hz5:
+      *val = ISM6HG256X_ODR_AT_7Hz5;
       break;
 
-    case LSM6DSV320X_ODR_AT_15Hz:
+    case ISM6HG256X_ODR_AT_15Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_15Hz;
+          *val = ISM6HG256X_ODR_AT_15Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_15Hz625;
+          *val = ISM6HG256X_ODR_HA01_AT_15Hz625;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_12Hz5;
+          *val = ISM6HG256X_ODR_HA02_AT_12Hz5;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_13Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_13Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_30Hz:
+    case ISM6HG256X_ODR_AT_30Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_30Hz;
+          *val = ISM6HG256X_ODR_AT_30Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_31Hz25;
+          *val = ISM6HG256X_ODR_HA01_AT_31Hz25;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_25Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_25Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_26Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_26Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_60Hz:
+    case ISM6HG256X_ODR_AT_60Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_60Hz;
+          *val = ISM6HG256X_ODR_AT_60Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_62Hz5;
+          *val = ISM6HG256X_ODR_HA01_AT_62Hz5;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_50Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_50Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_52Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_52Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_120Hz:
+    case ISM6HG256X_ODR_AT_120Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_120Hz;
+          *val = ISM6HG256X_ODR_AT_120Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_125Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_125Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_100Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_100Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_104Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_104Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_240Hz:
+    case ISM6HG256X_ODR_AT_240Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_240Hz;
+          *val = ISM6HG256X_ODR_AT_240Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_250Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_250Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_200Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_200Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_208Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_208Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_480Hz:
+    case ISM6HG256X_ODR_AT_480Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_480Hz;
+          *val = ISM6HG256X_ODR_AT_480Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_500Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_500Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_400Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_400Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_417Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_417Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_960Hz:
+    case ISM6HG256X_ODR_AT_960Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_960Hz;
+          *val = ISM6HG256X_ODR_AT_960Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_1000Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_1000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_800Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_800Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_833Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_833Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_1920Hz:
+    case ISM6HG256X_ODR_AT_1920Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_1920Hz;
+          *val = ISM6HG256X_ODR_AT_1920Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_2000Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_2000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_1600Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_1600Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_1667Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_1667Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_3840Hz:
+    case ISM6HG256X_ODR_AT_3840Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_3840Hz;
+          *val = ISM6HG256X_ODR_AT_3840Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_4000Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_4000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_3200Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_3200Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_3333Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_3333Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_7680Hz:
+    case ISM6HG256X_ODR_AT_7680Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_7680Hz;
+          *val = ISM6HG256X_ODR_AT_7680Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_8000Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_8000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_6400Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_6400Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_6667Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_6667Hz;
           break;
       }
       break;
 
     default:
-      *val = LSM6DSV320X_ODR_OFF;
+      *val = ISM6HG256X_ODR_OFF;
       break;
   }
 
@@ -964,18 +959,18 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
   * @brief  HG Accelerometer output data rate (ODR) selection.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_hg_xl_data_rate_t enum
+  * @param  val      ism6hg256x_hg_xl_data_rate_t enum
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_hg_xl_data_rate_set(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_hg_xl_data_rate_t val,
-                                        uint8_t reg_out_en)
+int32_t ism6hg256x_hg_xl_data_rate_set(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_hg_xl_data_rate_t val,
+                                       uint8_t reg_out_en)
 {
-  lsm6dsv320x_ctrl1_xl_hg_t ctrl1_xl_hg;
+  ism6hg256x_ctrl1_xl_hg_t ctrl1_xl_hg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
   if (ret != 0)
   {
     return ret;
@@ -983,7 +978,7 @@ int32_t lsm6dsv320x_hg_xl_data_rate_set(const stmdev_ctx_t *ctx,
 
   ctrl1_xl_hg.odr_xl_hg = (uint8_t)val & 0x07U;
   ctrl1_xl_hg.xl_hg_regout_en = reg_out_en & 0x1U;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
 
   return ret;
 }
@@ -992,18 +987,18 @@ int32_t lsm6dsv320x_hg_xl_data_rate_set(const stmdev_ctx_t *ctx,
   * @brief  Accelerometer output data rate (ODR) selection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_hg_xl_data_rate_t enum
+  * @param  val      ism6hg256x_hg_xl_data_rate_t enum
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_hg_xl_data_rate_get(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_hg_xl_data_rate_t *val,
-                                        uint8_t *reg_out_en)
+int32_t ism6hg256x_hg_xl_data_rate_get(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_hg_xl_data_rate_t *val,
+                                       uint8_t *reg_out_en)
 {
-  lsm6dsv320x_ctrl1_xl_hg_t ctrl1_xl_hg;
+  ism6hg256x_ctrl1_xl_hg_t ctrl1_xl_hg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL1_XL_HG, (uint8_t *)&ctrl1_xl_hg, 1);
   if (ret != 0)
   {
     return ret;
@@ -1013,32 +1008,32 @@ int32_t lsm6dsv320x_hg_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1_xl_hg.odr_xl_hg)
   {
-    case LSM6DSV320X_HG_XL_ODR_OFF:
-      *val = LSM6DSV320X_HG_XL_ODR_OFF;
+    case ISM6HG256X_HG_XL_ODR_OFF:
+      *val = ISM6HG256X_HG_XL_ODR_OFF;
       break;
 
-    case LSM6DSV320X_HG_XL_ODR_AT_480Hz:
-      *val = LSM6DSV320X_HG_XL_ODR_AT_480Hz;
+    case ISM6HG256X_HG_XL_ODR_AT_480Hz:
+      *val = ISM6HG256X_HG_XL_ODR_AT_480Hz;
       break;
 
-    case LSM6DSV320X_HG_XL_ODR_AT_960Hz:
-      *val = LSM6DSV320X_HG_XL_ODR_AT_960Hz;
+    case ISM6HG256X_HG_XL_ODR_AT_960Hz:
+      *val = ISM6HG256X_HG_XL_ODR_AT_960Hz;
       break;
 
-    case LSM6DSV320X_HG_XL_ODR_AT_1920Hz:
-      *val = LSM6DSV320X_HG_XL_ODR_AT_1920Hz;
+    case ISM6HG256X_HG_XL_ODR_AT_1920Hz:
+      *val = ISM6HG256X_HG_XL_ODR_AT_1920Hz;
       break;
 
-    case LSM6DSV320X_HG_XL_ODR_AT_3840Hz:
-      *val = LSM6DSV320X_HG_XL_ODR_AT_3840Hz;
+    case ISM6HG256X_HG_XL_ODR_AT_3840Hz:
+      *val = ISM6HG256X_HG_XL_ODR_AT_3840Hz;
       break;
 
-    case LSM6DSV320X_HG_XL_ODR_AT_7680Hz:
-      *val = LSM6DSV320X_HG_XL_ODR_AT_7680Hz;
+    case ISM6HG256X_HG_XL_ODR_AT_7680Hz:
+      *val = ISM6HG256X_HG_XL_ODR_AT_7680Hz;
       break;
 
     default:
-      *val = LSM6DSV320X_HG_XL_ODR_OFF;
+      *val = ISM6HG256X_HG_XL_ODR_OFF;
       break;
   }
 
@@ -1053,17 +1048,17 @@ int32_t lsm6dsv320x_hg_xl_data_rate_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_xl_mode_t val)
+int32_t ism6hg256x_xl_mode_set(const stmdev_ctx_t *ctx, ism6hg256x_xl_mode_t val)
 {
-  lsm6dsv320x_ctrl1_t ctrl1;
+  ism6hg256x_ctrl1_t ctrl1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL1, (uint8_t *)&ctrl1, 1);
 
   if (ret == 0)
   {
     ctrl1.op_mode_xl = (uint8_t)val & 0x07U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL1, (uint8_t *)&ctrl1, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL1, (uint8_t *)&ctrl1, 1);
   }
 
   return ret;
@@ -1077,12 +1072,12 @@ int32_t lsm6dsv320x_xl_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_xl_mode_t v
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_xl_mode_t *val)
+int32_t ism6hg256x_xl_mode_get(const stmdev_ctx_t *ctx, ism6hg256x_xl_mode_t *val)
 {
-  lsm6dsv320x_ctrl1_t ctrl1;
+  ism6hg256x_ctrl1_t ctrl1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL1, (uint8_t *)&ctrl1, 1);
   if (ret != 0)
   {
     return ret;
@@ -1090,36 +1085,36 @@ int32_t lsm6dsv320x_xl_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_xl_mode_t *
 
   switch (ctrl1.op_mode_xl)
   {
-    case LSM6DSV320X_XL_HIGH_PERFORMANCE_MD:
-      *val = LSM6DSV320X_XL_HIGH_PERFORMANCE_MD;
+    case ISM6HG256X_XL_HIGH_PERFORMANCE_MD:
+      *val = ISM6HG256X_XL_HIGH_PERFORMANCE_MD;
       break;
 
-    case LSM6DSV320X_XL_HIGH_ACCURACY_ODR_MD:
-      *val = LSM6DSV320X_XL_HIGH_ACCURACY_ODR_MD;
+    case ISM6HG256X_XL_HIGH_ACCURACY_ODR_MD:
+      *val = ISM6HG256X_XL_HIGH_ACCURACY_ODR_MD;
       break;
 
-    case LSM6DSV320X_XL_ODR_TRIGGERED_MD:
-      *val = LSM6DSV320X_XL_ODR_TRIGGERED_MD;
+    case ISM6HG256X_XL_ODR_TRIGGERED_MD:
+      *val = ISM6HG256X_XL_ODR_TRIGGERED_MD;
       break;
 
-    case LSM6DSV320X_XL_LOW_POWER_2_AVG_MD:
-      *val = LSM6DSV320X_XL_LOW_POWER_2_AVG_MD;
+    case ISM6HG256X_XL_LOW_POWER_2_AVG_MD:
+      *val = ISM6HG256X_XL_LOW_POWER_2_AVG_MD;
       break;
 
-    case LSM6DSV320X_XL_LOW_POWER_4_AVG_MD:
-      *val = LSM6DSV320X_XL_LOW_POWER_4_AVG_MD;
+    case ISM6HG256X_XL_LOW_POWER_4_AVG_MD:
+      *val = ISM6HG256X_XL_LOW_POWER_4_AVG_MD;
       break;
 
-    case LSM6DSV320X_XL_LOW_POWER_8_AVG_MD:
-      *val = LSM6DSV320X_XL_LOW_POWER_8_AVG_MD;
+    case ISM6HG256X_XL_LOW_POWER_8_AVG_MD:
+      *val = ISM6HG256X_XL_LOW_POWER_8_AVG_MD;
       break;
 
-    case LSM6DSV320X_XL_NORMAL_MD:
-      *val = LSM6DSV320X_XL_NORMAL_MD;
+    case ISM6HG256X_XL_NORMAL_MD:
+      *val = ISM6HG256X_XL_NORMAL_MD;
       break;
 
     default:
-      *val = LSM6DSV320X_XL_HIGH_PERFORMANCE_MD;
+      *val = ISM6HG256X_XL_HIGH_PERFORMANCE_MD;
       break;
   }
 
@@ -1130,25 +1125,25 @@ int32_t lsm6dsv320x_xl_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_xl_mode_t *
   * @brief  Gyroscope output data rate (ODR) selection.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_data_rate_t enum
+  * @param  val      ism6hg256x_data_rate_t enum
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_gy_data_rate_set(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_data_rate_t val)
+int32_t ism6hg256x_gy_data_rate_set(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_data_rate_t val)
 {
-  lsm6dsv320x_ctrl2_t ctrl2;
-  lsm6dsv320x_haodr_cfg_t haodr;
+  ism6hg256x_ctrl2_t ctrl2;
+  ism6hg256x_haodr_cfg_t haodr;
   uint8_t sel;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL2, (uint8_t *)&ctrl2, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL2, (uint8_t *)&ctrl2, 1);
   if (ret != 0)
   {
     return ret;
   }
   ctrl2.odr_g = (uint8_t)val & 0x0Fu;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL2, (uint8_t *)&ctrl2, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL2, (uint8_t *)&ctrl2, 1);
   if (ret != 0)
   {
     return ret;
@@ -1157,13 +1152,13 @@ int32_t lsm6dsv320x_gy_data_rate_set(const stmdev_ctx_t *ctx,
   sel = ((uint8_t)val >> 4) & 0xFU;
   if (sel != 0U)
   {
-    ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HAODR_CFG, (uint8_t *)&haodr, 1);
+    ret += ism6hg256x_read_reg(ctx, ISM6HG256X_HAODR_CFG, (uint8_t *)&haodr, 1);
     if (ret != 0)
     {
       return ret;
     }
     haodr.haodr_sel = sel;
-    ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_HAODR_CFG, (uint8_t *)&haodr, 1);
+    ret += ism6hg256x_write_reg(ctx, ISM6HG256X_HAODR_CFG, (uint8_t *)&haodr, 1);
   }
 
   return ret;
@@ -1173,20 +1168,20 @@ int32_t lsm6dsv320x_gy_data_rate_set(const stmdev_ctx_t *ctx,
   * @brief  Gyroscope output data rate (ODR) selection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_data_rate_t enum
+  * @param  val      ism6hg256x_data_rate_t enum
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_data_rate_t *val)
+int32_t ism6hg256x_gy_data_rate_get(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_data_rate_t *val)
 {
-  lsm6dsv320x_ctrl2_t ctrl2;
-  lsm6dsv320x_haodr_cfg_t haodr;
+  ism6hg256x_ctrl2_t ctrl2;
+  ism6hg256x_haodr_cfg_t haodr;
   uint8_t sel;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL2, (uint8_t *)&ctrl2, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HAODR_CFG, (uint8_t *)&haodr, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL2, (uint8_t *)&ctrl2, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_HAODR_CFG, (uint8_t *)&haodr, 1);
   if (ret != 0)
   {
     return ret;
@@ -1196,210 +1191,210 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2.odr_g)
   {
-    case LSM6DSV320X_ODR_OFF:
-      *val = LSM6DSV320X_ODR_OFF;
+    case ISM6HG256X_ODR_OFF:
+      *val = ISM6HG256X_ODR_OFF;
       break;
 
-    case LSM6DSV320X_ODR_AT_1Hz875:
-      *val = LSM6DSV320X_ODR_AT_1Hz875;
+    case ISM6HG256X_ODR_AT_1Hz875:
+      *val = ISM6HG256X_ODR_AT_1Hz875;
       break;
 
-    case LSM6DSV320X_ODR_AT_7Hz5:
-      *val = LSM6DSV320X_ODR_AT_7Hz5;
+    case ISM6HG256X_ODR_AT_7Hz5:
+      *val = ISM6HG256X_ODR_AT_7Hz5;
       break;
 
-    case LSM6DSV320X_ODR_AT_15Hz:
+    case ISM6HG256X_ODR_AT_15Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_15Hz;
+          *val = ISM6HG256X_ODR_AT_15Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_15Hz625;
+          *val = ISM6HG256X_ODR_HA01_AT_15Hz625;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_12Hz5;
+          *val = ISM6HG256X_ODR_HA02_AT_12Hz5;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_13Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_13Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_30Hz:
+    case ISM6HG256X_ODR_AT_30Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_30Hz;
+          *val = ISM6HG256X_ODR_AT_30Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_31Hz25;
+          *val = ISM6HG256X_ODR_HA01_AT_31Hz25;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_25Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_25Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_26Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_26Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_60Hz:
+    case ISM6HG256X_ODR_AT_60Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_60Hz;
+          *val = ISM6HG256X_ODR_AT_60Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_62Hz5;
+          *val = ISM6HG256X_ODR_HA01_AT_62Hz5;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_50Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_50Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_52Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_52Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_120Hz:
+    case ISM6HG256X_ODR_AT_120Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_120Hz;
+          *val = ISM6HG256X_ODR_AT_120Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_125Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_125Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_100Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_100Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_104Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_104Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_240Hz:
+    case ISM6HG256X_ODR_AT_240Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_240Hz;
+          *val = ISM6HG256X_ODR_AT_240Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_250Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_250Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_200Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_200Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_208Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_208Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_480Hz:
+    case ISM6HG256X_ODR_AT_480Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_480Hz;
+          *val = ISM6HG256X_ODR_AT_480Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_500Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_500Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_400Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_400Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_417Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_417Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_960Hz:
+    case ISM6HG256X_ODR_AT_960Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_960Hz;
+          *val = ISM6HG256X_ODR_AT_960Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_1000Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_1000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_800Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_800Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_833Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_833Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_1920Hz:
+    case ISM6HG256X_ODR_AT_1920Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_1920Hz;
+          *val = ISM6HG256X_ODR_AT_1920Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_2000Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_2000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_1600Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_1600Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_1667Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_1667Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_3840Hz:
+    case ISM6HG256X_ODR_AT_3840Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_3840Hz;
+          *val = ISM6HG256X_ODR_AT_3840Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_4000Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_4000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_3200Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_3200Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_3333Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_3333Hz;
           break;
       }
       break;
 
-    case LSM6DSV320X_ODR_AT_7680Hz:
+    case ISM6HG256X_ODR_AT_7680Hz:
       switch (sel)
       {
         default:
         case 0:
-          *val = LSM6DSV320X_ODR_AT_7680Hz;
+          *val = ISM6HG256X_ODR_AT_7680Hz;
           break;
         case 1:
-          *val = LSM6DSV320X_ODR_HA01_AT_8000Hz;
+          *val = ISM6HG256X_ODR_HA01_AT_8000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_6400Hz;
+          *val = ISM6HG256X_ODR_HA02_AT_6400Hz;
           break;
         case 3:
-          *val = LSM6DSV320X_ODR_HA03_AT_6667Hz;
+          *val = ISM6HG256X_ODR_HA03_AT_6667Hz;
           break;
       }
       break;
 
     default:
-      *val = LSM6DSV320X_ODR_OFF;
+      *val = ISM6HG256X_ODR_OFF;
       break;
   }
 
@@ -1415,16 +1410,16 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_gy_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_gy_mode_t val)
+int32_t ism6hg256x_gy_mode_set(const stmdev_ctx_t *ctx, ism6hg256x_gy_mode_t val)
 {
-  lsm6dsv320x_ctrl2_t ctrl2;
+  ism6hg256x_ctrl2_t ctrl2;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL2, (uint8_t *)&ctrl2, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL2, (uint8_t *)&ctrl2, 1);
   if (ret == 0)
   {
     ctrl2.op_mode_g = (uint8_t)val & 0x07U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL2, (uint8_t *)&ctrl2, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL2, (uint8_t *)&ctrl2, 1);
   }
 
   return ret;
@@ -1438,12 +1433,12 @@ int32_t lsm6dsv320x_gy_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_gy_mode_t v
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_gy_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_gy_mode_t *val)
+int32_t ism6hg256x_gy_mode_get(const stmdev_ctx_t *ctx, ism6hg256x_gy_mode_t *val)
 {
-  lsm6dsv320x_ctrl2_t ctrl2;
+  ism6hg256x_ctrl2_t ctrl2;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL2, (uint8_t *)&ctrl2, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL2, (uint8_t *)&ctrl2, 1);
   if (ret != 0)
   {
     return ret;
@@ -1451,28 +1446,28 @@ int32_t lsm6dsv320x_gy_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_gy_mode_t *
 
   switch (ctrl2.op_mode_g)
   {
-    case LSM6DSV320X_GY_HIGH_PERFORMANCE_MD:
-      *val = LSM6DSV320X_GY_HIGH_PERFORMANCE_MD;
+    case ISM6HG256X_GY_HIGH_PERFORMANCE_MD:
+      *val = ISM6HG256X_GY_HIGH_PERFORMANCE_MD;
       break;
 
-    case LSM6DSV320X_GY_HIGH_ACCURACY_ODR_MD:
-      *val = LSM6DSV320X_GY_HIGH_ACCURACY_ODR_MD;
+    case ISM6HG256X_GY_HIGH_ACCURACY_ODR_MD:
+      *val = ISM6HG256X_GY_HIGH_ACCURACY_ODR_MD;
       break;
 
-    case LSM6DSV320X_GY_ODR_TRIGGERED_MD:
-      *val = LSM6DSV320X_GY_ODR_TRIGGERED_MD;
+    case ISM6HG256X_GY_ODR_TRIGGERED_MD:
+      *val = ISM6HG256X_GY_ODR_TRIGGERED_MD;
       break;
 
-    case LSM6DSV320X_GY_SLEEP_MD:
-      *val = LSM6DSV320X_GY_SLEEP_MD;
+    case ISM6HG256X_GY_SLEEP_MD:
+      *val = ISM6HG256X_GY_SLEEP_MD;
       break;
 
-    case LSM6DSV320X_GY_LOW_POWER_MD:
-      *val = LSM6DSV320X_GY_LOW_POWER_MD;
+    case ISM6HG256X_GY_LOW_POWER_MD:
+      *val = ISM6HG256X_GY_LOW_POWER_MD;
       break;
 
     default:
-      *val = LSM6DSV320X_GY_HIGH_PERFORMANCE_MD;
+      *val = ISM6HG256X_GY_HIGH_PERFORMANCE_MD;
       break;
   }
 
@@ -1487,16 +1482,16 @@ int32_t lsm6dsv320x_gy_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_gy_mode_t *
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_ctrl3_t ctrl3;
+  ism6hg256x_ctrl3_t ctrl3;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL3, (uint8_t *)&ctrl3, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
   if (ret == 0)
   {
     ctrl3.if_inc = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL3, (uint8_t *)&ctrl3, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
   }
 
   return ret;
@@ -1510,12 +1505,12 @@ int32_t lsm6dsv320x_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ctrl3_t ctrl3;
+  ism6hg256x_ctrl3_t ctrl3;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL3, (uint8_t *)&ctrl3, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
   if (ret != 0)
   {
     return ret;
@@ -1534,17 +1529,17 @@ int32_t lsm6dsv320x_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_ctrl3_t ctrl3;
+  ism6hg256x_ctrl3_t ctrl3;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL3, (uint8_t *)&ctrl3, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
 
   if (ret == 0)
   {
     ctrl3.bdu = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL3, (uint8_t *)&ctrl3, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
   }
 
   return ret;
@@ -1558,12 +1553,12 @@ int32_t lsm6dsv320x_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ctrl3_t ctrl3;
+  ism6hg256x_ctrl3_t ctrl3;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL3, (uint8_t *)&ctrl3, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
   if (ret != 0)
   {
     return ret;
@@ -1582,9 +1577,9 @@ int32_t lsm6dsv320x_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_odr_trig_cfg_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_odr_trig_cfg_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_odr_trig_cfg_t odr_trig;
+  ism6hg256x_odr_trig_cfg_t odr_trig;
   int32_t ret;
 
   if (val >= 1U && val <= 3U)
@@ -1592,12 +1587,12 @@ int32_t lsm6dsv320x_odr_trig_cfg_set(const stmdev_ctx_t *ctx, uint8_t val)
     return -1;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_ODR_TRIG_CFG, (uint8_t *)&odr_trig, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_ODR_TRIG_CFG, (uint8_t *)&odr_trig, 1);
 
   if (ret == 0)
   {
     odr_trig.odr_trig_nodr = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_ODR_TRIG_CFG, (uint8_t *)&odr_trig, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_ODR_TRIG_CFG, (uint8_t *)&odr_trig, 1);
   }
 
   return ret;
@@ -1611,12 +1606,12 @@ int32_t lsm6dsv320x_odr_trig_cfg_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_odr_trig_cfg_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_odr_trig_cfg_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_odr_trig_cfg_t odr_trig;
+  ism6hg256x_odr_trig_cfg_t odr_trig;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_ODR_TRIG_CFG, (uint8_t *)&odr_trig, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_ODR_TRIG_CFG, (uint8_t *)&odr_trig, 1);
   if (ret != 0)
   {
     return ret;
@@ -1634,18 +1629,18 @@ int32_t lsm6dsv320x_odr_trig_cfg_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_data_ready_mode_set(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_data_ready_mode_t val)
+int32_t ism6hg256x_data_ready_mode_set(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_data_ready_mode_t val)
 {
-  lsm6dsv320x_ctrl4_t ctrl4;
+  ism6hg256x_ctrl4_t ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
 
   if (ret == 0)
   {
     ctrl4.drdy_pulsed = (uint8_t)val & 0x1U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
   }
 
   return ret;
@@ -1659,13 +1654,13 @@ int32_t lsm6dsv320x_data_ready_mode_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_data_ready_mode_get(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_data_ready_mode_t *val)
+int32_t ism6hg256x_data_ready_mode_get(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_data_ready_mode_t *val)
 {
-  lsm6dsv320x_ctrl4_t ctrl4;
+  ism6hg256x_ctrl4_t ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
   if (ret != 0)
   {
     return ret;
@@ -1673,16 +1668,16 @@ int32_t lsm6dsv320x_data_ready_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl4.drdy_pulsed)
   {
-    case LSM6DSV320X_DRDY_LATCHED:
-      *val = LSM6DSV320X_DRDY_LATCHED;
+    case ISM6HG256X_DRDY_LATCHED:
+      *val = ISM6HG256X_DRDY_LATCHED;
       break;
 
-    case LSM6DSV320X_DRDY_PULSED:
-      *val = LSM6DSV320X_DRDY_PULSED;
+    case ISM6HG256X_DRDY_PULSED:
+      *val = ISM6HG256X_DRDY_PULSED;
       break;
 
     default:
-      *val = LSM6DSV320X_DRDY_LATCHED;
+      *val = ISM6HG256X_DRDY_LATCHED;
       break;
   }
 
@@ -1697,30 +1692,30 @@ int32_t lsm6dsv320x_data_ready_mode_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_interrupt_enable_set(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_interrupt_mode_t val)
+int32_t ism6hg256x_interrupt_enable_set(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_interrupt_mode_t val)
 {
-  lsm6dsv320x_tap_cfg0_t cfg;
-  lsm6dsv320x_functions_enable_t func;
+  ism6hg256x_tap_cfg0_t cfg;
+  ism6hg256x_functions_enable_t func;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&func, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&func, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   func.interrupts_enable = val.enable;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&func, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&func, 1);
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&cfg, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   cfg.lir = val.lir;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&cfg, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&cfg, 1);
 
   return ret;
 }
@@ -1733,15 +1728,15 @@ int32_t lsm6dsv320x_interrupt_enable_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_interrupt_enable_get(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_interrupt_mode_t *val)
+int32_t ism6hg256x_interrupt_enable_get(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_interrupt_mode_t *val)
 {
-  lsm6dsv320x_tap_cfg0_t cfg;
-  lsm6dsv320x_functions_enable_t func;
+  ism6hg256x_tap_cfg0_t cfg;
+  ism6hg256x_functions_enable_t func;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&func, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&func, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -1761,18 +1756,18 @@ int32_t lsm6dsv320x_interrupt_enable_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_gy_full_scale_set(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_gy_full_scale_t val)
+int32_t ism6hg256x_gy_full_scale_set(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_gy_full_scale_t val)
 {
-  lsm6dsv320x_ctrl6_t ctrl6;
+  ism6hg256x_ctrl6_t ctrl6;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL6, (uint8_t *)&ctrl6, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL6, (uint8_t *)&ctrl6, 1);
 
   if (ret == 0)
   {
     ctrl6.fs_g = (uint8_t)val & 0xfu;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL6, (uint8_t *)&ctrl6, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL6, (uint8_t *)&ctrl6, 1);
   }
 
   return ret;
@@ -1786,13 +1781,13 @@ int32_t lsm6dsv320x_gy_full_scale_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_gy_full_scale_get(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_gy_full_scale_t *val)
+int32_t ism6hg256x_gy_full_scale_get(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_gy_full_scale_t *val)
 {
-  lsm6dsv320x_ctrl6_t ctrl6;
+  ism6hg256x_ctrl6_t ctrl6;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL6, (uint8_t *)&ctrl6, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL6, (uint8_t *)&ctrl6, 1);
   if (ret != 0)
   {
     return ret;
@@ -1800,28 +1795,28 @@ int32_t lsm6dsv320x_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl6.fs_g)
   {
-    case LSM6DSV320X_250dps:
-      *val = LSM6DSV320X_250dps;
+    case ISM6HG256X_250dps:
+      *val = ISM6HG256X_250dps;
       break;
 
-    case LSM6DSV320X_500dps:
-      *val = LSM6DSV320X_500dps;
+    case ISM6HG256X_500dps:
+      *val = ISM6HG256X_500dps;
       break;
 
-    case LSM6DSV320X_1000dps:
-      *val = LSM6DSV320X_1000dps;
+    case ISM6HG256X_1000dps:
+      *val = ISM6HG256X_1000dps;
       break;
 
-    case LSM6DSV320X_2000dps:
-      *val = LSM6DSV320X_2000dps;
+    case ISM6HG256X_2000dps:
+      *val = ISM6HG256X_2000dps;
       break;
 
-    case LSM6DSV320X_4000dps:
-      *val = LSM6DSV320X_4000dps;
+    case ISM6HG256X_4000dps:
+      *val = ISM6HG256X_4000dps;
       break;
 
     default:
-      *val = LSM6DSV320X_250dps;
+      *val = ISM6HG256X_250dps;
       break;
   }
 
@@ -1836,18 +1831,18 @@ int32_t lsm6dsv320x_gy_full_scale_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_full_scale_set(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_xl_full_scale_t val)
+int32_t ism6hg256x_xl_full_scale_set(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_xl_full_scale_t val)
 {
-  lsm6dsv320x_ctrl8_t ctrl8;
+  ism6hg256x_ctrl8_t ctrl8;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL8, (uint8_t *)&ctrl8, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL8, (uint8_t *)&ctrl8, 1);
 
   if (ret == 0)
   {
     ctrl8.fs_xl = (uint8_t)val & 0x3U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL8, (uint8_t *)&ctrl8, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL8, (uint8_t *)&ctrl8, 1);
   }
 
   return ret;
@@ -1861,13 +1856,13 @@ int32_t lsm6dsv320x_xl_full_scale_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_full_scale_get(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_xl_full_scale_t *val)
+int32_t ism6hg256x_xl_full_scale_get(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_xl_full_scale_t *val)
 {
-  lsm6dsv320x_ctrl8_t ctrl8;
+  ism6hg256x_ctrl8_t ctrl8;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL8, (uint8_t *)&ctrl8, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL8, (uint8_t *)&ctrl8, 1);
   if (ret != 0)
   {
     return ret;
@@ -1875,24 +1870,24 @@ int32_t lsm6dsv320x_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl8.fs_xl)
   {
-    case LSM6DSV320X_2g:
-      *val = LSM6DSV320X_2g;
+    case ISM6HG256X_2g:
+      *val = ISM6HG256X_2g;
       break;
 
-    case LSM6DSV320X_4g:
-      *val = LSM6DSV320X_4g;
+    case ISM6HG256X_4g:
+      *val = ISM6HG256X_4g;
       break;
 
-    case LSM6DSV320X_8g:
-      *val = LSM6DSV320X_8g;
+    case ISM6HG256X_8g:
+      *val = ISM6HG256X_8g;
       break;
 
-    case LSM6DSV320X_16g:
-      *val = LSM6DSV320X_16g;
+    case ISM6HG256X_16g:
+      *val = ISM6HG256X_16g;
       break;
 
     default:
-      *val = LSM6DSV320X_2g;
+      *val = ISM6HG256X_2g;
       break;
   }
 
@@ -1903,22 +1898,22 @@ int32_t lsm6dsv320x_xl_full_scale_get(const stmdev_ctx_t *ctx,
   * @brief  Accelerometer HG full-scale selection.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_hg_xl_full_scale_t
+  * @param  val      ism6hg256x_hg_xl_full_scale_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_hg_xl_full_scale_set(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_hg_xl_full_scale_t val)
+int32_t ism6hg256x_hg_xl_full_scale_set(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_hg_xl_full_scale_t val)
 {
-  lsm6dsv320x_ctrl1_xl_hg_t ctrl1;
+  ism6hg256x_ctrl1_xl_hg_t ctrl1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL1_XL_HG, (uint8_t *)&ctrl1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL1_XL_HG, (uint8_t *)&ctrl1, 1);
 
   if (ret == 0)
   {
     ctrl1.fs_xl_hg = (uint8_t)val & 0x7U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL1_XL_HG, (uint8_t *)&ctrl1, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL1_XL_HG, (uint8_t *)&ctrl1, 1);
   }
 
   return ret;
@@ -1928,17 +1923,17 @@ int32_t lsm6dsv320x_hg_xl_full_scale_set(const stmdev_ctx_t *ctx,
   * @brief  Accelerometer HG full-scale selection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_hg_xl_full_scale_t
+  * @param  val      ism6hg256x_hg_xl_full_scale_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_hg_xl_full_scale_get(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_hg_xl_full_scale_t *val)
+int32_t ism6hg256x_hg_xl_full_scale_get(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_hg_xl_full_scale_t *val)
 {
-  lsm6dsv320x_ctrl1_xl_hg_t ctrl1;
+  ism6hg256x_ctrl1_xl_hg_t ctrl1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL1_XL_HG, (uint8_t *)&ctrl1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL1_XL_HG, (uint8_t *)&ctrl1, 1);
   if (ret != 0)
   {
     return ret;
@@ -1946,28 +1941,24 @@ int32_t lsm6dsv320x_hg_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1.fs_xl_hg)
   {
-    case LSM6DSV320X_32g:
-      *val = LSM6DSV320X_32g;
+    case ISM6HG256X_32g:
+      *val = ISM6HG256X_32g;
       break;
 
-    case LSM6DSV320X_64g:
-      *val = LSM6DSV320X_64g;
+    case ISM6HG256X_64g:
+      *val = ISM6HG256X_64g;
       break;
 
-    case LSM6DSV320X_128g:
-      *val = LSM6DSV320X_128g;
+    case ISM6HG256X_128g:
+      *val = ISM6HG256X_128g;
       break;
 
-    case LSM6DSV320X_256g:
-      *val = LSM6DSV320X_256g;
-      break;
-
-    case LSM6DSV320X_320g:
-      *val = LSM6DSV320X_320g;
+    case ISM6HG256X_256g:
+      *val = ISM6HG256X_256g;
       break;
 
     default:
-      *val = LSM6DSV320X_32g;
+      *val = ISM6HG256X_32g;
       break;
   }
 
@@ -1982,17 +1973,17 @@ int32_t lsm6dsv320x_hg_xl_full_scale_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_self_test_set(const stmdev_ctx_t *ctx, lsm6dsv320x_self_test_t val)
+int32_t ism6hg256x_xl_self_test_set(const stmdev_ctx_t *ctx, ism6hg256x_self_test_t val)
 {
-  lsm6dsv320x_ctrl10_t ctrl10;
+  ism6hg256x_ctrl10_t ctrl10;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL10, (uint8_t *)&ctrl10, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL10, (uint8_t *)&ctrl10, 1);
 
   if (ret == 0)
   {
     ctrl10.st_xl = (uint8_t)val & 0x3U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL10, (uint8_t *)&ctrl10, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL10, (uint8_t *)&ctrl10, 1);
   }
 
   return ret;
@@ -2006,12 +1997,12 @@ int32_t lsm6dsv320x_xl_self_test_set(const stmdev_ctx_t *ctx, lsm6dsv320x_self_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_self_test_t *val)
+int32_t ism6hg256x_xl_self_test_get(const stmdev_ctx_t *ctx, ism6hg256x_self_test_t *val)
 {
-  lsm6dsv320x_ctrl10_t ctrl10;
+  ism6hg256x_ctrl10_t ctrl10;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL10, (uint8_t *)&ctrl10, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL10, (uint8_t *)&ctrl10, 1);
   if (ret != 0)
   {
     return ret;
@@ -2019,20 +2010,20 @@ int32_t lsm6dsv320x_xl_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_self_t
 
   switch (ctrl10.st_xl)
   {
-    case LSM6DSV320X_ST_DISABLE:
-      *val = LSM6DSV320X_ST_DISABLE;
+    case ISM6HG256X_ST_DISABLE:
+      *val = ISM6HG256X_ST_DISABLE;
       break;
 
-    case LSM6DSV320X_ST_POSITIVE:
-      *val = LSM6DSV320X_ST_POSITIVE;
+    case ISM6HG256X_ST_POSITIVE:
+      *val = ISM6HG256X_ST_POSITIVE;
       break;
 
-    case LSM6DSV320X_ST_NEGATIVE:
-      *val = LSM6DSV320X_ST_NEGATIVE;
+    case ISM6HG256X_ST_NEGATIVE:
+      *val = ISM6HG256X_ST_NEGATIVE;
       break;
 
     default:
-      *val = LSM6DSV320X_ST_DISABLE;
+      *val = ISM6HG256X_ST_DISABLE;
       break;
   }
 
@@ -2047,17 +2038,17 @@ int32_t lsm6dsv320x_xl_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_self_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_gy_self_test_set(const stmdev_ctx_t *ctx, lsm6dsv320x_self_test_t val)
+int32_t ism6hg256x_gy_self_test_set(const stmdev_ctx_t *ctx, ism6hg256x_self_test_t val)
 {
-  lsm6dsv320x_ctrl10_t ctrl10;
+  ism6hg256x_ctrl10_t ctrl10;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL10, (uint8_t *)&ctrl10, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL10, (uint8_t *)&ctrl10, 1);
 
   if (ret == 0)
   {
     ctrl10.st_g = (uint8_t)val & 0x3U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL10, (uint8_t *)&ctrl10, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL10, (uint8_t *)&ctrl10, 1);
   }
 
   return ret;
@@ -2071,12 +2062,12 @@ int32_t lsm6dsv320x_gy_self_test_set(const stmdev_ctx_t *ctx, lsm6dsv320x_self_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_gy_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_self_test_t *val)
+int32_t ism6hg256x_gy_self_test_get(const stmdev_ctx_t *ctx, ism6hg256x_self_test_t *val)
 {
-  lsm6dsv320x_ctrl10_t ctrl10;
+  ism6hg256x_ctrl10_t ctrl10;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL10, (uint8_t *)&ctrl10, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL10, (uint8_t *)&ctrl10, 1);
   if (ret != 0)
   {
     return ret;
@@ -2084,20 +2075,20 @@ int32_t lsm6dsv320x_gy_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_self_t
 
   switch (ctrl10.st_g)
   {
-    case LSM6DSV320X_ST_DISABLE:
-      *val = LSM6DSV320X_ST_DISABLE;
+    case ISM6HG256X_ST_DISABLE:
+      *val = ISM6HG256X_ST_DISABLE;
       break;
 
-    case LSM6DSV320X_ST_POSITIVE:
-      *val = LSM6DSV320X_ST_POSITIVE;
+    case ISM6HG256X_ST_POSITIVE:
+      *val = ISM6HG256X_ST_POSITIVE;
       break;
 
-    case LSM6DSV320X_ST_NEGATIVE:
-      *val = LSM6DSV320X_ST_NEGATIVE;
+    case ISM6HG256X_ST_NEGATIVE:
+      *val = ISM6HG256X_ST_NEGATIVE;
       break;
 
     default:
-      *val = LSM6DSV320X_ST_DISABLE;
+      *val = ISM6HG256X_ST_DISABLE;
       break;
   }
 
@@ -2112,17 +2103,17 @@ int32_t lsm6dsv320x_gy_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_self_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_hg_xl_self_test_set(const stmdev_ctx_t *ctx, lsm6dsv320x_self_test_t val)
+int32_t ism6hg256x_hg_xl_self_test_set(const stmdev_ctx_t *ctx, ism6hg256x_self_test_t val)
 {
-  lsm6dsv320x_ctrl2_xl_hg_t ctrl2_xl_hg;
+  ism6hg256x_ctrl2_xl_hg_t ctrl2_xl_hg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
 
   if (ret == 0)
   {
     ctrl2_xl_hg.xl_hg_st = (uint8_t)val & 0x3U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
   }
 
   return ret;
@@ -2136,12 +2127,12 @@ int32_t lsm6dsv320x_hg_xl_self_test_set(const stmdev_ctx_t *ctx, lsm6dsv320x_sel
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_hg_xl_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_self_test_t *val)
+int32_t ism6hg256x_hg_xl_self_test_get(const stmdev_ctx_t *ctx, ism6hg256x_self_test_t *val)
 {
-  lsm6dsv320x_ctrl2_xl_hg_t ctrl2_xl_hg;
+  ism6hg256x_ctrl2_xl_hg_t ctrl2_xl_hg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
   if (ret != 0)
   {
     return ret;
@@ -2149,20 +2140,20 @@ int32_t lsm6dsv320x_hg_xl_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_sel
 
   switch (ctrl2_xl_hg.xl_hg_st)
   {
-    case LSM6DSV320X_ST_DISABLE:
-      *val = LSM6DSV320X_ST_DISABLE;
+    case ISM6HG256X_ST_DISABLE:
+      *val = ISM6HG256X_ST_DISABLE;
       break;
 
-    case LSM6DSV320X_ST_POSITIVE:
-      *val = LSM6DSV320X_ST_POSITIVE;
+    case ISM6HG256X_ST_POSITIVE:
+      *val = ISM6HG256X_ST_POSITIVE;
       break;
 
-    case LSM6DSV320X_ST_NEGATIVE:
-      *val = LSM6DSV320X_ST_NEGATIVE;
+    case ISM6HG256X_ST_NEGATIVE:
+      *val = ISM6HG256X_ST_NEGATIVE;
       break;
 
     default:
-      *val = LSM6DSV320X_ST_DISABLE;
+      *val = ISM6HG256X_ST_DISABLE;
       break;
   }
 
@@ -2177,17 +2168,17 @@ int32_t lsm6dsv320x_hg_xl_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_sel
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_xl_self_test_set(const stmdev_ctx_t *ctx, lsm6dsv320x_self_test_t val)
+int32_t ism6hg256x_ois_xl_self_test_set(const stmdev_ctx_t *ctx, ism6hg256x_self_test_t val)
 {
-  lsm6dsv320x_if2_int_ois_t if2_int_ois;
+  ism6hg256x_if2_int_ois_t if2_int_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
 
   if (ret == 0)
   {
     if2_int_ois.st_xl_ois = ((uint8_t)val & 0x3U);
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
   }
 
   return ret;
@@ -2201,12 +2192,12 @@ int32_t lsm6dsv320x_ois_xl_self_test_set(const stmdev_ctx_t *ctx, lsm6dsv320x_se
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_xl_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_self_test_t *val)
+int32_t ism6hg256x_ois_xl_self_test_get(const stmdev_ctx_t *ctx, ism6hg256x_self_test_t *val)
 {
-  lsm6dsv320x_if2_int_ois_t if2_int_ois;
+  ism6hg256x_if2_int_ois_t if2_int_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
   if (ret != 0)
   {
     return ret;
@@ -2214,20 +2205,20 @@ int32_t lsm6dsv320x_ois_xl_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_se
 
   switch (if2_int_ois.st_xl_ois)
   {
-    case LSM6DSV320X_ST_DISABLE:
-      *val = LSM6DSV320X_ST_DISABLE;
+    case ISM6HG256X_ST_DISABLE:
+      *val = ISM6HG256X_ST_DISABLE;
       break;
 
-    case LSM6DSV320X_ST_POSITIVE:
-      *val = LSM6DSV320X_ST_POSITIVE;
+    case ISM6HG256X_ST_POSITIVE:
+      *val = ISM6HG256X_ST_POSITIVE;
       break;
 
-    case LSM6DSV320X_ST_NEGATIVE:
-      *val = LSM6DSV320X_ST_NEGATIVE;
+    case ISM6HG256X_ST_NEGATIVE:
+      *val = ISM6HG256X_ST_NEGATIVE;
       break;
 
     default:
-      *val = LSM6DSV320X_ST_DISABLE;
+      *val = ISM6HG256X_ST_DISABLE;
       break;
   }
 
@@ -2238,23 +2229,23 @@ int32_t lsm6dsv320x_ois_xl_self_test_get(const stmdev_ctx_t *ctx, lsm6dsv320x_se
   * @brief  IF2 Accelerometer self-test selection.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      GY_ST_DISABLE, GY_ST_POSITIVE, GY_ST_NEGATIVE, LSM6DSV320X_OIS_GY_ST_CLAMP_POS, LSM6DSV320X_OIS_GY_ST_CLAMP_NEG
+  * @param  val      GY_ST_DISABLE, GY_ST_POSITIVE, GY_ST_NEGATIVE, ISM6HG256X_OIS_GY_ST_CLAMP_POS, ISM6HG256X_OIS_GY_ST_CLAMP_NEG
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_gy_self_test_set(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_ois_gy_self_test_t val)
+int32_t ism6hg256x_ois_gy_self_test_set(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_ois_gy_self_test_t val)
 {
-  lsm6dsv320x_if2_int_ois_t if2_int_ois;
+  ism6hg256x_if2_int_ois_t if2_int_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
 
   if (ret == 0)
   {
     if2_int_ois.st_g_ois = ((uint8_t)val & 0x3U);
     if2_int_ois.st_ois_clampdis = ((uint8_t)val & 0x04U) >> 2;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
   }
 
   return ret;
@@ -2264,17 +2255,17 @@ int32_t lsm6dsv320x_ois_gy_self_test_set(const stmdev_ctx_t *ctx,
   * @brief  IF2 Accelerometer self-test selection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      GY_ST_DISABLE, GY_ST_POSITIVE, GY_ST_NEGATIVE, LSM6DSV320X_OIS_GY_ST_CLAMP_POS, LSM6DSV320X_OIS_GY_ST_CLAMP_NEG
+  * @param  val      GY_ST_DISABLE, GY_ST_POSITIVE, GY_ST_NEGATIVE, ISM6HG256X_OIS_GY_ST_CLAMP_POS, ISM6HG256X_OIS_GY_ST_CLAMP_NEG
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_gy_self_test_get(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_ois_gy_self_test_t *val)
+int32_t ism6hg256x_ois_gy_self_test_get(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_ois_gy_self_test_t *val)
 {
-  lsm6dsv320x_if2_int_ois_t if2_int_ois;
+  ism6hg256x_if2_int_ois_t if2_int_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
   if (ret != 0)
   {
     return ret;
@@ -2282,22 +2273,22 @@ int32_t lsm6dsv320x_ois_gy_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (if2_int_ois.st_g_ois)
   {
-    case LSM6DSV320X_OIS_GY_ST_DISABLE:
-      *val = LSM6DSV320X_OIS_GY_ST_DISABLE;
+    case ISM6HG256X_OIS_GY_ST_DISABLE:
+      *val = ISM6HG256X_OIS_GY_ST_DISABLE;
       break;
 
-    case LSM6DSV320X_OIS_GY_ST_POSITIVE:
-      *val = (if2_int_ois.st_ois_clampdis == 1U) ? LSM6DSV320X_OIS_GY_ST_CLAMP_POS :
-             LSM6DSV320X_OIS_GY_ST_POSITIVE;
+    case ISM6HG256X_OIS_GY_ST_POSITIVE:
+      *val = (if2_int_ois.st_ois_clampdis == 1U) ? ISM6HG256X_OIS_GY_ST_CLAMP_POS :
+             ISM6HG256X_OIS_GY_ST_POSITIVE;
       break;
 
-    case LSM6DSV320X_OIS_GY_ST_NEGATIVE:
-      *val = (if2_int_ois.st_ois_clampdis == 1U) ? LSM6DSV320X_OIS_GY_ST_CLAMP_NEG :
-             LSM6DSV320X_OIS_GY_ST_NEGATIVE;
+    case ISM6HG256X_OIS_GY_ST_NEGATIVE:
+      *val = (if2_int_ois.st_ois_clampdis == 1U) ? ISM6HG256X_OIS_GY_ST_CLAMP_NEG :
+             ISM6HG256X_OIS_GY_ST_NEGATIVE;
       break;
 
     default:
-      *val = LSM6DSV320X_OIS_GY_ST_DISABLE;
+      *val = ISM6HG256X_OIS_GY_ST_DISABLE;
       break;
   }
 
@@ -2321,19 +2312,19 @@ int32_t lsm6dsv320x_ois_gy_self_test_get(const stmdev_ctx_t *ctx,
   * @brief  High-g event configuration.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_hg_wake_up_cfg_t structure
+  * @param  val      ism6hg256x_hg_wake_up_cfg_t structure
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_hg_wake_up_cfg_set(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_hg_wake_up_cfg_t val)
+int32_t ism6hg256x_hg_wake_up_cfg_set(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_hg_wake_up_cfg_t val)
 {
-  lsm6dsv320x_hg_functions_enable_t hg_func;
-  lsm6dsv320x_hg_wake_up_ths_t hg_wake_up_ths;
+  ism6hg256x_hg_functions_enable_t hg_func;
+  ism6hg256x_hg_wake_up_ths_t hg_wake_up_ths;
   uint8_t reg[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
   if (ret != 0)
   {
     return ret;
@@ -2345,26 +2336,26 @@ int32_t lsm6dsv320x_hg_wake_up_cfg_set(const stmdev_ctx_t *ctx,
   bytecpy(&reg[0], (uint8_t *)&hg_func);
   bytecpy(&reg[1], (uint8_t *)&hg_wake_up_ths);
 
-  return lsm6dsv320x_write_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, reg, 2);
+  return ism6hg256x_write_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, reg, 2);
 }
 
 /**
   * @brief  High-g event configuration.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_hg_wake_up_cfg_t structure
+  * @param  val      ism6hg256x_hg_wake_up_cfg_t structure
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_hg_wake_up_cfg_get(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_hg_wake_up_cfg_t *val)
+int32_t ism6hg256x_hg_wake_up_cfg_get(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_hg_wake_up_cfg_t *val)
 {
-  lsm6dsv320x_hg_functions_enable_t hg_func;
-  lsm6dsv320x_hg_wake_up_ths_t hg_wake_up_ths;
+  ism6hg256x_hg_functions_enable_t hg_func;
+  ism6hg256x_hg_wake_up_ths_t hg_wake_up_ths;
   uint8_t buff[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, (uint8_t *)buff, 2);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, (uint8_t *)buff, 2);
   if (ret != 0)
   {
     return ret;
@@ -2383,17 +2374,17 @@ int32_t lsm6dsv320x_hg_wake_up_cfg_get(const stmdev_ctx_t *ctx,
  * @brief   High-g wake-up interrupt configuration[set]
  *
  * @param  ctx    Read / write interface definitions.(ptr)
- * @param  val    lsm6dsv320x_hg_wu_interrupt_cfg_t.
+ * @param  val    ism6hg256x_hg_wu_interrupt_cfg_t.
  * @retval        Interface status (MANDATORY: return 0 -> no Error).
  *
  */
-int32_t lsm6dsv320x_hg_wu_interrupt_cfg_set(const stmdev_ctx_t *ctx,
-                                            lsm6dsv320x_hg_wu_interrupt_cfg_t val)
+int32_t ism6hg256x_hg_wu_interrupt_cfg_set(const stmdev_ctx_t *ctx,
+                                           ism6hg256x_hg_wu_interrupt_cfg_t val)
 {
-  lsm6dsv320x_hg_functions_enable_t hg_func;
+  ism6hg256x_hg_functions_enable_t hg_func;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
   if (ret != 0)
   {
     return ret;
@@ -2401,7 +2392,7 @@ int32_t lsm6dsv320x_hg_wu_interrupt_cfg_set(const stmdev_ctx_t *ctx,
 
   hg_func.hg_interrupts_enable        = val.hg_interrupts_enable;
   hg_func.hg_wu_change_int_sel        = val.hg_wakeup_int_sel;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
 
   return ret;
 }
@@ -2410,17 +2401,17 @@ int32_t lsm6dsv320x_hg_wu_interrupt_cfg_set(const stmdev_ctx_t *ctx,
  * @brief   High-g wake-up interrupt configuration[get]
  *
  * @param  ctx    Read / write interface definitions.(ptr)
- * @param  val    lsm6dsv320x_hg_wu_interrupt_cfg_t.
+ * @param  val    ism6hg256x_hg_wu_interrupt_cfg_t.
  * @retval        Interface status (MANDATORY: return 0 -> no Error).
  *
  */
-int32_t lsm6dsv320x_hg_wu_interrupt_cfg_get(const stmdev_ctx_t *ctx,
-                                            lsm6dsv320x_hg_wu_interrupt_cfg_t *val)
+int32_t ism6hg256x_hg_wu_interrupt_cfg_get(const stmdev_ctx_t *ctx,
+                                           ism6hg256x_hg_wu_interrupt_cfg_t *val)
 {
-  lsm6dsv320x_hg_functions_enable_t hg_func;
+  ism6hg256x_hg_functions_enable_t hg_func;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
   if (ret != 0)
   {
     return ret;
@@ -2440,17 +2431,17 @@ int32_t lsm6dsv320x_hg_wu_interrupt_cfg_get(const stmdev_ctx_t *ctx,
  * @retval        Interface status (MANDATORY: return 0 -> no Error).
  *
  */
-int32_t lsm6dsv320x_hg_emb_usr_off_correction_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_hg_emb_usr_off_correction_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_cfg_t emb_func_cfg;
+  ism6hg256x_emb_func_cfg_t emb_func_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
 
   if (ret == 0)
   {
     emb_func_cfg.hg_usr_off_on_emb_func = (uint8_t)val & 0x1U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
   }
 
   return ret;
@@ -2464,12 +2455,12 @@ int32_t lsm6dsv320x_hg_emb_usr_off_correction_set(const stmdev_ctx_t *ctx, uint8
  * @retval        Interface status (MANDATORY: return 0 -> no Error).
  *
  */
-int32_t lsm6dsv320x_hg_emb_usr_off_correction_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_hg_emb_usr_off_correction_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_emb_func_cfg_t emb_func_cfg;
+  ism6hg256x_emb_func_cfg_t emb_func_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -2488,17 +2479,17 @@ int32_t lsm6dsv320x_hg_emb_usr_off_correction_get(const stmdev_ctx_t *ctx, uint8
  * @retval        Interface status (MANDATORY: return 0 -> no Error).
  *
  */
-int32_t lsm6dsv320x_hg_wu_usr_off_correction_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_hg_wu_usr_off_correction_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_ctrl2_xl_hg_t ctrl2_xl_hg;
+  ism6hg256x_ctrl2_xl_hg_t ctrl2_xl_hg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
 
   if (ret == 0)
   {
     ctrl2_xl_hg.hg_usr_off_on_wu = (uint8_t)val & 0x1U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
   }
 
   return ret;
@@ -2512,12 +2503,12 @@ int32_t lsm6dsv320x_hg_wu_usr_off_correction_set(const stmdev_ctx_t *ctx, uint8_
  * @retval        Interface status (MANDATORY: return 0 -> no Error).
  *
  */
-int32_t lsm6dsv320x_hg_wu_usr_off_correction_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_hg_wu_usr_off_correction_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ctrl2_xl_hg_t ctrl2_xl_hg;
+  ism6hg256x_ctrl2_xl_hg_t ctrl2_xl_hg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL2_XL_HG, (uint8_t *)&ctrl2_xl_hg, 1);
   if (ret != 0)
   {
     return ret;
@@ -2536,13 +2527,13 @@ int32_t lsm6dsv320x_hg_wu_usr_off_correction_get(const stmdev_ctx_t *ctx, uint8_
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_hg_event_get(const stmdev_ctx_t *ctx, lsm6dsv320x_hg_event_t *val)
+int32_t ism6hg256x_hg_event_get(const stmdev_ctx_t *ctx, ism6hg256x_hg_event_t *val)
 {
-  lsm6dsv320x_all_int_src_t          int_src;
-  lsm6dsv320x_hg_wake_up_src_t       wup_src;
+  ism6hg256x_all_int_src_t          int_src;
+  ism6hg256x_hg_wake_up_src_t       wup_src;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_ALL_INT_SRC, (uint8_t *)&int_src, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_ALL_INT_SRC, (uint8_t *)&int_src, 1);
   if (ret != 0)
   {
     return ret;
@@ -2553,7 +2544,7 @@ int32_t lsm6dsv320x_hg_event_get(const stmdev_ctx_t *ctx, lsm6dsv320x_hg_event_t
   /* no High-g event */
   if (int_src.hg_ia != 0)
   {
-    ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HG_WAKE_UP_SRC, (uint8_t *)&wup_src, 1);
+    ret = ism6hg256x_read_reg(ctx, ISM6HG256X_HG_WAKE_UP_SRC, (uint8_t *)&wup_src, 1);
     if (ret != 0)
     {
       return ret;
@@ -2593,11 +2584,11 @@ int32_t lsm6dsv320x_hg_event_get(const stmdev_ctx_t *ctx, lsm6dsv320x_hg_event_t
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int1_route_set(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int1_route_set(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_int1_ctrl_t           int1_ctrl;
-  lsm6dsv320x_md1_cfg_t             md1_cfg;
+  ism6hg256x_int1_ctrl_t           int1_ctrl;
+  ism6hg256x_md1_cfg_t             md1_cfg;
   int32_t ret;
 
   /* not available on INT1 */
@@ -2606,7 +2597,7 @@ int32_t lsm6dsv320x_pin_int1_route_set(const stmdev_ctx_t *ctx,
     return -1;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
   if (ret != 0)
   {
     return ret;
@@ -2619,13 +2610,13 @@ int32_t lsm6dsv320x_pin_int1_route_set(const stmdev_ctx_t *ctx,
   int1_ctrl.int1_fifo_full     = val->fifo_full;
   int1_ctrl.int1_cnt_bdr       = val->cnt_bdr;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -2639,7 +2630,7 @@ int32_t lsm6dsv320x_pin_int1_route_set(const stmdev_ctx_t *ctx,
   md1_cfg.int1_ff              = val->freefall;
   md1_cfg.int1_sleep_change    = val->sleep_change;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
 
   return ret;
 }
@@ -2653,14 +2644,14 @@ int32_t lsm6dsv320x_pin_int1_route_set(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int1_route_get(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int1_route_get(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_int1_ctrl_t           int1_ctrl;
-  lsm6dsv320x_md1_cfg_t             md1_cfg;
+  ism6hg256x_int1_ctrl_t           int1_ctrl;
+  ism6hg256x_md1_cfg_t             md1_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
   if (ret != 0)
   {
     return ret;
@@ -2673,7 +2664,7 @@ int32_t lsm6dsv320x_pin_int1_route_get(const stmdev_ctx_t *ctx,
   val->fifo_full = int1_ctrl.int1_fifo_full;
   val->cnt_bdr   = int1_ctrl.int1_cnt_bdr;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -2699,15 +2690,15 @@ int32_t lsm6dsv320x_pin_int1_route_get(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int2_route_set(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int2_route_set(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_int2_ctrl_t           int2_ctrl;
-  lsm6dsv320x_ctrl4_t               ctrl4;
-  lsm6dsv320x_md2_cfg_t             md2_cfg;
+  ism6hg256x_int2_ctrl_t           int2_ctrl;
+  ism6hg256x_ctrl4_t               ctrl4;
+  ism6hg256x_md2_cfg_t             md2_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
   if (ret != 0)
   {
     return ret;
@@ -2722,25 +2713,25 @@ int32_t lsm6dsv320x_pin_int2_route_set(const stmdev_ctx_t *ctx,
   int2_ctrl.int2_drdy_g_eis       = val->drdy_g_eis;
   int2_ctrl.int2_emb_func_endop   = val->emb_func_endop;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
   if (ret != 0)
   {
     return ret;
   }
   ctrl4.int2_drdy_temp         = val->drdy_temp;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -2754,7 +2745,7 @@ int32_t lsm6dsv320x_pin_int2_route_set(const stmdev_ctx_t *ctx,
   md2_cfg.int2_ff              = val->freefall;
   md2_cfg.int2_sleep_change    = val->sleep_change;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
 
   return ret;
 }
@@ -2768,15 +2759,15 @@ int32_t lsm6dsv320x_pin_int2_route_set(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int2_route_get(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int2_route_get(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_int2_ctrl_t           int2_ctrl;
-  lsm6dsv320x_ctrl4_t               ctrl4;
-  lsm6dsv320x_md2_cfg_t             md2_cfg;
+  ism6hg256x_int2_ctrl_t           int2_ctrl;
+  ism6hg256x_ctrl4_t               ctrl4;
+  ism6hg256x_md2_cfg_t             md2_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
   if (ret != 0)
   {
     return ret;
@@ -2791,7 +2782,7 @@ int32_t lsm6dsv320x_pin_int2_route_get(const stmdev_ctx_t *ctx,
   val->drdy_g_eis     = int2_ctrl.int2_drdy_g_eis;
   val->emb_func_endop = int2_ctrl.int2_emb_func_endop;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
   if (ret != 0)
   {
     return ret;
@@ -2799,7 +2790,7 @@ int32_t lsm6dsv320x_pin_int2_route_get(const stmdev_ctx_t *ctx,
 
   val->drdy_temp      = ctrl4.int2_drdy_temp;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -2825,44 +2816,44 @@ int32_t lsm6dsv320x_pin_int2_route_get(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int1_route_hg_set(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int1_route_hg_set(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_ctrl7_t               ctrl7;
-  lsm6dsv320x_hg_functions_enable_t hg_func;
-  lsm6dsv320x_inactivity_ths_t      reg_shock;
+  ism6hg256x_ctrl7_t               ctrl7;
+  ism6hg256x_hg_functions_enable_t hg_func;
+  ism6hg256x_inactivity_ths_t      reg_shock;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL7, (uint8_t *)&ctrl7, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL7, (uint8_t *)&ctrl7, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   ctrl7.int1_drdy_xl_hg        = val->drdy_hg_xl;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL7, (uint8_t *)&ctrl7, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL7, (uint8_t *)&ctrl7, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   hg_func.int1_hg_wu        = val->hg_wakeup;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   reg_shock.int1_hg_shock_change        = val->hg_shock_change;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
 
   return ret;
 }
@@ -2876,15 +2867,15 @@ int32_t lsm6dsv320x_pin_int1_route_hg_set(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int1_route_hg_get(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int1_route_hg_get(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_ctrl7_t               ctrl7;
-  lsm6dsv320x_hg_functions_enable_t hg_func;
-  lsm6dsv320x_inactivity_ths_t      reg_shock;
+  ism6hg256x_ctrl7_t               ctrl7;
+  ism6hg256x_hg_functions_enable_t hg_func;
+  ism6hg256x_inactivity_ths_t      reg_shock;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL7, (uint8_t *)&ctrl7, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL7, (uint8_t *)&ctrl7, 1);
   if (ret != 0)
   {
     return ret;
@@ -2892,7 +2883,7 @@ int32_t lsm6dsv320x_pin_int1_route_hg_get(const stmdev_ctx_t *ctx,
 
   val->drdy_hg_xl = ctrl7.int1_drdy_xl_hg;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
   if (ret != 0)
   {
     return ret;
@@ -2900,7 +2891,7 @@ int32_t lsm6dsv320x_pin_int1_route_hg_get(const stmdev_ctx_t *ctx,
 
   val->hg_wakeup = hg_func.int1_hg_wu;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
   if (ret != 0)
   {
     return ret;
@@ -2920,40 +2911,40 @@ int32_t lsm6dsv320x_pin_int1_route_hg_get(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int2_route_hg_set(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int2_route_hg_set(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_ctrl7_t               ctrl7;
-  lsm6dsv320x_hg_functions_enable_t hg_func;
-  lsm6dsv320x_inactivity_ths_t      reg_shock;
+  ism6hg256x_ctrl7_t               ctrl7;
+  ism6hg256x_hg_functions_enable_t hg_func;
+  ism6hg256x_inactivity_ths_t      reg_shock;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL7, (uint8_t *)&ctrl7, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL7, (uint8_t *)&ctrl7, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   ctrl7.int2_drdy_xl_hg        = val->drdy_hg_xl;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL7, (uint8_t *)&ctrl7, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL7, (uint8_t *)&ctrl7, 1);
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   hg_func.int2_hg_wu        = val->hg_wakeup;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   reg_shock.int2_hg_shock_change        = val->hg_shock_change;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
 
   return ret;
 }
@@ -2967,15 +2958,15 @@ int32_t lsm6dsv320x_pin_int2_route_hg_set(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int2_route_hg_get(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int2_route_hg_get(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_ctrl7_t               ctrl7;
-  lsm6dsv320x_hg_functions_enable_t hg_func;
-  lsm6dsv320x_inactivity_ths_t      reg_shock;
+  ism6hg256x_ctrl7_t               ctrl7;
+  ism6hg256x_hg_functions_enable_t hg_func;
+  ism6hg256x_inactivity_ths_t      reg_shock;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL7, (uint8_t *)&ctrl7, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL7, (uint8_t *)&ctrl7, 1);
   if (ret != 0)
   {
     return ret;
@@ -2983,7 +2974,7 @@ int32_t lsm6dsv320x_pin_int2_route_hg_get(const stmdev_ctx_t *ctx,
 
   val->drdy_hg_xl = ctrl7.int2_drdy_xl_hg;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_HG_FUNCTIONS_ENABLE, (uint8_t *)&hg_func, 1);
   if (ret != 0)
   {
     return ret;
@@ -2991,7 +2982,7 @@ int32_t lsm6dsv320x_pin_int2_route_hg_get(const stmdev_ctx_t *ctx,
 
   val->hg_wakeup = hg_func.int2_hg_wu;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_THS, (uint8_t *)&reg_shock, 1);
   if (ret != 0)
   {
     return ret;
@@ -3011,16 +3002,16 @@ int32_t lsm6dsv320x_pin_int2_route_hg_get(const stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int1_route_embedded_set(const stmdev_ctx_t *ctx,
-                                                lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int1_route_embedded_set(const stmdev_ctx_t *ctx,
+                                               ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_md1_cfg_t             md1_cfg;
-  lsm6dsv320x_emb_func_int1_t       emb_func_int1;
-  lsm6dsv320x_fsm_int1_t            fsm_int1;
-  lsm6dsv320x_mlc_int1_t            mlc_int1;
+  ism6hg256x_md1_cfg_t             md1_cfg;
+  ism6hg256x_emb_func_int1_t       emb_func_int1;
+  ism6hg256x_fsm_int1_t            fsm_int1;
+  ism6hg256x_mlc_int1_t            mlc_int1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -3028,20 +3019,20 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_set(const stmdev_ctx_t *ctx,
 
   md1_cfg.int1_emb_func = 1;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   /* Embedded Functions */
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3051,14 +3042,14 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_set(const stmdev_ctx_t *ctx,
   emb_func_int1.int1_tilt = val->tilt;
   emb_func_int1.int1_sig_mot = val->sig_mot;
 
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   /* FSM */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3073,14 +3064,14 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_set(const stmdev_ctx_t *ctx,
   fsm_int1.int1_fsm7 = val->fsm7;
   fsm_int1.int1_fsm8 = val->fsm8;
 
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   /* MLC */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3095,14 +3086,14 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_set(const stmdev_ctx_t *ctx,
   mlc_int1.int1_mlc7 = val->mlc7;
   mlc_int1.int1_mlc8 = val->mlc8;
 
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3116,22 +3107,22 @@ exit:
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int1_route_embedded_get(const stmdev_ctx_t *ctx,
-                                                lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int1_route_embedded_get(const stmdev_ctx_t *ctx,
+                                               ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_emb_func_int1_t       emb_func_int1;
-  lsm6dsv320x_fsm_int1_t            fsm_int1;
-  lsm6dsv320x_mlc_int1_t            mlc_int1;
+  ism6hg256x_emb_func_int1_t       emb_func_int1;
+  ism6hg256x_fsm_int1_t            fsm_int1;
+  ism6hg256x_mlc_int1_t            mlc_int1;
   int32_t ret;
 
   /* Embedded Functions */
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3142,7 +3133,7 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_get(const stmdev_ctx_t *ctx,
   val->tilt          = emb_func_int1.int1_tilt;
 
   /* FSM */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3158,7 +3149,7 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_get(const stmdev_ctx_t *ctx,
   val->fsm8 = fsm_int1.int1_fsm8;
 
   /* MLC */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3174,7 +3165,7 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_get(const stmdev_ctx_t *ctx,
   val->mlc8 = mlc_int1.int1_mlc8;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3188,16 +3179,16 @@ exit:
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int2_route_embedded_set(const stmdev_ctx_t *ctx,
-                                                lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int2_route_embedded_set(const stmdev_ctx_t *ctx,
+                                               ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_md2_cfg_t             md2_cfg;
-  lsm6dsv320x_emb_func_int2_t       emb_func_int2;
-  lsm6dsv320x_fsm_int2_t            fsm_int2;
-  lsm6dsv320x_mlc_int2_t            mlc_int2;
+  ism6hg256x_md2_cfg_t             md2_cfg;
+  ism6hg256x_emb_func_int2_t       emb_func_int2;
+  ism6hg256x_fsm_int2_t            fsm_int2;
+  ism6hg256x_mlc_int2_t            mlc_int2;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -3205,20 +3196,20 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_set(const stmdev_ctx_t *ctx,
 
   md2_cfg.int2_emb_func = 1;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   /* Embedded Functions */
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3228,14 +3219,14 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_set(const stmdev_ctx_t *ctx,
   emb_func_int2.int2_tilt = val->tilt;
   emb_func_int2.int2_sig_mot = val->sig_mot;
 
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   /* FSM */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3250,14 +3241,14 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_set(const stmdev_ctx_t *ctx,
   fsm_int2.int2_fsm7 = val->fsm7;
   fsm_int2.int2_fsm8 = val->fsm8;
 
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   /* MLC */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3272,14 +3263,14 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_set(const stmdev_ctx_t *ctx,
   mlc_int2.int2_mlc7 = val->mlc7;
   mlc_int2.int2_mlc8 = val->mlc8;
 
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3293,22 +3284,22 @@ exit:
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lsm6dsv320x_pin_int2_route_embedded_get(const stmdev_ctx_t *ctx,
-                                                lsm6dsv320x_pin_int_route_t *val)
+int32_t ism6hg256x_pin_int2_route_embedded_get(const stmdev_ctx_t *ctx,
+                                               ism6hg256x_pin_int_route_t *val)
 {
-  lsm6dsv320x_emb_func_int2_t       emb_func_int2;
-  lsm6dsv320x_fsm_int2_t            fsm_int2;
-  lsm6dsv320x_mlc_int2_t            mlc_int2;
+  ism6hg256x_emb_func_int2_t       emb_func_int2;
+  ism6hg256x_fsm_int2_t            fsm_int2;
+  ism6hg256x_mlc_int2_t            mlc_int2;
   int32_t ret;
 
   /* Embedded Functions */
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3319,7 +3310,7 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_get(const stmdev_ctx_t *ctx,
   val->tilt          = emb_func_int2.int2_tilt;
 
   /* FSM */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3335,7 +3326,7 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_get(const stmdev_ctx_t *ctx,
   val->fsm8 = fsm_int2.int2_fsm8;
 
   /* MLC */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
   if (ret != 0)
   {
     goto exit;
@@ -3351,7 +3342,7 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_get(const stmdev_ctx_t *ctx,
   val->mlc8 = mlc_int2.int2_mlc8;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3369,40 +3360,40 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_all_sources_get(const stmdev_ctx_t *ctx,
-                                    lsm6dsv320x_all_sources_t *val)
+int32_t ism6hg256x_all_sources_get(const stmdev_ctx_t *ctx,
+                                   ism6hg256x_all_sources_t *val)
 {
-  lsm6dsv320x_emb_func_status_mainpage_t emb_func_status_mainpage;
-  lsm6dsv320x_emb_func_exec_status_t emb_func_exec_status;
-  lsm6dsv320x_fsm_status_mainpage_t fsm_status_mainpage;
-  lsm6dsv320x_mlc_status_mainpage_t mlc_status_mainpage;
-  lsm6dsv320x_functions_enable_t functions_enable;
-  lsm6dsv320x_emb_func_src_t emb_func_src;
-  lsm6dsv320x_fifo_status2_t fifo_status2;
-  lsm6dsv320x_all_int_src_t all_int_src;
-  lsm6dsv320x_wake_up_src_t wake_up_src;
-  lsm6dsv320x_status_reg_t status_reg;
-  lsm6dsv320x_d6d_src_t d6d_src;
-  lsm6dsv320x_tap_src_t tap_src;
-  lsm6dsv320x_ui_status_reg_ois_t status_reg_ois;
-  lsm6dsv320x_status_controller_t status_shub;
+  ism6hg256x_emb_func_status_mainpage_t emb_func_status_mainpage;
+  ism6hg256x_emb_func_exec_status_t emb_func_exec_status;
+  ism6hg256x_fsm_status_mainpage_t fsm_status_mainpage;
+  ism6hg256x_mlc_status_mainpage_t mlc_status_mainpage;
+  ism6hg256x_functions_enable_t functions_enable;
+  ism6hg256x_emb_func_src_t emb_func_src;
+  ism6hg256x_fifo_status2_t fifo_status2;
+  ism6hg256x_all_int_src_t all_int_src;
+  ism6hg256x_wake_up_src_t wake_up_src;
+  ism6hg256x_status_reg_t status_reg;
+  ism6hg256x_d6d_src_t d6d_src;
+  ism6hg256x_tap_src_t tap_src;
+  ism6hg256x_ui_status_reg_ois_t status_reg_ois;
+  ism6hg256x_status_controller_t status_shub;
   uint8_t buff[8];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   functions_enable.dis_rst_lir_all_int = PROPERTY_ENABLE;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_STATUS1, (uint8_t *)&buff, 4);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_STATUS1, (uint8_t *)&buff, 4);
   if (ret != 0)
   {
     return ret;
@@ -3430,20 +3421,20 @@ int32_t lsm6dsv320x_all_sources_get(const stmdev_ctx_t *ctx,
   val->drdy_ois = status_reg.ois_drdy;
   val->timestamp = status_reg.timestamp_endcount;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   functions_enable.dis_rst_lir_all_int = PROPERTY_DISABLE;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_STATUS_REG_OIS, (uint8_t *)&buff, 8);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_STATUS_REG_OIS, (uint8_t *)&buff, 8);
   if (ret != 0)
   {
     return ret;
@@ -3503,11 +3494,11 @@ int32_t lsm6dsv320x_all_sources_get(const stmdev_ctx_t *ctx,
 
 
   /* embedded func */
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EXEC_STATUS, (uint8_t *)&emb_func_exec_status,
-                              1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_SRC, (uint8_t *)&emb_func_src, 1);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EXEC_STATUS, (uint8_t *)&emb_func_exec_status,
+                             1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_SRC, (uint8_t *)&emb_func_src, 1);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -3522,7 +3513,7 @@ int32_t lsm6dsv320x_all_sources_get(const stmdev_ctx_t *ctx,
   val->step_detector = emb_func_src.step_detected;
 
   /* sensor hub */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_STATUS_CONTROLLER_MAINPAGE, (uint8_t *)&status_shub, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_STATUS_CONTROLLER_MAINPAGE, (uint8_t *)&status_shub, 1);
   if (ret != 0)
   {
     return ret;
@@ -3538,13 +3529,13 @@ int32_t lsm6dsv320x_all_sources_get(const stmdev_ctx_t *ctx,
   return ret;
 }
 
-int32_t lsm6dsv320x_flag_data_ready_get(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_data_ready_t *val)
+int32_t ism6hg256x_flag_data_ready_get(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_data_ready_t *val)
 {
-  lsm6dsv320x_status_reg_t status;
+  ism6hg256x_status_reg_t status;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_STATUS_REG, (uint8_t *)&status, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_STATUS_REG, (uint8_t *)&status, 1);
   if (ret != 0)
   {
     return ret;
@@ -3566,20 +3557,20 @@ int32_t lsm6dsv320x_flag_data_ready_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_int_ack_mask_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_int_ack_mask_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_INT_ACK_MASK, &val, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_INT_ACK_MASK, &val, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3592,20 +3583,20 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_int_ack_mask_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_int_ack_mask_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INT_ACK_MASK, val, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_INT_ACK_MASK, val, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3618,12 +3609,12 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
+int32_t ism6hg256x_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_OUT_TEMP_L, &buff[0], 2);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_OUT_TEMP_L, &buff[0], 2);
   if (ret != 0)
   {
     return ret;
@@ -3643,12 +3634,12 @@ int32_t lsm6dsv320x_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
+int32_t ism6hg256x_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_OUTX_L_G, &buff[0], 6);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_OUTX_L_G, &buff[0], 6);
   if (ret != 0)
   {
     return ret;
@@ -3672,12 +3663,12 @@ int32_t lsm6dsv320x_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
+int32_t ism6hg256x_ois_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF2_OUTX_L_G_OIS, &buff[0], 6);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF2_OUTX_L_G_OIS, &buff[0], 6);
   if (ret != 0)
   {
     return ret;
@@ -3701,12 +3692,12 @@ int32_t lsm6dsv320x_ois_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *v
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_eis_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
+int32_t ism6hg256x_ois_eis_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_OUTX_L_G_OIS_EIS, &buff[0], 6);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_OUTX_L_G_OIS_EIS, &buff[0], 6);
   if (ret != 0)
   {
     return ret;
@@ -3730,12 +3721,12 @@ int32_t lsm6dsv320x_ois_eis_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
+int32_t ism6hg256x_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_OUTX_L_A, &buff[0], 6);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_OUTX_L_A, &buff[0], 6);
   if (ret != 0)
   {
     return ret;
@@ -3759,12 +3750,12 @@ int32_t lsm6dsv320x_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_hg_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
+int32_t ism6hg256x_hg_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_OUTX_L_A_OIS_HG, &buff[0], 6);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_OUTX_L_A_OIS_HG, &buff[0], 6);
   if (ret != 0)
   {
     return ret;
@@ -3788,12 +3779,12 @@ int32_t lsm6dsv320x_hg_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *va
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
+int32_t ism6hg256x_ois_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_OUTX_L_A_OIS_HG, &buff[0], 6);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_OUTX_L_A_OIS_HG, &buff[0], 6);
   if (ret != 0)
   {
     return ret;
@@ -3817,14 +3808,14 @@ int32_t lsm6dsv320x_ois_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *v
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sflp_gbias_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
+int32_t ism6hg256x_sflp_gbias_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_SFLP_GBIASX_L, &buff[0], 6);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_SFLP_GBIASX_L, &buff[0], 6);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -3848,14 +3839,14 @@ int32_t lsm6dsv320x_sflp_gbias_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sflp_gravity_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
+int32_t ism6hg256x_sflp_gravity_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_SFLP_GRAVX_L, &buff[0], 6);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_SFLP_GRAVX_L, &buff[0], 6);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -3879,14 +3870,14 @@ int32_t lsm6dsv320x_sflp_gravity_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sflp_quaternion_raw_get(const stmdev_ctx_t *ctx, uint16_t *val)
+int32_t ism6hg256x_sflp_quaternion_raw_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[8];
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_SFLP_QUATW_L, &buff[0], 8);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_SFLP_QUATW_L, &buff[0], 8);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -3912,21 +3903,21 @@ int32_t lsm6dsv320x_sflp_quaternion_raw_get(const stmdev_ctx_t *ctx, uint16_t *v
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sflp_quaternion_get(const stmdev_ctx_t *ctx, lsm6dsv320x_quaternion_t *quat)
+int32_t ism6hg256x_sflp_quaternion_get(const stmdev_ctx_t *ctx, ism6hg256x_quaternion_t *quat)
 {
   uint16_t val[4];
   int32_t ret;
 
-  ret = lsm6dsv320x_sflp_quaternion_raw_get(ctx, val);
+  ret = ism6hg256x_sflp_quaternion_raw_get(ctx, val);
   if (ret != 0)
   {
     return ret;
   }
 
-  quat->quat_w = lsm6dsv320x_from_quaternion_lsb_to_float(val[0]);
-  quat->quat_x = lsm6dsv320x_from_quaternion_lsb_to_float(val[1]);
-  quat->quat_y = lsm6dsv320x_from_quaternion_lsb_to_float(val[2]);
-  quat->quat_z = lsm6dsv320x_from_quaternion_lsb_to_float(val[3]);
+  quat->quat_w = ism6hg256x_from_quaternion_lsb_to_float(val[0]);
+  quat->quat_x = ism6hg256x_from_quaternion_lsb_to_float(val[1]);
+  quat->quat_y = ism6hg256x_from_quaternion_lsb_to_float(val[2]);
+  quat->quat_z = ism6hg256x_from_quaternion_lsb_to_float(val[3]);
 
   return ret;
 }
@@ -3939,12 +3930,12 @@ int32_t lsm6dsv320x_sflp_quaternion_get(const stmdev_ctx_t *ctx, lsm6dsv320x_qua
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_odr_cal_reg_get(const stmdev_ctx_t *ctx, int8_t *val)
+int32_t ism6hg256x_odr_cal_reg_get(const stmdev_ctx_t *ctx, int8_t *val)
 {
-  lsm6dsv320x_internal_freq_t internal_freq;
+  ism6hg256x_internal_freq_t internal_freq;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INTERNAL_FREQ, (uint8_t *)&internal_freq, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INTERNAL_FREQ, (uint8_t *)&internal_freq, 1);
   if (ret != 0)
   {
     return ret;
@@ -3970,19 +3961,19 @@ int32_t lsm6dsv320x_odr_cal_reg_get(const stmdev_ctx_t *ctx, int8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_disable_embedded_function_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_disable_embedded_function_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_cfg_t emb_func_cfg;
+  ism6hg256x_emb_func_cfg_t emb_func_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   emb_func_cfg.emb_func_disable = val & 0x1U;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
 
   return ret;
 }
@@ -3995,12 +3986,12 @@ int32_t lsm6dsv320x_disable_embedded_function_set(const stmdev_ctx_t *ctx, uint8
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_disable_embedded_function_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_disable_embedded_function_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_emb_func_cfg_t emb_func_cfg;
+  ism6hg256x_emb_func_cfg_t emb_func_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -4019,18 +4010,18 @@ int32_t lsm6dsv320x_disable_embedded_function_get(const stmdev_ctx_t *ctx, uint8
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_emb_func_conv_set(const stmdev_ctx_t *ctx, lsm6dsv320x_emb_func_conv_t val)
+int32_t ism6hg256x_emb_func_conv_set(const stmdev_ctx_t *ctx, ism6hg256x_emb_func_conv_t val)
 {
-  lsm6dsv320x_emb_func_sensor_conv_en_t conv_reg;
+  ism6hg256x_emb_func_sensor_conv_en_t conv_reg;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_SENSOR_CONV_EN, (uint8_t *)&conv_reg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_SENSOR_CONV_EN, (uint8_t *)&conv_reg, 1);
   if (ret != 0)
   {
     goto exit;
@@ -4039,10 +4030,10 @@ int32_t lsm6dsv320x_emb_func_conv_set(const stmdev_ctx_t *ctx, lsm6dsv320x_emb_f
   conv_reg.gyro_conv_en = val.gyro_conv_en;
   conv_reg.temp_conv_en = val.temp_conv_en;
   conv_reg.ext_sensor_conv_en = val.ext_sensor_conv_en;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_SENSOR_CONV_EN, (uint8_t *)&conv_reg, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_SENSOR_CONV_EN, (uint8_t *)&conv_reg, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -4055,18 +4046,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_emb_func_conv_get(const stmdev_ctx_t *ctx, lsm6dsv320x_emb_func_conv_t *val)
+int32_t ism6hg256x_emb_func_conv_get(const stmdev_ctx_t *ctx, ism6hg256x_emb_func_conv_t *val)
 {
-  lsm6dsv320x_emb_func_sensor_conv_en_t conv_reg;
+  ism6hg256x_emb_func_sensor_conv_en_t conv_reg;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_SENSOR_CONV_EN, (uint8_t *)&conv_reg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_SENSOR_CONV_EN, (uint8_t *)&conv_reg, 1);
   if (ret != 0)
   {
     goto exit;
@@ -4077,7 +4068,7 @@ int32_t lsm6dsv320x_emb_func_conv_get(const stmdev_ctx_t *ctx, lsm6dsv320x_emb_f
   val->ext_sensor_conv_en = conv_reg.ext_sensor_conv_en;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -4090,12 +4081,12 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
-                                uint8_t *buf, uint8_t len)
+int32_t ism6hg256x_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
+                               uint8_t *buf, uint8_t len)
 {
-  lsm6dsv320x_page_address_t  page_address;
-  lsm6dsv320x_page_sel_t page_sel;
-  lsm6dsv320x_page_rw_t page_rw;
+  ism6hg256x_page_address_t  page_address;
+  ism6hg256x_page_sel_t page_sel;
+  ism6hg256x_page_rw_t page_rw;
   uint8_t msb;
   uint8_t lsb;
   int32_t ret;
@@ -4104,31 +4095,31 @@ int32_t lsm6dsv320x_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
   msb = ((uint8_t)(address >> 8) & 0x0FU);
   lsb = (uint8_t)address & 0xFFU;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
   /* set page write */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PAGE_RW, (uint8_t *)&page_rw, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_PAGE_RW, (uint8_t *)&page_rw, 1);
   if (ret != 0)
   {
     goto exit;
   }
   page_rw.page_read = PROPERTY_DISABLE;
   page_rw.page_write = PROPERTY_ENABLE;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_RW, (uint8_t *)&page_rw, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_RW, (uint8_t *)&page_rw, 1);
 
   /* select page */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_PAGE_SEL, (uint8_t *)&page_sel, 1);
   if (ret != 0)
   {
     goto exit;
   }
   page_sel.page_sel = msb;
   page_sel.not_used0 = 1; // Default value
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_SEL, (uint8_t *)&page_sel, 1);
   if (ret != 0)
   {
     goto exit;
@@ -4136,8 +4127,8 @@ int32_t lsm6dsv320x_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
 
   /* set page addr */
   page_address.page_addr = lsb;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_ADDRESS,
-                               (uint8_t *)&page_address, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_ADDRESS,
+                              (uint8_t *)&page_address, 1);
   if (ret != 0)
   {
     goto exit;
@@ -4145,7 +4136,7 @@ int32_t lsm6dsv320x_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
 
   for (i = 0; ((i < len) && (ret == 0)); i++)
   {
-    ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_VALUE, &buf[i], 1);
+    ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_VALUE, &buf[i], 1);
     if (ret != 0)
     {
       goto exit;
@@ -4157,7 +4148,7 @@ int32_t lsm6dsv320x_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
     if (((lsb & 0xFFU) == 0x00U) && (ret == 0))
     {
       msb++;
-      ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PAGE_SEL, (uint8_t *)&page_sel, 1);
+      ret += ism6hg256x_read_reg(ctx, ISM6HG256X_PAGE_SEL, (uint8_t *)&page_sel, 1);
       if (ret != 0)
       {
         goto exit;
@@ -4165,7 +4156,7 @@ int32_t lsm6dsv320x_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
 
       page_sel.page_sel = msb;
       page_sel.not_used0 = 1; // Default value
-      ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_SEL, (uint8_t *)&page_sel, 1);
+      ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_SEL, (uint8_t *)&page_sel, 1);
       if (ret != 0)
       {
         goto exit;
@@ -4175,24 +4166,24 @@ int32_t lsm6dsv320x_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
 
   page_sel.page_sel = 0;
   page_sel.not_used0 = 1;// Default value
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_SEL, (uint8_t *)&page_sel, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   /* unset page write */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PAGE_RW, (uint8_t *)&page_rw, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_PAGE_RW, (uint8_t *)&page_rw, 1);
   if (ret != 0)
   {
     goto exit;
   }
   page_rw.page_read = PROPERTY_DISABLE;
   page_rw.page_write = PROPERTY_DISABLE;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_RW, (uint8_t *)&page_rw, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_RW, (uint8_t *)&page_rw, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -4205,12 +4196,12 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t *buf,
-                               uint8_t len)
+int32_t ism6hg256x_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t *buf,
+                              uint8_t len)
 {
-  lsm6dsv320x_page_address_t  page_address;
-  lsm6dsv320x_page_sel_t page_sel;
-  lsm6dsv320x_page_rw_t page_rw;
+  ism6hg256x_page_address_t  page_address;
+  ism6hg256x_page_sel_t page_sel;
+  ism6hg256x_page_rw_t page_rw;
   uint8_t msb;
   uint8_t lsb;
   int32_t ret;
@@ -4219,35 +4210,35 @@ int32_t lsm6dsv320x_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_
   msb = ((uint8_t)(address >> 8) & 0x0FU);
   lsb = (uint8_t)address & 0xFFU;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     return ret;
   }
 
   /* set page write */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PAGE_RW, (uint8_t *)&page_rw, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_PAGE_RW, (uint8_t *)&page_rw, 1);
   if (ret != 0)
   {
     goto exit;
   }
   page_rw.page_read = PROPERTY_ENABLE;
   page_rw.page_write = PROPERTY_DISABLE;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_RW, (uint8_t *)&page_rw, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_RW, (uint8_t *)&page_rw, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   /* select page */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_PAGE_SEL, (uint8_t *)&page_sel, 1);
   if (ret != 0)
   {
     goto exit;
   }
   page_sel.page_sel = msb;
   page_sel.not_used0 = 1; // Default value
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_SEL, (uint8_t *)&page_sel, 1);
   if (ret != 0)
   {
     goto exit;
@@ -4255,8 +4246,8 @@ int32_t lsm6dsv320x_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_
 
   /* set page addr */
   page_address.page_addr = lsb;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_ADDRESS,
-                               (uint8_t *)&page_address, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_ADDRESS,
+                              (uint8_t *)&page_address, 1);
   if (ret != 0)
   {
     goto exit;
@@ -4264,7 +4255,7 @@ int32_t lsm6dsv320x_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_
 
   for (i = 0; ((i < len) && (ret == 0)); i++)
   {
-    ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PAGE_VALUE, &buf[i], 1);
+    ret += ism6hg256x_read_reg(ctx, ISM6HG256X_PAGE_VALUE, &buf[i], 1);
     if (ret != 0)
     {
       goto exit;
@@ -4276,7 +4267,7 @@ int32_t lsm6dsv320x_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_
     if (((lsb & 0xFFU) == 0x00U) && (ret == 0))
     {
       msb++;
-      ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PAGE_SEL, (uint8_t *)&page_sel, 1);
+      ret += ism6hg256x_read_reg(ctx, ISM6HG256X_PAGE_SEL, (uint8_t *)&page_sel, 1);
       if (ret != 0)
       {
         goto exit;
@@ -4284,7 +4275,7 @@ int32_t lsm6dsv320x_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_
 
       page_sel.page_sel = msb;
       page_sel.not_used0 = 1; // Default value
-      ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_SEL, (uint8_t *)&page_sel, 1);
+      ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_SEL, (uint8_t *)&page_sel, 1);
       if (ret != 0)
       {
         goto exit;
@@ -4294,24 +4285,24 @@ int32_t lsm6dsv320x_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_
 
   page_sel.page_sel = 0;
   page_sel.not_used0 = 1;// Default value
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_SEL, (uint8_t *)&page_sel, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   /* unset page write */
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PAGE_RW, (uint8_t *)&page_rw, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_PAGE_RW, (uint8_t *)&page_rw, 1);
   if (ret != 0)
   {
     goto exit;
   }
   page_rw.page_read = PROPERTY_DISABLE;
   page_rw.page_write = PROPERTY_DISABLE;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PAGE_RW, (uint8_t *)&page_rw, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_PAGE_RW, (uint8_t *)&page_rw, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -4324,17 +4315,17 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_emb_function_dbg_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_emb_function_dbg_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_ctrl10_t ctrl10;
+  ism6hg256x_ctrl10_t ctrl10;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL10, (uint8_t *)&ctrl10, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL10, (uint8_t *)&ctrl10, 1);
 
   if (ret == 0)
   {
     ctrl10.emb_func_debug = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL10, (uint8_t *)&ctrl10, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL10, (uint8_t *)&ctrl10, 1);
   }
 
   return ret;
@@ -4348,12 +4339,12 @@ int32_t lsm6dsv320x_emb_function_dbg_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_emb_function_dbg_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_emb_function_dbg_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ctrl10_t ctrl10;
+  ism6hg256x_ctrl10_t ctrl10;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL10, (uint8_t *)&ctrl10, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL10, (uint8_t *)&ctrl10, 1);
   if (ret != 0)
   {
     return ret;
@@ -4385,18 +4376,18 @@ int32_t lsm6dsv320x_emb_function_dbg_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_den_polarity_set(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_den_polarity_t val)
+int32_t ism6hg256x_den_polarity_set(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_den_polarity_t val)
 {
-  lsm6dsv320x_ctrl4_t ctrl4;
+  ism6hg256x_ctrl4_t ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
 
   if (ret == 0)
   {
     ctrl4.int2_in_lh = (uint8_t)val & 0x1U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
   }
 
   return ret;
@@ -4410,13 +4401,13 @@ int32_t lsm6dsv320x_den_polarity_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_den_polarity_get(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_den_polarity_t *val)
+int32_t ism6hg256x_den_polarity_get(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_den_polarity_t *val)
 {
-  lsm6dsv320x_ctrl4_t ctrl4;
+  ism6hg256x_ctrl4_t ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
   if (ret != 0)
   {
     return ret;
@@ -4424,16 +4415,16 @@ int32_t lsm6dsv320x_den_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl4.int2_in_lh)
   {
-    case LSM6DSV320X_DEN_ACT_LOW:
-      *val = LSM6DSV320X_DEN_ACT_LOW;
+    case ISM6HG256X_DEN_ACT_LOW:
+      *val = ISM6HG256X_DEN_ACT_LOW;
       break;
 
-    case LSM6DSV320X_DEN_ACT_HIGH:
-      *val = LSM6DSV320X_DEN_ACT_HIGH;
+    case ISM6HG256X_DEN_ACT_HIGH:
+      *val = ISM6HG256X_DEN_ACT_HIGH;
       break;
 
     default:
-      *val = LSM6DSV320X_DEN_ACT_LOW;
+      *val = ISM6HG256X_DEN_ACT_LOW;
       break;
   }
 
@@ -4460,18 +4451,18 @@ int32_t lsm6dsv320x_den_polarity_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_eis_gy_full_scale_set(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_eis_gy_full_scale_t val)
+int32_t ism6hg256x_eis_gy_full_scale_set(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_eis_gy_full_scale_t val)
 {
-  lsm6dsv320x_ctrl_eis_t ctrl_eis;
+  ism6hg256x_ctrl_eis_t ctrl_eis;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
 
   if (ret == 0)
   {
     ctrl_eis.fs_g_eis = (uint8_t)val & 0x7U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
   }
 
   return ret;
@@ -4485,13 +4476,13 @@ int32_t lsm6dsv320x_eis_gy_full_scale_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_eis_gy_full_scale_get(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_eis_gy_full_scale_t *val)
+int32_t ism6hg256x_eis_gy_full_scale_get(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_eis_gy_full_scale_t *val)
 {
-  lsm6dsv320x_ctrl_eis_t ctrl_eis;
+  ism6hg256x_ctrl_eis_t ctrl_eis;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
   if (ret != 0)
   {
     return ret;
@@ -4500,27 +4491,27 @@ int32_t lsm6dsv320x_eis_gy_full_scale_get(const stmdev_ctx_t *ctx,
   switch (ctrl_eis.fs_g_eis)
   {
     case 1:
-      *val = LSM6DSV320X_EIS_250dps;
+      *val = ISM6HG256X_EIS_250dps;
       break;
 
     case 2:
-      *val = LSM6DSV320X_EIS_500dps;
+      *val = ISM6HG256X_EIS_500dps;
       break;
 
     case 3:
-      *val = LSM6DSV320X_EIS_1000dps;
+      *val = ISM6HG256X_EIS_1000dps;
       break;
 
     case 4:
-      *val = LSM6DSV320X_EIS_2000dps;
+      *val = ISM6HG256X_EIS_2000dps;
       break;
 
     case 5:
-      *val = LSM6DSV320X_EIS_4000dps;
+      *val = ISM6HG256X_EIS_4000dps;
       break;
 
     default:
-      *val = LSM6DSV320X_EIS_250dps;
+      *val = ISM6HG256X_EIS_250dps;
       break;
   }
   return ret;
@@ -4534,17 +4525,17 @@ int32_t lsm6dsv320x_eis_gy_full_scale_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_eis_gy_on_if2_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_eis_gy_on_if2_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_ctrl_eis_t ctrl_eis;
+  ism6hg256x_ctrl_eis_t ctrl_eis;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
 
   if (ret == 0)
   {
     ctrl_eis.g_eis_on_g_ois_out_reg = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
   }
 
   return ret;
@@ -4558,12 +4549,12 @@ int32_t lsm6dsv320x_eis_gy_on_if2_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_eis_gy_on_if2_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_eis_gy_on_if2_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ctrl_eis_t ctrl_eis;
+  ism6hg256x_ctrl_eis_t ctrl_eis;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
   if (ret != 0)
   {
     return ret;
@@ -4582,18 +4573,18 @@ int32_t lsm6dsv320x_eis_gy_on_if2_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_gy_eis_data_rate_set(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_gy_eis_data_rate_t val)
+int32_t ism6hg256x_gy_eis_data_rate_set(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_gy_eis_data_rate_t val)
 {
-  lsm6dsv320x_ctrl_eis_t ctrl_eis;
+  ism6hg256x_ctrl_eis_t ctrl_eis;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
 
   if (ret == 0)
   {
     ctrl_eis.odr_g_eis = (uint8_t)val & 0x03U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
   }
 
   return ret;
@@ -4607,13 +4598,13 @@ int32_t lsm6dsv320x_gy_eis_data_rate_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_gy_eis_data_rate_get(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_gy_eis_data_rate_t *val)
+int32_t ism6hg256x_gy_eis_data_rate_get(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_gy_eis_data_rate_t *val)
 {
-  lsm6dsv320x_ctrl_eis_t ctrl_eis;
+  ism6hg256x_ctrl_eis_t ctrl_eis;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
   if (ret != 0)
   {
     return ret;
@@ -4621,20 +4612,20 @@ int32_t lsm6dsv320x_gy_eis_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_eis.odr_g_eis)
   {
-    case LSM6DSV320X_EIS_ODR_OFF:
-      *val = LSM6DSV320X_EIS_ODR_OFF;
+    case ISM6HG256X_EIS_ODR_OFF:
+      *val = ISM6HG256X_EIS_ODR_OFF;
       break;
 
-    case LSM6DSV320X_EIS_1920Hz:
-      *val = LSM6DSV320X_EIS_1920Hz;
+    case ISM6HG256X_EIS_1920Hz:
+      *val = ISM6HG256X_EIS_1920Hz;
       break;
 
-    case LSM6DSV320X_EIS_960Hz:
-      *val = LSM6DSV320X_EIS_960Hz;
+    case ISM6HG256X_EIS_960Hz:
+      *val = ISM6HG256X_EIS_960Hz;
       break;
 
     default:
-      *val = LSM6DSV320X_EIS_1920Hz;
+      *val = ISM6HG256X_EIS_1920Hz;
       break;
   }
 
@@ -4661,17 +4652,17 @@ int32_t lsm6dsv320x_gy_eis_data_rate_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_fifo_ctrl1_t fifo_ctrl1;
+  ism6hg256x_fifo_ctrl1_t fifo_ctrl1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL1, (uint8_t *)&fifo_ctrl1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL1, (uint8_t *)&fifo_ctrl1, 1);
 
   if (ret == 0)
   {
     fifo_ctrl1.wtm = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FIFO_CTRL1, (uint8_t *)&fifo_ctrl1, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FIFO_CTRL1, (uint8_t *)&fifo_ctrl1, 1);
   }
 
   return ret;
@@ -4685,12 +4676,12 @@ int32_t lsm6dsv320x_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_fifo_ctrl1_t fifo_ctrl1;
+  ism6hg256x_fifo_ctrl1_t fifo_ctrl1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL1, (uint8_t *)&fifo_ctrl1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL1, (uint8_t *)&fifo_ctrl1, 1);
   if (ret != 0)
   {
     return ret;
@@ -4709,17 +4700,17 @@ int32_t lsm6dsv320x_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_compress_algo_set(const stmdev_ctx_t *ctx,
-                                           lsm6dsv320x_fifo_compress_algo_t val)
+int32_t ism6hg256x_fifo_compress_algo_set(const stmdev_ctx_t *ctx,
+                                          ism6hg256x_fifo_compress_algo_t val)
 {
-  lsm6dsv320x_fifo_ctrl2_t fifo_ctrl2;
+  ism6hg256x_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   if (ret == 0)
   {
     fifo_ctrl2.uncompr_rate = (uint8_t)val & 0x03U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   }
 
   return ret;
@@ -4733,13 +4724,13 @@ int32_t lsm6dsv320x_fifo_compress_algo_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_compress_algo_get(const stmdev_ctx_t *ctx,
-                                           lsm6dsv320x_fifo_compress_algo_t *val)
+int32_t ism6hg256x_fifo_compress_algo_get(const stmdev_ctx_t *ctx,
+                                          ism6hg256x_fifo_compress_algo_t *val)
 {
-  lsm6dsv320x_fifo_ctrl2_t fifo_ctrl2;
+  ism6hg256x_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   if (ret != 0)
   {
     return ret;
@@ -4747,24 +4738,24 @@ int32_t lsm6dsv320x_fifo_compress_algo_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl2.uncompr_rate)
   {
-    case LSM6DSV320X_CMP_DISABLE:
-      *val = LSM6DSV320X_CMP_DISABLE;
+    case ISM6HG256X_CMP_DISABLE:
+      *val = ISM6HG256X_CMP_DISABLE;
       break;
 
-    case LSM6DSV320X_CMP_8_TO_1:
-      *val = LSM6DSV320X_CMP_8_TO_1;
+    case ISM6HG256X_CMP_8_TO_1:
+      *val = ISM6HG256X_CMP_8_TO_1;
       break;
 
-    case LSM6DSV320X_CMP_16_TO_1:
-      *val = LSM6DSV320X_CMP_16_TO_1;
+    case ISM6HG256X_CMP_16_TO_1:
+      *val = ISM6HG256X_CMP_16_TO_1;
       break;
 
-    case LSM6DSV320X_CMP_32_TO_1:
-      *val = LSM6DSV320X_CMP_32_TO_1;
+    case ISM6HG256X_CMP_32_TO_1:
+      *val = ISM6HG256X_CMP_32_TO_1;
       break;
 
     default:
-      *val = LSM6DSV320X_CMP_DISABLE;
+      *val = ISM6HG256X_CMP_DISABLE;
       break;
   }
   return ret;
@@ -4778,16 +4769,16 @@ int32_t lsm6dsv320x_fifo_compress_algo_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_virtual_sens_odr_chg_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_fifo_virtual_sens_odr_chg_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_fifo_ctrl2_t fifo_ctrl2;
+  ism6hg256x_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   if (ret == 0)
   {
     fifo_ctrl2.odr_chg_en = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   }
 
   return ret;
@@ -4801,13 +4792,13 @@ int32_t lsm6dsv320x_fifo_virtual_sens_odr_chg_set(const stmdev_ctx_t *ctx, uint8
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_virtual_sens_odr_chg_get(const stmdev_ctx_t *ctx,
-                                                  uint8_t *val)
+int32_t ism6hg256x_fifo_virtual_sens_odr_chg_get(const stmdev_ctx_t *ctx,
+                                                 uint8_t *val)
 {
-  lsm6dsv320x_fifo_ctrl2_t fifo_ctrl2;
+  ism6hg256x_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   if (ret != 0)
   {
     return ret;
@@ -4826,40 +4817,40 @@ int32_t lsm6dsv320x_fifo_virtual_sens_odr_chg_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_compress_algo_real_time_set(const stmdev_ctx_t *ctx,
-                                                     uint8_t val)
+int32_t ism6hg256x_fifo_compress_algo_real_time_set(const stmdev_ctx_t *ctx,
+                                                    uint8_t val)
 {
-  lsm6dsv320x_emb_func_en_b_t emb_func_en_b;
-  lsm6dsv320x_fifo_ctrl2_t fifo_ctrl2;
+  ism6hg256x_emb_func_en_b_t emb_func_en_b;
+  ism6hg256x_fifo_ctrl2_t fifo_ctrl2;
 
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   if (ret != 0)
   {
     return ret;
   }
   fifo_ctrl2.fifo_compr_rt_en = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
   if (ret != 0)
   {
     goto exit;
   }
   emb_func_en_b.fifo_compr_en = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -4872,13 +4863,13 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_compress_algo_real_time_get(const stmdev_ctx_t *ctx,
-                                                     uint8_t *val)
+int32_t ism6hg256x_fifo_compress_algo_real_time_get(const stmdev_ctx_t *ctx,
+                                                    uint8_t *val)
 {
-  lsm6dsv320x_fifo_ctrl2_t fifo_ctrl2;
+  ism6hg256x_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   if (ret != 0)
   {
     return ret;
@@ -4897,16 +4888,16 @@ int32_t lsm6dsv320x_fifo_compress_algo_real_time_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, lsm6dsv320x_fifo_event_t val)
+int32_t ism6hg256x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, ism6hg256x_fifo_event_t val)
 {
-  lsm6dsv320x_fifo_ctrl2_t fifo_ctrl2;
+  ism6hg256x_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   if (ret == 0)
   {
-    fifo_ctrl2.stop_on_wtm = (val == LSM6DSV320X_FIFO_EV_WTM) ? 1 : 0;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+    fifo_ctrl2.stop_on_wtm = (val == ISM6HG256X_FIFO_EV_WTM) ? 1 : 0;
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   }
 
   return ret;
@@ -4920,18 +4911,18 @@ int32_t lsm6dsv320x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, lsm6dsv320x_fi
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, lsm6dsv320x_fifo_event_t *val)
+int32_t ism6hg256x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, ism6hg256x_fifo_event_t *val)
 {
-  lsm6dsv320x_fifo_ctrl2_t fifo_ctrl2;
+  ism6hg256x_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  *val = (fifo_ctrl2.stop_on_wtm == 1) ? LSM6DSV320X_FIFO_EV_WTM : LSM6DSV320X_FIFO_EV_FULL;
+  *val = (fifo_ctrl2.stop_on_wtm == 1) ? ISM6HG256X_FIFO_EV_WTM : ISM6HG256X_FIFO_EV_FULL;
 
   return ret;
 }
@@ -4944,17 +4935,17 @@ int32_t lsm6dsv320x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, lsm6dsv320x_fi
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_xl_batch_set(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_fifo_xl_batch_t val)
+int32_t ism6hg256x_fifo_xl_batch_set(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_fifo_xl_batch_t val)
 {
-  lsm6dsv320x_fifo_ctrl3_t fifo_ctrl3;
+  ism6hg256x_fifo_ctrl3_t fifo_ctrl3;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
   if (ret == 0)
   {
     fifo_ctrl3.bdr_xl = (uint8_t)val & 0xFu;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
   }
 
   return ret;
@@ -4968,13 +4959,13 @@ int32_t lsm6dsv320x_fifo_xl_batch_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_fifo_xl_batch_t *val)
+int32_t ism6hg256x_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_fifo_xl_batch_t *val)
 {
-  lsm6dsv320x_fifo_ctrl3_t fifo_ctrl3;
+  ism6hg256x_fifo_ctrl3_t fifo_ctrl3;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
   if (ret != 0)
   {
     return ret;
@@ -4982,60 +4973,60 @@ int32_t lsm6dsv320x_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl3.bdr_xl)
   {
-    case LSM6DSV320X_XL_NOT_BATCHED:
-      *val = LSM6DSV320X_XL_NOT_BATCHED;
+    case ISM6HG256X_XL_NOT_BATCHED:
+      *val = ISM6HG256X_XL_NOT_BATCHED;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_1Hz875:
-      *val = LSM6DSV320X_XL_BATCHED_AT_1Hz875;
+    case ISM6HG256X_XL_BATCHED_AT_1Hz875:
+      *val = ISM6HG256X_XL_BATCHED_AT_1Hz875;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_7Hz5:
-      *val = LSM6DSV320X_XL_BATCHED_AT_7Hz5;
+    case ISM6HG256X_XL_BATCHED_AT_7Hz5:
+      *val = ISM6HG256X_XL_BATCHED_AT_7Hz5;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_15Hz:
-      *val = LSM6DSV320X_XL_BATCHED_AT_15Hz;
+    case ISM6HG256X_XL_BATCHED_AT_15Hz:
+      *val = ISM6HG256X_XL_BATCHED_AT_15Hz;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_30Hz:
-      *val = LSM6DSV320X_XL_BATCHED_AT_30Hz;
+    case ISM6HG256X_XL_BATCHED_AT_30Hz:
+      *val = ISM6HG256X_XL_BATCHED_AT_30Hz;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_60Hz:
-      *val = LSM6DSV320X_XL_BATCHED_AT_60Hz;
+    case ISM6HG256X_XL_BATCHED_AT_60Hz:
+      *val = ISM6HG256X_XL_BATCHED_AT_60Hz;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_120Hz:
-      *val = LSM6DSV320X_XL_BATCHED_AT_120Hz;
+    case ISM6HG256X_XL_BATCHED_AT_120Hz:
+      *val = ISM6HG256X_XL_BATCHED_AT_120Hz;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_240Hz:
-      *val = LSM6DSV320X_XL_BATCHED_AT_240Hz;
+    case ISM6HG256X_XL_BATCHED_AT_240Hz:
+      *val = ISM6HG256X_XL_BATCHED_AT_240Hz;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_480Hz:
-      *val = LSM6DSV320X_XL_BATCHED_AT_480Hz;
+    case ISM6HG256X_XL_BATCHED_AT_480Hz:
+      *val = ISM6HG256X_XL_BATCHED_AT_480Hz;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_960Hz:
-      *val = LSM6DSV320X_XL_BATCHED_AT_960Hz;
+    case ISM6HG256X_XL_BATCHED_AT_960Hz:
+      *val = ISM6HG256X_XL_BATCHED_AT_960Hz;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_1920Hz:
-      *val = LSM6DSV320X_XL_BATCHED_AT_1920Hz;
+    case ISM6HG256X_XL_BATCHED_AT_1920Hz:
+      *val = ISM6HG256X_XL_BATCHED_AT_1920Hz;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_3840Hz:
-      *val = LSM6DSV320X_XL_BATCHED_AT_3840Hz;
+    case ISM6HG256X_XL_BATCHED_AT_3840Hz:
+      *val = ISM6HG256X_XL_BATCHED_AT_3840Hz;
       break;
 
-    case LSM6DSV320X_XL_BATCHED_AT_7680Hz:
-      *val = LSM6DSV320X_XL_BATCHED_AT_7680Hz;
+    case ISM6HG256X_XL_BATCHED_AT_7680Hz:
+      *val = ISM6HG256X_XL_BATCHED_AT_7680Hz;
       break;
 
     default:
-      *val = LSM6DSV320X_XL_NOT_BATCHED;
+      *val = ISM6HG256X_XL_NOT_BATCHED;
       break;
   }
 
@@ -5050,17 +5041,17 @@ int32_t lsm6dsv320x_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_gy_batch_set(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_fifo_gy_batch_t val)
+int32_t ism6hg256x_fifo_gy_batch_set(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_fifo_gy_batch_t val)
 {
-  lsm6dsv320x_fifo_ctrl3_t fifo_ctrl3;
+  ism6hg256x_fifo_ctrl3_t fifo_ctrl3;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
   if (ret == 0)
   {
     fifo_ctrl3.bdr_gy = (uint8_t)val & 0x0Fu;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
   }
 
   return ret;
@@ -5074,13 +5065,13 @@ int32_t lsm6dsv320x_fifo_gy_batch_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_fifo_gy_batch_t *val)
+int32_t ism6hg256x_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_fifo_gy_batch_t *val)
 {
-  lsm6dsv320x_fifo_ctrl3_t fifo_ctrl3;
+  ism6hg256x_fifo_ctrl3_t fifo_ctrl3;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL3, (uint8_t *)&fifo_ctrl3, 1);
   if (ret != 0)
   {
     return ret;
@@ -5088,60 +5079,60 @@ int32_t lsm6dsv320x_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl3.bdr_gy)
   {
-    case LSM6DSV320X_GY_NOT_BATCHED:
-      *val = LSM6DSV320X_GY_NOT_BATCHED;
+    case ISM6HG256X_GY_NOT_BATCHED:
+      *val = ISM6HG256X_GY_NOT_BATCHED;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_1Hz875:
-      *val = LSM6DSV320X_GY_BATCHED_AT_1Hz875;
+    case ISM6HG256X_GY_BATCHED_AT_1Hz875:
+      *val = ISM6HG256X_GY_BATCHED_AT_1Hz875;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_7Hz5:
-      *val = LSM6DSV320X_GY_BATCHED_AT_7Hz5;
+    case ISM6HG256X_GY_BATCHED_AT_7Hz5:
+      *val = ISM6HG256X_GY_BATCHED_AT_7Hz5;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_15Hz:
-      *val = LSM6DSV320X_GY_BATCHED_AT_15Hz;
+    case ISM6HG256X_GY_BATCHED_AT_15Hz:
+      *val = ISM6HG256X_GY_BATCHED_AT_15Hz;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_30Hz:
-      *val = LSM6DSV320X_GY_BATCHED_AT_30Hz;
+    case ISM6HG256X_GY_BATCHED_AT_30Hz:
+      *val = ISM6HG256X_GY_BATCHED_AT_30Hz;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_60Hz:
-      *val = LSM6DSV320X_GY_BATCHED_AT_60Hz;
+    case ISM6HG256X_GY_BATCHED_AT_60Hz:
+      *val = ISM6HG256X_GY_BATCHED_AT_60Hz;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_120Hz:
-      *val = LSM6DSV320X_GY_BATCHED_AT_120Hz;
+    case ISM6HG256X_GY_BATCHED_AT_120Hz:
+      *val = ISM6HG256X_GY_BATCHED_AT_120Hz;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_240Hz:
-      *val = LSM6DSV320X_GY_BATCHED_AT_240Hz;
+    case ISM6HG256X_GY_BATCHED_AT_240Hz:
+      *val = ISM6HG256X_GY_BATCHED_AT_240Hz;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_480Hz:
-      *val = LSM6DSV320X_GY_BATCHED_AT_480Hz;
+    case ISM6HG256X_GY_BATCHED_AT_480Hz:
+      *val = ISM6HG256X_GY_BATCHED_AT_480Hz;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_960Hz:
-      *val = LSM6DSV320X_GY_BATCHED_AT_960Hz;
+    case ISM6HG256X_GY_BATCHED_AT_960Hz:
+      *val = ISM6HG256X_GY_BATCHED_AT_960Hz;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_1920Hz:
-      *val = LSM6DSV320X_GY_BATCHED_AT_1920Hz;
+    case ISM6HG256X_GY_BATCHED_AT_1920Hz:
+      *val = ISM6HG256X_GY_BATCHED_AT_1920Hz;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_3840Hz:
-      *val = LSM6DSV320X_GY_BATCHED_AT_3840Hz;
+    case ISM6HG256X_GY_BATCHED_AT_3840Hz:
+      *val = ISM6HG256X_GY_BATCHED_AT_3840Hz;
       break;
 
-    case LSM6DSV320X_GY_BATCHED_AT_7680Hz:
-      *val = LSM6DSV320X_GY_BATCHED_AT_7680Hz;
+    case ISM6HG256X_GY_BATCHED_AT_7680Hz:
+      *val = ISM6HG256X_GY_BATCHED_AT_7680Hz;
       break;
 
     default:
-      *val = LSM6DSV320X_GY_NOT_BATCHED;
+      *val = ISM6HG256X_GY_NOT_BATCHED;
       break;
   }
   return ret;
@@ -5155,16 +5146,16 @@ int32_t lsm6dsv320x_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_hg_xl_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_fifo_hg_xl_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_counter_bdr_reg1_t cbdr_reg;
+  ism6hg256x_counter_bdr_reg1_t cbdr_reg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, (uint8_t *)&cbdr_reg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_COUNTER_BDR_REG1, (uint8_t *)&cbdr_reg, 1);
   if (ret == 0)
   {
     cbdr_reg.xl_hg_batch_en = (uint8_t)val & 0x01U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, (uint8_t *)&cbdr_reg, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_COUNTER_BDR_REG1, (uint8_t *)&cbdr_reg, 1);
   }
 
   return ret;
@@ -5178,12 +5169,12 @@ int32_t lsm6dsv320x_fifo_hg_xl_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_hg_xl_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_fifo_hg_xl_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_counter_bdr_reg1_t cbdr_reg;
+  ism6hg256x_counter_bdr_reg1_t cbdr_reg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, (uint8_t *)&cbdr_reg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_COUNTER_BDR_REG1, (uint8_t *)&cbdr_reg, 1);
   if (ret != 0)
   {
     return ret;
@@ -5202,16 +5193,16 @@ int32_t lsm6dsv320x_fifo_hg_xl_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_fifo_mode_t val)
+int32_t ism6hg256x_fifo_mode_set(const stmdev_ctx_t *ctx, ism6hg256x_fifo_mode_t val)
 {
-  lsm6dsv320x_fifo_ctrl4_t fifo_ctrl4;
+  ism6hg256x_fifo_ctrl4_t fifo_ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   if (ret == 0)
   {
     fifo_ctrl4.fifo_mode = (uint8_t)val & 0x07U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   }
 
   return ret;
@@ -5225,12 +5216,12 @@ int32_t lsm6dsv320x_fifo_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_fifo_mode
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_fifo_mode_t *val)
+int32_t ism6hg256x_fifo_mode_get(const stmdev_ctx_t *ctx, ism6hg256x_fifo_mode_t *val)
 {
-  lsm6dsv320x_fifo_ctrl4_t fifo_ctrl4;
+  ism6hg256x_fifo_ctrl4_t fifo_ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   if (ret != 0)
   {
     return ret;
@@ -5238,36 +5229,36 @@ int32_t lsm6dsv320x_fifo_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_fifo_mode
 
   switch (fifo_ctrl4.fifo_mode)
   {
-    case LSM6DSV320X_BYPASS_MODE:
-      *val = LSM6DSV320X_BYPASS_MODE;
+    case ISM6HG256X_BYPASS_MODE:
+      *val = ISM6HG256X_BYPASS_MODE;
       break;
 
-    case LSM6DSV320X_FIFO_MODE:
-      *val = LSM6DSV320X_FIFO_MODE;
+    case ISM6HG256X_FIFO_MODE:
+      *val = ISM6HG256X_FIFO_MODE;
       break;
 
-    case LSM6DSV320X_STREAM_WTM_TO_FULL_MODE:
-      *val = LSM6DSV320X_STREAM_WTM_TO_FULL_MODE;
+    case ISM6HG256X_STREAM_WTM_TO_FULL_MODE:
+      *val = ISM6HG256X_STREAM_WTM_TO_FULL_MODE;
       break;
 
-    case LSM6DSV320X_STREAM_TO_FIFO_MODE:
-      *val = LSM6DSV320X_STREAM_TO_FIFO_MODE;
+    case ISM6HG256X_STREAM_TO_FIFO_MODE:
+      *val = ISM6HG256X_STREAM_TO_FIFO_MODE;
       break;
 
-    case LSM6DSV320X_BYPASS_TO_STREAM_MODE:
-      *val = LSM6DSV320X_BYPASS_TO_STREAM_MODE;
+    case ISM6HG256X_BYPASS_TO_STREAM_MODE:
+      *val = ISM6HG256X_BYPASS_TO_STREAM_MODE;
       break;
 
-    case LSM6DSV320X_STREAM_MODE:
-      *val = LSM6DSV320X_STREAM_MODE;
+    case ISM6HG256X_STREAM_MODE:
+      *val = ISM6HG256X_STREAM_MODE;
       break;
 
-    case LSM6DSV320X_BYPASS_TO_FIFO_MODE:
-      *val = LSM6DSV320X_BYPASS_TO_FIFO_MODE;
+    case ISM6HG256X_BYPASS_TO_FIFO_MODE:
+      *val = ISM6HG256X_BYPASS_TO_FIFO_MODE;
       break;
 
     default:
-      *val = LSM6DSV320X_BYPASS_MODE;
+      *val = ISM6HG256X_BYPASS_MODE;
       break;
   }
   return ret;
@@ -5281,16 +5272,16 @@ int32_t lsm6dsv320x_fifo_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_fifo_mode
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_gy_eis_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_fifo_gy_eis_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_fifo_ctrl4_t fifo_ctrl4;
+  ism6hg256x_fifo_ctrl4_t fifo_ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   if (ret == 0)
   {
     fifo_ctrl4.g_eis_fifo_en = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   }
 
   return ret;
@@ -5304,12 +5295,12 @@ int32_t lsm6dsv320x_fifo_gy_eis_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_gy_eis_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_fifo_gy_eis_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_fifo_ctrl4_t fifo_ctrl4;
+  ism6hg256x_fifo_ctrl4_t fifo_ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   if (ret != 0)
   {
     return ret;
@@ -5328,17 +5319,17 @@ int32_t lsm6dsv320x_fifo_gy_eis_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_temp_batch_set(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_fifo_temp_batch_t val)
+int32_t ism6hg256x_fifo_temp_batch_set(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_fifo_temp_batch_t val)
 {
-  lsm6dsv320x_fifo_ctrl4_t fifo_ctrl4;
+  ism6hg256x_fifo_ctrl4_t fifo_ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   if (ret == 0)
   {
     fifo_ctrl4.odr_t_batch = (uint8_t)val & 0x03U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   }
 
   return ret;
@@ -5352,13 +5343,13 @@ int32_t lsm6dsv320x_fifo_temp_batch_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_fifo_temp_batch_t *val)
+int32_t ism6hg256x_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_fifo_temp_batch_t *val)
 {
-  lsm6dsv320x_fifo_ctrl4_t fifo_ctrl4;
+  ism6hg256x_fifo_ctrl4_t fifo_ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   if (ret != 0)
   {
     return ret;
@@ -5366,24 +5357,24 @@ int32_t lsm6dsv320x_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.odr_t_batch)
   {
-    case LSM6DSV320X_TEMP_NOT_BATCHED:
-      *val = LSM6DSV320X_TEMP_NOT_BATCHED;
+    case ISM6HG256X_TEMP_NOT_BATCHED:
+      *val = ISM6HG256X_TEMP_NOT_BATCHED;
       break;
 
-    case LSM6DSV320X_TEMP_BATCHED_AT_1Hz875:
-      *val = LSM6DSV320X_TEMP_BATCHED_AT_1Hz875;
+    case ISM6HG256X_TEMP_BATCHED_AT_1Hz875:
+      *val = ISM6HG256X_TEMP_BATCHED_AT_1Hz875;
       break;
 
-    case LSM6DSV320X_TEMP_BATCHED_AT_15Hz:
-      *val = LSM6DSV320X_TEMP_BATCHED_AT_15Hz;
+    case ISM6HG256X_TEMP_BATCHED_AT_15Hz:
+      *val = ISM6HG256X_TEMP_BATCHED_AT_15Hz;
       break;
 
-    case LSM6DSV320X_TEMP_BATCHED_AT_60Hz:
-      *val = LSM6DSV320X_TEMP_BATCHED_AT_60Hz;
+    case ISM6HG256X_TEMP_BATCHED_AT_60Hz:
+      *val = ISM6HG256X_TEMP_BATCHED_AT_60Hz;
       break;
 
     default:
-      *val = LSM6DSV320X_TEMP_NOT_BATCHED;
+      *val = ISM6HG256X_TEMP_NOT_BATCHED;
       break;
   }
   return ret;
@@ -5397,17 +5388,17 @@ int32_t lsm6dsv320x_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_timestamp_batch_set(const stmdev_ctx_t *ctx,
-                                             lsm6dsv320x_fifo_timestamp_batch_t val)
+int32_t ism6hg256x_fifo_timestamp_batch_set(const stmdev_ctx_t *ctx,
+                                            ism6hg256x_fifo_timestamp_batch_t val)
 {
-  lsm6dsv320x_fifo_ctrl4_t fifo_ctrl4;
+  ism6hg256x_fifo_ctrl4_t fifo_ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   if (ret == 0)
   {
     fifo_ctrl4.dec_ts_batch = (uint8_t)val & 0x03U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   }
 
   return ret;
@@ -5421,13 +5412,13 @@ int32_t lsm6dsv320x_fifo_timestamp_batch_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_timestamp_batch_get(const stmdev_ctx_t *ctx,
-                                             lsm6dsv320x_fifo_timestamp_batch_t *val)
+int32_t ism6hg256x_fifo_timestamp_batch_get(const stmdev_ctx_t *ctx,
+                                            ism6hg256x_fifo_timestamp_batch_t *val)
 {
-  lsm6dsv320x_fifo_ctrl4_t fifo_ctrl4;
+  ism6hg256x_fifo_ctrl4_t fifo_ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_CTRL4, (uint8_t *)&fifo_ctrl4, 1);
   if (ret != 0)
   {
     return ret;
@@ -5435,24 +5426,24 @@ int32_t lsm6dsv320x_fifo_timestamp_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.dec_ts_batch)
   {
-    case LSM6DSV320X_TMSTMP_NOT_BATCHED:
-      *val = LSM6DSV320X_TMSTMP_NOT_BATCHED;
+    case ISM6HG256X_TMSTMP_NOT_BATCHED:
+      *val = ISM6HG256X_TMSTMP_NOT_BATCHED;
       break;
 
-    case LSM6DSV320X_TMSTMP_DEC_1:
-      *val = LSM6DSV320X_TMSTMP_DEC_1;
+    case ISM6HG256X_TMSTMP_DEC_1:
+      *val = ISM6HG256X_TMSTMP_DEC_1;
       break;
 
-    case LSM6DSV320X_TMSTMP_DEC_8:
-      *val = LSM6DSV320X_TMSTMP_DEC_8;
+    case ISM6HG256X_TMSTMP_DEC_8:
+      *val = ISM6HG256X_TMSTMP_DEC_8;
       break;
 
-    case LSM6DSV320X_TMSTMP_DEC_32:
-      *val = LSM6DSV320X_TMSTMP_DEC_32;
+    case ISM6HG256X_TMSTMP_DEC_32:
+      *val = ISM6HG256X_TMSTMP_DEC_32;
       break;
 
     default:
-      *val = LSM6DSV320X_TMSTMP_NOT_BATCHED;
+      *val = ISM6HG256X_TMSTMP_NOT_BATCHED;
       break;
   }
 
@@ -5467,21 +5458,21 @@ int32_t lsm6dsv320x_fifo_timestamp_batch_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_batch_counter_threshold_set(const stmdev_ctx_t *ctx,
-                                                     uint16_t val)
+int32_t ism6hg256x_fifo_batch_counter_threshold_set(const stmdev_ctx_t *ctx,
+                                                    uint16_t val)
 {
-  lsm6dsv320x_counter_bdr_reg1_t counter_bdr_reg1;
-  lsm6dsv320x_counter_bdr_reg2_t counter_bdr_reg2;
+  ism6hg256x_counter_bdr_reg1_t counter_bdr_reg1;
+  ism6hg256x_counter_bdr_reg2_t counter_bdr_reg2;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
 
   if (ret == 0)
   {
     counter_bdr_reg2.cnt_bdr_th = (uint8_t)val & 0xFFU;
     counter_bdr_reg1.cnt_bdr_th = (uint8_t)(val >> 8) & 0x3U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
-    ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG2, (uint8_t *)&counter_bdr_reg2, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
+    ret += ism6hg256x_write_reg(ctx, ISM6HG256X_COUNTER_BDR_REG2, (uint8_t *)&counter_bdr_reg2, 1);
   }
 
 
@@ -5496,13 +5487,13 @@ int32_t lsm6dsv320x_fifo_batch_counter_threshold_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
-                                                     uint16_t *val)
+int32_t ism6hg256x_fifo_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
+                                                    uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, &buff[0], 2);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_COUNTER_BDR_REG1, &buff[0], 2);
   if (ret != 0)
   {
     return ret;
@@ -5518,21 +5509,21 @@ int32_t lsm6dsv320x_fifo_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
   * @brief  Selects the trigger for the internal counter of batch events.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_fifo_batch_cnt_event_t struct
+  * @param  val      ism6hg256x_fifo_batch_cnt_event_t struct
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_batch_cnt_event_set(const stmdev_ctx_t *ctx,
-                                             lsm6dsv320x_fifo_batch_cnt_event_t val)
+int32_t ism6hg256x_fifo_batch_cnt_event_set(const stmdev_ctx_t *ctx,
+                                            ism6hg256x_fifo_batch_cnt_event_t val)
 {
-  lsm6dsv320x_counter_bdr_reg1_t counter_bdr_reg1;
+  ism6hg256x_counter_bdr_reg1_t counter_bdr_reg1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
   if (ret == 0)
   {
     counter_bdr_reg1.trig_counter_bdr = (uint8_t)val & 0x03U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
   }
 
   return ret;
@@ -5542,17 +5533,17 @@ int32_t lsm6dsv320x_fifo_batch_cnt_event_set(const stmdev_ctx_t *ctx,
   * @brief  Selects the trigger for the internal counter of batch events.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      lsm6dsv320x_fifo_batch_cnt_event_t struct
+  * @param  val      ism6hg256x_fifo_batch_cnt_event_t struct
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_batch_cnt_event_get(const stmdev_ctx_t *ctx,
-                                             lsm6dsv320x_fifo_batch_cnt_event_t *val)
+int32_t ism6hg256x_fifo_batch_cnt_event_get(const stmdev_ctx_t *ctx,
+                                            ism6hg256x_fifo_batch_cnt_event_t *val)
 {
-  lsm6dsv320x_counter_bdr_reg1_t counter_bdr_reg1;
+  ism6hg256x_counter_bdr_reg1_t counter_bdr_reg1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
   if (ret != 0)
   {
     return ret;
@@ -5561,37 +5552,37 @@ int32_t lsm6dsv320x_fifo_batch_cnt_event_get(const stmdev_ctx_t *ctx,
   switch (counter_bdr_reg1.trig_counter_bdr)
   {
     case 0:
-      *val = LSM6DSV320X_XL_LG_BATCH_EVENT;
+      *val = ISM6HG256X_XL_LG_BATCH_EVENT;
       break;
 
     case 1:
-      *val = LSM6DSV320X_GY_BATCH_EVENT;
+      *val = ISM6HG256X_GY_BATCH_EVENT;
       break;
 
     case 2:
-      *val = LSM6DSV320X_GY_EIS_BATCH_EVENT;
+      *val = ISM6HG256X_GY_EIS_BATCH_EVENT;
       break;
 
     case 3:
-      *val = LSM6DSV320X_XL_HG_BATCH_EVENT;
+      *val = ISM6HG256X_XL_HG_BATCH_EVENT;
       break;
 
     default:
-      *val = LSM6DSV320X_XL_LG_BATCH_EVENT;
+      *val = ISM6HG256X_XL_LG_BATCH_EVENT;
       break;
   }
 
   return ret;
 }
 
-int32_t lsm6dsv320x_fifo_status_get(const stmdev_ctx_t *ctx,
-                                    lsm6dsv320x_fifo_status_t *val)
+int32_t ism6hg256x_fifo_status_get(const stmdev_ctx_t *ctx,
+                                   ism6hg256x_fifo_status_t *val)
 {
   uint8_t buff[2];
-  lsm6dsv320x_fifo_status2_t status;
+  ism6hg256x_fifo_status2_t status;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_STATUS1, (uint8_t *)&buff[0], 2);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_STATUS1, (uint8_t *)&buff[0], 2);
   if (ret != 0)
   {
     return ret;
@@ -5619,14 +5610,14 @@ int32_t lsm6dsv320x_fifo_status_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_out_raw_get(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_fifo_out_raw_t *val)
+int32_t ism6hg256x_fifo_out_raw_get(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_fifo_out_raw_t *val)
 {
-  lsm6dsv320x_fifo_data_out_tag_t fifo_data_out_tag;
+  ism6hg256x_fifo_data_out_tag_t fifo_data_out_tag;
   uint8_t buff[7];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FIFO_DATA_OUT_TAG, buff, 7);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FIFO_DATA_OUT_TAG, buff, 7);
   if (ret != 0)
   {
     return ret;
@@ -5637,127 +5628,127 @@ int32_t lsm6dsv320x_fifo_out_raw_get(const stmdev_ctx_t *ctx,
   switch (fifo_data_out_tag.tag_sensor)
   {
     case 0:
-      val->tag = LSM6DSV320X_FIFO_EMPTY;
+      val->tag = ISM6HG256X_FIFO_EMPTY;
       break;
 
     case 1:
-      val->tag = LSM6DSV320X_GY_NC_TAG;
+      val->tag = ISM6HG256X_GY_NC_TAG;
       break;
 
     case 2:
-      val->tag = LSM6DSV320X_XL_NC_TAG;
+      val->tag = ISM6HG256X_XL_NC_TAG;
       break;
 
     case 3:
-      val->tag = LSM6DSV320X_TEMPERATURE_TAG;
+      val->tag = ISM6HG256X_TEMPERATURE_TAG;
       break;
 
     case 4:
-      val->tag = LSM6DSV320X_TIMESTAMP_TAG;
+      val->tag = ISM6HG256X_TIMESTAMP_TAG;
       break;
 
     case 5:
-      val->tag = LSM6DSV320X_CFG_CHANGE_TAG;
+      val->tag = ISM6HG256X_CFG_CHANGE_TAG;
       break;
 
     case 6:
-      val->tag = LSM6DSV320X_XL_NC_T_2_TAG;
+      val->tag = ISM6HG256X_XL_NC_T_2_TAG;
       break;
 
     case 7:
-      val->tag = LSM6DSV320X_XL_NC_T_1_TAG;
+      val->tag = ISM6HG256X_XL_NC_T_1_TAG;
       break;
 
     case 8:
-      val->tag = LSM6DSV320X_XL_2XC_TAG;
+      val->tag = ISM6HG256X_XL_2XC_TAG;
       break;
 
     case 9:
-      val->tag = LSM6DSV320X_XL_3XC_TAG;
+      val->tag = ISM6HG256X_XL_3XC_TAG;
       break;
 
     case 0xA:
-      val->tag = LSM6DSV320X_GY_NC_T_2_TAG;
+      val->tag = ISM6HG256X_GY_NC_T_2_TAG;
       break;
 
     case 0xB:
-      val->tag = LSM6DSV320X_GY_NC_T_1_TAG;
+      val->tag = ISM6HG256X_GY_NC_T_1_TAG;
       break;
 
     case 0xC:
-      val->tag = LSM6DSV320X_GY_2XC_TAG;
+      val->tag = ISM6HG256X_GY_2XC_TAG;
       break;
 
     case 0xD:
-      val->tag = LSM6DSV320X_GY_3XC_TAG;
+      val->tag = ISM6HG256X_GY_3XC_TAG;
       break;
 
     case 0xE:
-      val->tag = LSM6DSV320X_SENSORHUB_TARGET0_TAG;
+      val->tag = ISM6HG256X_SENSORHUB_TARGET0_TAG;
       break;
 
     case 0xF:
-      val->tag = LSM6DSV320X_SENSORHUB_TARGET1_TAG;
+      val->tag = ISM6HG256X_SENSORHUB_TARGET1_TAG;
       break;
 
     case 0x10:
-      val->tag = LSM6DSV320X_SENSORHUB_TARGET2_TAG;
+      val->tag = ISM6HG256X_SENSORHUB_TARGET2_TAG;
       break;
 
     case 0x11:
-      val->tag = LSM6DSV320X_SENSORHUB_TARGET3_TAG;
+      val->tag = ISM6HG256X_SENSORHUB_TARGET3_TAG;
       break;
 
     case 0x12:
-      val->tag = LSM6DSV320X_STEP_COUNTER_TAG;
+      val->tag = ISM6HG256X_STEP_COUNTER_TAG;
       break;
 
     case 0x13:
-      val->tag = LSM6DSV320X_SFLP_GAME_ROTATION_VECTOR_TAG;
+      val->tag = ISM6HG256X_SFLP_GAME_ROTATION_VECTOR_TAG;
       break;
 
     case 0x16:
-      val->tag = LSM6DSV320X_SFLP_GYROSCOPE_BIAS_TAG;
+      val->tag = ISM6HG256X_SFLP_GYROSCOPE_BIAS_TAG;
       break;
 
     case 0x17:
-      val->tag = LSM6DSV320X_SFLP_GRAVITY_VECTOR_TAG;
+      val->tag = ISM6HG256X_SFLP_GRAVITY_VECTOR_TAG;
       break;
 
     case 0x18:
-      val->tag = LSM6DSV320X_HG_XL_PEAK_TAG;
+      val->tag = ISM6HG256X_HG_XL_PEAK_TAG;
       break;
 
     case 0x19:
-      val->tag = LSM6DSV320X_SENSORHUB_NACK_TAG;
+      val->tag = ISM6HG256X_SENSORHUB_NACK_TAG;
       break;
 
     case 0x1A:
-      val->tag = LSM6DSV320X_MLC_RESULT_TAG;
+      val->tag = ISM6HG256X_MLC_RESULT_TAG;
       break;
 
     case 0x1B:
-      val->tag = LSM6DSV320X_MLC_FILTER;
+      val->tag = ISM6HG256X_MLC_FILTER;
       break;
 
     case 0x1C:
-      val->tag = LSM6DSV320X_MLC_FEATURE;
+      val->tag = ISM6HG256X_MLC_FEATURE;
       break;
 
     case 0x1D:
-      val->tag = LSM6DSV320X_XL_HG_TAG;
+      val->tag = ISM6HG256X_XL_HG_TAG;
       break;
 
     case 0x1E:
-      val->tag = LSM6DSV320X_GY_ENHANCED_EIS;
+      val->tag = ISM6HG256X_GY_ENHANCED_EIS;
       break;
 
     case 0x1F:
-      val->tag = LSM6DSV320X_FSM_RESULT_TAG;
+      val->tag = ISM6HG256X_FSM_RESULT_TAG;
       break;
 
     default:
-      val->tag = LSM6DSV320X_FIFO_EMPTY;
+      val->tag = ISM6HG256X_FIFO_EMPTY;
       break;
   }
 
@@ -5781,28 +5772,27 @@ int32_t lsm6dsv320x_fifo_out_raw_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_stpcnt_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_fifo_stpcnt_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
+  ism6hg256x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
   if (ret != 0)
   {
     goto exit;
   }
   emb_func_fifo_en_a.step_counter_fifo_en = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a,
-                               1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -5815,18 +5805,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_stpcnt_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_fifo_stpcnt_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
+  ism6hg256x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
   if (ret != 0)
   {
     goto exit;
@@ -5834,7 +5824,7 @@ int32_t lsm6dsv320x_fifo_stpcnt_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
   *val = emb_func_fifo_en_a.step_counter_fifo_en;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -5847,28 +5837,27 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_fsm_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_fifo_fsm_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_fifo_en_b_t emb_func_fifo_en_b;
+  ism6hg256x_emb_func_fifo_en_b_t emb_func_fifo_en_b;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
   if (ret != 0)
   {
     goto exit;
   }
   emb_func_fifo_en_b.fsm_fifo_en = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b,
-                               1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -5881,18 +5870,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_fsm_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_fifo_fsm_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_emb_func_fifo_en_b_t emb_func_fifo_en_b;
+  ism6hg256x_emb_func_fifo_en_b_t emb_func_fifo_en_b;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
   if (ret != 0)
   {
     goto exit;
@@ -5900,7 +5889,7 @@ int32_t lsm6dsv320x_fifo_fsm_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
   *val = emb_func_fifo_en_b.fsm_fifo_en;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -5913,28 +5902,27 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_mlc_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_fifo_mlc_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
+  ism6hg256x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
   if (ret != 0)
   {
     goto exit;
   }
   emb_func_fifo_en_a.mlc_fifo_en = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a,
-                               1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -5947,18 +5935,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_mlc_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_fifo_mlc_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
+  ism6hg256x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
   if (ret != 0)
   {
     goto exit;
@@ -5966,7 +5954,7 @@ int32_t lsm6dsv320x_fifo_mlc_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
   *val = emb_func_fifo_en_a.mlc_fifo_en;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -5979,28 +5967,27 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_mlc_filt_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_fifo_mlc_filt_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_fifo_en_b_t emb_func_fifo_en_b;
+  ism6hg256x_emb_func_fifo_en_b_t emb_func_fifo_en_b;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
   if (ret != 0)
   {
     goto exit;
   }
   emb_func_fifo_en_b.mlc_filter_feature_fifo_en = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b,
-                               1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -6013,18 +6000,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_mlc_filt_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_fifo_mlc_filt_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_emb_func_fifo_en_b_t emb_func_fifo_en_b;
+  ism6hg256x_emb_func_fifo_en_b_t emb_func_fifo_en_b;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
   if (ret != 0)
   {
     goto exit;
@@ -6032,7 +6019,7 @@ int32_t lsm6dsv320x_fifo_mlc_filt_batch_get(const stmdev_ctx_t *ctx, uint8_t *va
   *val = emb_func_fifo_en_b.mlc_filter_feature_fifo_en;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -6045,27 +6032,27 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_sh_batch_target_set(const stmdev_ctx_t *ctx, uint8_t idx, uint8_t val)
+int32_t ism6hg256x_fifo_sh_batch_target_set(const stmdev_ctx_t *ctx, uint8_t idx, uint8_t val)
 {
-  lsm6dsv320x_tgt0_config_t tgt_config;
+  ism6hg256x_tgt0_config_t tgt_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TGT0_CONFIG + idx * 3U, (uint8_t *)&tgt_config, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TGT0_CONFIG + idx * 3U, (uint8_t *)&tgt_config, 1);
   if (ret != 0)
   {
     goto exit;
   }
   tgt_config.batch_ext_sens_0_en = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TGT0_CONFIG + idx * 3U, (uint8_t *)&tgt_config, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_TGT0_CONFIG + idx * 3U, (uint8_t *)&tgt_config, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -6078,18 +6065,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_sh_batch_target_get(const stmdev_ctx_t *ctx, uint8_t idx, uint8_t *val)
+int32_t ism6hg256x_fifo_sh_batch_target_get(const stmdev_ctx_t *ctx, uint8_t idx, uint8_t *val)
 {
-  lsm6dsv320x_tgt0_config_t tgt_config;
+  ism6hg256x_tgt0_config_t tgt_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TGT0_CONFIG + idx * 3U, (uint8_t *)&tgt_config, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TGT0_CONFIG + idx * 3U, (uint8_t *)&tgt_config, 1);
   if (ret != 0)
   {
     goto exit;
@@ -6097,7 +6084,7 @@ int32_t lsm6dsv320x_fifo_sh_batch_target_get(const stmdev_ctx_t *ctx, uint8_t id
   *val = tgt_config.batch_ext_sens_0_en;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -6110,19 +6097,19 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_sflp_batch_set(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_fifo_sflp_raw_t val)
+int32_t ism6hg256x_fifo_sflp_batch_set(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_fifo_sflp_raw_t val)
 {
-  lsm6dsv320x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
+  ism6hg256x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
   if (ret != 0)
   {
     goto exit;
@@ -6130,11 +6117,11 @@ int32_t lsm6dsv320x_fifo_sflp_batch_set(const stmdev_ctx_t *ctx,
   emb_func_fifo_en_a.sflp_game_fifo_en = val.game_rotation;
   emb_func_fifo_en_a.sflp_gravity_fifo_en = val.gravity;
   emb_func_fifo_en_a.sflp_gbias_fifo_en = val.gbias;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A,
-                               (uint8_t *)&emb_func_fifo_en_a, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_A,
+                              (uint8_t *)&emb_func_fifo_en_a, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -6147,19 +6134,19 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fifo_sflp_batch_get(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_fifo_sflp_raw_t *val)
+int32_t ism6hg256x_fifo_sflp_batch_get(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_fifo_sflp_raw_t *val)
 {
-  lsm6dsv320x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
+  ism6hg256x_emb_func_fifo_en_a_t emb_func_fifo_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
   if (ret != 0)
   {
     goto exit;
@@ -6169,7 +6156,7 @@ int32_t lsm6dsv320x_fifo_sflp_batch_get(const stmdev_ctx_t *ctx,
   val->gbias = emb_func_fifo_en_a.sflp_gbias_fifo_en;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -6195,18 +6182,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_anti_spike_set(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_filt_anti_spike_t val)
+int32_t ism6hg256x_filt_anti_spike_set(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_filt_anti_spike_t val)
 {
-  lsm6dsv320x_if_cfg_t if_cfg;
+  ism6hg256x_if_cfg_t if_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
 
   if (ret == 0)
   {
     if_cfg.asf_ctrl = (uint8_t)val & 0x01U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   }
 
   return ret;
@@ -6220,13 +6207,13 @@ int32_t lsm6dsv320x_filt_anti_spike_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_anti_spike_get(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_filt_anti_spike_t *val)
+int32_t ism6hg256x_filt_anti_spike_get(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_filt_anti_spike_t *val)
 {
-  lsm6dsv320x_if_cfg_t if_cfg;
+  ism6hg256x_if_cfg_t if_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -6234,16 +6221,16 @@ int32_t lsm6dsv320x_filt_anti_spike_get(const stmdev_ctx_t *ctx,
 
   switch (if_cfg.asf_ctrl)
   {
-    case LSM6DSV320X_AUTO:
-      *val = LSM6DSV320X_AUTO;
+    case ISM6HG256X_AUTO:
+      *val = ISM6HG256X_AUTO;
       break;
 
-    case LSM6DSV320X_ALWAYS_ACTIVE:
-      *val = LSM6DSV320X_ALWAYS_ACTIVE;
+    case ISM6HG256X_ALWAYS_ACTIVE:
+      *val = ISM6HG256X_ALWAYS_ACTIVE;
       break;
 
     default:
-      *val = LSM6DSV320X_AUTO;
+      *val = ISM6HG256X_AUTO;
       break;
   }
 
@@ -6258,27 +6245,27 @@ int32_t lsm6dsv320x_filt_anti_spike_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_settling_mask_set(const stmdev_ctx_t *ctx,
-                                           lsm6dsv320x_filt_settling_mask_t val)
+int32_t ism6hg256x_filt_settling_mask_set(const stmdev_ctx_t *ctx,
+                                          ism6hg256x_filt_settling_mask_t val)
 {
-  lsm6dsv320x_emb_func_cfg_t emb_func_cfg;
-  lsm6dsv320x_ui_int_ois_t ui_int_ois;
-  lsm6dsv320x_ctrl4_t ctrl4;
+  ism6hg256x_emb_func_cfg_t emb_func_cfg;
+  ism6hg256x_ui_int_ois_t ui_int_ois;
+  ism6hg256x_ctrl4_t ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
   if (ret != 0)
   {
     return ret;
   }
   ctrl4.drdy_mask = val.drdy;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -6286,19 +6273,19 @@ int32_t lsm6dsv320x_filt_settling_mask_set(const stmdev_ctx_t *ctx,
   emb_func_cfg.emb_func_irq_mask_xl_settl = val.irq_xl;
   emb_func_cfg.emb_func_irq_mask_xl_hg_settl = val.irq_xl_hg;
   emb_func_cfg.emb_func_irq_mask_g_settl = val.irq_g;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_INT_OIS, (uint8_t *)&ui_int_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_INT_OIS, (uint8_t *)&ui_int_ois, 1);
   if (ret != 0)
   {
     return ret;
   }
   ui_int_ois.drdy_mask_ois = val.ois_drdy;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_UI_INT_OIS, (uint8_t *)&ui_int_ois, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_UI_INT_OIS, (uint8_t *)&ui_int_ois, 1);
 
   return ret;
 }
@@ -6311,17 +6298,17 @@ int32_t lsm6dsv320x_filt_settling_mask_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_settling_mask_get(const stmdev_ctx_t *ctx,
-                                           lsm6dsv320x_filt_settling_mask_t *val)
+int32_t ism6hg256x_filt_settling_mask_get(const stmdev_ctx_t *ctx,
+                                          ism6hg256x_filt_settling_mask_t *val)
 {
-  lsm6dsv320x_emb_func_cfg_t emb_func_cfg;
-  lsm6dsv320x_ui_int_ois_t ui_int_ois;
-  lsm6dsv320x_ctrl4_t ctrl4;
+  ism6hg256x_emb_func_cfg_t emb_func_cfg;
+  ism6hg256x_ui_int_ois_t ui_int_ois;
+  ism6hg256x_ctrl4_t ctrl4;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_INT_OIS, (uint8_t *)&ui_int_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_UI_INT_OIS, (uint8_t *)&ui_int_ois, 1);
   if (ret != 0)
   {
     return ret;
@@ -6343,18 +6330,18 @@ int32_t lsm6dsv320x_filt_settling_mask_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_ois_settling_mask_set(const stmdev_ctx_t *ctx,
-                                               lsm6dsv320x_filt_ois_settling_mask_t val)
+int32_t ism6hg256x_filt_ois_settling_mask_set(const stmdev_ctx_t *ctx,
+                                              ism6hg256x_filt_ois_settling_mask_t val)
 {
-  lsm6dsv320x_if2_int_ois_t if2_int_ois;
+  ism6hg256x_if2_int_ois_t if2_int_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
 
   if (ret == 0)
   {
     if2_int_ois.drdy_mask_ois = val.ois_drdy;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
   }
 
   return ret;
@@ -6368,14 +6355,14 @@ int32_t lsm6dsv320x_filt_ois_settling_mask_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_ois_settling_mask_get(const stmdev_ctx_t *ctx,
-                                               lsm6dsv320x_filt_ois_settling_mask_t *val)
+int32_t ism6hg256x_filt_ois_settling_mask_get(const stmdev_ctx_t *ctx,
+                                              ism6hg256x_filt_ois_settling_mask_t *val)
 {
 
-  lsm6dsv320x_if2_int_ois_t if2_int_ois;
+  ism6hg256x_if2_int_ois_t if2_int_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF2_INT_OIS, (uint8_t *)&if2_int_ois, 1);
   if (ret != 0)
   {
     return ret;
@@ -6394,17 +6381,17 @@ int32_t lsm6dsv320x_filt_ois_settling_mask_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_gy_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_filt_gy_lp1_bandwidth_t val)
+int32_t ism6hg256x_filt_gy_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_filt_gy_lp1_bandwidth_t val)
 {
-  lsm6dsv320x_ctrl6_t ctrl6;
+  ism6hg256x_ctrl6_t ctrl6;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL6, (uint8_t *)&ctrl6, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL6, (uint8_t *)&ctrl6, 1);
   if (ret == 0)
   {
     ctrl6.lpf1_g_bw = (uint8_t)val & 0x0Fu;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL6, (uint8_t *)&ctrl6, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL6, (uint8_t *)&ctrl6, 1);
   }
 
   return ret;
@@ -6418,13 +6405,13 @@ int32_t lsm6dsv320x_filt_gy_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_gy_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_filt_gy_lp1_bandwidth_t *val)
+int32_t ism6hg256x_filt_gy_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_filt_gy_lp1_bandwidth_t *val)
 {
-  lsm6dsv320x_ctrl6_t ctrl6;
+  ism6hg256x_ctrl6_t ctrl6;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL6, (uint8_t *)&ctrl6, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL6, (uint8_t *)&ctrl6, 1);
   if (ret != 0)
   {
     return ret;
@@ -6432,40 +6419,40 @@ int32_t lsm6dsv320x_filt_gy_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl6.lpf1_g_bw)
   {
-    case LSM6DSV320X_GY_ULTRA_LIGHT:
-      *val = LSM6DSV320X_GY_ULTRA_LIGHT;
+    case ISM6HG256X_GY_ULTRA_LIGHT:
+      *val = ISM6HG256X_GY_ULTRA_LIGHT;
       break;
 
-    case LSM6DSV320X_GY_VERY_LIGHT:
-      *val = LSM6DSV320X_GY_VERY_LIGHT;
+    case ISM6HG256X_GY_VERY_LIGHT:
+      *val = ISM6HG256X_GY_VERY_LIGHT;
       break;
 
-    case LSM6DSV320X_GY_LIGHT:
-      *val = LSM6DSV320X_GY_LIGHT;
+    case ISM6HG256X_GY_LIGHT:
+      *val = ISM6HG256X_GY_LIGHT;
       break;
 
-    case LSM6DSV320X_GY_MEDIUM:
-      *val = LSM6DSV320X_GY_MEDIUM;
+    case ISM6HG256X_GY_MEDIUM:
+      *val = ISM6HG256X_GY_MEDIUM;
       break;
 
-    case LSM6DSV320X_GY_STRONG:
-      *val = LSM6DSV320X_GY_STRONG;
+    case ISM6HG256X_GY_STRONG:
+      *val = ISM6HG256X_GY_STRONG;
       break;
 
-    case LSM6DSV320X_GY_VERY_STRONG:
-      *val = LSM6DSV320X_GY_VERY_STRONG;
+    case ISM6HG256X_GY_VERY_STRONG:
+      *val = ISM6HG256X_GY_VERY_STRONG;
       break;
 
-    case LSM6DSV320X_GY_AGGRESSIVE:
-      *val = LSM6DSV320X_GY_AGGRESSIVE;
+    case ISM6HG256X_GY_AGGRESSIVE:
+      *val = ISM6HG256X_GY_AGGRESSIVE;
       break;
 
-    case LSM6DSV320X_GY_XTREME:
-      *val = LSM6DSV320X_GY_XTREME;
+    case ISM6HG256X_GY_XTREME:
+      *val = ISM6HG256X_GY_XTREME;
       break;
 
     default:
-      *val = LSM6DSV320X_GY_ULTRA_LIGHT;
+      *val = ISM6HG256X_GY_ULTRA_LIGHT;
       break;
   }
 
@@ -6480,16 +6467,16 @@ int32_t lsm6dsv320x_filt_gy_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_gy_lp1_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_filt_gy_lp1_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_ctrl7_t ctrl7;
+  ism6hg256x_ctrl7_t ctrl7;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL7, (uint8_t *)&ctrl7, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL7, (uint8_t *)&ctrl7, 1);
   if (ret == 0)
   {
     ctrl7.lpf1_g_en = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL7, (uint8_t *)&ctrl7, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL7, (uint8_t *)&ctrl7, 1);
   }
 
   return ret;
@@ -6504,12 +6491,12 @@ int32_t lsm6dsv320x_filt_gy_lp1_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_gy_lp1_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_filt_gy_lp1_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ctrl7_t ctrl7;
+  ism6hg256x_ctrl7_t ctrl7;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL7, (uint8_t *)&ctrl7, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL7, (uint8_t *)&ctrl7, 1);
   if (ret != 0)
   {
     return ret;
@@ -6528,17 +6515,17 @@ int32_t lsm6dsv320x_filt_gy_lp1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_lp2_bandwidth_set(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_filt_xl_lp2_bandwidth_t val)
+int32_t ism6hg256x_filt_xl_lp2_bandwidth_set(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_filt_xl_lp2_bandwidth_t val)
 {
-  lsm6dsv320x_ctrl8_t ctrl8;
+  ism6hg256x_ctrl8_t ctrl8;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL8, (uint8_t *)&ctrl8, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL8, (uint8_t *)&ctrl8, 1);
   if (ret == 0)
   {
     ctrl8.hp_lpf2_xl_bw = (uint8_t)val & 0x07U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL8, (uint8_t *)&ctrl8, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL8, (uint8_t *)&ctrl8, 1);
   }
 
   return ret;
@@ -6552,13 +6539,13 @@ int32_t lsm6dsv320x_filt_xl_lp2_bandwidth_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_lp2_bandwidth_get(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_filt_xl_lp2_bandwidth_t *val)
+int32_t ism6hg256x_filt_xl_lp2_bandwidth_get(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_filt_xl_lp2_bandwidth_t *val)
 {
-  lsm6dsv320x_ctrl8_t ctrl8;
+  ism6hg256x_ctrl8_t ctrl8;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL8, (uint8_t *)&ctrl8, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL8, (uint8_t *)&ctrl8, 1);
   if (ret != 0)
   {
     return ret;
@@ -6566,40 +6553,40 @@ int32_t lsm6dsv320x_filt_xl_lp2_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl8.hp_lpf2_xl_bw)
   {
-    case LSM6DSV320X_XL_ULTRA_LIGHT:
-      *val = LSM6DSV320X_XL_ULTRA_LIGHT;
+    case ISM6HG256X_XL_ULTRA_LIGHT:
+      *val = ISM6HG256X_XL_ULTRA_LIGHT;
       break;
 
-    case LSM6DSV320X_XL_VERY_LIGHT:
-      *val = LSM6DSV320X_XL_VERY_LIGHT;
+    case ISM6HG256X_XL_VERY_LIGHT:
+      *val = ISM6HG256X_XL_VERY_LIGHT;
       break;
 
-    case LSM6DSV320X_XL_LIGHT:
-      *val = LSM6DSV320X_XL_LIGHT;
+    case ISM6HG256X_XL_LIGHT:
+      *val = ISM6HG256X_XL_LIGHT;
       break;
 
-    case LSM6DSV320X_XL_MEDIUM:
-      *val = LSM6DSV320X_XL_MEDIUM;
+    case ISM6HG256X_XL_MEDIUM:
+      *val = ISM6HG256X_XL_MEDIUM;
       break;
 
-    case LSM6DSV320X_XL_STRONG:
-      *val = LSM6DSV320X_XL_STRONG;
+    case ISM6HG256X_XL_STRONG:
+      *val = ISM6HG256X_XL_STRONG;
       break;
 
-    case LSM6DSV320X_XL_VERY_STRONG:
-      *val = LSM6DSV320X_XL_VERY_STRONG;
+    case ISM6HG256X_XL_VERY_STRONG:
+      *val = ISM6HG256X_XL_VERY_STRONG;
       break;
 
-    case LSM6DSV320X_XL_AGGRESSIVE:
-      *val = LSM6DSV320X_XL_AGGRESSIVE;
+    case ISM6HG256X_XL_AGGRESSIVE:
+      *val = ISM6HG256X_XL_AGGRESSIVE;
       break;
 
-    case LSM6DSV320X_XL_XTREME:
-      *val = LSM6DSV320X_XL_XTREME;
+    case ISM6HG256X_XL_XTREME:
+      *val = ISM6HG256X_XL_XTREME;
       break;
 
     default:
-      *val = LSM6DSV320X_XL_ULTRA_LIGHT;
+      *val = ISM6HG256X_XL_ULTRA_LIGHT;
       break;
   }
 
@@ -6614,16 +6601,16 @@ int32_t lsm6dsv320x_filt_xl_lp2_bandwidth_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_lp2_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_filt_xl_lp2_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   if (ret == 0)
   {
     ctrl9.lpf2_xl_en = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   }
 
   return ret;
@@ -6637,12 +6624,12 @@ int32_t lsm6dsv320x_filt_xl_lp2_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_lp2_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_filt_xl_lp2_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   if (ret != 0)
   {
     return ret;
@@ -6661,16 +6648,16 @@ int32_t lsm6dsv320x_filt_xl_lp2_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_hp_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_filt_xl_hp_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   if (ret == 0)
   {
     ctrl9.hp_slope_xl_en = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   }
 
   return ret;
@@ -6684,12 +6671,12 @@ int32_t lsm6dsv320x_filt_xl_hp_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_hp_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_filt_xl_hp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   if (ret != 0)
   {
     return ret;
@@ -6708,16 +6695,16 @@ int32_t lsm6dsv320x_filt_xl_hp_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_fast_settling_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_filt_xl_fast_settling_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   if (ret == 0)
   {
     ctrl9.xl_fastsettl_mode = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   }
 
   return ret;
@@ -6731,12 +6718,12 @@ int32_t lsm6dsv320x_filt_xl_fast_settling_set(const stmdev_ctx_t *ctx, uint8_t v
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_fast_settling_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_filt_xl_fast_settling_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   if (ret != 0)
   {
     return ret;
@@ -6755,17 +6742,17 @@ int32_t lsm6dsv320x_filt_xl_fast_settling_get(const stmdev_ctx_t *ctx, uint8_t *
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_hp_mode_set(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_filt_xl_hp_mode_t val)
+int32_t ism6hg256x_filt_xl_hp_mode_set(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_filt_xl_hp_mode_t val)
 {
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   if (ret == 0)
   {
     ctrl9.hp_ref_mode_xl = (uint8_t)val & 0x01U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   }
 
   return ret;
@@ -6779,13 +6766,13 @@ int32_t lsm6dsv320x_filt_xl_hp_mode_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_hp_mode_get(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_filt_xl_hp_mode_t *val)
+int32_t ism6hg256x_filt_xl_hp_mode_get(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_filt_xl_hp_mode_t *val)
 {
-  lsm6dsv320x_ctrl9_t ctrl9;
+  ism6hg256x_ctrl9_t ctrl9;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL9, (uint8_t *)&ctrl9, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL9, (uint8_t *)&ctrl9, 1);
   if (ret != 0)
   {
     return ret;
@@ -6793,16 +6780,16 @@ int32_t lsm6dsv320x_filt_xl_hp_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl9.hp_ref_mode_xl)
   {
-    case LSM6DSV320X_HP_MD_NORMAL:
-      *val = LSM6DSV320X_HP_MD_NORMAL;
+    case ISM6HG256X_HP_MD_NORMAL:
+      *val = ISM6HG256X_HP_MD_NORMAL;
       break;
 
-    case LSM6DSV320X_HP_MD_REFERENCE:
-      *val = LSM6DSV320X_HP_MD_REFERENCE;
+    case ISM6HG256X_HP_MD_REFERENCE:
+      *val = ISM6HG256X_HP_MD_REFERENCE;
       break;
 
     default:
-      *val = LSM6DSV320X_HP_MD_NORMAL;
+      *val = ISM6HG256X_HP_MD_NORMAL;
       break;
   }
 
@@ -6817,29 +6804,29 @@ int32_t lsm6dsv320x_filt_xl_hp_mode_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_wkup_act_feed_set(const stmdev_ctx_t *ctx,
-                                           lsm6dsv320x_filt_wkup_act_feed_t val)
+int32_t ism6hg256x_filt_wkup_act_feed_set(const stmdev_ctx_t *ctx,
+                                          ism6hg256x_filt_wkup_act_feed_t val)
 {
-  lsm6dsv320x_wake_up_ths_t wake_up_ths;
-  lsm6dsv320x_tap_cfg0_t tap_cfg0;
+  ism6hg256x_wake_up_ths_t wake_up_ths;
+  ism6hg256x_tap_cfg0_t tap_cfg0;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   tap_cfg0.slope_fds = (uint8_t)val & 0x01U;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   if (ret != 0)
   {
     return ret;
   }
 
   wake_up_ths.usr_off_on_wu = ((uint8_t)val & 0x02U) >> 1;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
 
   return ret;
 }
@@ -6852,15 +6839,15 @@ int32_t lsm6dsv320x_filt_wkup_act_feed_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_wkup_act_feed_get(const stmdev_ctx_t *ctx,
-                                           lsm6dsv320x_filt_wkup_act_feed_t *val)
+int32_t ism6hg256x_filt_wkup_act_feed_get(const stmdev_ctx_t *ctx,
+                                          ism6hg256x_filt_wkup_act_feed_t *val)
 {
-  lsm6dsv320x_wake_up_ths_t wake_up_ths;
-  lsm6dsv320x_tap_cfg0_t tap_cfg0;
+  ism6hg256x_wake_up_ths_t wake_up_ths;
+  ism6hg256x_tap_cfg0_t tap_cfg0;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   if (ret != 0)
   {
     return ret;
@@ -6868,20 +6855,20 @@ int32_t lsm6dsv320x_filt_wkup_act_feed_get(const stmdev_ctx_t *ctx,
 
   switch ((wake_up_ths.usr_off_on_wu << 1) + tap_cfg0.slope_fds)
   {
-    case LSM6DSV320X_WK_FEED_SLOPE:
-      *val = LSM6DSV320X_WK_FEED_SLOPE;
+    case ISM6HG256X_WK_FEED_SLOPE:
+      *val = ISM6HG256X_WK_FEED_SLOPE;
       break;
 
-    case LSM6DSV320X_WK_FEED_HIGH_PASS:
-      *val = LSM6DSV320X_WK_FEED_HIGH_PASS;
+    case ISM6HG256X_WK_FEED_HIGH_PASS:
+      *val = ISM6HG256X_WK_FEED_HIGH_PASS;
       break;
 
-    case LSM6DSV320X_WK_FEED_LP_WITH_OFFSET:
-      *val = LSM6DSV320X_WK_FEED_LP_WITH_OFFSET;
+    case ISM6HG256X_WK_FEED_LP_WITH_OFFSET:
+      *val = ISM6HG256X_WK_FEED_LP_WITH_OFFSET;
       break;
 
     default:
-      *val = LSM6DSV320X_WK_FEED_SLOPE;
+      *val = ISM6HG256X_WK_FEED_SLOPE;
       break;
   }
 
@@ -6896,17 +6883,17 @@ int32_t lsm6dsv320x_filt_wkup_act_feed_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_mask_trigger_xl_settl_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_mask_trigger_xl_settl_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_tap_cfg0_t tap_cfg0;
+  ism6hg256x_tap_cfg0_t tap_cfg0;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
 
   if (ret == 0)
   {
     tap_cfg0.hw_func_mask_xl_settl = val & 0x01U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   }
 
   return ret;
@@ -6920,12 +6907,12 @@ int32_t lsm6dsv320x_mask_trigger_xl_settl_set(const stmdev_ctx_t *ctx, uint8_t v
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_mask_trigger_xl_settl_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_mask_trigger_xl_settl_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_tap_cfg0_t tap_cfg0;
+  ism6hg256x_tap_cfg0_t tap_cfg0;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   if (ret != 0)
   {
     return ret;
@@ -6944,18 +6931,18 @@ int32_t lsm6dsv320x_mask_trigger_xl_settl_get(const stmdev_ctx_t *ctx, uint8_t *
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_sixd_feed_set(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_filt_sixd_feed_t val)
+int32_t ism6hg256x_filt_sixd_feed_set(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_filt_sixd_feed_t val)
 {
-  lsm6dsv320x_tap_cfg0_t tap_cfg0;
+  ism6hg256x_tap_cfg0_t tap_cfg0;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
 
   if (ret == 0)
   {
     tap_cfg0.low_pass_on_6d = (uint8_t)val & 0x01U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   }
 
   return ret;
@@ -6969,13 +6956,13 @@ int32_t lsm6dsv320x_filt_sixd_feed_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_sixd_feed_get(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_filt_sixd_feed_t *val)
+int32_t ism6hg256x_filt_sixd_feed_get(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_filt_sixd_feed_t *val)
 {
-  lsm6dsv320x_tap_cfg0_t tap_cfg0;
+  ism6hg256x_tap_cfg0_t tap_cfg0;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   if (ret != 0)
   {
     return ret;
@@ -6983,16 +6970,16 @@ int32_t lsm6dsv320x_filt_sixd_feed_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg0.low_pass_on_6d)
   {
-    case LSM6DSV320X_SIXD_FEED_ODR_DIV_2:
-      *val = LSM6DSV320X_SIXD_FEED_ODR_DIV_2;
+    case ISM6HG256X_SIXD_FEED_ODR_DIV_2:
+      *val = ISM6HG256X_SIXD_FEED_ODR_DIV_2;
       break;
 
-    case LSM6DSV320X_SIXD_FEED_LOW_PASS:
-      *val = LSM6DSV320X_SIXD_FEED_LOW_PASS;
+    case ISM6HG256X_SIXD_FEED_LOW_PASS:
+      *val = ISM6HG256X_SIXD_FEED_LOW_PASS;
       break;
 
     default:
-      *val = LSM6DSV320X_SIXD_FEED_ODR_DIV_2;
+      *val = ISM6HG256X_SIXD_FEED_ODR_DIV_2;
       break;
   }
 
@@ -7007,18 +6994,18 @@ int32_t lsm6dsv320x_filt_sixd_feed_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_gy_eis_lp_bandwidth_set(const stmdev_ctx_t *ctx,
-                                                 lsm6dsv320x_filt_gy_eis_lp_bandwidth_t val)
+int32_t ism6hg256x_filt_gy_eis_lp_bandwidth_set(const stmdev_ctx_t *ctx,
+                                                ism6hg256x_filt_gy_eis_lp_bandwidth_t val)
 {
-  lsm6dsv320x_ctrl_eis_t ctrl_eis;
+  ism6hg256x_ctrl_eis_t ctrl_eis;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
 
   if (ret == 0)
   {
     ctrl_eis.lpf_g_eis_bw = (uint8_t)val & 0x01U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
   }
 
   return ret;
@@ -7032,13 +7019,13 @@ int32_t lsm6dsv320x_filt_gy_eis_lp_bandwidth_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_gy_eis_lp_bandwidth_get(const stmdev_ctx_t *ctx,
-                                                 lsm6dsv320x_filt_gy_eis_lp_bandwidth_t *val)
+int32_t ism6hg256x_filt_gy_eis_lp_bandwidth_get(const stmdev_ctx_t *ctx,
+                                                ism6hg256x_filt_gy_eis_lp_bandwidth_t *val)
 {
-  lsm6dsv320x_ctrl_eis_t ctrl_eis;
+  ism6hg256x_ctrl_eis_t ctrl_eis;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL_EIS, (uint8_t *)&ctrl_eis, 1);
   if (ret != 0)
   {
     return ret;
@@ -7046,16 +7033,16 @@ int32_t lsm6dsv320x_filt_gy_eis_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_eis.lpf_g_eis_bw)
   {
-    case LSM6DSV320X_EIS_LP_NORMAL:
-      *val = LSM6DSV320X_EIS_LP_NORMAL;
+    case ISM6HG256X_EIS_LP_NORMAL:
+      *val = ISM6HG256X_EIS_LP_NORMAL;
       break;
 
-    case LSM6DSV320X_EIS_LP_LIGHT:
-      *val = LSM6DSV320X_EIS_LP_LIGHT;
+    case ISM6HG256X_EIS_LP_LIGHT:
+      *val = ISM6HG256X_EIS_LP_LIGHT;
       break;
 
     default:
-      *val = LSM6DSV320X_EIS_LP_NORMAL;
+      *val = ISM6HG256X_EIS_LP_NORMAL;
       break;
   }
 
@@ -7070,18 +7057,18 @@ int32_t lsm6dsv320x_filt_gy_eis_lp_bandwidth_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_gy_ois_lp_bandwidth_set(const stmdev_ctx_t *ctx,
-                                                 lsm6dsv320x_filt_gy_ois_lp_bandwidth_t val)
+int32_t ism6hg256x_filt_gy_ois_lp_bandwidth_set(const stmdev_ctx_t *ctx,
+                                                ism6hg256x_filt_gy_ois_lp_bandwidth_t val)
 {
-  lsm6dsv320x_ui_ctrl2_ois_t ui_ctrl2_ois;
+  ism6hg256x_ui_ctrl2_ois_t ui_ctrl2_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
 
   if (ret == 0)
   {
     ui_ctrl2_ois.lpf1_g_ois_bw = (uint8_t)val & 0x03U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
   }
 
   return ret;
@@ -7095,14 +7082,14 @@ int32_t lsm6dsv320x_filt_gy_ois_lp_bandwidth_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_gy_ois_lp_bandwidth_get(const stmdev_ctx_t *ctx,
-                                                 lsm6dsv320x_filt_gy_ois_lp_bandwidth_t *val)
+int32_t ism6hg256x_filt_gy_ois_lp_bandwidth_get(const stmdev_ctx_t *ctx,
+                                                ism6hg256x_filt_gy_ois_lp_bandwidth_t *val)
 {
 
-  lsm6dsv320x_ui_ctrl2_ois_t ui_ctrl2_ois;
+  ism6hg256x_ui_ctrl2_ois_t ui_ctrl2_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
   if (ret != 0)
   {
     return ret;
@@ -7110,24 +7097,24 @@ int32_t lsm6dsv320x_filt_gy_ois_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ui_ctrl2_ois.lpf1_g_ois_bw)
   {
-    case LSM6DSV320X_OIS_GY_LP_NORMAL:
-      *val = LSM6DSV320X_OIS_GY_LP_NORMAL;
+    case ISM6HG256X_OIS_GY_LP_NORMAL:
+      *val = ISM6HG256X_OIS_GY_LP_NORMAL;
       break;
 
-    case LSM6DSV320X_OIS_GY_LP_STRONG:
-      *val = LSM6DSV320X_OIS_GY_LP_STRONG;
+    case ISM6HG256X_OIS_GY_LP_STRONG:
+      *val = ISM6HG256X_OIS_GY_LP_STRONG;
       break;
 
-    case LSM6DSV320X_OIS_GY_LP_AGGRESSIVE:
-      *val = LSM6DSV320X_OIS_GY_LP_AGGRESSIVE;
+    case ISM6HG256X_OIS_GY_LP_AGGRESSIVE:
+      *val = ISM6HG256X_OIS_GY_LP_AGGRESSIVE;
       break;
 
-    case LSM6DSV320X_OIS_GY_LP_LIGHT:
-      *val = LSM6DSV320X_OIS_GY_LP_LIGHT;
+    case ISM6HG256X_OIS_GY_LP_LIGHT:
+      *val = ISM6HG256X_OIS_GY_LP_LIGHT;
       break;
 
     default:
-      *val = LSM6DSV320X_OIS_GY_LP_NORMAL;
+      *val = ISM6HG256X_OIS_GY_LP_NORMAL;
       break;
   }
 
@@ -7142,18 +7129,18 @@ int32_t lsm6dsv320x_filt_gy_ois_lp_bandwidth_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_ois_lp_bandwidth_set(const stmdev_ctx_t *ctx,
-                                                 lsm6dsv320x_filt_xl_ois_lp_bandwidth_t val)
+int32_t ism6hg256x_filt_xl_ois_lp_bandwidth_set(const stmdev_ctx_t *ctx,
+                                                ism6hg256x_filt_xl_ois_lp_bandwidth_t val)
 {
-  lsm6dsv320x_ui_ctrl3_ois_t ui_ctrl3_ois;
+  ism6hg256x_ui_ctrl3_ois_t ui_ctrl3_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
 
   if (ret == 0)
   {
     ui_ctrl3_ois.lpf_xl_ois_bw = (uint8_t)val & 0x07U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
   }
 
   return ret;
@@ -7167,13 +7154,13 @@ int32_t lsm6dsv320x_filt_xl_ois_lp_bandwidth_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_filt_xl_ois_lp_bandwidth_get(const stmdev_ctx_t *ctx,
-                                                 lsm6dsv320x_filt_xl_ois_lp_bandwidth_t *val)
+int32_t ism6hg256x_filt_xl_ois_lp_bandwidth_get(const stmdev_ctx_t *ctx,
+                                                ism6hg256x_filt_xl_ois_lp_bandwidth_t *val)
 {
-  lsm6dsv320x_ui_ctrl3_ois_t ui_ctrl3_ois;
+  ism6hg256x_ui_ctrl3_ois_t ui_ctrl3_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
   if (ret != 0)
   {
     return ret;
@@ -7181,40 +7168,40 @@ int32_t lsm6dsv320x_filt_xl_ois_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ui_ctrl3_ois.lpf_xl_ois_bw)
   {
-    case LSM6DSV320X_OIS_XL_LP_ULTRA_LIGHT:
-      *val = LSM6DSV320X_OIS_XL_LP_ULTRA_LIGHT;
+    case ISM6HG256X_OIS_XL_LP_ULTRA_LIGHT:
+      *val = ISM6HG256X_OIS_XL_LP_ULTRA_LIGHT;
       break;
 
-    case LSM6DSV320X_OIS_XL_LP_VERY_LIGHT:
-      *val = LSM6DSV320X_OIS_XL_LP_VERY_LIGHT;
+    case ISM6HG256X_OIS_XL_LP_VERY_LIGHT:
+      *val = ISM6HG256X_OIS_XL_LP_VERY_LIGHT;
       break;
 
-    case LSM6DSV320X_OIS_XL_LP_LIGHT:
-      *val = LSM6DSV320X_OIS_XL_LP_LIGHT;
+    case ISM6HG256X_OIS_XL_LP_LIGHT:
+      *val = ISM6HG256X_OIS_XL_LP_LIGHT;
       break;
 
-    case LSM6DSV320X_OIS_XL_LP_NORMAL:
-      *val = LSM6DSV320X_OIS_XL_LP_NORMAL;
+    case ISM6HG256X_OIS_XL_LP_NORMAL:
+      *val = ISM6HG256X_OIS_XL_LP_NORMAL;
       break;
 
-    case LSM6DSV320X_OIS_XL_LP_STRONG:
-      *val = LSM6DSV320X_OIS_XL_LP_STRONG;
+    case ISM6HG256X_OIS_XL_LP_STRONG:
+      *val = ISM6HG256X_OIS_XL_LP_STRONG;
       break;
 
-    case LSM6DSV320X_OIS_XL_LP_VERY_STRONG:
-      *val = LSM6DSV320X_OIS_XL_LP_VERY_STRONG;
+    case ISM6HG256X_OIS_XL_LP_VERY_STRONG:
+      *val = ISM6HG256X_OIS_XL_LP_VERY_STRONG;
       break;
 
-    case LSM6DSV320X_OIS_XL_LP_AGGRESSIVE:
-      *val = LSM6DSV320X_OIS_XL_LP_AGGRESSIVE;
+    case ISM6HG256X_OIS_XL_LP_AGGRESSIVE:
+      *val = ISM6HG256X_OIS_XL_LP_AGGRESSIVE;
       break;
 
-    case LSM6DSV320X_OIS_XL_LP_XTREME:
-      *val = LSM6DSV320X_OIS_XL_LP_XTREME;
+    case ISM6HG256X_OIS_XL_LP_XTREME:
+      *val = ISM6HG256X_OIS_XL_LP_XTREME;
       break;
 
     default:
-      *val = LSM6DSV320X_OIS_XL_LP_ULTRA_LIGHT;
+      *val = ISM6HG256X_OIS_XL_LP_ULTRA_LIGHT;
       break;
   }
 
@@ -7242,18 +7229,18 @@ int32_t lsm6dsv320x_filt_xl_ois_lp_bandwidth_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_permission_set(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_fsm_permission_t val)
+int32_t ism6hg256x_fsm_permission_set(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_fsm_permission_t val)
 {
-  lsm6dsv320x_func_cfg_access_t func_cfg_access;
+  ism6hg256x_func_cfg_access_t func_cfg_access;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
 
   if (ret == 0)
   {
     func_cfg_access.fsm_wr_ctrl_en = (uint8_t)val & 0x01U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   }
 
   return ret;
@@ -7267,13 +7254,13 @@ int32_t lsm6dsv320x_fsm_permission_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_permission_get(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_fsm_permission_t *val)
+int32_t ism6hg256x_fsm_permission_get(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_fsm_permission_t *val)
 {
-  lsm6dsv320x_func_cfg_access_t func_cfg_access;
+  ism6hg256x_func_cfg_access_t func_cfg_access;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   if (ret != 0)
   {
     return ret;
@@ -7281,16 +7268,16 @@ int32_t lsm6dsv320x_fsm_permission_get(const stmdev_ctx_t *ctx,
 
   switch (func_cfg_access.fsm_wr_ctrl_en)
   {
-    case LSM6DSV320X_PROTECT_CTRL_REGS:
-      *val = LSM6DSV320X_PROTECT_CTRL_REGS;
+    case ISM6HG256X_PROTECT_CTRL_REGS:
+      *val = ISM6HG256X_PROTECT_CTRL_REGS;
       break;
 
-    case LSM6DSV320X_WRITE_CTRL_REG:
-      *val = LSM6DSV320X_WRITE_CTRL_REG;
+    case ISM6HG256X_WRITE_CTRL_REG:
+      *val = ISM6HG256X_WRITE_CTRL_REG;
       break;
 
     default:
-      *val = LSM6DSV320X_PROTECT_CTRL_REGS;
+      *val = ISM6HG256X_PROTECT_CTRL_REGS;
       break;
   }
 
@@ -7305,12 +7292,12 @@ int32_t lsm6dsv320x_fsm_permission_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_permission_status(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_fsm_permission_status(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ctrl_status_t ctrl_status;
+  ism6hg256x_ctrl_status_t ctrl_status;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL_STATUS, (uint8_t *)&ctrl_status, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL_STATUS, (uint8_t *)&ctrl_status, 1);
   if (ret != 0)
   {
     return ret;
@@ -7329,20 +7316,20 @@ int32_t lsm6dsv320x_fsm_permission_status(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_fsm_mode_t val)
+int32_t ism6hg256x_fsm_mode_set(const stmdev_ctx_t *ctx, ism6hg256x_fsm_mode_t val)
 {
-  lsm6dsv320x_emb_func_en_b_t emb_func_en_b;
-  lsm6dsv320x_fsm_enable_t fsm_enable;
+  ism6hg256x_emb_func_en_b_t emb_func_en_b;
+  ism6hg256x_fsm_enable_t fsm_enable;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_ENABLE, (uint8_t *)&fsm_enable, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FSM_ENABLE, (uint8_t *)&fsm_enable, 1);
   if (ret != 0)
   {
     goto exit;
@@ -7367,11 +7354,11 @@ int32_t lsm6dsv320x_fsm_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_fsm_mode_t
   fsm_enable.fsm7_en = val.fsm7_en;
   fsm_enable.fsm8_en = val.fsm8_en;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FSM_ENABLE, (uint8_t *)&fsm_enable, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FSM_ENABLE, (uint8_t *)&fsm_enable, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -7384,21 +7371,21 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_fsm_mode_t *val)
+int32_t ism6hg256x_fsm_mode_get(const stmdev_ctx_t *ctx, ism6hg256x_fsm_mode_t *val)
 {
-  lsm6dsv320x_fsm_enable_t fsm_enable;
+  ism6hg256x_fsm_enable_t fsm_enable;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_ENABLE, (uint8_t *)&fsm_enable, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FSM_ENABLE, (uint8_t *)&fsm_enable, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -7424,7 +7411,7 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val)
+int32_t ism6hg256x_fsm_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -7432,16 +7419,16 @@ int32_t lsm6dsv320x_fsm_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val)
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FSM_LONG_COUNTER_L, (uint8_t *)&buff[0], 2);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_FSM_LONG_COUNTER_L, (uint8_t *)&buff[0], 2);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -7454,21 +7441,21 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val)
+int32_t ism6hg256x_fsm_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_LONG_COUNTER_L, &buff[0], 2);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FSM_LONG_COUNTER_L, &buff[0], 2);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -7488,20 +7475,20 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_out_get(const stmdev_ctx_t *ctx, lsm6dsv320x_fsm_out_t *val)
+int32_t ism6hg256x_fsm_out_get(const stmdev_ctx_t *ctx, ism6hg256x_fsm_out_t *val)
 {
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_OUTS1, (uint8_t *)val, 8);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FSM_OUTS1, (uint8_t *)val, 8);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -7514,28 +7501,28 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_data_rate_set(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_fsm_data_rate_t val)
+int32_t ism6hg256x_fsm_data_rate_set(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_fsm_data_rate_t val)
 {
-  lsm6dsv320x_fsm_odr_t fsm_odr;
+  ism6hg256x_fsm_odr_t fsm_odr;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_ODR, (uint8_t *)&fsm_odr, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FSM_ODR, (uint8_t *)&fsm_odr, 1);
   if (ret != 0)
   {
     goto exit;
   }
   fsm_odr.fsm_odr = (uint8_t)val & 0x07U;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FSM_ODR, (uint8_t *)&fsm_odr, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FSM_ODR, (uint8_t *)&fsm_odr, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -7548,22 +7535,22 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_data_rate_get(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_fsm_data_rate_t *val)
+int32_t ism6hg256x_fsm_data_rate_get(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_fsm_data_rate_t *val)
 {
-  lsm6dsv320x_fsm_odr_t fsm_odr;
+  ism6hg256x_fsm_odr_t fsm_odr;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_ODR, (uint8_t *)&fsm_odr, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FSM_ODR, (uint8_t *)&fsm_odr, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -7571,36 +7558,36 @@ exit:
 
   switch (fsm_odr.fsm_odr)
   {
-    case LSM6DSV320X_FSM_15Hz:
-      *val = LSM6DSV320X_FSM_15Hz;
+    case ISM6HG256X_FSM_15Hz:
+      *val = ISM6HG256X_FSM_15Hz;
       break;
 
-    case LSM6DSV320X_FSM_30Hz:
-      *val = LSM6DSV320X_FSM_30Hz;
+    case ISM6HG256X_FSM_30Hz:
+      *val = ISM6HG256X_FSM_30Hz;
       break;
 
-    case LSM6DSV320X_FSM_60Hz:
-      *val = LSM6DSV320X_FSM_60Hz;
+    case ISM6HG256X_FSM_60Hz:
+      *val = ISM6HG256X_FSM_60Hz;
       break;
 
-    case LSM6DSV320X_FSM_120Hz:
-      *val = LSM6DSV320X_FSM_120Hz;
+    case ISM6HG256X_FSM_120Hz:
+      *val = ISM6HG256X_FSM_120Hz;
       break;
 
-    case LSM6DSV320X_FSM_240Hz:
-      *val = LSM6DSV320X_FSM_240Hz;
+    case ISM6HG256X_FSM_240Hz:
+      *val = ISM6HG256X_FSM_240Hz;
       break;
 
-    case LSM6DSV320X_FSM_480Hz:
-      *val = LSM6DSV320X_FSM_480Hz;
+    case ISM6HG256X_FSM_480Hz:
+      *val = ISM6HG256X_FSM_480Hz;
       break;
 
-    case LSM6DSV320X_FSM_960Hz:
-      *val = LSM6DSV320X_FSM_960Hz;
+    case ISM6HG256X_FSM_960Hz:
+      *val = ISM6HG256X_FSM_960Hz;
       break;
 
     default:
-      *val = LSM6DSV320X_FSM_15Hz;
+      *val = ISM6HG256X_FSM_15Hz;
       break;
   }
 
@@ -7822,15 +7809,15 @@ static float_t npy_half_to_float(uint16_t h)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sflp_game_gbias_set(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_sflp_gbias_t *val)
+int32_t ism6hg256x_sflp_game_gbias_set(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_sflp_gbias_t *val)
 {
-  lsm6dsv320x_sflp_data_rate_t sflp_odr;
+  ism6hg256x_sflp_data_rate_t sflp_odr;
   uint16_t gbias_hf[3];
   float_t k = 0.005f;
   int32_t ret;
 
-  ret = lsm6dsv320x_sflp_data_rate_get(ctx, &sflp_odr);
+  ret = ism6hg256x_sflp_data_rate_get(ctx, &sflp_odr);
   if (ret != 0)
   {
     return ret;
@@ -7840,22 +7827,22 @@ int32_t lsm6dsv320x_sflp_game_gbias_set(const stmdev_ctx_t *ctx,
   switch (sflp_odr)
   {
     default:
-    case LSM6DSV320X_SFLP_15Hz:
+    case ISM6HG256X_SFLP_15Hz:
       k = 0.04f;
       break;
-    case LSM6DSV320X_SFLP_30Hz:
+    case ISM6HG256X_SFLP_30Hz:
       k = 0.02f;
       break;
-    case LSM6DSV320X_SFLP_60Hz:
+    case ISM6HG256X_SFLP_60Hz:
       k = 0.01f;
       break;
-    case LSM6DSV320X_SFLP_120Hz:
+    case ISM6HG256X_SFLP_120Hz:
       k = 0.005f;
       break;
-    case LSM6DSV320X_SFLP_240Hz:
+    case ISM6HG256X_SFLP_240Hz:
       k = 0.0025f;
       break;
-    case LSM6DSV320X_SFLP_480Hz:
+    case ISM6HG256X_SFLP_480Hz:
       k = 0.00125f;
       break;
   }
@@ -7865,16 +7852,16 @@ int32_t lsm6dsv320x_sflp_game_gbias_set(const stmdev_ctx_t *ctx,
   gbias_hf[1] = npy_float_to_half(val->gbias_y * (3.14159265358979323846f / 180.0f) / k);
   gbias_hf[2] = npy_float_to_half(val->gbias_z * (3.14159265358979323846f / 180.0f) / k);
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_SFLP_GBIASX_INIT_L, (uint8_t *)&gbias_hf[0], 6);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_SFLP_GBIASX_INIT_L, (uint8_t *)&gbias_hf[0], 6);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -7887,14 +7874,14 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t val)
+int32_t ism6hg256x_fsm_ext_sens_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
-  ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_FSM_EXT_SENSITIVITY_L, (uint8_t *)&buff[0], 2);
+  ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_FSM_EXT_SENSITIVITY_L, (uint8_t *)&buff[0], 2);
 
   return ret;
 }
@@ -7907,13 +7894,13 @@ int32_t lsm6dsv320x_fsm_ext_sens_sensitivity_set(const stmdev_ctx_t *ctx, uint16
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_sensitivity_get(const stmdev_ctx_t *ctx,
-                                                 uint16_t *val)
+int32_t ism6hg256x_fsm_ext_sens_sensitivity_get(const stmdev_ctx_t *ctx,
+                                                uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_FSM_EXT_SENSITIVITY_L, &buff[0], 2);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_FSM_EXT_SENSITIVITY_L, &buff[0], 2);
   if (ret != 0)
   {
     return ret;
@@ -7933,8 +7920,8 @@ int32_t lsm6dsv320x_fsm_ext_sens_sensitivity_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_offset_set(const stmdev_ctx_t *ctx,
-                                            lsm6dsv320x_xl_fsm_ext_sens_offset_t val)
+int32_t ism6hg256x_fsm_ext_sens_offset_set(const stmdev_ctx_t *ctx,
+                                           ism6hg256x_xl_fsm_ext_sens_offset_t val)
 {
   uint8_t buff[6];
   int32_t ret;
@@ -7945,7 +7932,7 @@ int32_t lsm6dsv320x_fsm_ext_sens_offset_set(const stmdev_ctx_t *ctx,
   buff[2] = (uint8_t)(val.y - (buff[3] * 256U));
   buff[5] = (uint8_t)(val.z / 256U);
   buff[4] = (uint8_t)(val.z - (buff[5] * 256U));
-  ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_FSM_EXT_OFFX_L, (uint8_t *)&buff[0], 6);
+  ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_FSM_EXT_OFFX_L, (uint8_t *)&buff[0], 6);
 
   return ret;
 }
@@ -7958,13 +7945,13 @@ int32_t lsm6dsv320x_fsm_ext_sens_offset_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_offset_get(const stmdev_ctx_t *ctx,
-                                            lsm6dsv320x_xl_fsm_ext_sens_offset_t *val)
+int32_t ism6hg256x_fsm_ext_sens_offset_get(const stmdev_ctx_t *ctx,
+                                           ism6hg256x_xl_fsm_ext_sens_offset_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_FSM_EXT_OFFX_L, &buff[0], 6);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_FSM_EXT_OFFX_L, &buff[0], 6);
   if (ret != 0)
   {
     return ret;
@@ -7988,8 +7975,8 @@ int32_t lsm6dsv320x_fsm_ext_sens_offset_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_matrix_set(const stmdev_ctx_t *ctx,
-                                            lsm6dsv320x_xl_fsm_ext_sens_matrix_t val)
+int32_t ism6hg256x_fsm_ext_sens_matrix_set(const stmdev_ctx_t *ctx,
+                                           ism6hg256x_xl_fsm_ext_sens_matrix_t val)
 {
   uint8_t buff[12];
   int32_t ret;
@@ -8006,7 +7993,7 @@ int32_t lsm6dsv320x_fsm_ext_sens_matrix_set(const stmdev_ctx_t *ctx,
   buff[8] = (uint8_t)(val.yz - (buff[9] * 256U));
   buff[11] = (uint8_t)(val.zz / 256U);
   buff[10] = (uint8_t)(val.zz - (buff[11] * 256U));
-  ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_FSM_EXT_MATRIX_XX_L, (uint8_t *)&buff[0], 12);
+  ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_FSM_EXT_MATRIX_XX_L, (uint8_t *)&buff[0], 12);
 
   return ret;
 }
@@ -8019,13 +8006,13 @@ int32_t lsm6dsv320x_fsm_ext_sens_matrix_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_matrix_get(const stmdev_ctx_t *ctx,
-                                            lsm6dsv320x_xl_fsm_ext_sens_matrix_t *val)
+int32_t ism6hg256x_fsm_ext_sens_matrix_get(const stmdev_ctx_t *ctx,
+                                           ism6hg256x_xl_fsm_ext_sens_matrix_t *val)
 {
   uint8_t buff[12];
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_FSM_EXT_MATRIX_XX_L, &buff[0], 12);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_FSM_EXT_MATRIX_XX_L, &buff[0], 12);
   if (ret != 0)
   {
     return ret;
@@ -8055,19 +8042,19 @@ int32_t lsm6dsv320x_fsm_ext_sens_matrix_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_z_orient_set(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_fsm_ext_sens_z_orient_t val)
+int32_t ism6hg256x_fsm_ext_sens_z_orient_set(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_fsm_ext_sens_z_orient_t val)
 {
-  lsm6dsv320x_ext_cfg_a_t ext_cfg_a;
+  ism6hg256x_ext_cfg_a_t ext_cfg_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
   if (ret != 0)
   {
     return ret;
   }
   ext_cfg_a.ext_z_axis = (uint8_t)val & 0x07U;
-  ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
+  ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
 
   return ret;
 }
@@ -8080,13 +8067,13 @@ int32_t lsm6dsv320x_fsm_ext_sens_z_orient_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_z_orient_get(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_fsm_ext_sens_z_orient_t *val)
+int32_t ism6hg256x_fsm_ext_sens_z_orient_get(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_fsm_ext_sens_z_orient_t *val)
 {
-  lsm6dsv320x_ext_cfg_a_t ext_cfg_a;
+  ism6hg256x_ext_cfg_a_t ext_cfg_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
   if (ret != 0)
   {
     return ret;
@@ -8094,32 +8081,32 @@ int32_t lsm6dsv320x_fsm_ext_sens_z_orient_get(const stmdev_ctx_t *ctx,
 
   switch (ext_cfg_a.ext_z_axis)
   {
-    case LSM6DSV320X_Z_EQ_Y:
-      *val = LSM6DSV320X_Z_EQ_Y;
+    case ISM6HG256X_Z_EQ_Y:
+      *val = ISM6HG256X_Z_EQ_Y;
       break;
 
-    case LSM6DSV320X_Z_EQ_MIN_Y:
-      *val = LSM6DSV320X_Z_EQ_MIN_Y;
+    case ISM6HG256X_Z_EQ_MIN_Y:
+      *val = ISM6HG256X_Z_EQ_MIN_Y;
       break;
 
-    case LSM6DSV320X_Z_EQ_X:
-      *val = LSM6DSV320X_Z_EQ_X;
+    case ISM6HG256X_Z_EQ_X:
+      *val = ISM6HG256X_Z_EQ_X;
       break;
 
-    case LSM6DSV320X_Z_EQ_MIN_X:
-      *val = LSM6DSV320X_Z_EQ_MIN_X;
+    case ISM6HG256X_Z_EQ_MIN_X:
+      *val = ISM6HG256X_Z_EQ_MIN_X;
       break;
 
-    case LSM6DSV320X_Z_EQ_MIN_Z:
-      *val = LSM6DSV320X_Z_EQ_MIN_Z;
+    case ISM6HG256X_Z_EQ_MIN_Z:
+      *val = ISM6HG256X_Z_EQ_MIN_Z;
       break;
 
-    case LSM6DSV320X_Z_EQ_Z:
-      *val = LSM6DSV320X_Z_EQ_Z;
+    case ISM6HG256X_Z_EQ_Z:
+      *val = ISM6HG256X_Z_EQ_Z;
       break;
 
     default:
-      *val = LSM6DSV320X_Z_EQ_Y;
+      *val = ISM6HG256X_Z_EQ_Y;
       break;
   }
 
@@ -8134,17 +8121,17 @@ int32_t lsm6dsv320x_fsm_ext_sens_z_orient_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_y_orient_set(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_fsm_ext_sens_y_orient_t val)
+int32_t ism6hg256x_fsm_ext_sens_y_orient_set(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_fsm_ext_sens_y_orient_t val)
 {
-  lsm6dsv320x_ext_cfg_a_t ext_cfg_a;
+  ism6hg256x_ext_cfg_a_t ext_cfg_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
   if (ret == 0)
   {
     ext_cfg_a.ext_y_axis = (uint8_t)val & 0x7U;
-    ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
+    ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
   }
 
   return ret;
@@ -8158,13 +8145,13 @@ int32_t lsm6dsv320x_fsm_ext_sens_y_orient_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_y_orient_get(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_fsm_ext_sens_y_orient_t *val)
+int32_t ism6hg256x_fsm_ext_sens_y_orient_get(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_fsm_ext_sens_y_orient_t *val)
 {
-  lsm6dsv320x_ext_cfg_a_t ext_cfg_a;
+  ism6hg256x_ext_cfg_a_t ext_cfg_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EXT_CFG_A, (uint8_t *)&ext_cfg_a, 1);
   if (ret != 0)
   {
     return ret;
@@ -8172,32 +8159,32 @@ int32_t lsm6dsv320x_fsm_ext_sens_y_orient_get(const stmdev_ctx_t *ctx,
 
   switch (ext_cfg_a.ext_y_axis)
   {
-    case LSM6DSV320X_Y_EQ_Y:
-      *val = LSM6DSV320X_Y_EQ_Y;
+    case ISM6HG256X_Y_EQ_Y:
+      *val = ISM6HG256X_Y_EQ_Y;
       break;
 
-    case LSM6DSV320X_Y_EQ_MIN_Y:
-      *val = LSM6DSV320X_Y_EQ_MIN_Y;
+    case ISM6HG256X_Y_EQ_MIN_Y:
+      *val = ISM6HG256X_Y_EQ_MIN_Y;
       break;
 
-    case LSM6DSV320X_Y_EQ_X:
-      *val = LSM6DSV320X_Y_EQ_X;
+    case ISM6HG256X_Y_EQ_X:
+      *val = ISM6HG256X_Y_EQ_X;
       break;
 
-    case LSM6DSV320X_Y_EQ_MIN_X:
-      *val = LSM6DSV320X_Y_EQ_MIN_X;
+    case ISM6HG256X_Y_EQ_MIN_X:
+      *val = ISM6HG256X_Y_EQ_MIN_X;
       break;
 
-    case LSM6DSV320X_Y_EQ_MIN_Z:
-      *val = LSM6DSV320X_Y_EQ_MIN_Z;
+    case ISM6HG256X_Y_EQ_MIN_Z:
+      *val = ISM6HG256X_Y_EQ_MIN_Z;
       break;
 
-    case LSM6DSV320X_Y_EQ_Z:
-      *val = LSM6DSV320X_Y_EQ_Z;
+    case ISM6HG256X_Y_EQ_Z:
+      *val = ISM6HG256X_Y_EQ_Z;
       break;
 
     default:
-      *val = LSM6DSV320X_Y_EQ_Y;
+      *val = ISM6HG256X_Y_EQ_Y;
       break;
   }
 
@@ -8212,17 +8199,17 @@ int32_t lsm6dsv320x_fsm_ext_sens_y_orient_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_x_orient_set(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_fsm_ext_sens_x_orient_t val)
+int32_t ism6hg256x_fsm_ext_sens_x_orient_set(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_fsm_ext_sens_x_orient_t val)
 {
-  lsm6dsv320x_ext_cfg_b_t ext_cfg_b;
+  ism6hg256x_ext_cfg_b_t ext_cfg_b;
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EXT_CFG_B, (uint8_t *)&ext_cfg_b, 1);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EXT_CFG_B, (uint8_t *)&ext_cfg_b, 1);
   if (ret == 0)
   {
     ext_cfg_b.ext_x_axis = (uint8_t)val & 0x7U;
-    ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_EXT_CFG_B, (uint8_t *)&ext_cfg_b, 1);
+    ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_EXT_CFG_B, (uint8_t *)&ext_cfg_b, 1);
   }
 
   return ret;
@@ -8236,13 +8223,13 @@ int32_t lsm6dsv320x_fsm_ext_sens_x_orient_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_ext_sens_x_orient_get(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_fsm_ext_sens_x_orient_t *val)
+int32_t ism6hg256x_fsm_ext_sens_x_orient_get(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_fsm_ext_sens_x_orient_t *val)
 {
-  lsm6dsv320x_ext_cfg_b_t ext_cfg_b;
+  ism6hg256x_ext_cfg_b_t ext_cfg_b;
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EXT_CFG_B, (uint8_t *)&ext_cfg_b, 1);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EXT_CFG_B, (uint8_t *)&ext_cfg_b, 1);
   if (ret != 0)
   {
     return ret;
@@ -8250,32 +8237,32 @@ int32_t lsm6dsv320x_fsm_ext_sens_x_orient_get(const stmdev_ctx_t *ctx,
 
   switch (ext_cfg_b.ext_x_axis)
   {
-    case LSM6DSV320X_X_EQ_Y:
-      *val = LSM6DSV320X_X_EQ_Y;
+    case ISM6HG256X_X_EQ_Y:
+      *val = ISM6HG256X_X_EQ_Y;
       break;
 
-    case LSM6DSV320X_X_EQ_MIN_Y:
-      *val = LSM6DSV320X_X_EQ_MIN_Y;
+    case ISM6HG256X_X_EQ_MIN_Y:
+      *val = ISM6HG256X_X_EQ_MIN_Y;
       break;
 
-    case LSM6DSV320X_X_EQ_X:
-      *val = LSM6DSV320X_X_EQ_X;
+    case ISM6HG256X_X_EQ_X:
+      *val = ISM6HG256X_X_EQ_X;
       break;
 
-    case LSM6DSV320X_X_EQ_MIN_X:
-      *val = LSM6DSV320X_X_EQ_MIN_X;
+    case ISM6HG256X_X_EQ_MIN_X:
+      *val = ISM6HG256X_X_EQ_MIN_X;
       break;
 
-    case LSM6DSV320X_X_EQ_MIN_Z:
-      *val = LSM6DSV320X_X_EQ_MIN_Z;
+    case ISM6HG256X_X_EQ_MIN_Z:
+      *val = ISM6HG256X_X_EQ_MIN_Z;
       break;
 
-    case LSM6DSV320X_X_EQ_Z:
-      *val = LSM6DSV320X_X_EQ_Z;
+    case ISM6HG256X_X_EQ_Z:
+      *val = ISM6HG256X_X_EQ_Z;
       break;
 
     default:
-      *val = LSM6DSV320X_X_EQ_Y;
+      *val = ISM6HG256X_X_EQ_Y;
       break;
   }
 
@@ -8290,27 +8277,27 @@ int32_t lsm6dsv320x_fsm_ext_sens_x_orient_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_hg_peak_tracking_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_xl_hg_peak_tracking_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_init_b_t emb_func_init_b;
+  ism6hg256x_emb_func_init_b_t emb_func_init_b;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INIT_B, (uint8_t *)&emb_func_init_b, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_INIT_B, (uint8_t *)&emb_func_init_b, 1);
   if (ret != 0)
   {
     goto exit;
   }
   emb_func_init_b.pt_init = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_INIT_B, (uint8_t *)&emb_func_init_b, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_INIT_B, (uint8_t *)&emb_func_init_b, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -8323,18 +8310,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_hg_peak_tracking_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_xl_hg_peak_tracking_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_emb_func_init_b_t emb_func_init_b;
+  ism6hg256x_emb_func_init_b_t emb_func_init_b;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INIT_B, (uint8_t *)&emb_func_init_b, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_INIT_B, (uint8_t *)&emb_func_init_b, 1);
   if (ret != 0)
   {
     goto exit;
@@ -8342,7 +8329,7 @@ int32_t lsm6dsv320x_xl_hg_peak_tracking_get(const stmdev_ctx_t *ctx, uint8_t *va
   *val = emb_func_init_b.pt_init;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -8355,15 +8342,15 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_hg_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t val)
+int32_t ism6hg256x_xl_hg_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
-  ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_XL_HG_SENSITIVITY_L,
-                                (uint8_t *)&buff[0], 2);
+  ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_XL_HG_SENSITIVITY_L,
+                               (uint8_t *)&buff[0], 2);
 
   return ret;
 }
@@ -8376,13 +8363,13 @@ int32_t lsm6dsv320x_xl_hg_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_xl_hg_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *val)
+int32_t ism6hg256x_xl_hg_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_XL_HG_SENSITIVITY_L,
-                               &buff[0], 2);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_XL_HG_SENSITIVITY_L, &buff[0],
+                              2);
   if (ret != 0)
   {
     return ret;
@@ -8402,15 +8389,15 @@ int32_t lsm6dsv320x_xl_hg_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *val
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_long_cnt_timeout_set(const stmdev_ctx_t *ctx, uint16_t val)
+int32_t ism6hg256x_fsm_long_cnt_timeout_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
-  ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_FSM_LC_TIMEOUT_L,
-                                (uint8_t *)&buff[0], 2);
+  ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_FSM_LC_TIMEOUT_L,
+                               (uint8_t *)&buff[0], 2);
 
   return ret;
 }
@@ -8423,13 +8410,13 @@ int32_t lsm6dsv320x_fsm_long_cnt_timeout_set(const stmdev_ctx_t *ctx, uint16_t v
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_long_cnt_timeout_get(const stmdev_ctx_t *ctx, uint16_t *val)
+int32_t ism6hg256x_fsm_long_cnt_timeout_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_FSM_LC_TIMEOUT_L, &buff[0],
-                               2);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_FSM_LC_TIMEOUT_L, &buff[0],
+                              2);
   if (ret != 0)
   {
     return ret;
@@ -8449,18 +8436,18 @@ int32_t lsm6dsv320x_fsm_long_cnt_timeout_get(const stmdev_ctx_t *ctx, uint16_t *
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_number_of_programs_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_fsm_number_of_programs_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_fsm_programs_t fsm_programs;
+  ism6hg256x_fsm_programs_t fsm_programs;
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_FSM_PROGRAMS,
-                               (uint8_t *)&fsm_programs, 1);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_FSM_PROGRAMS,
+                              (uint8_t *)&fsm_programs, 1);
   if (ret == 0)
   {
     fsm_programs.fsm_n_prog = val;
-    ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_FSM_PROGRAMS,
-                                  (uint8_t *)&fsm_programs, 1);
+    ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_FSM_PROGRAMS,
+                                 (uint8_t *)&fsm_programs, 1);
   }
 
   return ret;
@@ -8474,13 +8461,13 @@ int32_t lsm6dsv320x_fsm_number_of_programs_set(const stmdev_ctx_t *ctx, uint8_t 
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_number_of_programs_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_fsm_number_of_programs_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_fsm_programs_t fsm_programs;
+  ism6hg256x_fsm_programs_t fsm_programs;
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_FSM_PROGRAMS,
-                               (uint8_t *)&fsm_programs, 1);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_FSM_PROGRAMS,
+                              (uint8_t *)&fsm_programs, 1);
   if (ret == 0)
   {
     *val = fsm_programs.fsm_n_prog;
@@ -8497,15 +8484,15 @@ int32_t lsm6dsv320x_fsm_number_of_programs_get(const stmdev_ctx_t *ctx, uint8_t 
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_start_address_set(const stmdev_ctx_t *ctx, uint16_t val)
+int32_t ism6hg256x_fsm_start_address_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
-  ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_FSM_START_ADD_L,
-                                (uint8_t *)&buff[0], 2);
+  ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_FSM_START_ADD_L,
+                               (uint8_t *)&buff[0], 2);
 
   return ret;
 }
@@ -8518,13 +8505,12 @@ int32_t lsm6dsv320x_fsm_start_address_set(const stmdev_ctx_t *ctx, uint16_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_fsm_start_address_get(const stmdev_ctx_t *ctx, uint16_t *val)
+int32_t ism6hg256x_fsm_start_address_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_FSM_START_ADD_L, &buff[0],
-                               2);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_FSM_START_ADD_L, &buff[0], 2);
   if (ret != 0)
   {
     return ret;
@@ -8557,31 +8543,31 @@ int32_t lsm6dsv320x_fsm_start_address_get(const stmdev_ctx_t *ctx, uint16_t *val
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ff_time_windows_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_ff_time_windows_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_wake_up_dur_t wake_up_dur;
-  lsm6dsv320x_free_fall_t free_fall;
+  ism6hg256x_wake_up_dur_t wake_up_dur;
+  ism6hg256x_free_fall_t free_fall;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
   if (ret != 0)
   {
     return ret;
   }
   wake_up_dur.ff_dur = ((uint8_t)val & 0x20U) >> 5;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FREE_FALL, (uint8_t *)&free_fall, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FREE_FALL, (uint8_t *)&free_fall, 1);
   if (ret != 0)
   {
     return ret;
   }
   free_fall.ff_dur = (uint8_t)val & 0x1FU;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FREE_FALL, (uint8_t *)&free_fall, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_FREE_FALL, (uint8_t *)&free_fall, 1);
 
   return ret;
 }
@@ -8594,14 +8580,14 @@ int32_t lsm6dsv320x_ff_time_windows_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ff_time_windows_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_ff_time_windows_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_wake_up_dur_t wake_up_dur;
-  lsm6dsv320x_free_fall_t free_fall;
+  ism6hg256x_wake_up_dur_t wake_up_dur;
+  ism6hg256x_free_fall_t free_fall;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FREE_FALL, (uint8_t *)&free_fall, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FREE_FALL, (uint8_t *)&free_fall, 1);
   if (ret != 0)
   {
     return ret;
@@ -8620,17 +8606,17 @@ int32_t lsm6dsv320x_ff_time_windows_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ff_thresholds_set(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_ff_thresholds_t val)
+int32_t ism6hg256x_ff_thresholds_set(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_ff_thresholds_t val)
 {
-  lsm6dsv320x_free_fall_t free_fall;
+  ism6hg256x_free_fall_t free_fall;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FREE_FALL, (uint8_t *)&free_fall, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FREE_FALL, (uint8_t *)&free_fall, 1);
   if (ret == 0)
   {
     free_fall.ff_ths = (uint8_t)val & 0x7U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FREE_FALL, (uint8_t *)&free_fall, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FREE_FALL, (uint8_t *)&free_fall, 1);
   }
 
   return ret;
@@ -8644,13 +8630,13 @@ int32_t lsm6dsv320x_ff_thresholds_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ff_thresholds_get(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_ff_thresholds_t *val)
+int32_t ism6hg256x_ff_thresholds_get(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_ff_thresholds_t *val)
 {
-  lsm6dsv320x_free_fall_t free_fall;
+  ism6hg256x_free_fall_t free_fall;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FREE_FALL, (uint8_t *)&free_fall, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FREE_FALL, (uint8_t *)&free_fall, 1);
   if (ret != 0)
   {
     return ret;
@@ -8658,40 +8644,40 @@ int32_t lsm6dsv320x_ff_thresholds_get(const stmdev_ctx_t *ctx,
 
   switch (free_fall.ff_ths)
   {
-    case LSM6DSV320X_156_mg:
-      *val = LSM6DSV320X_156_mg;
+    case ISM6HG256X_156_mg:
+      *val = ISM6HG256X_156_mg;
       break;
 
-    case LSM6DSV320X_219_mg:
-      *val = LSM6DSV320X_219_mg;
+    case ISM6HG256X_219_mg:
+      *val = ISM6HG256X_219_mg;
       break;
 
-    case LSM6DSV320X_250_mg:
-      *val = LSM6DSV320X_250_mg;
+    case ISM6HG256X_250_mg:
+      *val = ISM6HG256X_250_mg;
       break;
 
-    case LSM6DSV320X_312_mg:
-      *val = LSM6DSV320X_312_mg;
+    case ISM6HG256X_312_mg:
+      *val = ISM6HG256X_312_mg;
       break;
 
-    case LSM6DSV320X_344_mg:
-      *val = LSM6DSV320X_344_mg;
+    case ISM6HG256X_344_mg:
+      *val = ISM6HG256X_344_mg;
       break;
 
-    case LSM6DSV320X_406_mg:
-      *val = LSM6DSV320X_406_mg;
+    case ISM6HG256X_406_mg:
+      *val = ISM6HG256X_406_mg;
       break;
 
-    case LSM6DSV320X_469_mg:
-      *val = LSM6DSV320X_469_mg;
+    case ISM6HG256X_469_mg:
+      *val = ISM6HG256X_469_mg;
       break;
 
-    case LSM6DSV320X_500_mg:
-      *val = LSM6DSV320X_500_mg;
+    case ISM6HG256X_500_mg:
+      *val = ISM6HG256X_500_mg;
       break;
 
     default:
-      *val = LSM6DSV320X_156_mg;
+      *val = ISM6HG256X_156_mg;
       break;
   }
 
@@ -8719,19 +8705,19 @@ int32_t lsm6dsv320x_ff_thresholds_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_mlc_set(const stmdev_ctx_t *ctx, lsm6dsv320x_mlc_mode_t val)
+int32_t ism6hg256x_mlc_set(const stmdev_ctx_t *ctx, ism6hg256x_mlc_mode_t val)
 {
-  lsm6dsv320x_emb_func_en_b_t emb_en_b;
-  lsm6dsv320x_emb_func_en_a_t emb_en_a;
+  ism6hg256x_emb_func_en_b_t emb_en_b;
+  ism6hg256x_emb_func_en_a_t emb_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_en_a, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_B, (uint8_t *)&emb_en_b, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_en_a, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_B, (uint8_t *)&emb_en_b, 1);
   if (ret != 0)
   {
     goto exit;
@@ -8739,15 +8725,15 @@ int32_t lsm6dsv320x_mlc_set(const stmdev_ctx_t *ctx, lsm6dsv320x_mlc_mode_t val)
 
   switch (val)
   {
-    case LSM6DSV320X_MLC_OFF:
+    case ISM6HG256X_MLC_OFF:
       emb_en_a.mlc_before_fsm_en = 0;
       emb_en_b.mlc_en = 0;
       break;
-    case LSM6DSV320X_MLC_ON:
+    case ISM6HG256X_MLC_ON:
       emb_en_a.mlc_before_fsm_en = 0;
       emb_en_b.mlc_en = 1;
       break;
-    case LSM6DSV320X_MLC_ON_BEFORE_FSM:
+    case ISM6HG256X_MLC_ON_BEFORE_FSM:
       emb_en_a.mlc_before_fsm_en = 1;
       emb_en_b.mlc_en = 0;
       break;
@@ -8755,11 +8741,11 @@ int32_t lsm6dsv320x_mlc_set(const stmdev_ctx_t *ctx, lsm6dsv320x_mlc_mode_t val)
       break;
   }
 
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_en_a, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_B, (uint8_t *)&emb_en_b, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_en_a, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_EN_B, (uint8_t *)&emb_en_b, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -8772,19 +8758,19 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_mlc_get(const stmdev_ctx_t *ctx, lsm6dsv320x_mlc_mode_t *val)
+int32_t ism6hg256x_mlc_get(const stmdev_ctx_t *ctx, ism6hg256x_mlc_mode_t *val)
 {
-  lsm6dsv320x_emb_func_en_b_t emb_en_b;
-  lsm6dsv320x_emb_func_en_a_t emb_en_a;
+  ism6hg256x_emb_func_en_b_t emb_en_b;
+  ism6hg256x_emb_func_en_a_t emb_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_en_a, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_B, (uint8_t *)&emb_en_b, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_en_a, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_B, (uint8_t *)&emb_en_b, 1);
   if (ret != 0)
   {
     goto exit;
@@ -8792,15 +8778,15 @@ int32_t lsm6dsv320x_mlc_get(const stmdev_ctx_t *ctx, lsm6dsv320x_mlc_mode_t *val
 
   if (emb_en_a.mlc_before_fsm_en == 0U && emb_en_b.mlc_en == 0U)
   {
-    *val = LSM6DSV320X_MLC_OFF;
+    *val = ISM6HG256X_MLC_OFF;
   }
   else if (emb_en_a.mlc_before_fsm_en == 0U && emb_en_b.mlc_en == 1U)
   {
-    *val = LSM6DSV320X_MLC_ON;
+    *val = ISM6HG256X_MLC_ON;
   }
   else if (emb_en_a.mlc_before_fsm_en == 1U)
   {
-    *val = LSM6DSV320X_MLC_ON_BEFORE_FSM;
+    *val = ISM6HG256X_MLC_ON_BEFORE_FSM;
   }
   else
   {
@@ -8808,7 +8794,7 @@ int32_t lsm6dsv320x_mlc_get(const stmdev_ctx_t *ctx, lsm6dsv320x_mlc_mode_t *val
   }
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -8821,28 +8807,28 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_mlc_data_rate_set(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_mlc_data_rate_t val)
+int32_t ism6hg256x_mlc_data_rate_set(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_mlc_data_rate_t val)
 {
-  lsm6dsv320x_mlc_odr_t mlc_odr;
+  ism6hg256x_mlc_odr_t mlc_odr;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_ODR, (uint8_t *)&mlc_odr, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_MLC_ODR, (uint8_t *)&mlc_odr, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   mlc_odr.mlc_odr = (uint8_t)val & 0x07U;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_MLC_ODR, (uint8_t *)&mlc_odr, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_MLC_ODR, (uint8_t *)&mlc_odr, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -8855,15 +8841,15 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_mlc_data_rate_get(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_mlc_data_rate_t *val)
+int32_t ism6hg256x_mlc_data_rate_get(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_mlc_data_rate_t *val)
 {
-  lsm6dsv320x_mlc_odr_t mlc_odr;
+  ism6hg256x_mlc_odr_t mlc_odr;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_ODR, (uint8_t *)&mlc_odr, 1);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_MLC_ODR, (uint8_t *)&mlc_odr, 1);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -8872,35 +8858,35 @@ int32_t lsm6dsv320x_mlc_data_rate_get(const stmdev_ctx_t *ctx,
   switch (mlc_odr.mlc_odr)
   {
     case 0:
-      *val = LSM6DSV320X_MLC_15Hz;
+      *val = ISM6HG256X_MLC_15Hz;
       break;
 
     case 1:
-      *val = LSM6DSV320X_MLC_30Hz;
+      *val = ISM6HG256X_MLC_30Hz;
       break;
 
     case 2:
-      *val = LSM6DSV320X_MLC_60Hz;
+      *val = ISM6HG256X_MLC_60Hz;
       break;
 
     case 3:
-      *val = LSM6DSV320X_MLC_120Hz;
+      *val = ISM6HG256X_MLC_120Hz;
       break;
 
     case 4:
-      *val = LSM6DSV320X_MLC_240Hz;
+      *val = ISM6HG256X_MLC_240Hz;
       break;
 
     case 5:
-      *val = LSM6DSV320X_MLC_480Hz;
+      *val = ISM6HG256X_MLC_480Hz;
       break;
 
     case 6:
-      *val = LSM6DSV320X_MLC_960Hz;
+      *val = ISM6HG256X_MLC_960Hz;
       break;
 
     default:
-      *val = LSM6DSV320X_MLC_15Hz;
+      *val = ISM6HG256X_MLC_15Hz;
       break;
   }
 
@@ -8915,16 +8901,16 @@ int32_t lsm6dsv320x_mlc_data_rate_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_mlc_out_get(const stmdev_ctx_t *ctx, lsm6dsv320x_mlc_out_t *val)
+int32_t ism6hg256x_mlc_out_get(const stmdev_ctx_t *ctx, ism6hg256x_mlc_out_t *val)
 {
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
   {
-    ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC1_SRC, (uint8_t *)val, 8);
+    ret = ism6hg256x_read_reg(ctx, ISM6HG256X_MLC1_SRC, (uint8_t *)val, 8);
   }
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -8937,7 +8923,7 @@ int32_t lsm6dsv320x_mlc_out_get(const stmdev_ctx_t *ctx, lsm6dsv320x_mlc_out_t *
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_mlc_ext_sens_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t val)
+int32_t ism6hg256x_mlc_ext_sens_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -8945,8 +8931,8 @@ int32_t lsm6dsv320x_mlc_ext_sens_sensitivity_set(const stmdev_ctx_t *ctx, uint16
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
 
-  ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_MLC_EXT_SENSITIVITY_L,
-                                (uint8_t *)&buff[0], 2);
+  ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_MLC_EXT_SENSITIVITY_L,
+                               (uint8_t *)&buff[0], 2);
 
   return ret;
 }
@@ -8959,14 +8945,14 @@ int32_t lsm6dsv320x_mlc_ext_sens_sensitivity_set(const stmdev_ctx_t *ctx, uint16
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_mlc_ext_sens_sensitivity_get(const stmdev_ctx_t *ctx,
-                                                 uint16_t *val)
+int32_t ism6hg256x_mlc_ext_sens_sensitivity_get(const stmdev_ctx_t *ctx,
+                                                uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_MLC_EXT_SENSITIVITY_L,
-                               &buff[0], 2);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_MLC_EXT_SENSITIVITY_L,
+                              &buff[0], 2);
   if (ret != 0)
   {
     return ret;
@@ -8999,17 +8985,17 @@ int32_t lsm6dsv320x_mlc_ext_sens_sensitivity_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_ctrl_mode_set(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_ois_ctrl_mode_t val)
+int32_t ism6hg256x_ois_ctrl_mode_set(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_ois_ctrl_mode_t val)
 {
-  lsm6dsv320x_func_cfg_access_t func_cfg_access;
+  ism6hg256x_func_cfg_access_t func_cfg_access;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   if (ret == 0)
   {
     func_cfg_access.ois_ctrl_from_ui = (uint8_t)val & 0x1U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   }
 
   return ret;
@@ -9023,13 +9009,13 @@ int32_t lsm6dsv320x_ois_ctrl_mode_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_ctrl_mode_get(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_ois_ctrl_mode_t *val)
+int32_t ism6hg256x_ois_ctrl_mode_get(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_ois_ctrl_mode_t *val)
 {
-  lsm6dsv320x_func_cfg_access_t func_cfg_access;
+  ism6hg256x_func_cfg_access_t func_cfg_access;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   if (ret != 0)
   {
     return ret;
@@ -9037,16 +9023,16 @@ int32_t lsm6dsv320x_ois_ctrl_mode_get(const stmdev_ctx_t *ctx,
 
   switch (func_cfg_access.ois_ctrl_from_ui)
   {
-    case LSM6DSV320X_OIS_CTRL_FROM_OIS:
-      *val = LSM6DSV320X_OIS_CTRL_FROM_OIS;
+    case ISM6HG256X_OIS_CTRL_FROM_OIS:
+      *val = ISM6HG256X_OIS_CTRL_FROM_OIS;
       break;
 
-    case LSM6DSV320X_OIS_CTRL_FROM_UI:
-      *val = LSM6DSV320X_OIS_CTRL_FROM_UI;
+    case ISM6HG256X_OIS_CTRL_FROM_UI:
+      *val = ISM6HG256X_OIS_CTRL_FROM_UI;
       break;
 
     default:
-      *val = LSM6DSV320X_OIS_CTRL_FROM_OIS;
+      *val = ISM6HG256X_OIS_CTRL_FROM_OIS;
       break;
   }
 
@@ -9061,16 +9047,16 @@ int32_t lsm6dsv320x_ois_ctrl_mode_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_reset_set(const stmdev_ctx_t *ctx, int8_t val)
+int32_t ism6hg256x_ois_reset_set(const stmdev_ctx_t *ctx, int8_t val)
 {
-  lsm6dsv320x_func_cfg_access_t func_cfg_access;
+  ism6hg256x_func_cfg_access_t func_cfg_access;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   if (ret == 0)
   {
     func_cfg_access.if2_reset = (uint8_t)val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   }
 
   return ret;
@@ -9084,12 +9070,12 @@ int32_t lsm6dsv320x_ois_reset_set(const stmdev_ctx_t *ctx, int8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_reset_get(const stmdev_ctx_t *ctx, int8_t *val)
+int32_t ism6hg256x_ois_reset_get(const stmdev_ctx_t *ctx, int8_t *val)
 {
-  lsm6dsv320x_func_cfg_access_t func_cfg_access;
+  ism6hg256x_func_cfg_access_t func_cfg_access;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   if (ret != 0)
   {
     return ret;
@@ -9107,16 +9093,16 @@ int32_t lsm6dsv320x_ois_reset_get(const stmdev_ctx_t *ctx, int8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_interface_pull_up_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_ois_interface_pull_up_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_pin_ctrl_t pin_ctrl;
+  ism6hg256x_pin_ctrl_t pin_ctrl;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   if (ret == 0)
   {
     pin_ctrl.ois_pu_dis = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   }
 
   return ret;
@@ -9130,12 +9116,12 @@ int32_t lsm6dsv320x_ois_interface_pull_up_set(const stmdev_ctx_t *ctx, uint8_t v
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_interface_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_ois_interface_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_pin_ctrl_t pin_ctrl;
+  ism6hg256x_pin_ctrl_t pin_ctrl;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   if (ret != 0)
   {
     return ret;
@@ -9153,18 +9139,18 @@ int32_t lsm6dsv320x_ois_interface_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_handshake_from_ui_set(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_ois_handshake_t val)
+int32_t ism6hg256x_ois_handshake_from_ui_set(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_ois_handshake_t val)
 {
-  lsm6dsv320x_ui_handshake_ctrl_t ui_handshake_ctrl;
+  ism6hg256x_ui_handshake_ctrl_t ui_handshake_ctrl;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_HANDSHAKE_CTRL, (uint8_t *)&ui_handshake_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_HANDSHAKE_CTRL, (uint8_t *)&ui_handshake_ctrl, 1);
   if (ret == 0)
   {
     ui_handshake_ctrl.ui_shared_ack = val.ack;
     ui_handshake_ctrl.ui_shared_req = val.req;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_UI_HANDSHAKE_CTRL, (uint8_t *)&ui_handshake_ctrl, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_UI_HANDSHAKE_CTRL, (uint8_t *)&ui_handshake_ctrl, 1);
   }
 
   return ret;
@@ -9178,13 +9164,13 @@ int32_t lsm6dsv320x_ois_handshake_from_ui_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_handshake_from_ui_get(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_ois_handshake_t *val)
+int32_t ism6hg256x_ois_handshake_from_ui_get(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_ois_handshake_t *val)
 {
-  lsm6dsv320x_ui_handshake_ctrl_t ui_handshake_ctrl;
+  ism6hg256x_ui_handshake_ctrl_t ui_handshake_ctrl;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_HANDSHAKE_CTRL, (uint8_t *)&ui_handshake_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_HANDSHAKE_CTRL, (uint8_t *)&ui_handshake_ctrl, 1);
   if (ret != 0)
   {
     return ret;
@@ -9204,18 +9190,18 @@ int32_t lsm6dsv320x_ois_handshake_from_ui_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_handshake_from_ois_set(const stmdev_ctx_t *ctx,
-                                               lsm6dsv320x_ois_handshake_t val)
+int32_t ism6hg256x_ois_handshake_from_ois_set(const stmdev_ctx_t *ctx,
+                                              ism6hg256x_ois_handshake_t val)
 {
-  lsm6dsv320x_if2_handshake_ctrl_t if2_handshake_ctrl;
+  ism6hg256x_if2_handshake_ctrl_t if2_handshake_ctrl;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF2_HANDSHAKE_CTRL, (uint8_t *)&if2_handshake_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF2_HANDSHAKE_CTRL, (uint8_t *)&if2_handshake_ctrl, 1);
   if (ret == 0)
   {
     if2_handshake_ctrl.if2_shared_ack = val.ack;
     if2_handshake_ctrl.if2_shared_req = val.req;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_IF2_HANDSHAKE_CTRL, (uint8_t *)&if2_handshake_ctrl, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_IF2_HANDSHAKE_CTRL, (uint8_t *)&if2_handshake_ctrl, 1);
   }
 
   return ret;
@@ -9229,13 +9215,13 @@ int32_t lsm6dsv320x_ois_handshake_from_ois_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_handshake_from_ois_get(const stmdev_ctx_t *ctx,
-                                               lsm6dsv320x_ois_handshake_t *val)
+int32_t ism6hg256x_ois_handshake_from_ois_get(const stmdev_ctx_t *ctx,
+                                              ism6hg256x_ois_handshake_t *val)
 {
-  lsm6dsv320x_if2_handshake_ctrl_t if2_handshake_ctrl;
+  ism6hg256x_if2_handshake_ctrl_t if2_handshake_ctrl;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF2_HANDSHAKE_CTRL, (uint8_t *)&if2_handshake_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF2_HANDSHAKE_CTRL, (uint8_t *)&if2_handshake_ctrl, 1);
   if (ret != 0)
   {
     return ret;
@@ -9255,11 +9241,11 @@ int32_t lsm6dsv320x_ois_handshake_from_ois_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_shared_set(const stmdev_ctx_t *ctx, uint8_t val[6])
+int32_t ism6hg256x_ois_shared_set(const stmdev_ctx_t *ctx, uint8_t val[6])
 {
   int32_t ret;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_UI_IF2_SHARED_0, val, 6);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_UI_IF2_SHARED_0, val, 6);
 
   return ret;
 }
@@ -9272,11 +9258,11 @@ int32_t lsm6dsv320x_ois_shared_set(const stmdev_ctx_t *ctx, uint8_t val[6])
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_shared_get(const stmdev_ctx_t *ctx, uint8_t val[6])
+int32_t ism6hg256x_ois_shared_get(const stmdev_ctx_t *ctx, uint8_t val[6])
 {
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_IF2_SHARED_0, val, 6);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_IF2_SHARED_0, val, 6);
 
   return ret;
 }
@@ -9289,16 +9275,16 @@ int32_t lsm6dsv320x_ois_shared_get(const stmdev_ctx_t *ctx, uint8_t val[6])
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_on_if2_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_ois_on_if2_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_ui_ctrl1_ois_t ui_ctrl1_ois;
+  ism6hg256x_ui_ctrl1_ois_t ui_ctrl1_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
   if (ret == 0)
   {
     ui_ctrl1_ois.if2_spi_read_en = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
   }
 
   return ret;
@@ -9312,12 +9298,12 @@ int32_t lsm6dsv320x_ois_on_if2_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_on_if2_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_ois_on_if2_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_ui_ctrl1_ois_t ui_ctrl1_ois;
+  ism6hg256x_ui_ctrl1_ois_t ui_ctrl1_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
   if (ret != 0)
   {
     return ret;
@@ -9335,17 +9321,17 @@ int32_t lsm6dsv320x_ois_on_if2_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_chain_set(const stmdev_ctx_t *ctx, lsm6dsv320x_ois_chain_t val)
+int32_t ism6hg256x_ois_chain_set(const stmdev_ctx_t *ctx, ism6hg256x_ois_chain_t val)
 {
-  lsm6dsv320x_ui_ctrl1_ois_t ui_ctrl1_ois;
+  ism6hg256x_ui_ctrl1_ois_t ui_ctrl1_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
   if (ret == 0)
   {
     ui_ctrl1_ois.ois_g_en = val.gy;
     ui_ctrl1_ois.ois_xl_en = val.xl;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
   }
 
   return ret;
@@ -9359,12 +9345,12 @@ int32_t lsm6dsv320x_ois_chain_set(const stmdev_ctx_t *ctx, lsm6dsv320x_ois_chain
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_chain_get(const stmdev_ctx_t *ctx, lsm6dsv320x_ois_chain_t *val)
+int32_t ism6hg256x_ois_chain_get(const stmdev_ctx_t *ctx, ism6hg256x_ois_chain_t *val)
 {
-  lsm6dsv320x_ui_ctrl1_ois_t ui_ctrl1_ois;
+  ism6hg256x_ui_ctrl1_ois_t ui_ctrl1_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
   if (ret != 0)
   {
     return ret;
@@ -9384,17 +9370,17 @@ int32_t lsm6dsv320x_ois_chain_get(const stmdev_ctx_t *ctx, lsm6dsv320x_ois_chain
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_gy_full_scale_set(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_ois_gy_full_scale_t val)
+int32_t ism6hg256x_ois_gy_full_scale_set(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_ois_gy_full_scale_t val)
 {
-  lsm6dsv320x_ui_ctrl2_ois_t ui_ctrl2_ois;
+  ism6hg256x_ui_ctrl2_ois_t ui_ctrl2_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
   if (ret == 0)
   {
     ui_ctrl2_ois.fs_g_ois = (uint8_t)val & 0x03U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
   }
 
   return ret;
@@ -9408,13 +9394,13 @@ int32_t lsm6dsv320x_ois_gy_full_scale_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_gy_full_scale_get(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_ois_gy_full_scale_t *val)
+int32_t ism6hg256x_ois_gy_full_scale_get(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_ois_gy_full_scale_t *val)
 {
-  lsm6dsv320x_ui_ctrl2_ois_t ui_ctrl2_ois;
+  ism6hg256x_ui_ctrl2_ois_t ui_ctrl2_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL2_OIS, (uint8_t *)&ui_ctrl2_ois, 1);
   if (ret != 0)
   {
     return ret;
@@ -9422,24 +9408,24 @@ int32_t lsm6dsv320x_ois_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ui_ctrl2_ois.fs_g_ois)
   {
-    case LSM6DSV320X_OIS_250dps:
-      *val = LSM6DSV320X_OIS_250dps;
+    case ISM6HG256X_OIS_250dps:
+      *val = ISM6HG256X_OIS_250dps;
       break;
 
-    case LSM6DSV320X_OIS_500dps:
-      *val = LSM6DSV320X_OIS_500dps;
+    case ISM6HG256X_OIS_500dps:
+      *val = ISM6HG256X_OIS_500dps;
       break;
 
-    case LSM6DSV320X_OIS_1000dps:
-      *val = LSM6DSV320X_OIS_1000dps;
+    case ISM6HG256X_OIS_1000dps:
+      *val = ISM6HG256X_OIS_1000dps;
       break;
 
-    case LSM6DSV320X_OIS_2000dps:
-      *val = LSM6DSV320X_OIS_2000dps;
+    case ISM6HG256X_OIS_2000dps:
+      *val = ISM6HG256X_OIS_2000dps;
       break;
 
     default:
-      *val = LSM6DSV320X_OIS_250dps;
+      *val = ISM6HG256X_OIS_250dps;
       break;
   }
 
@@ -9454,17 +9440,17 @@ int32_t lsm6dsv320x_ois_gy_full_scale_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_xl_full_scale_set(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_ois_xl_full_scale_t val)
+int32_t ism6hg256x_ois_xl_full_scale_set(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_ois_xl_full_scale_t val)
 {
-  lsm6dsv320x_ui_ctrl3_ois_t ui_ctrl3_ois;
+  ism6hg256x_ui_ctrl3_ois_t ui_ctrl3_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
   if (ret == 0)
   {
     ui_ctrl3_ois.fs_xl_ois = (uint8_t)val & 0x3U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
   }
 
   return ret;
@@ -9478,13 +9464,13 @@ int32_t lsm6dsv320x_ois_xl_full_scale_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ois_xl_full_scale_get(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_ois_xl_full_scale_t *val)
+int32_t ism6hg256x_ois_xl_full_scale_get(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_ois_xl_full_scale_t *val)
 {
-  lsm6dsv320x_ui_ctrl3_ois_t ui_ctrl3_ois;
+  ism6hg256x_ui_ctrl3_ois_t ui_ctrl3_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL3_OIS, (uint8_t *)&ui_ctrl3_ois, 1);
   if (ret != 0)
   {
     return ret;
@@ -9492,24 +9478,24 @@ int32_t lsm6dsv320x_ois_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ui_ctrl3_ois.fs_xl_ois)
   {
-    case LSM6DSV320X_OIS_2g:
-      *val = LSM6DSV320X_OIS_2g;
+    case ISM6HG256X_OIS_2g:
+      *val = ISM6HG256X_OIS_2g;
       break;
 
-    case LSM6DSV320X_OIS_4g:
-      *val = LSM6DSV320X_OIS_4g;
+    case ISM6HG256X_OIS_4g:
+      *val = ISM6HG256X_OIS_4g;
       break;
 
-    case LSM6DSV320X_OIS_8g:
-      *val = LSM6DSV320X_OIS_8g;
+    case ISM6HG256X_OIS_8g:
+      *val = ISM6HG256X_OIS_8g;
       break;
 
-    case LSM6DSV320X_OIS_16g:
-      *val = LSM6DSV320X_OIS_16g;
+    case ISM6HG256X_OIS_16g:
+      *val = ISM6HG256X_OIS_16g;
       break;
 
     default:
-      *val = LSM6DSV320X_OIS_2g;
+      *val = ISM6HG256X_OIS_2g;
       break;
   }
 
@@ -9537,17 +9523,17 @@ int32_t lsm6dsv320x_ois_xl_full_scale_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_6d_threshold_set(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_6d_threshold_t val)
+int32_t ism6hg256x_6d_threshold_set(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_6d_threshold_t val)
 {
-  lsm6dsv320x_tap_ths_6d_t tap_ths_6d;
+  ism6hg256x_tap_ths_6d_t tap_ths_6d;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
   if (ret == 0)
   {
     tap_ths_6d.sixd_ths = (uint8_t)val & 0x03U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
   }
 
   return ret;
@@ -9561,13 +9547,13 @@ int32_t lsm6dsv320x_6d_threshold_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_6d_threshold_get(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_6d_threshold_t *val)
+int32_t ism6hg256x_6d_threshold_get(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_6d_threshold_t *val)
 {
-  lsm6dsv320x_tap_ths_6d_t tap_ths_6d;
+  ism6hg256x_tap_ths_6d_t tap_ths_6d;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
   if (ret != 0)
   {
     return ret;
@@ -9575,24 +9561,24 @@ int32_t lsm6dsv320x_6d_threshold_get(const stmdev_ctx_t *ctx,
 
   switch (tap_ths_6d.sixd_ths)
   {
-    case LSM6DSV320X_DEG_80:
-      *val = LSM6DSV320X_DEG_80;
+    case ISM6HG256X_DEG_80:
+      *val = ISM6HG256X_DEG_80;
       break;
 
-    case LSM6DSV320X_DEG_70:
-      *val = LSM6DSV320X_DEG_70;
+    case ISM6HG256X_DEG_70:
+      *val = ISM6HG256X_DEG_70;
       break;
 
-    case LSM6DSV320X_DEG_60:
-      *val = LSM6DSV320X_DEG_60;
+    case ISM6HG256X_DEG_60:
+      *val = ISM6HG256X_DEG_60;
       break;
 
-    case LSM6DSV320X_DEG_50:
-      *val = LSM6DSV320X_DEG_50;
+    case ISM6HG256X_DEG_50:
+      *val = ISM6HG256X_DEG_50;
       break;
 
     default:
-      *val = LSM6DSV320X_DEG_80;
+      *val = ISM6HG256X_DEG_80;
       break;
   }
 
@@ -9607,16 +9593,16 @@ int32_t lsm6dsv320x_6d_threshold_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_4d_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_4d_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_tap_ths_6d_t tap_ths_6d;
+  ism6hg256x_tap_ths_6d_t tap_ths_6d;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
   if (ret == 0)
   {
     tap_ths_6d.d4d_en = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
   }
 
   return ret;
@@ -9630,12 +9616,12 @@ int32_t lsm6dsv320x_4d_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_tap_ths_6d_t tap_ths_6d;
+  ism6hg256x_tap_ths_6d_t tap_ths_6d;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
   if (ret != 0)
   {
     return ret;
@@ -9667,23 +9653,23 @@ int32_t lsm6dsv320x_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_i3c_config_set(const stmdev_ctx_t *ctx,
-                                   lsm6dsv320x_i3c_config_t val)
+int32_t ism6hg256x_i3c_config_set(const stmdev_ctx_t *ctx,
+                                  ism6hg256x_i3c_config_t val)
 {
-  lsm6dsv320x_pin_ctrl_t pin_ctrl;
-  lsm6dsv320x_ctrl5_t ctrl5;
+  ism6hg256x_pin_ctrl_t pin_ctrl;
+  ism6hg256x_ctrl5_t ctrl5;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL5, (uint8_t *)&ctrl5, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL5, (uint8_t *)&ctrl5, 1);
   if (ret == 0)
   {
     pin_ctrl.ibhr_por_en = (uint8_t)val.rst_mode & 0x01U;
     ctrl5.bus_act_sel = (uint8_t)val.ibi_time & 0x03U;
     ctrl5.if2_ta0_pid = (uint8_t)val.if2_ta0_pid & 0x01U;
 
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
-    ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CTRL5, (uint8_t *)&ctrl5, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+    ret += ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL5, (uint8_t *)&ctrl5, 1);
   }
 
   return ret;
@@ -9697,14 +9683,14 @@ int32_t lsm6dsv320x_i3c_config_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_i3c_config_get(const stmdev_ctx_t *ctx,
-                                   lsm6dsv320x_i3c_config_t *val)
+int32_t ism6hg256x_i3c_config_get(const stmdev_ctx_t *ctx,
+                                  ism6hg256x_i3c_config_t *val)
 {
-  lsm6dsv320x_pin_ctrl_t pin_ctrl;
-  lsm6dsv320x_ctrl5_t ctrl5;
+  ism6hg256x_pin_ctrl_t pin_ctrl;
+  ism6hg256x_ctrl5_t ctrl5;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   if (ret != 0)
   {
     return ret;
@@ -9712,20 +9698,20 @@ int32_t lsm6dsv320x_i3c_config_get(const stmdev_ctx_t *ctx,
 
   switch (pin_ctrl.ibhr_por_en)
   {
-    case LSM6DSV320X_SW_RST_DYN_ADDRESS_RST:
-      val->rst_mode = LSM6DSV320X_SW_RST_DYN_ADDRESS_RST;
+    case ISM6HG256X_SW_RST_DYN_ADDRESS_RST:
+      val->rst_mode = ISM6HG256X_SW_RST_DYN_ADDRESS_RST;
       break;
 
-    case LSM6DSV320X_I3C_GLOBAL_RST:
-      val->rst_mode = LSM6DSV320X_I3C_GLOBAL_RST;
+    case ISM6HG256X_I3C_GLOBAL_RST:
+      val->rst_mode = ISM6HG256X_I3C_GLOBAL_RST;
       break;
 
     default:
-      val->rst_mode = LSM6DSV320X_SW_RST_DYN_ADDRESS_RST;
+      val->rst_mode = ISM6HG256X_SW_RST_DYN_ADDRESS_RST;
       break;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL5, (uint8_t *)&ctrl5, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL5, (uint8_t *)&ctrl5, 1);
   if (ret != 0)
   {
     return ret;
@@ -9734,23 +9720,23 @@ int32_t lsm6dsv320x_i3c_config_get(const stmdev_ctx_t *ctx,
   switch (ctrl5.bus_act_sel)
   {
     case 0:
-      val->ibi_time = LSM6DSV320X_IBI_50us;
+      val->ibi_time = ISM6HG256X_IBI_50us;
       break;
 
     case 1:
-      val->ibi_time = LSM6DSV320X_IBI_2us;
+      val->ibi_time = ISM6HG256X_IBI_2us;
       break;
 
     case 2:
-      val->ibi_time = LSM6DSV320X_IBI_1ms;
+      val->ibi_time = ISM6HG256X_IBI_1ms;
       break;
 
     case 3:
-      val->ibi_time = LSM6DSV320X_IBI_50ms;
+      val->ibi_time = ISM6HG256X_IBI_50ms;
       break;
 
     default:
-      val->ibi_time = LSM6DSV320X_IBI_50us;
+      val->ibi_time = ISM6HG256X_IBI_50us;
       break;
   }
 
@@ -9780,17 +9766,17 @@ int32_t lsm6dsv320x_i3c_config_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_controller_interface_pull_up_set(const stmdev_ctx_t *ctx,
-                                                        uint8_t val)
+int32_t ism6hg256x_sh_controller_interface_pull_up_set(const stmdev_ctx_t *ctx,
+                                                       uint8_t val)
 {
-  lsm6dsv320x_if_cfg_t if_cfg;
+  ism6hg256x_if_cfg_t if_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   if (ret == 0)
   {
     if_cfg.shub_pu_en = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   }
 
   return ret;
@@ -9804,13 +9790,13 @@ int32_t lsm6dsv320x_sh_controller_interface_pull_up_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_controller_interface_pull_up_get(const stmdev_ctx_t *ctx,
-                                                        uint8_t *val)
+int32_t ism6hg256x_sh_controller_interface_pull_up_get(const stmdev_ctx_t *ctx,
+                                                       uint8_t *val)
 {
-  lsm6dsv320x_if_cfg_t if_cfg;
+  ism6hg256x_if_cfg_t if_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -9829,19 +9815,19 @@ int32_t lsm6dsv320x_sh_controller_interface_pull_up_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_read_data_raw_get(const stmdev_ctx_t *ctx, uint8_t *val,
-                                         uint8_t len)
+int32_t ism6hg256x_sh_read_data_raw_get(const stmdev_ctx_t *ctx, uint8_t *val,
+                                        uint8_t len)
 {
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_SENSOR_HUB_1, val, len);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_SENSOR_HUB_1, val, len);
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -9854,28 +9840,28 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_target_connected_set(const stmdev_ctx_t *ctx,
-                                            lsm6dsv320x_sh_target_connected_t val)
+int32_t ism6hg256x_sh_target_connected_set(const stmdev_ctx_t *ctx,
+                                           ism6hg256x_sh_target_connected_t val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
   if (ret != 0)
   {
     goto exit;
   }
   controller_config.aux_sens_on = (uint8_t)val & 0x3U;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -9888,15 +9874,15 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_target_connected_get(const stmdev_ctx_t *ctx,
-                                            lsm6dsv320x_sh_target_connected_t *val)
+int32_t ism6hg256x_sh_target_connected_get(const stmdev_ctx_t *ctx,
+                                           ism6hg256x_sh_target_connected_t *val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -9904,24 +9890,24 @@ int32_t lsm6dsv320x_sh_target_connected_get(const stmdev_ctx_t *ctx,
 
   switch (controller_config.aux_sens_on)
   {
-    case LSM6DSV320X_TGT_0:
-      *val = LSM6DSV320X_TGT_0;
+    case ISM6HG256X_TGT_0:
+      *val = ISM6HG256X_TGT_0;
       break;
 
-    case LSM6DSV320X_TGT_0_1:
-      *val = LSM6DSV320X_TGT_0_1;
+    case ISM6HG256X_TGT_0_1:
+      *val = ISM6HG256X_TGT_0_1;
       break;
 
-    case LSM6DSV320X_TGT_0_1_2:
-      *val = LSM6DSV320X_TGT_0_1_2;
+    case ISM6HG256X_TGT_0_1_2:
+      *val = ISM6HG256X_TGT_0_1_2;
       break;
 
-    case LSM6DSV320X_TGT_0_1_2_3:
-      *val = LSM6DSV320X_TGT_0_1_2_3;
+    case ISM6HG256X_TGT_0_1_2_3:
+      *val = ISM6HG256X_TGT_0_1_2_3;
       break;
 
     default:
-      *val = LSM6DSV320X_TGT_0;
+      *val = ISM6HG256X_TGT_0;
       break;
   }
 
@@ -9936,23 +9922,23 @@ int32_t lsm6dsv320x_sh_target_connected_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_controller_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_sh_controller_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   controller_config.controller_on = val;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -9965,17 +9951,17 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_controller_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_sh_controller_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
   if (ret != 0)
   {
     goto exit;
@@ -9984,7 +9970,7 @@ int32_t lsm6dsv320x_sh_controller_get(const stmdev_ctx_t *ctx, uint8_t *val)
   *val = controller_config.controller_on;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -9997,23 +9983,23 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_pass_through_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_sh_pass_through_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   controller_config.pass_through_mode = val;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -10026,14 +10012,14 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
   if (ret != 0)
   {
     goto exit;
@@ -10042,7 +10028,7 @@ int32_t lsm6dsv320x_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
   *val = controller_config.pass_through_mode;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -10055,25 +10041,25 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_syncro_mode_set(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_sh_syncro_mode_t val)
+int32_t ism6hg256x_sh_syncro_mode_set(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_sh_syncro_mode_t val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
 
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   controller_config.start_config = (uint8_t)val & 0x01U;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -10086,15 +10072,15 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_sh_syncro_mode_t *val)
+int32_t ism6hg256x_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_sh_syncro_mode_t *val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -10102,16 +10088,16 @@ int32_t lsm6dsv320x_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
 
   switch (controller_config.start_config)
   {
-    case LSM6DSV320X_SH_TRG_XL_GY_DRDY:
-      *val = LSM6DSV320X_SH_TRG_XL_GY_DRDY;
+    case ISM6HG256X_SH_TRG_XL_GY_DRDY:
+      *val = ISM6HG256X_SH_TRG_XL_GY_DRDY;
       break;
 
-    case LSM6DSV320X_SH_TRIG_INT2:
-      *val = LSM6DSV320X_SH_TRIG_INT2;
+    case ISM6HG256X_SH_TRIG_INT2:
+      *val = ISM6HG256X_SH_TRIG_INT2;
       break;
 
     default:
-      *val = LSM6DSV320X_SH_TRG_XL_GY_DRDY;
+      *val = ISM6HG256X_SH_TRG_XL_GY_DRDY;
       break;
   }
 
@@ -10126,24 +10112,24 @@ int32_t lsm6dsv320x_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_write_mode_set(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_sh_write_mode_t val)
+int32_t ism6hg256x_sh_write_mode_set(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_sh_write_mode_t val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   controller_config.write_once = (uint8_t)val & 0x01U;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -10156,15 +10142,15 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_write_mode_get(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_sh_write_mode_t *val)
+int32_t ism6hg256x_sh_write_mode_get(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_sh_write_mode_t *val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -10172,16 +10158,16 @@ int32_t lsm6dsv320x_sh_write_mode_get(const stmdev_ctx_t *ctx,
 
   switch (controller_config.write_once)
   {
-    case LSM6DSV320X_EACH_SH_CYCLE:
-      *val = LSM6DSV320X_EACH_SH_CYCLE;
+    case ISM6HG256X_EACH_SH_CYCLE:
+      *val = ISM6HG256X_EACH_SH_CYCLE;
       break;
 
-    case LSM6DSV320X_ONLY_FIRST_CYCLE:
-      *val = LSM6DSV320X_ONLY_FIRST_CYCLE;
+    case ISM6HG256X_ONLY_FIRST_CYCLE:
+      *val = ISM6HG256X_ONLY_FIRST_CYCLE;
       break;
 
     default:
-      *val = LSM6DSV320X_EACH_SH_CYCLE;
+      *val = ISM6HG256X_EACH_SH_CYCLE;
       break;
   }
 
@@ -10196,23 +10182,23 @@ int32_t lsm6dsv320x_sh_write_mode_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_sh_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   controller_config.rst_controller_regs = val;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -10225,13 +10211,13 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_sh_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_controller_config_t controller_config;
+  ism6hg256x_controller_config_t controller_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CONTROLLER_CONFIG, (uint8_t *)&controller_config, 1);
   if (ret != 0)
   {
     goto exit;
@@ -10240,7 +10226,7 @@ int32_t lsm6dsv320x_sh_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   *val = controller_config.rst_controller_regs;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -10256,13 +10242,13 @@ exit:
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_cfg_write(const stmdev_ctx_t *ctx,
-                                 lsm6dsv320x_sh_cfg_write_t *val)
+int32_t ism6hg256x_sh_cfg_write(const stmdev_ctx_t *ctx,
+                                ism6hg256x_sh_cfg_write_t *val)
 {
-  lsm6dsv320x_tgt0_add_t reg;
+  ism6hg256x_tgt0_add_t reg;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
@@ -10270,24 +10256,24 @@ int32_t lsm6dsv320x_sh_cfg_write(const stmdev_ctx_t *ctx,
 
   reg.target0_add = val->tgt0_add;
   reg.rw_0 = 0;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TGT0_ADD, (uint8_t *)&reg, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TGT0_ADD, (uint8_t *)&reg, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TGT0_SUBADD,
-                              &(val->tgt0_subadd), 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TGT0_SUBADD,
+                             &(val->tgt0_subadd), 1);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_DATAWRITE_TGT0,
-                              &(val->tgt0_data), 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_DATAWRITE_TGT0,
+                             &(val->tgt0_data), 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -10300,24 +10286,24 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_data_rate_set(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_sh_data_rate_t val)
+int32_t ism6hg256x_sh_data_rate_set(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_sh_data_rate_t val)
 {
-  lsm6dsv320x_tgt0_config_t tgt0_config;
+  ism6hg256x_tgt0_config_t tgt0_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TGT0_CONFIG, (uint8_t *)&tgt0_config, 1);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_TGT0_CONFIG, (uint8_t *)&tgt0_config, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   tgt0_config.shub_odr = (uint8_t)val & 0x07U;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TGT0_CONFIG, (uint8_t *)&tgt0_config, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TGT0_CONFIG, (uint8_t *)&tgt0_config, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -10330,15 +10316,15 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_data_rate_get(const stmdev_ctx_t *ctx,
-                                     lsm6dsv320x_sh_data_rate_t *val)
+int32_t ism6hg256x_sh_data_rate_get(const stmdev_ctx_t *ctx,
+                                    ism6hg256x_sh_data_rate_t *val)
 {
-  lsm6dsv320x_tgt0_config_t tgt0_config;
+  ism6hg256x_tgt0_config_t tgt0_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TGT0_CONFIG, (uint8_t *)&tgt0_config, 1);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_TGT0_CONFIG, (uint8_t *)&tgt0_config, 1);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -10346,32 +10332,32 @@ int32_t lsm6dsv320x_sh_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (tgt0_config.shub_odr)
   {
-    case LSM6DSV320X_SH_15Hz:
-      *val = LSM6DSV320X_SH_15Hz;
+    case ISM6HG256X_SH_15Hz:
+      *val = ISM6HG256X_SH_15Hz;
       break;
 
-    case LSM6DSV320X_SH_30Hz:
-      *val = LSM6DSV320X_SH_30Hz;
+    case ISM6HG256X_SH_30Hz:
+      *val = ISM6HG256X_SH_30Hz;
       break;
 
-    case LSM6DSV320X_SH_60Hz:
-      *val = LSM6DSV320X_SH_60Hz;
+    case ISM6HG256X_SH_60Hz:
+      *val = ISM6HG256X_SH_60Hz;
       break;
 
-    case LSM6DSV320X_SH_120Hz:
-      *val = LSM6DSV320X_SH_120Hz;
+    case ISM6HG256X_SH_120Hz:
+      *val = ISM6HG256X_SH_120Hz;
       break;
 
-    case LSM6DSV320X_SH_240Hz:
-      *val = LSM6DSV320X_SH_240Hz;
+    case ISM6HG256X_SH_240Hz:
+      *val = ISM6HG256X_SH_240Hz;
       break;
 
-    case LSM6DSV320X_SH_480Hz:
-      *val = LSM6DSV320X_SH_480Hz;
+    case ISM6HG256X_SH_480Hz:
+      *val = ISM6HG256X_SH_480Hz;
       break;
 
     default:
-      *val = LSM6DSV320X_SH_15Hz;
+      *val = ISM6HG256X_SH_15Hz;
       break;
   }
 
@@ -10389,14 +10375,14 @@ int32_t lsm6dsv320x_sh_data_rate_get(const stmdev_ctx_t *ctx,
   * @retval             interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_tgt_cfg_read(const stmdev_ctx_t *ctx, uint8_t idx,
-                                    lsm6dsv320x_sh_cfg_read_t *val)
+int32_t ism6hg256x_sh_tgt_cfg_read(const stmdev_ctx_t *ctx, uint8_t idx,
+                                   ism6hg256x_sh_cfg_read_t *val)
 {
-  lsm6dsv320x_tgt0_add_t tgt_add;
-  lsm6dsv320x_tgt0_config_t tgt_config;
+  ism6hg256x_tgt0_add_t tgt_add;
+  ism6hg256x_tgt0_config_t tgt_config;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_SENSOR_HUB_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_SENSOR_HUB_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -10404,33 +10390,33 @@ int32_t lsm6dsv320x_sh_tgt_cfg_read(const stmdev_ctx_t *ctx, uint8_t idx,
 
   tgt_add.target0_add = val->tgt_add;
   tgt_add.rw_0 = 1;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TGT0_ADD + idx * 3U,
-                              (uint8_t *)&tgt_add, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TGT0_ADD + idx * 3U,
+                             (uint8_t *)&tgt_add, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TGT0_SUBADD + idx * 3U,
-                              &(val->tgt_subadd), 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TGT0_SUBADD + idx * 3U,
+                             &(val->tgt_subadd), 1);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TGT0_CONFIG + idx * 3U,
-                             (uint8_t *)&tgt_config, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TGT0_CONFIG + idx * 3U,
+                            (uint8_t *)&tgt_config, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   tgt_config.target0_numop = val->tgt_len;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TGT0_CONFIG + idx * 3U,
-                              (uint8_t *)&tgt_config, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TGT0_CONFIG + idx * 3U,
+                             (uint8_t *)&tgt_config, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -10443,12 +10429,12 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sh_status_get(const stmdev_ctx_t *ctx,
-                                  lsm6dsv320x_status_controller_t *val)
+int32_t ism6hg256x_sh_status_get(const stmdev_ctx_t *ctx,
+                                 ism6hg256x_status_controller_t *val)
 {
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_STATUS_CONTROLLER_MAINPAGE, (uint8_t *) val, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_STATUS_CONTROLLER_MAINPAGE, (uint8_t *) val, 1);
 
   return ret;
 }
@@ -10474,16 +10460,16 @@ int32_t lsm6dsv320x_sh_status_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ui_sdo_pull_up_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_ui_sdo_pull_up_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_pin_ctrl_t pin_ctrl;
+  ism6hg256x_pin_ctrl_t pin_ctrl;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   if (ret == 0)
   {
     pin_ctrl.sdo_pu_en = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   }
 
   return ret;
@@ -10497,12 +10483,12 @@ int32_t lsm6dsv320x_ui_sdo_pull_up_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ui_sdo_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_ui_sdo_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_pin_ctrl_t pin_ctrl;
+  ism6hg256x_pin_ctrl_t pin_ctrl;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   if (ret != 0)
   {
     return ret;
@@ -10521,16 +10507,16 @@ int32_t lsm6dsv320x_ui_sdo_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_pad_strength_set(const stmdev_ctx_t *ctx, lsm6dsv320x_pad_strength_t val)
+int32_t ism6hg256x_pad_strength_set(const stmdev_ctx_t *ctx, ism6hg256x_pad_strength_t val)
 {
-  lsm6dsv320x_pin_ctrl_t pin_ctrl;
+  ism6hg256x_pin_ctrl_t pin_ctrl;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   if (ret == 0)
   {
     pin_ctrl.io_pad_strength = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   }
 
   return ret;
@@ -10544,12 +10530,12 @@ int32_t lsm6dsv320x_pad_strength_set(const stmdev_ctx_t *ctx, lsm6dsv320x_pad_st
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_pad_strength_get(const stmdev_ctx_t *ctx, lsm6dsv320x_pad_strength_t *val)
+int32_t ism6hg256x_pad_strength_get(const stmdev_ctx_t *ctx, ism6hg256x_pad_strength_t *val)
 {
-  lsm6dsv320x_pin_ctrl_t pin_ctrl;
+  ism6hg256x_pin_ctrl_t pin_ctrl;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   if (ret != 0)
   {
     return ret;
@@ -10558,16 +10544,16 @@ int32_t lsm6dsv320x_pad_strength_get(const stmdev_ctx_t *ctx, lsm6dsv320x_pad_st
   switch (pin_ctrl.io_pad_strength)
   {
     case 0:
-      *val = LSM6DSV320X_PAD_LOW_STRENGTH;
+      *val = ISM6HG256X_PAD_LOW_STRENGTH;
       break;
 
     case 1:
-      *val = LSM6DSV320X_PAD_MIDDLE_STRENGTH;
+      *val = ISM6HG256X_PAD_MIDDLE_STRENGTH;
       break;
 
     case 2:
     default:
-      *val = LSM6DSV320X_PAD_HIGH_STRENGTH;
+      *val = ISM6HG256X_PAD_HIGH_STRENGTH;
       break;
   }
 
@@ -10582,17 +10568,17 @@ int32_t lsm6dsv320x_pad_strength_get(const stmdev_ctx_t *ctx, lsm6dsv320x_pad_st
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ui_i2c_i3c_mode_set(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_ui_i2c_i3c_mode_t val)
+int32_t ism6hg256x_ui_i2c_i3c_mode_set(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_ui_i2c_i3c_mode_t val)
 {
-  lsm6dsv320x_if_cfg_t if_cfg;
+  ism6hg256x_if_cfg_t if_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   if (ret == 0)
   {
     if_cfg.i2c_i3c_disable = (uint8_t)val & 0x1U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   }
 
   return ret;
@@ -10606,13 +10592,13 @@ int32_t lsm6dsv320x_ui_i2c_i3c_mode_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ui_i2c_i3c_mode_get(const stmdev_ctx_t *ctx,
-                                        lsm6dsv320x_ui_i2c_i3c_mode_t *val)
+int32_t ism6hg256x_ui_i2c_i3c_mode_get(const stmdev_ctx_t *ctx,
+                                       ism6hg256x_ui_i2c_i3c_mode_t *val)
 {
-  lsm6dsv320x_if_cfg_t if_cfg;
+  ism6hg256x_if_cfg_t if_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -10620,16 +10606,16 @@ int32_t lsm6dsv320x_ui_i2c_i3c_mode_get(const stmdev_ctx_t *ctx,
 
   switch (if_cfg.i2c_i3c_disable)
   {
-    case LSM6DSV320X_I2C_I3C_ENABLE:
-      *val = LSM6DSV320X_I2C_I3C_ENABLE;
+    case ISM6HG256X_I2C_I3C_ENABLE:
+      *val = ISM6HG256X_I2C_I3C_ENABLE;
       break;
 
-    case LSM6DSV320X_I2C_I3C_DISABLE:
-      *val = LSM6DSV320X_I2C_I3C_DISABLE;
+    case ISM6HG256X_I2C_I3C_DISABLE:
+      *val = ISM6HG256X_I2C_I3C_DISABLE;
       break;
 
     default:
-      *val = LSM6DSV320X_I2C_I3C_ENABLE;
+      *val = ISM6HG256X_I2C_I3C_ENABLE;
       break;
   }
 
@@ -10644,16 +10630,16 @@ int32_t lsm6dsv320x_ui_i2c_i3c_mode_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_spi_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_spi_mode_t val)
+int32_t ism6hg256x_spi_mode_set(const stmdev_ctx_t *ctx, ism6hg256x_spi_mode_t val)
 {
-  lsm6dsv320x_if_cfg_t if_cfg;
+  ism6hg256x_if_cfg_t if_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   if (ret == 0)
   {
     if_cfg.sim = (uint8_t)val & 0x01U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   }
 
   return ret;
@@ -10667,12 +10653,12 @@ int32_t lsm6dsv320x_spi_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_spi_mode_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_spi_mode_t *val)
+int32_t ism6hg256x_spi_mode_get(const stmdev_ctx_t *ctx, ism6hg256x_spi_mode_t *val)
 {
-  lsm6dsv320x_if_cfg_t if_cfg;
+  ism6hg256x_if_cfg_t if_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -10680,16 +10666,16 @@ int32_t lsm6dsv320x_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_spi_mode_t
 
   switch (if_cfg.sim)
   {
-    case LSM6DSV320X_SPI_4_WIRE:
-      *val = LSM6DSV320X_SPI_4_WIRE;
+    case ISM6HG256X_SPI_4_WIRE:
+      *val = ISM6HG256X_SPI_4_WIRE;
       break;
 
-    case LSM6DSV320X_SPI_3_WIRE:
-      *val = LSM6DSV320X_SPI_3_WIRE;
+    case ISM6HG256X_SPI_3_WIRE:
+      *val = ISM6HG256X_SPI_3_WIRE;
       break;
 
     default:
-      *val = LSM6DSV320X_SPI_4_WIRE;
+      *val = ISM6HG256X_SPI_4_WIRE;
       break;
   }
 
@@ -10704,16 +10690,16 @@ int32_t lsm6dsv320x_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_spi_mode_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ui_sda_pull_up_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_ui_sda_pull_up_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_if_cfg_t if_cfg;
+  ism6hg256x_if_cfg_t if_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   if (ret == 0)
   {
     if_cfg.sda_pu_en = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   }
 
   return ret;
@@ -10727,12 +10713,12 @@ int32_t lsm6dsv320x_ui_sda_pull_up_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_ui_sda_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_ui_sda_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_if_cfg_t if_cfg;
+  ism6hg256x_if_cfg_t if_cfg;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_IF_CFG, (uint8_t *)&if_cfg, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_IF_CFG, (uint8_t *)&if_cfg, 1);
   if (ret != 0)
   {
     return ret;
@@ -10751,16 +10737,16 @@ int32_t lsm6dsv320x_ui_sda_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_if2_spi_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_spi_mode_t val)
+int32_t ism6hg256x_if2_spi_mode_set(const stmdev_ctx_t *ctx, ism6hg256x_spi_mode_t val)
 {
-  lsm6dsv320x_ui_ctrl1_ois_t ui_ctrl1_ois;
+  ism6hg256x_ui_ctrl1_ois_t ui_ctrl1_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
   if (ret == 0)
   {
     ui_ctrl1_ois.sim_ois = (uint8_t)val & 0x01U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
   }
 
   return ret;
@@ -10774,12 +10760,12 @@ int32_t lsm6dsv320x_if2_spi_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_spi_mo
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_if2_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_spi_mode_t *val)
+int32_t ism6hg256x_if2_spi_mode_get(const stmdev_ctx_t *ctx, ism6hg256x_spi_mode_t *val)
 {
-  lsm6dsv320x_ui_ctrl1_ois_t ui_ctrl1_ois;
+  ism6hg256x_ui_ctrl1_ois_t ui_ctrl1_ois;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_UI_CTRL1_OIS, (uint8_t *)&ui_ctrl1_ois, 1);
   if (ret != 0)
   {
     return ret;
@@ -10787,16 +10773,16 @@ int32_t lsm6dsv320x_if2_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_spi_mo
 
   switch (ui_ctrl1_ois.sim_ois)
   {
-    case LSM6DSV320X_SPI_4_WIRE:
-      *val = LSM6DSV320X_SPI_4_WIRE;
+    case ISM6HG256X_SPI_4_WIRE:
+      *val = ISM6HG256X_SPI_4_WIRE;
       break;
 
-    case LSM6DSV320X_SPI_3_WIRE:
-      *val = LSM6DSV320X_SPI_3_WIRE;
+    case ISM6HG256X_SPI_3_WIRE:
+      *val = ISM6HG256X_SPI_3_WIRE;
       break;
 
     default:
-      *val = LSM6DSV320X_SPI_4_WIRE;
+      *val = ISM6HG256X_SPI_4_WIRE;
       break;
   }
 
@@ -10825,27 +10811,27 @@ int32_t lsm6dsv320x_if2_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_spi_mo
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sigmot_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_sigmot_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_en_a_t emb_func_en_a;
+  ism6hg256x_emb_func_en_a_t emb_func_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
   if (ret != 0)
   {
     goto exit;
   }
   emb_func_en_a.sign_motion_en = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -10858,18 +10844,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sigmot_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_sigmot_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_emb_func_en_a_t emb_func_en_a;
+  ism6hg256x_emb_func_en_a_t emb_func_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
   if (ret != 0)
   {
     goto exit;
@@ -10877,7 +10863,7 @@ int32_t lsm6dsv320x_sigmot_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   *val = emb_func_en_a.sign_motion_en;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -10902,22 +10888,22 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_stpcnt_mode_set(const stmdev_ctx_t *ctx,
-                                    lsm6dsv320x_stpcnt_mode_t val)
+int32_t ism6hg256x_stpcnt_mode_set(const stmdev_ctx_t *ctx,
+                                   ism6hg256x_stpcnt_mode_t val)
 {
-  lsm6dsv320x_emb_func_en_a_t emb_func_en_a;
-  lsm6dsv320x_emb_func_en_b_t emb_func_en_b;
-  lsm6dsv320x_pedo_cmd_reg_t pedo_cmd_reg;
+  ism6hg256x_emb_func_en_a_t emb_func_en_a;
+  ism6hg256x_emb_func_en_b_t emb_func_en_b;
+  ism6hg256x_pedo_cmd_reg_t pedo_cmd_reg;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_B, (uint8_t *)&emb_func_en_b, 1);
   if (ret != 0)
   {
     goto exit;
@@ -10931,22 +10917,22 @@ int32_t lsm6dsv320x_stpcnt_mode_set(const stmdev_ctx_t *ctx,
   }
 
   emb_func_en_a.pedo_en = val.step_counter_enable;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   if (ret == 0)
   {
-    ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_PEDO_CMD_REG,
-                                 (uint8_t *)&pedo_cmd_reg, 1);
+    ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_PEDO_CMD_REG,
+                                (uint8_t *)&pedo_cmd_reg, 1);
     if (ret != 0)
     {
       return ret;
     }
     pedo_cmd_reg.fp_rejection_en = val.false_step_rej;
-    ret += lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_PEDO_CMD_REG,
-                                   (uint8_t *)&pedo_cmd_reg, 1);
+    ret += ism6hg256x_ln_pg_write(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_PEDO_CMD_REG,
+                                  (uint8_t *)&pedo_cmd_reg, 1);
   }
 
   return ret;
@@ -10960,23 +10946,23 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_stpcnt_mode_get(const stmdev_ctx_t *ctx,
-                                    lsm6dsv320x_stpcnt_mode_t *val)
+int32_t ism6hg256x_stpcnt_mode_get(const stmdev_ctx_t *ctx,
+                                   ism6hg256x_stpcnt_mode_t *val)
 {
-  lsm6dsv320x_emb_func_en_a_t emb_func_en_a;
-  lsm6dsv320x_pedo_cmd_reg_t pedo_cmd_reg;
+  ism6hg256x_emb_func_en_a_t emb_func_en_a;
+  ism6hg256x_pedo_cmd_reg_t pedo_cmd_reg;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_PEDO_CMD_REG,
-                               (uint8_t *)&pedo_cmd_reg, 1);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_PEDO_CMD_REG,
+                              (uint8_t *)&pedo_cmd_reg, 1);
   if (ret != 0)
   {
     return ret;
@@ -10996,14 +10982,14 @@ int32_t lsm6dsv320x_stpcnt_mode_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_stpcnt_steps_get(const stmdev_ctx_t *ctx, uint16_t *val)
+int32_t ism6hg256x_stpcnt_steps_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_STEP_COUNTER_L, &buff[0], 2);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_STEP_COUNTER_L, &buff[0], 2);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -11023,28 +11009,28 @@ int32_t lsm6dsv320x_stpcnt_steps_get(const stmdev_ctx_t *ctx, uint16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_stpcnt_rst_step_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_stpcnt_rst_step_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_src_t emb_func_src;
+  ism6hg256x_emb_func_src_t emb_func_src;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_SRC, (uint8_t *)&emb_func_src, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_SRC, (uint8_t *)&emb_func_src, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   emb_func_src.pedo_rst_step = val;
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_SRC, (uint8_t *)&emb_func_src, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_SRC, (uint8_t *)&emb_func_src, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -11057,18 +11043,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_stpcnt_rst_step_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_stpcnt_rst_step_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_emb_func_src_t emb_func_src;
+  ism6hg256x_emb_func_src_t emb_func_src;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_SRC, (uint8_t *)&emb_func_src, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_SRC, (uint8_t *)&emb_func_src, 1);
   if (ret != 0)
   {
     goto exit;
@@ -11076,7 +11062,7 @@ int32_t lsm6dsv320x_stpcnt_rst_step_get(const stmdev_ctx_t *ctx, uint8_t *val)
   *val = emb_func_src.pedo_rst_step;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -11089,18 +11075,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_stpcnt_debounce_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_stpcnt_debounce_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_pedo_deb_steps_conf_t pedo_deb_steps_conf;
+  ism6hg256x_pedo_deb_steps_conf_t pedo_deb_steps_conf;
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_PEDO_DEB_STEPS_CONF,
-                               (uint8_t *)&pedo_deb_steps_conf, 1);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_PEDO_DEB_STEPS_CONF,
+                              (uint8_t *)&pedo_deb_steps_conf, 1);
   if (ret == 0)
   {
     pedo_deb_steps_conf.deb_step = val;
-    ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_PEDO_DEB_STEPS_CONF,
-                                  (uint8_t *)&pedo_deb_steps_conf, 1);
+    ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_PEDO_DEB_STEPS_CONF,
+                                 (uint8_t *)&pedo_deb_steps_conf, 1);
   }
 
   return ret;
@@ -11114,13 +11100,13 @@ int32_t lsm6dsv320x_stpcnt_debounce_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_stpcnt_debounce_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_stpcnt_debounce_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_pedo_deb_steps_conf_t pedo_deb_steps_conf;
+  ism6hg256x_pedo_deb_steps_conf_t pedo_deb_steps_conf;
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_PEDO_DEB_STEPS_CONF,
-                               (uint8_t *)&pedo_deb_steps_conf, 1);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_PEDO_DEB_STEPS_CONF,
+                              (uint8_t *)&pedo_deb_steps_conf, 1);
   if (ret != 0)
   {
     return ret;
@@ -11138,15 +11124,15 @@ int32_t lsm6dsv320x_stpcnt_debounce_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_stpcnt_period_set(const stmdev_ctx_t *ctx, uint16_t val)
+int32_t ism6hg256x_stpcnt_period_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
-  ret = lsm6dsv320x_ln_pg_write(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_PEDO_SC_DELTAT_L,
-                                (uint8_t *)&buff[0], 2);
+  ret = ism6hg256x_ln_pg_write(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_PEDO_SC_DELTAT_L,
+                               (uint8_t *)&buff[0], 2);
 
   return ret;
 }
@@ -11159,13 +11145,13 @@ int32_t lsm6dsv320x_stpcnt_period_set(const stmdev_ctx_t *ctx, uint16_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val)
+int32_t ism6hg256x_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
 
-  ret = lsm6dsv320x_ln_pg_read(ctx, LSM6DSV320X_EMB_ADV_PG_1 + LSM6DSV320X_PEDO_SC_DELTAT_L, &buff[0],
-                               2);
+  ret = ism6hg256x_ln_pg_read(ctx, ISM6HG256X_EMB_ADV_PG_1 + ISM6HG256X_PEDO_SC_DELTAT_L, &buff[0],
+                              2);
   if (ret != 0)
   {
     return ret;
@@ -11197,29 +11183,29 @@ int32_t lsm6dsv320x_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sflp_game_rotation_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_sflp_game_rotation_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_en_a_t emb_func_en_a;
+  ism6hg256x_emb_func_en_a_t emb_func_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   emb_func_en_a.sflp_game_en = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A,
-                               (uint8_t *)&emb_func_en_a, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A,
+                              (uint8_t *)&emb_func_en_a, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -11232,18 +11218,18 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sflp_game_rotation_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_sflp_game_rotation_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_emb_func_en_a_t emb_func_en_a;
+  ism6hg256x_emb_func_en_a_t emb_func_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
   if (ret != 0)
   {
     goto exit;
@@ -11251,7 +11237,7 @@ int32_t lsm6dsv320x_sflp_game_rotation_get(const stmdev_ctx_t *ctx, uint8_t *val
   *val = emb_func_en_a.sflp_game_en;
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -11264,27 +11250,27 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sflp_game_rotation_reset(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_sflp_game_rotation_reset(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_init_a_t emb_func_init_a;
+  ism6hg256x_emb_func_init_a_t emb_func_init_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INIT_A, (uint8_t *)&emb_func_init_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_INIT_A, (uint8_t *)&emb_func_init_a, 1);
   if (ret != 0)
   {
     goto exit;
   }
   emb_func_init_a.sflp_game_init = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_INIT_A, (uint8_t *)&emb_func_init_a, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_INIT_A, (uint8_t *)&emb_func_init_a, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -11297,29 +11283,29 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sflp_data_rate_set(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_sflp_data_rate_t val)
+int32_t ism6hg256x_sflp_data_rate_set(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_sflp_data_rate_t val)
 {
-  lsm6dsv320x_sflp_odr_t sflp_odr;
+  ism6hg256x_sflp_odr_t sflp_odr;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     goto exit;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_SFLP_ODR, (uint8_t *)&sflp_odr, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_SFLP_ODR, (uint8_t *)&sflp_odr, 1);
   if (ret != 0)
   {
     goto exit;
   }
 
   sflp_odr.sflp_game_odr = (uint8_t)val & 0x07U;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_SFLP_ODR, (uint8_t *)&sflp_odr, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_SFLP_ODR, (uint8_t *)&sflp_odr, 1);
 
 exit:
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -11332,15 +11318,15 @@ exit:
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_sflp_data_rate_get(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_sflp_data_rate_t *val)
+int32_t ism6hg256x_sflp_data_rate_get(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_sflp_data_rate_t *val)
 {
-  lsm6dsv320x_sflp_odr_t sflp_odr;
+  ism6hg256x_sflp_odr_t sflp_odr;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_SFLP_ODR, (uint8_t *)&sflp_odr, 1);
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_SFLP_ODR, (uint8_t *)&sflp_odr, 1);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
   if (ret != 0)
   {
     return ret;
@@ -11348,32 +11334,32 @@ int32_t lsm6dsv320x_sflp_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (sflp_odr.sflp_game_odr)
   {
-    case LSM6DSV320X_SFLP_15Hz:
-      *val = LSM6DSV320X_SFLP_15Hz;
+    case ISM6HG256X_SFLP_15Hz:
+      *val = ISM6HG256X_SFLP_15Hz;
       break;
 
-    case LSM6DSV320X_SFLP_30Hz:
-      *val = LSM6DSV320X_SFLP_30Hz;
+    case ISM6HG256X_SFLP_30Hz:
+      *val = ISM6HG256X_SFLP_30Hz;
       break;
 
-    case LSM6DSV320X_SFLP_60Hz:
-      *val = LSM6DSV320X_SFLP_60Hz;
+    case ISM6HG256X_SFLP_60Hz:
+      *val = ISM6HG256X_SFLP_60Hz;
       break;
 
-    case LSM6DSV320X_SFLP_120Hz:
-      *val = LSM6DSV320X_SFLP_120Hz;
+    case ISM6HG256X_SFLP_120Hz:
+      *val = ISM6HG256X_SFLP_120Hz;
       break;
 
-    case LSM6DSV320X_SFLP_240Hz:
-      *val = LSM6DSV320X_SFLP_240Hz;
+    case ISM6HG256X_SFLP_240Hz:
+      *val = ISM6HG256X_SFLP_240Hz;
       break;
 
-    case LSM6DSV320X_SFLP_480Hz:
-      *val = LSM6DSV320X_SFLP_480Hz;
+    case ISM6HG256X_SFLP_480Hz:
+      *val = ISM6HG256X_SFLP_480Hz;
       break;
 
     default:
-      *val = LSM6DSV320X_SFLP_15Hz;
+      *val = ISM6HG256X_SFLP_15Hz;
       break;
   }
 
@@ -11401,19 +11387,19 @@ int32_t lsm6dsv320x_sflp_data_rate_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tap_detection_set(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_tap_detection_t val)
+int32_t ism6hg256x_tap_detection_set(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_tap_detection_t val)
 {
-  lsm6dsv320x_tap_cfg0_t tap_cfg0;
+  ism6hg256x_tap_cfg0_t tap_cfg0;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   if (ret == 0)
   {
     tap_cfg0.tap_x_en = val.tap_x_en;
     tap_cfg0.tap_y_en = val.tap_y_en;
     tap_cfg0.tap_z_en = val.tap_z_en;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   }
 
   return ret;
@@ -11427,13 +11413,13 @@ int32_t lsm6dsv320x_tap_detection_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tap_detection_get(const stmdev_ctx_t *ctx,
-                                      lsm6dsv320x_tap_detection_t *val)
+int32_t ism6hg256x_tap_detection_get(const stmdev_ctx_t *ctx,
+                                     ism6hg256x_tap_detection_t *val)
 {
-  lsm6dsv320x_tap_cfg0_t tap_cfg0;
+  ism6hg256x_tap_cfg0_t tap_cfg0;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   if (ret != 0)
   {
     return ret;
@@ -11454,17 +11440,17 @@ int32_t lsm6dsv320x_tap_detection_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tap_thresholds_set(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_tap_thresholds_t val)
+int32_t ism6hg256x_tap_thresholds_set(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_tap_thresholds_t val)
 {
-  lsm6dsv320x_tap_ths_6d_t tap_ths_6d;
-  lsm6dsv320x_tap_cfg2_t tap_cfg2;
-  lsm6dsv320x_tap_cfg1_t tap_cfg1;
+  ism6hg256x_tap_ths_6d_t tap_ths_6d;
+  ism6hg256x_tap_cfg2_t tap_cfg2;
+  ism6hg256x_tap_cfg1_t tap_cfg1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG2, (uint8_t *)&tap_cfg2, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG2, (uint8_t *)&tap_cfg2, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
   if (ret != 0)
   {
     return ret;
@@ -11474,9 +11460,9 @@ int32_t lsm6dsv320x_tap_thresholds_set(const stmdev_ctx_t *ctx,
   tap_cfg2.tap_ths_y = val.y;
   tap_ths_6d.tap_ths_z = val.z;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_CFG2, (uint8_t *)&tap_cfg2, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_CFG2, (uint8_t *)&tap_cfg2, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
 
   return ret;
 }
@@ -11489,17 +11475,17 @@ int32_t lsm6dsv320x_tap_thresholds_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tap_thresholds_get(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_tap_thresholds_t *val)
+int32_t ism6hg256x_tap_thresholds_get(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_tap_thresholds_t *val)
 {
-  lsm6dsv320x_tap_ths_6d_t tap_ths_6d;
-  lsm6dsv320x_tap_cfg2_t tap_cfg2;
-  lsm6dsv320x_tap_cfg1_t tap_cfg1;
+  ism6hg256x_tap_ths_6d_t tap_ths_6d;
+  ism6hg256x_tap_cfg2_t tap_cfg2;
+  ism6hg256x_tap_cfg1_t tap_cfg1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG2, (uint8_t *)&tap_cfg2, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG2, (uint8_t *)&tap_cfg2, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_THS_6D, (uint8_t *)&tap_ths_6d, 1);
   if (ret != 0)
   {
     return ret;
@@ -11520,17 +11506,17 @@ int32_t lsm6dsv320x_tap_thresholds_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tap_axis_priority_set(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_tap_axis_priority_t val)
+int32_t ism6hg256x_tap_axis_priority_set(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_tap_axis_priority_t val)
 {
-  lsm6dsv320x_tap_cfg1_t tap_cfg1;
+  ism6hg256x_tap_cfg1_t tap_cfg1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
   if (ret == 0)
   {
     tap_cfg1.tap_priority = (uint8_t)val & 0x7U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
   }
 
   return ret;
@@ -11544,13 +11530,13 @@ int32_t lsm6dsv320x_tap_axis_priority_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tap_axis_priority_get(const stmdev_ctx_t *ctx,
-                                          lsm6dsv320x_tap_axis_priority_t *val)
+int32_t ism6hg256x_tap_axis_priority_get(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_tap_axis_priority_t *val)
 {
-  lsm6dsv320x_tap_cfg1_t tap_cfg1;
+  ism6hg256x_tap_cfg1_t tap_cfg1;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
   if (ret != 0)
   {
     return ret;
@@ -11558,32 +11544,32 @@ int32_t lsm6dsv320x_tap_axis_priority_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg1.tap_priority)
   {
-    case LSM6DSV320X_XYZ :
-      *val = LSM6DSV320X_XYZ ;
+    case ISM6HG256X_XYZ :
+      *val = ISM6HG256X_XYZ ;
       break;
 
-    case LSM6DSV320X_YXZ :
-      *val = LSM6DSV320X_YXZ ;
+    case ISM6HG256X_YXZ :
+      *val = ISM6HG256X_YXZ ;
       break;
 
-    case LSM6DSV320X_XZY:
-      *val = LSM6DSV320X_XZY;
+    case ISM6HG256X_XZY:
+      *val = ISM6HG256X_XZY;
       break;
 
-    case LSM6DSV320X_ZYX :
-      *val = LSM6DSV320X_ZYX ;
+    case ISM6HG256X_ZYX :
+      *val = ISM6HG256X_ZYX ;
       break;
 
-    case LSM6DSV320X_YZX :
-      *val = LSM6DSV320X_YZX ;
+    case ISM6HG256X_YZX :
+      *val = ISM6HG256X_YZX ;
       break;
 
-    case LSM6DSV320X_ZXY :
-      *val = LSM6DSV320X_ZXY ;
+    case ISM6HG256X_ZXY :
+      *val = ISM6HG256X_ZXY ;
       break;
 
     default:
-      *val = LSM6DSV320X_XYZ ;
+      *val = ISM6HG256X_XYZ ;
       break;
   }
 
@@ -11598,19 +11584,19 @@ int32_t lsm6dsv320x_tap_axis_priority_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tap_time_windows_set(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_tap_time_windows_t val)
+int32_t ism6hg256x_tap_time_windows_set(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_tap_time_windows_t val)
 {
-  lsm6dsv320x_tap_dur_t tap_dur;
+  ism6hg256x_tap_dur_t tap_dur;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_DUR, (uint8_t *)&tap_dur, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_DUR, (uint8_t *)&tap_dur, 1);
   if (ret == 0)
   {
     tap_dur.shock = val.shock;
     tap_dur.quiet = val.quiet;
     tap_dur.dur = val.tap_gap;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_TAP_DUR, (uint8_t *)&tap_dur, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_TAP_DUR, (uint8_t *)&tap_dur, 1);
   }
 
   return ret;
@@ -11624,13 +11610,13 @@ int32_t lsm6dsv320x_tap_time_windows_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tap_time_windows_get(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_tap_time_windows_t *val)
+int32_t ism6hg256x_tap_time_windows_get(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_tap_time_windows_t *val)
 {
-  lsm6dsv320x_tap_dur_t tap_dur;
+  ism6hg256x_tap_dur_t tap_dur;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TAP_DUR, (uint8_t *)&tap_dur, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TAP_DUR, (uint8_t *)&tap_dur, 1);
   if (ret != 0)
   {
     return ret;
@@ -11651,16 +11637,16 @@ int32_t lsm6dsv320x_tap_time_windows_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tap_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_tap_mode_t val)
+int32_t ism6hg256x_tap_mode_set(const stmdev_ctx_t *ctx, ism6hg256x_tap_mode_t val)
 {
-  lsm6dsv320x_wake_up_ths_t wake_up_ths;
+  ism6hg256x_wake_up_ths_t wake_up_ths;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
   if (ret == 0)
   {
     wake_up_ths.single_double_tap = (uint8_t)val & 0x01U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
   }
 
   return ret;
@@ -11674,12 +11660,12 @@ int32_t lsm6dsv320x_tap_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_tap_mode_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tap_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_tap_mode_t *val)
+int32_t ism6hg256x_tap_mode_get(const stmdev_ctx_t *ctx, ism6hg256x_tap_mode_t *val)
 {
-  lsm6dsv320x_wake_up_ths_t wake_up_ths;
+  ism6hg256x_wake_up_ths_t wake_up_ths;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
   if (ret != 0)
   {
     return ret;
@@ -11687,16 +11673,16 @@ int32_t lsm6dsv320x_tap_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_tap_mode_t
 
   switch (wake_up_ths.single_double_tap)
   {
-    case LSM6DSV320X_ONLY_SINGLE:
-      *val = LSM6DSV320X_ONLY_SINGLE;
+    case ISM6HG256X_ONLY_SINGLE:
+      *val = ISM6HG256X_ONLY_SINGLE;
       break;
 
-    case LSM6DSV320X_BOTH_SINGLE_DOUBLE:
-      *val = LSM6DSV320X_BOTH_SINGLE_DOUBLE;
+    case ISM6HG256X_BOTH_SINGLE_DOUBLE:
+      *val = ISM6HG256X_BOTH_SINGLE_DOUBLE;
       break;
 
     default:
-      *val = LSM6DSV320X_ONLY_SINGLE;
+      *val = ISM6HG256X_ONLY_SINGLE;
       break;
   }
 
@@ -11724,22 +11710,22 @@ int32_t lsm6dsv320x_tap_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_tap_mode_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tilt_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_tilt_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_emb_func_en_a_t emb_func_en_a;
+  ism6hg256x_emb_func_en_a_t emb_func_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
   emb_func_en_a.tilt_en = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
 
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -11752,21 +11738,21 @@ int32_t lsm6dsv320x_tilt_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_tilt_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_tilt_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_emb_func_en_a_t emb_func_en_a;
+  ism6hg256x_emb_func_en_a_t emb_func_en_a;
   int32_t ret;
 
-  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
+  ret = ism6hg256x_mem_bank_set(ctx, ISM6HG256X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_EMB_FUNC_EN_A, (uint8_t *)&emb_func_en_a, 1);
   *val = emb_func_en_a.tilt_en;
 
-  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
+  ret += ism6hg256x_mem_bank_set(ctx, ISM6HG256X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -11792,12 +11778,12 @@ int32_t lsm6dsv320x_tilt_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val)
+int32_t ism6hg256x_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val)
 {
   uint8_t buff[4];
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_TIMESTAMP0, &buff[0], 4);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_TIMESTAMP0, &buff[0], 4);
   if (ret != 0)
   {
     return ret;
@@ -11819,16 +11805,16 @@ int32_t lsm6dsv320x_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t ism6hg256x_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  lsm6dsv320x_functions_enable_t functions_enable;
+  ism6hg256x_functions_enable_t functions_enable;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
   if (ret == 0)
   {
     functions_enable.timestamp_en = val;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
   }
 
   return ret;
@@ -11842,12 +11828,12 @@ int32_t lsm6dsv320x_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ism6hg256x_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dsv320x_functions_enable_t functions_enable;
+  ism6hg256x_functions_enable_t functions_enable;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
   if (ret != 0)
   {
     return ret;
@@ -11879,16 +11865,16 @@ int32_t lsm6dsv320x_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_act_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_act_mode_t val)
+int32_t ism6hg256x_act_mode_set(const stmdev_ctx_t *ctx, ism6hg256x_act_mode_t val)
 {
-  lsm6dsv320x_functions_enable_t functions_enable;
+  ism6hg256x_functions_enable_t functions_enable;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
   if (ret == 0)
   {
     functions_enable.inact_en = (uint8_t)val & 0x3U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
   }
 
   return ret;
@@ -11902,12 +11888,12 @@ int32_t lsm6dsv320x_act_mode_set(const stmdev_ctx_t *ctx, lsm6dsv320x_act_mode_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_act_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_act_mode_t *val)
+int32_t ism6hg256x_act_mode_get(const stmdev_ctx_t *ctx, ism6hg256x_act_mode_t *val)
 {
-  lsm6dsv320x_functions_enable_t functions_enable;
+  ism6hg256x_functions_enable_t functions_enable;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_FUNCTIONS_ENABLE, (uint8_t *)&functions_enable, 1);
   if (ret != 0)
   {
     return ret;
@@ -11915,24 +11901,24 @@ int32_t lsm6dsv320x_act_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_act_mode_t
 
   switch (functions_enable.inact_en)
   {
-    case LSM6DSV320X_XL_AND_GY_NOT_AFFECTED:
-      *val = LSM6DSV320X_XL_AND_GY_NOT_AFFECTED;
+    case ISM6HG256X_XL_AND_GY_NOT_AFFECTED:
+      *val = ISM6HG256X_XL_AND_GY_NOT_AFFECTED;
       break;
 
-    case LSM6DSV320X_XL_LOW_POWER_GY_NOT_AFFECTED:
-      *val = LSM6DSV320X_XL_LOW_POWER_GY_NOT_AFFECTED;
+    case ISM6HG256X_XL_LOW_POWER_GY_NOT_AFFECTED:
+      *val = ISM6HG256X_XL_LOW_POWER_GY_NOT_AFFECTED;
       break;
 
-    case LSM6DSV320X_XL_LOW_POWER_GY_SLEEP:
-      *val = LSM6DSV320X_XL_LOW_POWER_GY_SLEEP;
+    case ISM6HG256X_XL_LOW_POWER_GY_SLEEP:
+      *val = ISM6HG256X_XL_LOW_POWER_GY_SLEEP;
       break;
 
-    case LSM6DSV320X_XL_LOW_POWER_GY_POWER_DOWN:
-      *val = LSM6DSV320X_XL_LOW_POWER_GY_POWER_DOWN;
+    case ISM6HG256X_XL_LOW_POWER_GY_POWER_DOWN:
+      *val = ISM6HG256X_XL_LOW_POWER_GY_POWER_DOWN;
       break;
 
     default:
-      *val = LSM6DSV320X_XL_AND_GY_NOT_AFFECTED;
+      *val = ISM6HG256X_XL_AND_GY_NOT_AFFECTED;
       break;
   }
 
@@ -11947,17 +11933,17 @@ int32_t lsm6dsv320x_act_mode_get(const stmdev_ctx_t *ctx, lsm6dsv320x_act_mode_t
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_act_from_sleep_to_act_dur_set(const stmdev_ctx_t *ctx,
-                                                  lsm6dsv320x_act_from_sleep_to_act_dur_t val)
+int32_t ism6hg256x_act_from_sleep_to_act_dur_set(const stmdev_ctx_t *ctx,
+                                                 ism6hg256x_act_from_sleep_to_act_dur_t val)
 {
-  lsm6dsv320x_inactivity_dur_t inactivity_dur;
+  ism6hg256x_inactivity_dur_t inactivity_dur;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
   if (ret == 0)
   {
     inactivity_dur.inact_dur = (uint8_t)val & 0x3U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
   }
 
   return ret;
@@ -11971,13 +11957,13 @@ int32_t lsm6dsv320x_act_from_sleep_to_act_dur_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_act_from_sleep_to_act_dur_get(const stmdev_ctx_t *ctx,
-                                                  lsm6dsv320x_act_from_sleep_to_act_dur_t *val)
+int32_t ism6hg256x_act_from_sleep_to_act_dur_get(const stmdev_ctx_t *ctx,
+                                                 ism6hg256x_act_from_sleep_to_act_dur_t *val)
 {
-  lsm6dsv320x_inactivity_dur_t inactivity_dur;
+  ism6hg256x_inactivity_dur_t inactivity_dur;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
   if (ret != 0)
   {
     return ret;
@@ -11985,24 +11971,24 @@ int32_t lsm6dsv320x_act_from_sleep_to_act_dur_get(const stmdev_ctx_t *ctx,
 
   switch (inactivity_dur.inact_dur)
   {
-    case LSM6DSV320X_SLEEP_TO_ACT_AT_1ST_SAMPLE:
-      *val = LSM6DSV320X_SLEEP_TO_ACT_AT_1ST_SAMPLE;
+    case ISM6HG256X_SLEEP_TO_ACT_AT_1ST_SAMPLE:
+      *val = ISM6HG256X_SLEEP_TO_ACT_AT_1ST_SAMPLE;
       break;
 
-    case LSM6DSV320X_SLEEP_TO_ACT_AT_2ND_SAMPLE:
-      *val = LSM6DSV320X_SLEEP_TO_ACT_AT_2ND_SAMPLE;
+    case ISM6HG256X_SLEEP_TO_ACT_AT_2ND_SAMPLE:
+      *val = ISM6HG256X_SLEEP_TO_ACT_AT_2ND_SAMPLE;
       break;
 
-    case LSM6DSV320X_SLEEP_TO_ACT_AT_3RD_SAMPLE:
-      *val = LSM6DSV320X_SLEEP_TO_ACT_AT_3RD_SAMPLE;
+    case ISM6HG256X_SLEEP_TO_ACT_AT_3RD_SAMPLE:
+      *val = ISM6HG256X_SLEEP_TO_ACT_AT_3RD_SAMPLE;
       break;
 
-    case LSM6DSV320X_SLEEP_TO_ACT_AT_4th_SAMPLE:
-      *val = LSM6DSV320X_SLEEP_TO_ACT_AT_4th_SAMPLE;
+    case ISM6HG256X_SLEEP_TO_ACT_AT_4th_SAMPLE:
+      *val = ISM6HG256X_SLEEP_TO_ACT_AT_4th_SAMPLE;
       break;
 
     default:
-      *val = LSM6DSV320X_SLEEP_TO_ACT_AT_1ST_SAMPLE;
+      *val = ISM6HG256X_SLEEP_TO_ACT_AT_1ST_SAMPLE;
       break;
   }
 
@@ -12017,17 +12003,17 @@ int32_t lsm6dsv320x_act_from_sleep_to_act_dur_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_act_sleep_xl_odr_set(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_act_sleep_xl_odr_t val)
+int32_t ism6hg256x_act_sleep_xl_odr_set(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_act_sleep_xl_odr_t val)
 {
-  lsm6dsv320x_inactivity_dur_t inactivity_dur;
+  ism6hg256x_inactivity_dur_t inactivity_dur;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
   if (ret == 0)
   {
     inactivity_dur.xl_inact_odr = (uint8_t)val & 0x03U;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
   }
 
   return ret;
@@ -12041,13 +12027,13 @@ int32_t lsm6dsv320x_act_sleep_xl_odr_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_act_sleep_xl_odr_get(const stmdev_ctx_t *ctx,
-                                         lsm6dsv320x_act_sleep_xl_odr_t *val)
+int32_t ism6hg256x_act_sleep_xl_odr_get(const stmdev_ctx_t *ctx,
+                                        ism6hg256x_act_sleep_xl_odr_t *val)
 {
-  lsm6dsv320x_inactivity_dur_t inactivity_dur;
+  ism6hg256x_inactivity_dur_t inactivity_dur;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
   if (ret != 0)
   {
     return ret;
@@ -12055,24 +12041,24 @@ int32_t lsm6dsv320x_act_sleep_xl_odr_get(const stmdev_ctx_t *ctx,
 
   switch (inactivity_dur.xl_inact_odr)
   {
-    case LSM6DSV320X_1Hz875:
-      *val = LSM6DSV320X_1Hz875;
+    case ISM6HG256X_1Hz875:
+      *val = ISM6HG256X_1Hz875;
       break;
 
-    case LSM6DSV320X_15Hz:
-      *val = LSM6DSV320X_15Hz;
+    case ISM6HG256X_15Hz:
+      *val = ISM6HG256X_15Hz;
       break;
 
-    case LSM6DSV320X_30Hz:
-      *val = LSM6DSV320X_30Hz;
+    case ISM6HG256X_30Hz:
+      *val = ISM6HG256X_30Hz;
       break;
 
-    case LSM6DSV320X_60Hz:
-      *val = LSM6DSV320X_60Hz;
+    case ISM6HG256X_60Hz:
+      *val = ISM6HG256X_60Hz;
       break;
 
     default:
-      *val = LSM6DSV320X_1Hz875;
+      *val = ISM6HG256X_1Hz875;
       break;
   }
 
@@ -12087,19 +12073,19 @@ int32_t lsm6dsv320x_act_sleep_xl_odr_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_act_thresholds_set(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_act_thresholds_t *val)
+int32_t ism6hg256x_act_thresholds_set(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_act_thresholds_t *val)
 {
-  lsm6dsv320x_inactivity_ths_t inactivity_ths;
-  lsm6dsv320x_inactivity_dur_t inactivity_dur;
-  lsm6dsv320x_wake_up_ths_t wake_up_ths;
-  lsm6dsv320x_wake_up_dur_t wake_up_dur;
+  ism6hg256x_inactivity_ths_t inactivity_ths;
+  ism6hg256x_inactivity_dur_t inactivity_dur;
+  ism6hg256x_wake_up_ths_t wake_up_ths;
+  ism6hg256x_wake_up_dur_t wake_up_dur;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_THS, (uint8_t *)&inactivity_ths, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_THS, (uint8_t *)&inactivity_ths, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
   if (ret != 0)
   {
     return ret;
@@ -12113,10 +12099,10 @@ int32_t lsm6dsv320x_act_thresholds_set(const stmdev_ctx_t *ctx,
   wake_up_ths.wk_ths = val->threshold;
   wake_up_dur.wake_dur = val->duration;
 
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_INACTIVITY_THS, (uint8_t *)&inactivity_ths, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_INACTIVITY_THS, (uint8_t *)&inactivity_ths, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
+  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
 
   return ret;
 }
@@ -12129,19 +12115,19 @@ int32_t lsm6dsv320x_act_thresholds_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_act_thresholds_get(const stmdev_ctx_t *ctx,
-                                       lsm6dsv320x_act_thresholds_t *val)
+int32_t ism6hg256x_act_thresholds_get(const stmdev_ctx_t *ctx,
+                                      ism6hg256x_act_thresholds_t *val)
 {
-  lsm6dsv320x_inactivity_dur_t inactivity_dur;
-  lsm6dsv320x_inactivity_ths_t inactivity_ths;
-  lsm6dsv320x_wake_up_ths_t wake_up_ths;
-  lsm6dsv320x_wake_up_dur_t wake_up_dur;
+  ism6hg256x_inactivity_dur_t inactivity_dur;
+  ism6hg256x_inactivity_ths_t inactivity_ths;
+  ism6hg256x_wake_up_ths_t wake_up_ths;
+  ism6hg256x_wake_up_dur_t wake_up_dur;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INACTIVITY_THS, (uint8_t *)&inactivity_ths, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
-  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_DUR, (uint8_t *)&inactivity_dur, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_INACTIVITY_THS, (uint8_t *)&inactivity_ths, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_THS, (uint8_t *)&wake_up_ths, 1);
+  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
   if (ret != 0)
   {
     return ret;
@@ -12166,18 +12152,18 @@ int32_t lsm6dsv320x_act_thresholds_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_act_wkup_time_windows_set(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_act_wkup_time_windows_t val)
+int32_t ism6hg256x_act_wkup_time_windows_set(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_act_wkup_time_windows_t val)
 {
-  lsm6dsv320x_wake_up_dur_t wake_up_dur;
+  ism6hg256x_wake_up_dur_t wake_up_dur;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
   if (ret == 0)
   {
     wake_up_dur.wake_dur = val.shock;
     wake_up_dur.sleep_dur = val.quiet;
-    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
+    ret = ism6hg256x_write_reg(ctx, ISM6HG256X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
   }
 
   return ret;
@@ -12191,13 +12177,13 @@ int32_t lsm6dsv320x_act_wkup_time_windows_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv320x_act_wkup_time_windows_get(const stmdev_ctx_t *ctx,
-                                              lsm6dsv320x_act_wkup_time_windows_t *val)
+int32_t ism6hg256x_act_wkup_time_windows_get(const stmdev_ctx_t *ctx,
+                                             ism6hg256x_act_wkup_time_windows_t *val)
 {
-  lsm6dsv320x_wake_up_dur_t wake_up_dur;
+  ism6hg256x_wake_up_dur_t wake_up_dur;
   int32_t ret;
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_WAKE_UP_DUR, (uint8_t *)&wake_up_dur, 1);
   if (ret != 0)
   {
     return ret;

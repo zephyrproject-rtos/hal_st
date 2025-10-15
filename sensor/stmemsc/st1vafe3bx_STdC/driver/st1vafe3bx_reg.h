@@ -7,13 +7,12 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2024 STMicroelectronics.
- * All rights reserved.</center></h2>
+ * Copyright (c) 2024 STMicroelectronics.
+ * All rights reserved.
  *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
  *
  ******************************************************************************
  */
@@ -115,13 +114,6 @@ typedef int32_t (*stmdev_read_ptr)(void *ctx, uint8_t reg,
                                    uint8_t *data, uint16_t len);
 typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
-/**
-  * @}
-  *
-  */
-
-#endif /* MEMS_SHARED_TYPES */
-
 /*
  * Proprietary read/write device context structure
  */
@@ -136,8 +128,15 @@ typedef struct
   void *handle;
 
   /** private data **/
-  uint8_t vafe_only;
-} st1vafe3bx_ctx_t;
+  void *priv_data;
+} stmdev_ctx_t;
+
+/**
+  * @}
+  *
+  */
+
+#endif /* MEMS_SHARED_TYPES */
 
 #ifndef MEMS_UCF_SHARED_TYPES
 #define MEMS_UCF_SHARED_TYPES
@@ -1995,10 +1994,10 @@ typedef union
  * them with a custom implementation.
  */
 
-int32_t st1vafe3bx_read_reg(const st1vafe3bx_ctx_t *ctx, uint8_t reg,
+int32_t st1vafe3bx_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                             uint8_t *data,
                             uint16_t len);
-int32_t st1vafe3bx_write_reg(const st1vafe3bx_ctx_t *ctx, uint8_t reg,
+int32_t st1vafe3bx_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                              uint8_t *data,
                              uint16_t len);
 
@@ -2009,7 +2008,7 @@ float_t st1vafe3bx_from_fs16g_to_mg(int16_t lsb);
 float_t st1vafe3bx_from_lsb_to_celsius(int16_t lsb);
 float_t st1vafe3bx_from_lsb_to_mv(int16_t lsb);
 
-int32_t st1vafe3bx_device_id_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -2021,7 +2020,7 @@ typedef enum
   ST1VAFE3BX_VAFE_ONLY_LP       = 0x04, /* Enable sensor in vAFE only mode - low performance */
   ST1VAFE3BX_VAFE_ONLY_HP       = 0x05, /* Enable sensor in vAFE only mode - high performance */
 } st1vafe3bx_init_t;
-int32_t st1vafe3bx_init_set(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_init_t val);
+int32_t st1vafe3bx_init_set(const stmdev_ctx_t *ctx, st1vafe3bx_init_t val);
 
 typedef struct
 {
@@ -2029,8 +2028,8 @@ typedef struct
   uint8_t pwr_ctrl_win                 : 4; /* Number of consecutive windows */
   uint8_t pwr_ctrl_dur                 : 4; /* Duration threshold */
 } st1vafe3bx_smart_power_t;
-int32_t st1vafe3bx_smart_power_set(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_smart_power_t val);
-int32_t st1vafe3bx_smart_power_get(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_smart_power_t *val);
+int32_t st1vafe3bx_smart_power_set(const stmdev_ctx_t *ctx, st1vafe3bx_smart_power_t val);
+int32_t st1vafe3bx_smart_power_get(const stmdev_ctx_t *ctx, st1vafe3bx_smart_power_t *val);
 
 typedef struct
 {
@@ -2039,8 +2038,8 @@ typedef struct
   uint8_t drdy                         : 1; /* Accelerometer data ready */
   uint8_t power_down                   : 1; /* Monitors power-down. */
 } st1vafe3bx_status_t;
-int32_t st1vafe3bx_status_get(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_status_t *val);
-int32_t st1vafe3bx_drdy_status_get(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_status_t *val);
+int32_t st1vafe3bx_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t *val);
+int32_t st1vafe3bx_drdy_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t *val);
 
 typedef struct
 {
@@ -2049,18 +2048,15 @@ typedef struct
   uint8_t is_sigmot                    : 1; /* Significant motion detected */
   uint8_t is_fsm_lc                    : 1; /* FSM long counter timeout */
 } st1vafe3bx_embedded_status_t;
-int32_t st1vafe3bx_embedded_status_get(const st1vafe3bx_ctx_t *ctx,
-                                       st1vafe3bx_embedded_status_t *val);
+int32_t st1vafe3bx_embedded_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_embedded_status_t *val);
 
 typedef enum
 {
   ST1VAFE3BX_DRDY_LATCHED = 0x0,
   ST1VAFE3BX_DRDY_PULSED  = 0x1,
 } st1vafe3bx_data_ready_mode_t;
-int32_t st1vafe3bx_data_ready_mode_set(const st1vafe3bx_ctx_t *ctx,
-                                       st1vafe3bx_data_ready_mode_t val);
-int32_t st1vafe3bx_data_ready_mode_get(const st1vafe3bx_ctx_t *ctx,
-                                       st1vafe3bx_data_ready_mode_t *val);
+int32_t st1vafe3bx_data_ready_mode_set(const stmdev_ctx_t *ctx, st1vafe3bx_data_ready_mode_t val);
+int32_t st1vafe3bx_data_ready_mode_get(const stmdev_ctx_t *ctx, st1vafe3bx_data_ready_mode_t *val);
 
 typedef enum
 {
@@ -2123,11 +2119,11 @@ typedef struct
   st1vafe3bx_odr_t odr;
   st1vafe3bx_bw_t bw;
 } st1vafe3bx_md_t;
-int32_t st1vafe3bx_mode_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_mode_set(const stmdev_ctx_t *ctx,
                             const st1vafe3bx_md_t *val);
-int32_t st1vafe3bx_mode_get(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_md_t *val);
+int32_t st1vafe3bx_mode_get(const stmdev_ctx_t *ctx, st1vafe3bx_md_t *val);
 
-int32_t st1vafe3bx_trigger_sw(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_trigger_sw(const stmdev_ctx_t *ctx,
                               const st1vafe3bx_md_t *md);
 
 typedef struct
@@ -2157,7 +2153,7 @@ typedef struct
   uint8_t fifo_ovr                     : 1;
   uint8_t fifo_th                      : 1;
 } st1vafe3bx_all_sources_t;
-int32_t st1vafe3bx_all_sources_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_all_sources_get(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_all_sources_t *val);
 
 typedef struct
@@ -2165,7 +2161,7 @@ typedef struct
   float_t mg[3];
   int16_t raw[3];
 } st1vafe3bx_xl_data_t;
-int32_t st1vafe3bx_xl_data_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_xl_data_get(const stmdev_ctx_t *ctx,
                                const st1vafe3bx_md_t *md,
                                st1vafe3bx_xl_data_t *data);
 
@@ -2174,7 +2170,7 @@ typedef struct
   float_t mv;
   int16_t raw;
 } st1vafe3bx_ah_bio_data_t;
-int32_t st1vafe3bx_ah_bio_data_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_ah_bio_data_get(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_ah_bio_data_t *data);
 
 typedef enum
@@ -2183,13 +2179,13 @@ typedef enum
   ST1VAFE3BX_XL_ST_POSITIVE = 0x1,
   ST1VAFE3BX_XL_ST_NEGATIVE = 0x2,
 } st1vafe3bx_xl_self_test_t;
-int32_t st1vafe3bx_self_test_sign_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_self_test_sign_set(const stmdev_ctx_t *ctx,
                                       st1vafe3bx_xl_self_test_t val);
-int32_t st1vafe3bx_self_test_start(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_self_test_stop(const st1vafe3bx_ctx_t *ctx);
+int32_t st1vafe3bx_self_test_start(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_self_test_stop(const stmdev_ctx_t *ctx);
 
-int32_t st1vafe3bx_enter_deep_power_down(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_exit_deep_power_down(const st1vafe3bx_ctx_t *ctx);
+int32_t st1vafe3bx_enter_deep_power_down(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_exit_deep_power_down(const stmdev_ctx_t *ctx);
 
 typedef struct
 {
@@ -2203,9 +2199,9 @@ typedef struct
   uint8_t asf_on                       : 1;
   uint8_t drstdaa_en                   : 1;
 } st1vafe3bx_i3c_cfg_t;
-int32_t st1vafe3bx_i3c_configure_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_i3c_configure_set(const stmdev_ctx_t *ctx,
                                      const st1vafe3bx_i3c_cfg_t *val);
-int32_t st1vafe3bx_i3c_configure_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_i3c_configure_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_i3c_cfg_t *val);
 
 typedef enum
@@ -2213,18 +2209,18 @@ typedef enum
   ST1VAFE3BX_MAIN_MEM_BANK       = 0x0,
   ST1VAFE3BX_EMBED_FUNC_MEM_BANK = 0x1,
 } st1vafe3bx_mem_bank_t;
-int32_t st1vafe3bx_mem_bank_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_mem_bank_set(const stmdev_ctx_t *ctx,
                                 st1vafe3bx_mem_bank_t val);
-int32_t st1vafe3bx_mem_bank_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_mem_bank_get(const stmdev_ctx_t *ctx,
                                 st1vafe3bx_mem_bank_t *val);
 
-int32_t st1vafe3bx_ln_pg_write(const st1vafe3bx_ctx_t *ctx, uint16_t address,
+int32_t st1vafe3bx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
                                uint8_t *buf, uint8_t len);
-int32_t st1vafe3bx_ln_pg_read(const st1vafe3bx_ctx_t *ctx, uint16_t address,
+int32_t st1vafe3bx_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address,
                               uint8_t *buf, uint8_t len);
 
-int32_t st1vafe3bx_ext_clk_en_set(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_ext_clk_en_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_ext_clk_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_ext_clk_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef struct
 {
@@ -2233,9 +2229,9 @@ typedef struct
   uint8_t cs_pull_up                   : 1; /* 1 = pull up enable */
   uint8_t int_push_pull                : 1; /* 1 = push-pull / 0 = open-drain*/
 } st1vafe3bx_pin_conf_t;
-int32_t st1vafe3bx_pin_conf_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_pin_conf_set(const stmdev_ctx_t *ctx,
                                 const st1vafe3bx_pin_conf_t *val);
-int32_t st1vafe3bx_pin_conf_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_pin_conf_get(const stmdev_ctx_t *ctx,
                                 st1vafe3bx_pin_conf_t *val);
 
 typedef enum
@@ -2243,9 +2239,9 @@ typedef enum
   ST1VAFE3BX_ACTIVE_HIGH = 0x0,
   ST1VAFE3BX_ACTIVE_LOW  = 0x1,
 } st1vafe3bx_int_pin_polarity_t;
-int32_t st1vafe3bx_int_pin_polarity_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_int_pin_polarity_set(const stmdev_ctx_t *ctx,
                                         st1vafe3bx_int_pin_polarity_t val);
-int32_t st1vafe3bx_int_pin_polarity_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_int_pin_polarity_get(const stmdev_ctx_t *ctx,
                                         st1vafe3bx_int_pin_polarity_t *val);
 
 typedef enum
@@ -2253,9 +2249,9 @@ typedef enum
   ST1VAFE3BX_SPI_4_WIRE  = 0x0, /* SPI 4 wires */
   ST1VAFE3BX_SPI_3_WIRE  = 0x1, /* SPI 3 wires */
 } st1vafe3bx_spi_mode;
-int32_t st1vafe3bx_spi_mode_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_spi_mode_set(const stmdev_ctx_t *ctx,
                                 st1vafe3bx_spi_mode val);
-int32_t st1vafe3bx_spi_mode_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_spi_mode_get(const stmdev_ctx_t *ctx,
                                 st1vafe3bx_spi_mode *val);
 
 typedef struct
@@ -2273,9 +2269,9 @@ typedef struct
   uint8_t emb_function                 : 1; /* Embedded Function */
   uint8_t timestamp                    : 1; /* Timestamp */
 } st1vafe3bx_pin_int_route_t;
-int32_t st1vafe3bx_pin_int_route_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_pin_int_route_set(const stmdev_ctx_t *ctx,
                                      const st1vafe3bx_pin_int_route_t *val);
-int32_t st1vafe3bx_pin_int_route_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_pin_int_route_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_pin_int_route_t *val);
 
 typedef struct
@@ -2285,9 +2281,9 @@ typedef struct
   uint8_t sig_mot                      : 1; /* route significant motion event on INT pad */
   uint8_t fsm_lc                       : 1; /* route FSM long counter event on INT pad */
 } st1vafe3bx_emb_pin_int_route_t;
-int32_t st1vafe3bx_emb_pin_int_route_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_emb_pin_int_route_set(const stmdev_ctx_t *ctx,
                                          const st1vafe3bx_emb_pin_int_route_t *val);
-int32_t st1vafe3bx_emb_pin_int_route_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_emb_pin_int_route_get(const stmdev_ctx_t *ctx,
                                          st1vafe3bx_emb_pin_int_route_t *val);
 
 typedef enum
@@ -2303,9 +2299,9 @@ typedef struct
   uint8_t sleep_status_on_int          : 1;  /* route sleep_status on interrupt */
   uint8_t dis_rst_lir_all_int          : 1;  /* disable LIR reset when reading ALL_INT_SRC */
 } st1vafe3bx_int_config_t;
-int32_t st1vafe3bx_int_config_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_int_config_set(const stmdev_ctx_t *ctx,
                                   const st1vafe3bx_int_config_t *val);
-int32_t st1vafe3bx_int_config_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_int_config_get(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_int_config_t *val);
 
 typedef enum
@@ -2313,9 +2309,9 @@ typedef enum
   ST1VAFE3BX_EMBEDDED_INT_LEVEL     = 0x0,
   ST1VAFE3BX_EMBEDDED_INT_LATCHED   = 0x1,
 } st1vafe3bx_embedded_int_config_t;
-int32_t st1vafe3bx_embedded_int_cfg_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_embedded_int_cfg_set(const stmdev_ctx_t *ctx,
                                         st1vafe3bx_embedded_int_config_t val);
-int32_t st1vafe3bx_embedded_int_cfg_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_embedded_int_cfg_get(const stmdev_ctx_t *ctx,
                                         st1vafe3bx_embedded_int_config_t *val);
 
 typedef struct
@@ -2364,13 +2360,13 @@ typedef struct
     } bdr_xl; /* accelerometer batch data rate*/
   } batch;
 } st1vafe3bx_fifo_mode_t;
-int32_t st1vafe3bx_fifo_mode_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_fifo_mode_set(const stmdev_ctx_t *ctx,
                                  st1vafe3bx_fifo_mode_t val);
-int32_t st1vafe3bx_fifo_mode_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_fifo_mode_get(const stmdev_ctx_t *ctx,
                                  st1vafe3bx_fifo_mode_t *val);
 
-int32_t st1vafe3bx_fifo_data_level_get(const st1vafe3bx_ctx_t *ctx, uint16_t *val);
-int32_t st1vafe3bx_fifo_wtm_flag_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val);
+int32_t st1vafe3bx_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -2386,10 +2382,10 @@ typedef enum
   ST1VAFE3BX_AH_VAFE_ONLY_TAG           = 0x1E,
   ST1VAFE3BX_XL_AND_AH_VAFE1_TAG        = 0x1F,
 } st1vafe3bx_fifo_sensor_tag_t;
-int32_t st1vafe3bx_fifo_sensor_tag_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
                                        st1vafe3bx_fifo_sensor_tag_t *val);
 
-int32_t st1vafe3bx_fifo_out_raw_get(const st1vafe3bx_ctx_t *ctx, uint8_t *buff);
+int32_t st1vafe3bx_fifo_out_raw_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
 typedef struct
 {
@@ -2423,7 +2419,7 @@ typedef struct
     uint32_t timestamp;
   } cfg_chg;
 } st1vafe3bx_fifo_data_t;
-int32_t st1vafe3bx_fifo_data_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
                                  const st1vafe3bx_md_t *md,
                                  const st1vafe3bx_fifo_mode_t *fmd,
                                  st1vafe3bx_fifo_data_t *data);
@@ -2458,14 +2454,19 @@ typedef struct
     ST1VAFE3BX_GAIN_16                      = 0x3,
   } gain;
 } st1vafe3bx_ah_bio_config_t;
-int32_t st1vafe3bx_ah_bio_config_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_ah_bio_config_set(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_ah_bio_config_t val);
-int32_t st1vafe3bx_ah_bio_config_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_ah_bio_config_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_ah_bio_config_t *val);
 
-int32_t st1vafe3bx_enter_vafe_only(st1vafe3bx_ctx_t *ctx);
-int32_t st1vafe3bx_exit_vafe_only(st1vafe3bx_ctx_t *ctx);
-int32_t st1vafe3bx_ah_bio_active(const st1vafe3bx_ctx_t *ctx, uint8_t filter_on);
+typedef struct
+{
+  uint8_t vafe_only;
+} st1vafe3bx_priv_t;
+
+int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx);
+int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx);
+int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on);
 
 typedef struct
 {
@@ -2473,29 +2474,29 @@ typedef struct
   uint8_t step_counter_enable          : 1;
   uint8_t step_counter_in_fifo         : 1;
 } st1vafe3bx_stpcnt_mode_t;
-int32_t st1vafe3bx_stpcnt_mode_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_stpcnt_mode_set(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_stpcnt_mode_t val);
-int32_t st1vafe3bx_stpcnt_mode_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_stpcnt_mode_get(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_stpcnt_mode_t *val);
 
-int32_t st1vafe3bx_stpcnt_steps_get(const st1vafe3bx_ctx_t *ctx, uint16_t *val);
+int32_t st1vafe3bx_stpcnt_steps_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
-int32_t st1vafe3bx_stpcnt_rst_step_set(const st1vafe3bx_ctx_t *ctx);
+int32_t st1vafe3bx_stpcnt_rst_step_set(const stmdev_ctx_t *ctx);
 
-int32_t st1vafe3bx_stpcnt_debounce_set(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_stpcnt_debounce_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_stpcnt_debounce_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_stpcnt_debounce_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t st1vafe3bx_stpcnt_period_set(const st1vafe3bx_ctx_t *ctx, uint16_t val);
-int32_t st1vafe3bx_stpcnt_period_get(const st1vafe3bx_ctx_t *ctx, uint16_t *val);
+int32_t st1vafe3bx_stpcnt_period_set(const stmdev_ctx_t *ctx, uint16_t val);
+int32_t st1vafe3bx_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
-int32_t st1vafe3bx_tilt_mode_set(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_tilt_mode_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
-int32_t st1vafe3bx_sigmot_mode_set(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_sigmot_mode_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_tilt_mode_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_tilt_mode_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_sigmot_mode_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_sigmot_mode_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 
-int32_t st1vafe3bx_ff_duration_set(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_ff_duration_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_ff_duration_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_ff_duration_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -2508,9 +2509,9 @@ typedef enum
   ST1VAFE3BX_469_mg = 0x6,
   ST1VAFE3BX_500_mg = 0x7,
 } st1vafe3bx_ff_thresholds_t;
-int32_t st1vafe3bx_ff_thresholds_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_ff_thresholds_set(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_ff_thresholds_t val);
-int32_t st1vafe3bx_ff_thresholds_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_ff_thresholds_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_ff_thresholds_t *val);
 
 typedef enum
@@ -2533,9 +2534,9 @@ typedef struct
   st1vafe3bx_mode_t mode;
 } st1vafe3bx_sixd_config_t;
 
-int32_t st1vafe3bx_sixd_config_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_sixd_config_set(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_sixd_config_t val);
-int32_t st1vafe3bx_sixd_config_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_sixd_config_get(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_sixd_config_t *val);
 
 typedef enum
@@ -2573,9 +2574,9 @@ typedef struct
   st1vafe3bx_inact_odr_t inact_odr;
 } st1vafe3bx_wakeup_config_t;
 
-int32_t st1vafe3bx_wakeup_config_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_wakeup_config_set(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_wakeup_config_t val);
-int32_t st1vafe3bx_wakeup_config_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_wakeup_config_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_wakeup_config_t *val);
 
 typedef enum
@@ -2605,37 +2606,37 @@ typedef struct
   uint8_t triple_tap_on                : 1; /* enable triple tap */
 } st1vafe3bx_tap_config_t;
 
-int32_t st1vafe3bx_tap_config_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_tap_config_set(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_tap_config_t val);
-int32_t st1vafe3bx_tap_config_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_tap_config_get(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_tap_config_t *val);
 
-int32_t st1vafe3bx_timestamp_set(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_timestamp_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t st1vafe3bx_timestamp_raw_get(const st1vafe3bx_ctx_t *ctx, uint32_t *val);
+int32_t st1vafe3bx_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val);
 
-int32_t st1vafe3bx_long_cnt_flag_data_ready_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_long_cnt_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                                 uint8_t *val);
 
-int32_t st1vafe3bx_emb_fsm_en_set(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_emb_fsm_en_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_emb_fsm_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef struct
 {
   st1vafe3bx_fsm_enable_t fsm_enable;
 } st1vafe3bx_emb_fsm_enable_t;
-int32_t st1vafe3bx_fsm_enable_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_enable_set(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_emb_fsm_enable_t *val);
-int32_t st1vafe3bx_fsm_enable_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_enable_get(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_emb_fsm_enable_t *val);
 
-int32_t st1vafe3bx_long_cnt_set(const st1vafe3bx_ctx_t *ctx, uint16_t val);
-int32_t st1vafe3bx_long_cnt_get(const st1vafe3bx_ctx_t *ctx, uint16_t *val);
+int32_t st1vafe3bx_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val);
+int32_t st1vafe3bx_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
-int32_t st1vafe3bx_fsm_status_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_status_get(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_fsm_status_mainpage_t *val);
-int32_t st1vafe3bx_fsm_out_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_fsm_out_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -2653,28 +2654,28 @@ typedef enum
   ST1VAFE3BX_ODR_FSM_VAFE_800Hz  = 0x14,
   ST1VAFE3BX_ODR_FSM_VAFE_1600Hz = 0x15,
 } st1vafe3bx_fsm_val_odr_t;
-int32_t st1vafe3bx_fsm_data_rate_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_data_rate_set(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_fsm_val_odr_t val);
-int32_t st1vafe3bx_fsm_data_rate_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_data_rate_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_fsm_val_odr_t *val);
 
-int32_t st1vafe3bx_fsm_init_set(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_fsm_init_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t st1vafe3bx_fsm_fifo_en_set(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_fsm_fifo_en_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_fsm_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_fsm_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t st1vafe3bx_long_cnt_int_value_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_long_cnt_int_value_set(const stmdev_ctx_t *ctx,
                                           uint16_t val);
-int32_t st1vafe3bx_long_cnt_int_value_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
                                           uint16_t *val);
 
-int32_t st1vafe3bx_fsm_programs_num_set(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_fsm_programs_num_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_fsm_programs_num_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_fsm_programs_num_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t st1vafe3bx_fsm_start_address_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_start_address_set(const stmdev_ctx_t *ctx,
                                          uint16_t val);
-int32_t st1vafe3bx_fsm_start_address_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_fsm_start_address_get(const stmdev_ctx_t *ctx,
                                          uint16_t *val);
 
 typedef enum
@@ -2683,13 +2684,13 @@ typedef enum
   ST1VAFE3BX_MLC_ON               = 1,
   ST1VAFE3BX_MLC_ON_BEFORE_FSM    = 2,
 } st1vafe3bx_mlc_mode_t;
-int32_t st1vafe3bx_mlc_set(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_mlc_mode_t val);
-int32_t st1vafe3bx_mlc_get(const st1vafe3bx_ctx_t *ctx, st1vafe3bx_mlc_mode_t *val);
+int32_t st1vafe3bx_mlc_set(const stmdev_ctx_t *ctx, st1vafe3bx_mlc_mode_t val);
+int32_t st1vafe3bx_mlc_get(const stmdev_ctx_t *ctx, st1vafe3bx_mlc_mode_t *val);
 
-int32_t st1vafe3bx_mlc_status_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_mlc_status_get(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_mlc_status_mainpage_t *val);
 
-int32_t st1vafe3bx_mlc_out_get(const st1vafe3bx_ctx_t *ctx, uint8_t *buff);
+int32_t st1vafe3bx_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
 typedef enum
 {
@@ -2705,18 +2706,16 @@ typedef enum
   ST1VAFE3BX_ODR_PRGS_VAFE_800Hz  = 0x14,
   ST1VAFE3BX_ODR_PRGS_VAFE_1600Hz = 0x15,
 } st1vafe3bx_mlc_odr_val_t;
-int32_t st1vafe3bx_mlc_data_rate_set(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_mlc_data_rate_set(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_mlc_odr_val_t val);
-int32_t st1vafe3bx_mlc_data_rate_get(const st1vafe3bx_ctx_t *ctx,
+int32_t st1vafe3bx_mlc_data_rate_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_mlc_odr_val_t *val);
 
-int32_t st1vafe3bx_mlc_fifo_en_set(const st1vafe3bx_ctx_t *ctx, uint8_t val);
-int32_t st1vafe3bx_mlc_fifo_en_get(const st1vafe3bx_ctx_t *ctx, uint8_t *val);
+int32_t st1vafe3bx_mlc_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t st1vafe3bx_mlc_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* ST1VAFE3BX_REGS_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
