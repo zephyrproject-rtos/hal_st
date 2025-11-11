@@ -2102,15 +2102,12 @@ float_t lis2duxs12_from_lsb_to_mv(int16_t lsb);
 
 int32_t lis2duxs12_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum
-{
-  LIS2DUXS12_SENSOR_ONLY_ON     = 0x00, /* Initialize the driver for sensor usage */
-  LIS2DUXS12_BOOT               = 0x01, /* Restore calib. param. (it takes 10ms) */
-  LIS2DUXS12_RESET              = 0x02, /* Reset configuration registers */
-  LIS2DUXS12_SENSOR_EMB_FUNC_ON = 0x03, /* Initialize the driver for sensor and/or
-                                           embedded functions usage (it takes 10ms) */
-} lis2duxs12_init_t;
-int32_t lis2duxs12_init_set(const stmdev_ctx_t *ctx, lis2duxs12_init_t val);
+int32_t lis2duxs12_init_set(const stmdev_ctx_t *ctx);
+
+int32_t lis2duxs12_embedded_state_set(const stmdev_ctx_t *ctx, uint8_t state);
+int32_t lis2duxs12_reboot(const stmdev_ctx_t *ctx);
+int32_t lis2duxs12_sw_por(const stmdev_ctx_t *ctx);
+int32_t lis2duxs12_sw_reset(const stmdev_ctx_t *ctx);
 
 typedef struct
 {
@@ -2275,6 +2272,11 @@ typedef struct
 int32_t lis2duxs12_i3c_configure_set(const stmdev_ctx_t *ctx, const lis2duxs12_i3c_cfg_t *val);
 int32_t lis2duxs12_i3c_configure_get(const stmdev_ctx_t *ctx, lis2duxs12_i3c_cfg_t *val);
 
+typedef struct
+{
+  lis2duxs12_func_cfg_access_t func_cfg_access_main;
+} lis2duxs12_priv_t;
+
 typedef enum
 {
   LIS2DUXS12_MAIN_MEM_BANK       = 0x0,
@@ -2282,6 +2284,9 @@ typedef enum
 } lis2duxs12_mem_bank_t;
 int32_t lis2duxs12_mem_bank_set(const stmdev_ctx_t *ctx, lis2duxs12_mem_bank_t val);
 int32_t lis2duxs12_mem_bank_get(const stmdev_ctx_t *ctx, lis2duxs12_mem_bank_t *val);
+
+int32_t lis2duxs12_fsm_wr_ctrl_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2duxs12_fsm_wr_ctrl_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t lis2duxs12_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address, uint8_t *buf,
                                uint8_t len);

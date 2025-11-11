@@ -16,6 +16,7 @@
  ******************************************************************************
  */
 
+#include <string.h>
 #include "lis2duxs12_reg.h"
 
 /**
@@ -148,19 +149,16 @@ int32_t lis2duxs12_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Configures the bus operating mode.[get]
+  * @brief  Initialize the device with optimal settings.
   *
   * @param  ctx   communication interface handler.(ptr)
-  * @param  val   configures the bus operating mode.(ptr)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lis2duxs12_init_set(const stmdev_ctx_t *ctx, lis2duxs12_init_t val)
+int32_t lis2duxs12_init_set(const stmdev_ctx_t *ctx)
 {
   lis2duxs12_ctrl1_t ctrl1;
   lis2duxs12_ctrl4_t ctrl4;
-  lis2duxs12_status_t status;
-  uint8_t cnt = 0;
   int32_t ret = 0;
 
   ret += lis2duxs12_read_reg(ctx, LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1);
@@ -169,95 +167,181 @@ int32_t lis2duxs12_init_set(const stmdev_ctx_t *ctx, lis2duxs12_init_t val)
   {
     return ret;
   }
-  switch (val)
+
+  ctrl4.bdu = PROPERTY_ENABLE;
+  ctrl1.if_add_inc = PROPERTY_ENABLE;
+
+  ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1);
+
+  if (ctx->priv_data)
   {
-    case LIS2DUXS12_BOOT:
-      ctrl4.boot = PROPERTY_ENABLE;
-      ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL4, (uint8_t *)&ctrl4, 1);
-      if (ret != 0)
-      {
-        break;
-      }
-
-      do
-      {
-        ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_CTRL4, (uint8_t *)&ctrl4, 1);
-        if (ret != 0)
-        {
-          break;
-        }
-
-        /* boot procedure ended correctly */
-        if (ctrl4.boot == 0U)
-        {
-          break;
-        }
-
-        if (ctx->mdelay != NULL)
-        {
-          ctx->mdelay(25); /* 25 ms of boot time */
-        }
-      } while (cnt++ < 5U);
-
-      if (cnt >= 5U)
-      {
-        ret = -1;  /* boot procedure failed */
-      }
-      break;
-    case LIS2DUXS12_RESET:
-      ctrl1.sw_reset = PROPERTY_ENABLE;
-      ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1);
-      if (ret != 0)
-      {
-        break;
-      }
-
-      do
-      {
-        if (ctx->mdelay != NULL)
-        {
-          ctx->mdelay(1); /* should be 50 us */
-        }
-
-        ret = lis2duxs12_status_get(ctx, &status);
-        if (ret != 0)
-        {
-          break;
-        }
-
-        /* sw-reset procedure ended correctly */
-        if (status.sw_reset == 0U)
-        {
-          break;
-        }
-      } while (cnt++ < 5U);
-
-      if (cnt >= 5U)
-      {
-        ret = -1;  /* sw-reset procedure failed */
-      }
-      break;
-    case LIS2DUXS12_SENSOR_ONLY_ON:
-      /* no embedded funcs are used */
-      ctrl4.emb_func_en = PROPERTY_DISABLE;
-      ctrl4.bdu = PROPERTY_ENABLE;
-      ctrl1.if_add_inc = PROPERTY_ENABLE;
-      ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL4, (uint8_t *)&ctrl4, 1);
-      ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1);
-      break;
-    case LIS2DUXS12_SENSOR_EMB_FUNC_ON:
-      /* complete configuration is used */
-      ctrl4.emb_func_en = PROPERTY_ENABLE;
-      ctrl4.bdu = PROPERTY_ENABLE;
-      ctrl1.if_add_inc = PROPERTY_ENABLE;
-      ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL4, (uint8_t *)&ctrl4, 1);
-      ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1);
-      break;
-    default:
-      ctrl1.sw_reset = PROPERTY_ENABLE;
-      ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1);
-      break;
+    memset(ctx->priv_data, 0, sizeof(lis2duxs12_priv_t));
   }
+
+  return ret;
+}
+
+/**
+  * @brief Enables embedded functions
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  state    enables / disables embedded functions
+  * @retval          0: reboot has been performed, -1: error
+  *
+  */
+int32_t lis2duxs12_embedded_state_set(const stmdev_ctx_t *ctx, uint8_t state)
+{
+  int32_t ret;
+  lis2duxs12_ctrl4_t ctrl4;
+
+  ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_CTRL4, (uint8_t *)&ctrl4, 1);
+
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  ctrl4.emb_func_en = state;
+
+  ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL4, (uint8_t *)&ctrl4, 1);
+
+
+exit:
+  return ret;
+}
+
+
+/**
+  * @brief Perform device reboot (boot time: 25 ms)
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          0: reboot has been performed, -1: error
+  *
+  */
+int32_t lis2duxs12_reboot(const stmdev_ctx_t *ctx)
+{
+  lis2duxs12_ctrl4_t ctrl4;
+  uint8_t cnt = 0;
+  int32_t ret;
+
+  ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_CTRL4, (uint8_t *)&ctrl4, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  ctrl4.boot = PROPERTY_ENABLE;
+  ret = lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL4, (uint8_t *)&ctrl4, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  do
+  {
+    if (ctx->mdelay != NULL)
+    {
+      ctx->mdelay(25); /* 25 ms of boot time */
+    }
+
+    ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_CTRL4, (uint8_t *)&ctrl4, 1);
+    if (ret != 0)
+    {
+      break;
+    }
+
+    /* boot procedure ended correctly */
+    if (ctrl4.boot == 0U)
+    {
+      break;
+    }
+
+
+  } while (cnt++ < 5U);
+
+  if (cnt >= 5U)
+  {
+    ret = -1;  /* boot procedure failed */
+  }
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief Global reset of the device: power-on reset.
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lis2duxs12_sw_por(const stmdev_ctx_t *ctx)
+{
+  int32_t ret;
+
+  ret = lis2duxs12_enter_deep_power_down(ctx, 1);
+
+  if (ret == 0)
+  {
+    if (ctx->priv_data)
+    {
+      memset(ctx->priv_data, 0, sizeof(lis2duxs12_priv_t));
+    }
+
+    ret = lis2duxs12_exit_deep_power_down(ctx);
+  }
+
+  return ret;
+}
+
+/**
+  * @brief Software reset: resets configuration registers.
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lis2duxs12_sw_reset(const stmdev_ctx_t *ctx)
+{
+  lis2duxs12_ctrl1_t ctrl1 = {0};
+  uint8_t cnt = 0;
+  int32_t ret;
+
+  ctrl1.sw_reset = PROPERTY_ENABLE;
+
+  ret = lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  do
+  {
+    if (ctx->mdelay != NULL)
+    {
+      ctx->mdelay(1); /* should be 50 us */
+    }
+
+    ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1);
+    if (ret != 0)
+    {
+      break;
+    }
+
+    /* sw-reset procedure ended correctly */
+    if (ctrl1.sw_reset == 0U)
+    {
+      break;
+    }
+  } while (cnt++ < 5U);
+
+  if (cnt >= 5U)
+  {
+    ret = -1;  /* sw-reset procedure failed */
+  }
+
+exit:
   return ret;
 }
 
@@ -1105,23 +1189,43 @@ int32_t lis2duxs12_i3c_configure_get(const stmdev_ctx_t *ctx, lis2duxs12_i3c_cfg
   * @brief  Change memory bank.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      MAIN_MEM_BANK, EMBED_FUNC_MEM_BANK, SENSOR_HUB_MEM_BANK, STRED_MEM_BANK,
+  * @param  val      MAIN_MEM_BANK, EMBED_FUNC_MEM_BANK
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t lis2duxs12_mem_bank_set(const stmdev_ctx_t *ctx, lis2duxs12_mem_bank_t val)
 {
   lis2duxs12_func_cfg_access_t func_cfg_access;
-  int32_t ret;
+  int32_t ret = 0;
 
-  ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  if (ctx->priv_data == NULL)
+  {
+    ret = -1;
+    goto exit;
+  }
+
+  /* init from saved register */
+  func_cfg_access = ((lis2duxs12_priv_t *)ctx->priv_data)->func_cfg_access_main;
+
+  if (func_cfg_access.emb_func_reg_access == 0)
+  {
+    /* MAIN page */
+    ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  }
 
   if (ret == 0)
   {
     func_cfg_access.emb_func_reg_access = ((uint8_t)val & 0x1U);
     ret = lis2duxs12_write_reg(ctx, LIS2DUXS12_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+
+    if (ret == 0)
+    {
+      /* save register in private data */
+      ((lis2duxs12_priv_t *)ctx->priv_data)->func_cfg_access_main = func_cfg_access;
+    }
   }
 
+exit:
   return ret;
 }
 
@@ -1129,7 +1233,7 @@ int32_t lis2duxs12_mem_bank_set(const stmdev_ctx_t *ctx, lis2duxs12_mem_bank_t v
   * @brief  Change memory bank.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      MAIN_MEM_BANK, EMBED_FUNC_MEM_BANK, SENSOR_HUB_MEM_BANK, STRED_MEM_BANK,
+  * @param  val      MAIN_MEM_BANK, EMBED_FUNC_MEM_BANK
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -1138,10 +1242,26 @@ int32_t lis2duxs12_mem_bank_get(const stmdev_ctx_t *ctx, lis2duxs12_mem_bank_t *
   lis2duxs12_func_cfg_access_t func_cfg_access;
   int32_t ret;
 
-  ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
-  if (ret != 0)
+  if (ctx->priv_data == NULL)
   {
-    return ret;
+    ret = -1;
+    goto exit;
+  }
+
+  /* init from saved register */
+  func_cfg_access = ((lis2duxs12_priv_t *)ctx->priv_data)->func_cfg_access_main;
+
+  if (func_cfg_access.emb_func_reg_access == 0)
+  {
+    /* MAIN page */
+    ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
+
+    /* save register in private data */
+    ((lis2duxs12_priv_t *)ctx->priv_data)->func_cfg_access_main = func_cfg_access;
   }
 
   switch ((func_cfg_access.emb_func_reg_access))
@@ -1158,6 +1278,93 @@ int32_t lis2duxs12_mem_bank_get(const stmdev_ctx_t *ctx, lis2duxs12_mem_bank_t *
       *val = LIS2DUXS12_MAIN_MEM_BANK;
       break;
   }
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief  FSM capability to write CTRl regs.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      0: FSM cannot write CTRL regs, 1: FSM can write CTRL regs
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lis2duxs12_fsm_wr_ctrl_en_set(const stmdev_ctx_t *ctx, uint8_t val)
+{
+  lis2duxs12_func_cfg_access_t func_cfg_access;
+  int32_t ret = 0;
+
+  if (ctx->priv_data == NULL)
+  {
+    ret = -1;
+    goto exit;
+  }
+
+  /* init from saved register */
+  func_cfg_access = ((lis2duxs12_priv_t *)ctx->priv_data)->func_cfg_access_main;
+
+  if (func_cfg_access.emb_func_reg_access == 0)
+  {
+    /* MAIN page */
+    ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  }
+
+  if (ret == 0)
+  {
+    func_cfg_access.fsm_wr_ctrl_en = ((uint8_t)val & 0x1U);
+    ret = lis2duxs12_write_reg(ctx, LIS2DUXS12_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+
+    if (ret == 0)
+    {
+      /* save register in private data */
+      ((lis2duxs12_priv_t *)ctx->priv_data)->func_cfg_access_main = func_cfg_access;
+    }
+  }
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief  FSM capability to write CTRl regs.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      0: FSM cannot write CTRL regs, 1: FSM can write CTRL regs
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lis2duxs12_fsm_wr_ctrl_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
+{
+  lis2duxs12_func_cfg_access_t func_cfg_access;
+  int32_t ret = 0;
+
+  if (ctx->priv_data == NULL)
+  {
+    ret = -1;
+    goto exit;
+  }
+
+  /* init from saved register */
+  func_cfg_access = ((lis2duxs12_priv_t *)ctx->priv_data)->func_cfg_access_main;
+
+  if (func_cfg_access.emb_func_reg_access == 0)
+  {
+    /* MAIN page */
+    ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
+
+    /* save register in private data */
+    ((lis2duxs12_priv_t *)ctx->priv_data)->func_cfg_access_main = func_cfg_access;
+  }
+
+  *val = func_cfg_access.fsm_wr_ctrl_en;
+
+exit:
   return ret;
 }
 
@@ -1241,20 +1448,16 @@ int32_t lis2duxs12_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address, uint8_
     }
   }
 
+exit:
   page_sel.page_sel = 0;
   page_sel.not_used0 = 1;// Default value
   ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_PAGE_SEL, (uint8_t *)&page_sel, 1);
 
   ret += lis2duxs12_read_reg(ctx, LIS2DUXS12_PAGE_RW, (uint8_t *)&page_rw, 1);
-  if (ret != 0)
-  {
-    goto exit;
-  }
   page_rw.page_read = PROPERTY_DISABLE;
   page_rw.page_write = PROPERTY_DISABLE;
   ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_PAGE_RW, (uint8_t *)&page_rw, 1);
 
-exit:
   ret += lis2duxs12_mem_bank_set(ctx, LIS2DUXS12_MAIN_MEM_BANK);
 
   return ret;
@@ -1350,20 +1553,16 @@ int32_t lis2duxs12_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t
     }
   }
 
+exit:
   page_sel.page_sel = 0;
   page_sel.not_used0 = 1;// Default value
   ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_PAGE_SEL, (uint8_t *)&page_sel, 1);
 
   ret += lis2duxs12_read_reg(ctx, LIS2DUXS12_PAGE_RW, (uint8_t *)&page_rw, 1);
-  if (ret != 0)
-  {
-    goto exit;
-  }
   page_rw.page_read = PROPERTY_DISABLE;
   page_rw.page_write = PROPERTY_DISABLE;
   ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_PAGE_RW, (uint8_t *)&page_rw, 1);
 
-exit:
   ret += lis2duxs12_mem_bank_set(ctx, LIS2DUXS12_MAIN_MEM_BANK);
 
   return ret;

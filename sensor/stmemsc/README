@@ -6,7 +6,7 @@ Origin:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 Status:
-   version v2.11
+   version v2.11.1
 
 Purpose:
    ST Microelectronics standard C platform-independent drivers for MEMS
@@ -66,7 +66,7 @@ Description:
      - i3g4250d_STdC        v2.2.0
      - iis2dh_STdC          v2.2.0
      - iis2dlpc_STdC        v2.2.0
-     - iis2dulpx_STdC       v2.0.0
+     - iis2dulpx_STdC       v3.0.0
      - iis2iclx_STdC        v2.2.0
      - iis2mdc_STdC         v2.2.0
      - iis328dq_STdC        v2.2.0
@@ -79,7 +79,7 @@ Description:
      - ism330dhcx_STdC      v2.4.0
      - ism330dlc_STdC       v2.2.0
      - ism330is_STdC        v3.2.0
-     - ism6hg256x_STdC      v2.0.0
+     - ism6hg256x_STdC      v3.0.0
      - l3gd20h_STdC         v2.2.0
      - lis25ba_STdC         v2.2.0
      - lis2de12_STdC        v2.2.0
@@ -87,11 +87,11 @@ Description:
      - lis2ds12_STdC        v2.2.0
      - lis2dtw12_STdC       v2.2.0
      - lis2du12_STdC        v2.2.0
-     - lis2dux12_STdC       v3.0.0
-     - lis2duxs12_STdC      v3.0.0
+     - lis2dux12_STdC       v4.0.0
+     - lis2duxs12_STdC      v4.0.0
      - lis2dw12_STdC        v2.2.0
      - lis2hh12_STdC        v2.2.0
-     - lis2mdl_STdC         v2.2.0
+     - lis2mdl_STdC         v2.2.1
      - lis331dlh_STdC       v2.2.0
      - lis3de_STdC          v2.2.0
      - lis3dh_STdC          v2.2.0
@@ -120,13 +120,13 @@ Description:
      - lsm6dsrx_STdC        v2.3.0
      - lsm6dsv16b_STdC      v3.2.0
      - lsm6dsv16bx_STdC     v5.2.0
-     - lsm6dsv16x_STdC      v5.0.0
-     - lsm6dsv320x_STdC     v3.0.0
-     - lsm6dsv32x_STdC      v3.0.0
-     - lsm6dsv80x_STdC      v3.0.0
-     - lsm6dsv_STdC         v4.0.0
+     - lsm6dsv16x_STdC      v6.0.0
+     - lsm6dsv320x_STdC     v4.0.0
+     - lsm6dsv32x_STdC      v4.0.0
+     - lsm6dsv80x_STdC      v4.0.0
+     - lsm6dsv_STdC         v5.0.0
      - lsm9ds1_STdC         v2.2.0
-     - st1vafe3bx_STdC      v2.3.0
+     - st1vafe3bx_STdC      v2.3.1
      - st1vafe6ax_STdC      v2.2.0
      - sths34pf80_STdC      v3.2.0
      - stts22h_STdC         v2.3.0
@@ -137,10 +137,10 @@ Dependencies:
 
 URL:
    https://www.st.com/en/embedded-software/c-driver-mems.html
-   https://github.com/STMicroelectronics/STMems_Standard_C_drivers/tree/v2.11
+   https://github.com/STMicroelectronics/STMems_Standard_C_drivers/tree/v2.11.1
 
 commit:
-   7ae811c3 (tag v2.11)
+   6625013d (tag v2.11.1)
 
 Maintained-by:
    ST Microelectronics

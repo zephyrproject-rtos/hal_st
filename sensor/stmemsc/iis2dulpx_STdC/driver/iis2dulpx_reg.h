@@ -2102,15 +2102,12 @@ float_t iis2dulpx_from_lsb_to_mv(int16_t lsb);
 
 int32_t iis2dulpx_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum
-{
-  IIS2DULPX_SENSOR_ONLY_ON     = 0x00, /* Initialize the driver for sensor usage */
-  IIS2DULPX_BOOT               = 0x01, /* Restore calib. param. (it takes 10ms) */
-  IIS2DULPX_RESET              = 0x02, /* Reset configuration registers */
-  IIS2DULPX_SENSOR_EMB_FUNC_ON = 0x03, /* Initialize the driver for sensor and/or
-                                           embedded functions usage (it takes 10ms) */
-} iis2dulpx_init_t;
-int32_t iis2dulpx_init_set(const stmdev_ctx_t *ctx, iis2dulpx_init_t val);
+int32_t iis2dulpx_init_set(const stmdev_ctx_t *ctx);
+
+int32_t iis2dulpx_embedded_state_set(const stmdev_ctx_t *ctx, uint8_t state);
+int32_t iis2dulpx_reboot(const stmdev_ctx_t *ctx);
+int32_t iis2dulpx_sw_por(const stmdev_ctx_t *ctx);
+int32_t iis2dulpx_sw_reset(const stmdev_ctx_t *ctx);
 
 typedef struct
 {
@@ -2275,6 +2272,11 @@ typedef struct
 int32_t iis2dulpx_i3c_configure_set(const stmdev_ctx_t *ctx, const iis2dulpx_i3c_cfg_t *val);
 int32_t iis2dulpx_i3c_configure_get(const stmdev_ctx_t *ctx, iis2dulpx_i3c_cfg_t *val);
 
+typedef struct
+{
+  iis2dulpx_func_cfg_access_t func_cfg_access_main;
+} iis2dulpx_priv_t;
+
 typedef enum
 {
   IIS2DULPX_MAIN_MEM_BANK       = 0x0,
@@ -2282,6 +2284,9 @@ typedef enum
 } iis2dulpx_mem_bank_t;
 int32_t iis2dulpx_mem_bank_set(const stmdev_ctx_t *ctx, iis2dulpx_mem_bank_t val);
 int32_t iis2dulpx_mem_bank_get(const stmdev_ctx_t *ctx, iis2dulpx_mem_bank_t *val);
+
+int32_t iis2dulpx_fsm_wr_ctrl_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis2dulpx_fsm_wr_ctrl_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t iis2dulpx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address, uint8_t *buf, uint8_t len);
 int32_t iis2dulpx_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t *buf, uint8_t len);

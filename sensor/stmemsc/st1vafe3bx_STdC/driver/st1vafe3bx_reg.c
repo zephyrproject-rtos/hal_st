@@ -2878,9 +2878,9 @@ int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx)
 /**
   * @brief  Device active mode when it is set in the AH / vAFE only state[set]
   *
-  * @param  ctx      read / write interface definitions
-  * @param  val      1: enable active state - 0: disable active state
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  * @param  ctx        read / write interface definitions
+  * @param  filter_on  1: enable active state - 0: disable active state
+  * @retval            interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on)
@@ -2889,12 +2889,17 @@ int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on)
   st1vafe3bx_ctrl3_t ctrl3;
   int32_t ret;
 
+  if (ctx->priv_data && ((st1vafe3bx_priv_t *)(ctx->priv_data))->vafe_only == 0)
+  {
+    return -1;
+  }
+
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG3, (uint8_t *)&cfg3, 1);
   if (ret != 0)
   {
     return ret;
   }
-  cfg3.ah_bio_active = 0;
+  cfg3.ah_bio_active = 1;
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG3, (uint8_t *)&cfg3, 1);
 
   if (ctx->mdelay != NULL)

@@ -563,6 +563,10 @@ int32_t lis2mdl_set_rst_sensor_single_set(const stmdev_ctx_t *ctx,
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t *)&reg, 1);
 
+  if (val == 1 && reg.set_rst != LIS2MDL_SENS_OFF_CANC_EVERY_ODR) {
+    return -1;
+  }
+
   if (ret == 0)
   {
     reg.off_canc_one_shot = val;
