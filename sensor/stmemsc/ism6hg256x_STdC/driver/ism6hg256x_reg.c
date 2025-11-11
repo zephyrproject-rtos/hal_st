@@ -513,80 +513,133 @@ int32_t ism6hg256x_hg_xl_offset_mg_get(const stmdev_ctx_t *ctx,
   */
 
 /**
-  * @brief  Reset of the device.[set]
+  * @brief  Perform reboot of the device.
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      Reset of the device.
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  * @retval          0: reboot has been performed, -1: error
   *
   */
-int32_t ism6hg256x_reset_set(const stmdev_ctx_t *ctx, ism6hg256x_reset_t val)
+int32_t ism6hg256x_reboot(const stmdev_ctx_t *ctx)
 {
-  ism6hg256x_func_cfg_access_t func_cfg_access;
   ism6hg256x_ctrl3_t ctrl3;
   int32_t ret;
 
-  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
-  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
-  if (ret != 0)
+  if (ctx->mdelay == NULL)
   {
-    return ret;
+    ret = -1;
+    goto exit;
   }
 
-  ctrl3.boot = (val == ISM6HG256X_RESTORE_CAL_PARAM) ? 1 : 0;
-  ctrl3.sw_reset = (val == ISM6HG256X_RESTORE_CTRL_REGS) ? 1 : 0;
-  func_cfg_access.sw_por = (val == ISM6HG256X_GLOBAL_RST) ? 1 : 0;
+  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
 
+  /* 1. Set the low-g accelerometer, high-g accelerometer, and gyroscope in power-down mode */
+  ret = ism6hg256x_xl_data_rate_set(ctx, ISM6HG256X_ODR_OFF);
+  ret += ism6hg256x_gy_data_rate_set(ctx, ISM6HG256X_ODR_OFF);
+  ret += ism6hg256x_hg_xl_data_rate_set(ctx, ISM6HG256X_HG_XL_ODR_OFF, 0);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* 2. Set the BOOT bit of the CTRL3 register to 1. */
+  ctrl3.boot = 1;
   ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
-  ret += ism6hg256x_write_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
 
+  /* 3. Wait 30 ms. */
+  ctx->mdelay(30);
+
+exit:
   return ret;
 }
 
 /**
-  * @brief  Global reset of the device.[get]
+  * @brief  Perform power-on-reset of the device.
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      Global reset of the device.
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  * @retval          0: power-on-reset has been performed, -1: error
   *
   */
-int32_t ism6hg256x_reset_get(const stmdev_ctx_t *ctx, ism6hg256x_reset_t *val)
+int32_t ism6hg256x_sw_por(const stmdev_ctx_t *ctx)
 {
-  ism6hg256x_func_cfg_access_t func_cfg_access;
-  ism6hg256x_ctrl3_t ctrl3;
+  ism6hg256x_func_cfg_access_t func_cfg_access = {0};
   int32_t ret;
 
-  ret = ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
-  ret += ism6hg256x_read_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  if (ctx->mdelay == NULL)
+  {
+    ret = -1;
+    goto exit;
+  }
+
+  /* 1. Set the SW_POR bit of the FUNC_CFG_ACCESS register to 1. */
+  func_cfg_access.sw_por = 1;
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
-  switch ((ctrl3.sw_reset << 2) + (ctrl3.boot << 1) + func_cfg_access.sw_por)
+  /* 2. Wait 30 ms. */
+  ctx->mdelay(30);
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief  Perform s/w reset of the device.
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          0: s/w reset has been performed, -1: error
+  *
+  */
+int32_t ism6hg256x_sw_reset(const stmdev_ctx_t *ctx)
+{
+  ism6hg256x_ctrl3_t ctrl3 = {0};
+  uint8_t retry = 0;
+  int32_t ret;
+
+  if (ctx->mdelay == NULL)
   {
-    case ISM6HG256X_READY:
-      *val = ISM6HG256X_READY;
-      break;
-
-    case ISM6HG256X_GLOBAL_RST:
-      *val = ISM6HG256X_GLOBAL_RST;
-      break;
-
-    case ISM6HG256X_RESTORE_CAL_PARAM:
-      *val = ISM6HG256X_RESTORE_CAL_PARAM;
-      break;
-
-    case ISM6HG256X_RESTORE_CTRL_REGS:
-      *val = ISM6HG256X_RESTORE_CTRL_REGS;
-      break;
-
-    default:
-      *val = ISM6HG256X_GLOBAL_RST;
-      break;
+    ret = -1;
+    goto exit;
   }
 
+  /* 1. Set the low-g accelerometer, high-g accelerometer, and gyroscope in power-down mode */
+  ret = ism6hg256x_xl_data_rate_set(ctx, ISM6HG256X_ODR_OFF);
+  ret += ism6hg256x_gy_data_rate_set(ctx, ISM6HG256X_ODR_OFF);
+  ret += ism6hg256x_hg_xl_data_rate_set(ctx, ISM6HG256X_HG_XL_ODR_OFF, 0);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* 2. Set the SW_RESET bit of the CTRL3 register to 1. */
+  ctrl3.sw_reset = 1;
+  ret = ism6hg256x_write_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
+
+  /* 3. Poll the SW_RESET bit of the CTRL3 register until it returns to 0. */
+  do
+  {
+    ret += ism6hg256x_read_reg(ctx, ISM6HG256X_CTRL3, (uint8_t *)&ctrl3, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
+
+    ctx->mdelay(1);
+  } while (ctrl3.sw_reset == 1 && retry++ < 3);
+
+  return (ctrl3.sw_reset == 0) ? 0 : -1;
+
+exit:
   return ret;
 }
 

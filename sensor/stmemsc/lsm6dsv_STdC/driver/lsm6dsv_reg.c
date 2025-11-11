@@ -419,80 +419,145 @@ int32_t lsm6dsv_xl_offset_mg_get(const stmdev_ctx_t *ctx,
   */
 
 /**
-  * @brief  Reset of the device.[set]
+  * @brief Perform reboot of the device.
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      Reset of the device.
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  * @retval          0: reboot has been performed, -1: error
   *
   */
-int32_t lsm6dsv_reset_set(const stmdev_ctx_t *ctx, lsm6dsv_reset_t val)
+int32_t lsm6dsv_reboot(const stmdev_ctx_t *ctx)
 {
-  lsm6dsv_func_cfg_access_t func_cfg_access;
   lsm6dsv_ctrl3_t ctrl3;
+  lsm6dsv_data_rate_t data_rate_xl;
+  lsm6dsv_data_rate_t data_rate_gy;
   int32_t ret;
 
-  ret = lsm6dsv_read_reg(ctx, LSM6DSV_CTRL3, (uint8_t *)&ctrl3, 1);
-  ret += lsm6dsv_read_reg(ctx, LSM6DSV_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
-  if (ret != 0)
+  if (ctx->mdelay == NULL)
   {
-    return ret;
+    ret = -1;
+    goto exit;
   }
 
-  ctrl3.boot = (val == LSM6DSV_RESTORE_CAL_PARAM) ? 1 : 0;
-  ctrl3.sw_reset = (val == LSM6DSV_RESTORE_CTRL_REGS) ? 1 : 0;
-  func_cfg_access.sw_por = (val == LSM6DSV_GLOBAL_RST) ? 1 : 0;
+  ret = lsm6dsv_read_reg(ctx, LSM6DSV_CTRL3, (uint8_t *)&ctrl3, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
 
+  /* Save current data rates */
+  ret = lsm6dsv_xl_data_rate_get(ctx, &data_rate_xl);
+  ret += lsm6dsv_gy_data_rate_get(ctx, &data_rate_gy);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* 1. Set the accelerometer and gyroscope in power-down mode */
+  ret = lsm6dsv_xl_data_rate_set(ctx, LSM6DSV_ODR_OFF);
+  ret += lsm6dsv_gy_data_rate_set(ctx, LSM6DSV_ODR_OFF);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* 2. Set the BOOT bit of the CTRL3 register to 1. */
+  ctrl3.boot = 1;
   ret = lsm6dsv_write_reg(ctx, LSM6DSV_CTRL3, (uint8_t *)&ctrl3, 1);
-  ret += lsm6dsv_write_reg(ctx, LSM6DSV_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
 
+  /* 3. Wait 30 ms. */
+  ctx->mdelay(30);
+
+  /* Restore data rates */
+  ret = lsm6dsv_xl_data_rate_set(ctx, data_rate_xl);
+  ret += lsm6dsv_gy_data_rate_set(ctx, data_rate_gy);
+
+exit:
   return ret;
 }
 
 /**
-  * @brief  Global reset of the device.[get]
+  * @brief  Perform power-on-reset of the device.
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      Global reset of the device.
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  * @retval          0: power-on-reset has been performed, -1: error
   *
   */
-int32_t lsm6dsv_reset_get(const stmdev_ctx_t *ctx, lsm6dsv_reset_t *val)
+int32_t lsm6dsv_sw_por(const stmdev_ctx_t *ctx)
 {
-  lsm6dsv_func_cfg_access_t func_cfg_access;
-  lsm6dsv_ctrl3_t ctrl3;
+  lsm6dsv_func_cfg_access_t func_cfg_access = {0};
   int32_t ret;
 
-  ret = lsm6dsv_read_reg(ctx, LSM6DSV_CTRL3, (uint8_t *)&ctrl3, 1);
-  ret += lsm6dsv_read_reg(ctx, LSM6DSV_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+  if (ctx->mdelay == NULL)
+  {
+    ret = -1;
+    goto exit;
+  }
+
+  /* 1. Set the SW_POR bit of the FUNC_CFG_ACCESS register to 1. */
+  func_cfg_access.sw_por = 1;
+  ret = lsm6dsv_write_reg(ctx, LSM6DSV_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
-  switch ((ctrl3.sw_reset << 2) + (ctrl3.boot << 1) + func_cfg_access.sw_por)
+  /* 2. Wait 30 ms. */
+  ctx->mdelay(30);
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief  Perform s/w reset of the device.
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          0: s/w reset has been performed, -1: error
+  *
+  */
+int32_t lsm6dsv_sw_reset(const stmdev_ctx_t *ctx)
+{
+  lsm6dsv_ctrl3_t ctrl3 = {0};
+  uint8_t retry = 0;
+  int32_t ret;
+
+  if (ctx->mdelay == NULL)
   {
-    case LSM6DSV_READY:
-      *val = LSM6DSV_READY;
-      break;
-
-    case LSM6DSV_GLOBAL_RST:
-      *val = LSM6DSV_GLOBAL_RST;
-      break;
-
-    case LSM6DSV_RESTORE_CAL_PARAM:
-      *val = LSM6DSV_RESTORE_CAL_PARAM;
-      break;
-
-    case LSM6DSV_RESTORE_CTRL_REGS:
-      *val = LSM6DSV_RESTORE_CTRL_REGS;
-      break;
-
-    default:
-      *val = LSM6DSV_GLOBAL_RST;
-      break;
+    ret = -1;
+    goto exit;
   }
 
+  /* 1. Set the accelerometer and gyroscope in power-down mode */
+  ret = lsm6dsv_xl_data_rate_set(ctx, LSM6DSV_ODR_OFF);
+  ret += lsm6dsv_gy_data_rate_set(ctx, LSM6DSV_ODR_OFF);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* 2. Set the SW_RESET bit of the CTRL3 register to 1. */
+  ctrl3.sw_reset = 1;
+  ret = lsm6dsv_write_reg(ctx, LSM6DSV_CTRL3, (uint8_t *)&ctrl3, 1);
+
+  /* 3. Poll the SW_RESET bit of the CTRL3 register until it returns to 0. */
+  do
+  {
+    ret += lsm6dsv_read_reg(ctx, LSM6DSV_CTRL3, (uint8_t *)&ctrl3, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
+
+    ctx->mdelay(1);
+  } while (ctrl3.sw_reset == 1 && retry++ < 3);
+
+  return (ctrl3.sw_reset == 0) ? 0 : -1;
+
+exit:
   return ret;
 }
 
@@ -2093,8 +2158,6 @@ int32_t lsm6dsv_pin_int2_route_set(const stmdev_ctx_t *ctx,
   lsm6dsv_md2_cfg_t            md2_cfg;
   int32_t ret;
 
-  memset(val, 0x0, sizeof(lsm6dsv_pin_int_route_t));
-
   ret = lsm6dsv_read_reg(ctx, LSM6DSV_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
   if (ret != 0)
   {
@@ -2159,6 +2222,8 @@ int32_t lsm6dsv_pin_int2_route_get(const stmdev_ctx_t *ctx,
   lsm6dsv_ctrl4_t              ctrl4;
   lsm6dsv_md2_cfg_t            md2_cfg;
   int32_t ret;
+
+  memset(val, 0x0, sizeof(lsm6dsv_pin_int_route_t));
 
   ret = lsm6dsv_read_reg(ctx, LSM6DSV_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
   if (ret != 0)
