@@ -6,7 +6,7 @@ Origin:
    https://www.st.com/en/embedded-software/c-driver-mems.html
 
 Status:
-   version v2.11.1
+   version v2.11.2
 
 Purpose:
    ST Microelectronics standard C platform-independent drivers for MEMS
@@ -87,8 +87,8 @@ Description:
      - lis2ds12_STdC        v2.2.0
      - lis2dtw12_STdC       v2.2.0
      - lis2du12_STdC        v2.2.0
-     - lis2dux12_STdC       v4.0.0
-     - lis2duxs12_STdC      v4.0.0
+     - lis2dux12_STdC       v4.0.1
+     - lis2duxs12_STdC      v4.0.1
      - lis2dw12_STdC        v2.2.0
      - lis2hh12_STdC        v2.2.0
      - lis2mdl_STdC         v2.2.1
@@ -120,11 +120,11 @@ Description:
      - lsm6dsrx_STdC        v2.3.0
      - lsm6dsv16b_STdC      v3.2.0
      - lsm6dsv16bx_STdC     v5.2.0
-     - lsm6dsv16x_STdC      v6.0.0
+     - lsm6dsv16x_STdC      v6.0.1
      - lsm6dsv320x_STdC     v4.0.0
-     - lsm6dsv32x_STdC      v4.0.0
+     - lsm6dsv32x_STdC      v4.0.1
      - lsm6dsv80x_STdC      v4.0.0
-     - lsm6dsv_STdC         v5.0.0
+     - lsm6dsv_STdC         v5.0.1
      - lsm9ds1_STdC         v2.2.0
      - st1vafe3bx_STdC      v2.3.1
      - st1vafe6ax_STdC      v2.2.0
@@ -137,10 +137,10 @@ Dependencies:
 
 URL:
    https://www.st.com/en/embedded-software/c-driver-mems.html
-   https://github.com/STMicroelectronics/STMems_Standard_C_drivers/tree/v2.11.1
+   https://github.com/STMicroelectronics/STMems_Standard_C_drivers/tree/v2.11.2
 
 commit:
-   6625013d (tag v2.11.1)
+   7da7395 (tag v2.11.2)
 
 Maintained-by:
    ST Microelectronics

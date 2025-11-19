@@ -6586,10 +6586,6 @@ int32_t lsm6dsv_sflp_game_gbias_set(const stmdev_ctx_t *ctx,
   {
     ret += lsm6dsv_xl_data_rate_set(ctx, LSM6DSV_ODR_AT_120Hz);
   }
-  if (ret != 0)
-  {
-    goto exit;
-  }
 
   /* Make sure to turn the sensor-hub master off */
   ret += lsm6dsv_sh_master_get(ctx, &master_config);
