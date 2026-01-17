@@ -187,11 +187,6 @@ int32_t iis2dlpc_power_mode_set(const stmdev_ctx_t *ctx,
     ret = iis2dlpc_write_reg(ctx, IIS2DLPC_CTRL6, (uint8_t *) &ctrl6, 1);
   }
 
-  else
-  {
-    ret = ret;
-  }
-
   return ret;
 }
 
@@ -333,11 +328,6 @@ int32_t iis2dlpc_data_rate_set(const stmdev_ctx_t *ctx, iis2dlpc_odr_t val)
   {
     ctrl3.slp_mode = ((uint8_t) val & 0x30U) >> 4;
     ret = iis2dlpc_write_reg(ctx, IIS2DLPC_CTRL3, (uint8_t *) &ctrl3, 1);
-  }
-
-  else
-  {
-    ret = ret;
   }
 
   return ret;
@@ -1169,11 +1159,6 @@ int32_t iis2dlpc_filter_path_set(const stmdev_ctx_t *ctx,
     ret = iis2dlpc_write_reg(ctx, IIS2DLPC_CTRL7, (uint8_t *) &ctrl_reg7, 1);
   }
 
-  else
-  {
-    ret = ret;
-  }
-
   return ret;
 }
 
@@ -1772,11 +1757,6 @@ int32_t iis2dlpc_pin_int1_route_set(const stmdev_ctx_t *ctx,
     ret = iis2dlpc_write_reg(ctx, IIS2DLPC_CTRL7, (uint8_t *) &reg, 1);
   }
 
-  else
-  {
-    ret = ret;
-  }
-
   return ret;
 }
 
@@ -1848,11 +1828,6 @@ int32_t iis2dlpc_pin_int2_route_set(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = iis2dlpc_write_reg(ctx, IIS2DLPC_CTRL7, (uint8_t *) &ctrl_reg7, 1);
-  }
-
-  else
-  {
-    ret = ret;
   }
 
   return ret;
@@ -2129,11 +2104,6 @@ int32_t iis2dlpc_act_mode_set(const stmdev_ctx_t *ctx,
     wake_up_dur.stationary = ((uint8_t)val & 0x02U) >> 1;
     ret = iis2dlpc_write_reg(ctx, IIS2DLPC_WAKE_UP_THS,
                              (uint8_t *) &wake_up_ths, 2);
-  }
-
-  else
-  {
-    ret = ret;
   }
 
   return ret;
