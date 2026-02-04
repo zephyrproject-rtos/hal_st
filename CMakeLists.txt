@@ -31,6 +31,15 @@ zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_core_support.c)
 zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_register_funcs.c)
 endif()
 
+if(CONFIG_VL53L5CX)
+zephyr_include_directories(sensor/vl53l5cx/api/inc
+			   ${PROJECT_SOURCE_DIR}/drivers/sensor/st/vl53l5cx)
+zephyr_library_sources(sensor/vl53l5cx/api/src/vl53l5cx_api.c)
+zephyr_library_sources(sensor/vl53l5cx/api/src/vl53l5cx_plugin_detection_thresholds.c)
+zephyr_library_sources(sensor/vl53l5cx/api/src/vl53l5cx_plugin_motion_indicator.c)
+zephyr_library_sources(sensor/vl53l5cx/api/src/vl53l5cx_plugin_xtalk.c)
+endif()
+
 if(CONFIG_AUDIO_MPXXDTYY)
 zephyr_include_directories(audio/microphone)
 zephyr_library_sources(audio/microphone/OpenPDMFilter.c)
