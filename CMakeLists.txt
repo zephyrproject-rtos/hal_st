@@ -42,4 +42,4 @@ endif()
 add_subdirectory_ifdef(CONFIG_HAS_STMEMSC sensor/stmemsc)
 
 # Add sensor common include files
-zephyr_include_directories(sensor/inc)
+zephyr_include_directories_ifdef(CONFIG_HAS_STMEMSC sensor/inc)
