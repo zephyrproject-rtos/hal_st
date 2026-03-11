@@ -2871,11 +2871,11 @@ int32_t lsm6dsv16x_ois_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *va
   }
 
   val[0] = (int16_t)buff[1];
-  val[0] = (*val * 256) + (int16_t)buff[0];
+  val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
-  val[1] = (*val * 256) + (int16_t)buff[2];
+  val[1] = (val[1] * 256) + (int16_t)buff[2];
   val[2] = (int16_t)buff[5];
-  val[2] = (*val * 256) + (int16_t)buff[4];
+  val[2] = (val[1] * 256) + (int16_t)buff[4];
 
   return ret;
 }
@@ -2900,11 +2900,11 @@ int32_t lsm6dsv16x_ois_eis_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t
   }
 
   val[0] = (int16_t)buff[1];
-  val[0] = (*val * 256) + (int16_t)buff[0];
+  val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
-  val[1] = (*val * 256) + (int16_t)buff[2];
+  val[1] = (val[1] * 256) + (int16_t)buff[2];
   val[2] = (int16_t)buff[5];
-  val[2] = (*val * 256) + (int16_t)buff[4];
+  val[2] = (val[2] * 256) + (int16_t)buff[4];
 
   return ret;
 }
