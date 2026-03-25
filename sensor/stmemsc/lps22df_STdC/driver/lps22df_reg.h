@@ -536,8 +536,8 @@ typedef enum
 typedef enum
 {
   LPS22DF_IBI_50us = 0x0,
-  LPS22DF_IBI_2us = 0x1,
-  LPS22DF_IBI_1ms = 0x2,
+  LPS22DF_IBI_2us  = 0x1,
+  LPS22DF_IBI_1ms  = 0x2,
   LPS22DF_IBI_25ms = 0x3
 } lps22df_i3c_ibi_time_t;
 

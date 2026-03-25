@@ -30,12 +30,15 @@ extern "C" {
 #include <stddef.h>
 #include <math.h>
 
-/** @addtogroup LIS2DUX12
+/**
+  * @defgroup    LIS2DUX12 LIS2DUX12
+  * @brief       This file provides a set of functions needed to drive the
+  *              lis2dux12 sensor.
   * @{
   *
   */
 
-/** @defgroup  Endianness definitions
+/** @defgroup  Definitions Endianness definitions
   * @{
   *
   */
@@ -66,7 +69,7 @@ extern "C" {
   *
   */
 
-/** @defgroup STMicroelectronics sensors common types
+/** @defgroup common_types STMicroelectronics sensors common types
   * @{
   *
   */
@@ -100,10 +103,10 @@ typedef struct
 #define PROPERTY_DISABLE                (0U)
 #define PROPERTY_ENABLE                 (1U)
 
-/** @addtogroup  Interfaces_Functions
-  * @brief       This section provide a set of functions used to read and
-  *              write a generic register of the device.
-  *              MANDATORY: return 0 -> no Error.
+/** @defgroup       Interfaces_Functions Interfaces Functions
+  * @brief          This section provide a set of functions used to read and
+  *                 write a generic register of the device.
+  *                 MANDATORY: return 0 -> no Error.
   * @{
   *
   */
@@ -136,7 +139,7 @@ typedef struct
 #ifndef MEMS_UCF_SHARED_TYPES
 #define MEMS_UCF_SHARED_TYPES
 
-/** @defgroup    Generic address-data structure definition
+/** @defgroup    generic_structs Generic address-data structure definition
   * @brief       This structure is useful to load a predefined configuration
   *              of a sensor.
   *              You can create a sensor configuration by your own or using
@@ -165,7 +168,8 @@ typedef struct
   *
   */
 
-/** @defgroup LIS2DUX12_Infos
+/** @defgroup LIS2DUX12_Infos Infos
+  * @brief Available I2C Addresses and Sensor Identification
   * @{
   *
   */
@@ -179,6 +183,11 @@ typedef struct
 
 /**
   * @}
+  *
+  */
+
+/** @defgroup bitfields_page_main Bitfields Page Main
+  * @{
   *
   */
 
@@ -739,11 +748,11 @@ typedef struct
   uint8_t bus_act_sel                  : 2;
   uint8_t not_used0                    : 3;
   uint8_t asf_on                       : 1;
-  uint8_t dis_drstdaa                  : 1;
   uint8_t not_used1                    : 1;
+  uint8_t dis_drstdaa                  : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used1                    : 1;
   uint8_t dis_drstdaa                  : 1;
+  uint8_t not_used1                    : 1;
   uint8_t asf_on                       : 1;
   uint8_t not_used0                    : 3;
   uint8_t bus_act_sel                  : 2;
@@ -1073,7 +1082,7 @@ typedef struct
   *
   */
 
-/** @defgroup bitfields page embedded
+/** @defgroup bitfields_page_emb Bitfields Page Embedded
   * @{
   *
   */
@@ -1791,7 +1800,7 @@ typedef struct
   *
   */
 
-/** @defgroup bitfields page pg0_emb_adv
+/** @defgroup bitfields_emb_adv_pg0 Bitfields Page pg0_emb_adv
   * @{
   *
   */
@@ -2047,14 +2056,15 @@ typedef union
   uint8_t    byte;
 } lis2dux12_reg_t;
 
-/**
-  * @}
-  *
-  */
-
 #ifndef __weak
 #define __weak __attribute__((weak))
 #endif /* __weak */
+
+/**
+  * @addtogroup  Interfaces_Functions
+  * @{
+  *
+  */
 
 /*
  * These are the basic platform dependent I/O routines to read
@@ -2065,12 +2075,45 @@ typedef union
  * them with a custom implementation.
  */
 
+/**
+  * @brief  Read generic device register
+  *
+  * @param  ctx   read / write interface definitions(ptr)
+  * @param  reg   register to read
+  * @param  data  pointer to buffer that store the data read(ptr)
+  * @param  len   number of consecutive register to read
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                            uint8_t *data,
                            uint16_t len);
+
+/**
+  * @brief  Write generic device register
+  *
+  * @param  ctx   read / write interface definitions(ptr)
+  * @param  reg   register to write
+  * @param  data  pointer to data to write in register reg(ptr)
+  * @param  len   number of consecutive register to write
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                             uint8_t *data,
                             uint16_t len);
+
+/**
+  * @}
+  *
+  */
+
+/**
+  * @defgroup    LIS2DUX12_Sensitivity Sensitivity
+  * @brief       These functions convert raw-data into engineering units.
+  * @{
+  *
+  */
 
 float_t lis2dux12_from_fs2g_to_mg(int16_t lsb);
 float_t lis2dux12_from_fs4g_to_mg(int16_t lsb);
@@ -2078,13 +2121,73 @@ float_t lis2dux12_from_fs8g_to_mg(int16_t lsb);
 float_t lis2dux12_from_fs16g_to_mg(int16_t lsb);
 float_t lis2dux12_from_lsb_to_celsius(int16_t lsb);
 
+/**
+  * @}
+  *
+  */
+
+
+/**
+  * @defgroup   LIS2DUX12_Common Common
+  * @brief      Common
+  * @{
+  *
+  */
+
+/**
+  * @brief  Device ID.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Device ID.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
+/**
+  * @brief  Initialize the device with optimal settings.
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_init_set(const stmdev_ctx_t *ctx);
 
+/**
+  * @brief Enables embedded functions
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  state    enables / disables embedded functions
+  * @retval          0: reboot has been performed, -1: error
+  *
+  */
 int32_t lis2dux12_embedded_state_set(const stmdev_ctx_t *ctx, uint8_t state);
+
+/**
+  * @brief Perform device reboot (boot time: 25 ms)
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          0: reboot has been performed, -1: error
+  *
+  */
 int32_t lis2dux12_reboot(const stmdev_ctx_t *ctx);
+
+/**
+  * @brief Global reset of the device: power-on reset.
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_sw_por(const stmdev_ctx_t *ctx);
+
+/**
+  * @brief Software reset: resets configuration registers.
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_sw_reset(const stmdev_ctx_t *ctx);
 
 typedef struct
@@ -2093,6 +2196,15 @@ typedef struct
   uint8_t boot                         : 1; /* Restoring calibration parameters */
   uint8_t drdy                         : 1; /* Accelerometer data ready */
 } lis2dux12_status_t;
+
+/**
+  * @brief  Get the status of the device.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   the status of the device.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_status_get(const stmdev_ctx_t *ctx, lis2dux12_status_t *val);
 
 typedef struct
@@ -2101,6 +2213,15 @@ typedef struct
   uint8_t is_tilt                      : 1; /* Tilt detected */
   uint8_t is_sigmot                    : 1; /* Significant motion detected */
 } lis2dux12_embedded_status_t;
+
+/**
+  * @brief  Get the status of the embedded funcs.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   the status of the embedded funcs.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_embedded_status_get(const stmdev_ctx_t *ctx, lis2dux12_embedded_status_t *val);
 
 typedef enum
@@ -2108,7 +2229,25 @@ typedef enum
   LIS2DUX12_DRDY_LATCHED = 0x0,
   LIS2DUX12_DRDY_PULSED  = 0x1,
 } lis2dux12_data_ready_mode_t;
+
+/**
+  * @brief  Enables pulsed data-ready mode (~75 us).[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      DRDY_LATCHED, DRDY_PULSED,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_data_ready_mode_set(const stmdev_ctx_t *ctx, lis2dux12_data_ready_mode_t val);
+
+/**
+  * @brief  Enables pulsed data-ready mode (~75 us).[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      DRDY_LATCHED, DRDY_PULSED,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_data_ready_mode_get(const stmdev_ctx_t *ctx, lis2dux12_data_ready_mode_t *val);
 
 typedef enum
@@ -2159,12 +2298,55 @@ typedef struct
   lis2dux12_fs_t fs;
   lis2dux12_bw_t bw;
 } lis2dux12_md_t;
+
+/**
+  * @brief  Sensor mode.[set]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   set the sensor FS and ODR.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_mode_set(const stmdev_ctx_t *ctx, const lis2dux12_md_t *val);
+
+/**
+  * @brief  Sensor mode.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   get the sensor FS and ODR.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_mode_get(const stmdev_ctx_t *ctx, lis2dux12_md_t *val);
 
+/**
+  * @brief  Disable/Enable temperature sensor acquisition[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      1: disable temp acquisition - 0: enable temp acquisition
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_temp_disable_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  Disable/Enable temperature sensor acquisition[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      1: disable temp acquisition - 0: enable temp acquisition
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_temp_disable_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
+/**
+  * @brief  Software trigger for One-Shot.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  md    the sensor conversion parameters.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_trigger_sw(const stmdev_ctx_t *ctx, const lis2dux12_md_t *md);
 
 typedef struct
@@ -2195,6 +2377,15 @@ typedef struct
   float_t mg[3];
   int16_t raw[3];
 } lis2dux12_xl_data_t;
+/**
+  * @brief  Accelerometer data.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  md    the sensor conversion parameters.(ptr)
+  * @param  data  data retrived from the sensor.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_xl_data_get(const stmdev_ctx_t *ctx, const lis2dux12_md_t *md,
                               lis2dux12_xl_data_t *data);
 
@@ -2206,6 +2397,16 @@ typedef struct
     int16_t raw;
   } heat;
 } lis2dux12_outt_data_t;
+
+/**
+  * @brief  OUTT data.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  md    the sensor conversion parameters.(ptr)
+  * @param  data  data retrived from the sensor.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_outt_data_get(const stmdev_ctx_t *ctx,
                                 lis2dux12_outt_data_t *data);
 
@@ -2215,14 +2416,72 @@ typedef enum
   LIS2DUX12_XL_ST_POSITIVE = 0x1,
   LIS2DUX12_XL_ST_NEGATIVE = 0x2,
 } lis2dux12_xl_self_test_t;
+
+/**
+  * @brief  Configures the self test.[set]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   self test mode.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_self_test_sign_set(const stmdev_ctx_t *ctx, lis2dux12_xl_self_test_t val);
+
+/**
+  * @brief  Configures the self test.[start]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   valid values 2 (1st step) or 1 (2nd step)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_self_test_start(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  Configures the self test.[stop]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_self_test_stop(const stmdev_ctx_t *ctx);
 
+/**
+  * @brief  Enter deep power down[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Enter deep power down
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_enter_deep_power_down(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  Enter soft power down in SPI case[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Enter soft power down in SPI case
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_exit_deep_power_down(const stmdev_ctx_t *ctx);
 
+/**
+  * @brief  Disable hard-reset from CS.[set]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  md    0: enable hard-reset from CS, 1: disable hard-reset from CS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  */
 int32_t lis2dux12_disable_hard_reset_from_cs_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  Disable hard-reset from CS.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  md    0: enable hard-reset from CS, 1: disable hard-reset from CS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  */
 int32_t lis2dux12_disable_hard_reset_from_cs_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
@@ -2239,7 +2498,25 @@ typedef struct
   uint8_t asf_on                       : 1;
   uint8_t drstdaa_en                   : 1;
 } lis2dux12_i3c_cfg_t;
+
+/**
+  * @brief  Configures I3C bus.[set]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   configuration params
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_i3c_configure_set(const stmdev_ctx_t *ctx, const lis2dux12_i3c_cfg_t *val);
+
+/**
+  * @brief  Configures I3C bus.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   configuration params
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_i3c_configure_get(const stmdev_ctx_t *ctx, lis2dux12_i3c_cfg_t *val);
 
 typedef struct
@@ -2252,16 +2529,103 @@ typedef enum
   LIS2DUX12_MAIN_MEM_BANK       = 0x0,
   LIS2DUX12_EMBED_FUNC_MEM_BANK = 0x1,
 } lis2dux12_mem_bank_t;
+
+/**
+  * @brief  Change memory bank.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      MAIN_MEM_BANK, EMBED_FUNC_MEM_BANK
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_mem_bank_set(const stmdev_ctx_t *ctx, lis2dux12_mem_bank_t val);
+
+/**
+  * @brief  Change memory bank.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      MAIN_MEM_BANK, EMBED_FUNC_MEM_BANK
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_mem_bank_get(const stmdev_ctx_t *ctx, lis2dux12_mem_bank_t *val);
 
+/**
+  * @brief  FSM capability to write CTRl regs.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      0: FSM cannot write CTRL regs, 1: FSM can write CTRL regs
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_fsm_wr_ctrl_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  FSM capability to write CTRl regs.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      0: FSM cannot write CTRL regs, 1: FSM can write CTRL regs
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_fsm_wr_ctrl_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
+/**
+  * @brief  Write buffer in a page.
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  address  Address of page register to be written (page number in 8-bit
+  *                  msb, register address in 8-bit lsb).
+  * @param  buf      Pointer to data buffer.
+  * @param  len      Buffer len.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address, uint8_t *buf, uint8_t len);
+
+/**
+  * @brief  Read buffer in a page.
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  address  Address of page register to be read (page number in 8-bit
+  *                  msb, register address in 8-bit lsb).
+  * @param  buf      Pointer to data buffer.
+  * @param  len      Buffer len.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address, uint8_t *buf, uint8_t len);
 
+/**
+  * @}
+  *
+  */
+
+/**
+  * @defgroup   LIS2DUX12_Interrupt_PINs Interrupt PINs
+  * @brief      Interrupt PINs
+  * @{
+  *
+  */
+
+/**
+  * @brief       External Clock Enable/Disable on INT pin.[set]
+  *
+  * @param  ctx  read / write interface definitions
+  * @param  val  0: disable ext_clk - 1: enable ext_clk
+  * @retval      interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_ext_clk_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief       External Clock Enable/Disable on INT pin.[get]
+  *
+  * @param  ctx  read / write interface definitions
+  * @param  val  0: disable ext_clk - 1: enable ext_clk
+  * @retval      interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_ext_clk_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef struct
@@ -2273,7 +2637,24 @@ typedef struct
   uint8_t int1_pull_down               : 1; /* 1 = pull-down always disabled (0=auto) */
   uint8_t int2_pull_down               : 1; /* 1 = pull-down always disabled (0=auto) */
 } lis2dux12_pin_conf_t;
+
+/**
+  * @brief       Electrical pin configuration.[set]
+  *
+  * @param  ctx  read / write interface definitions
+  * @param  val  the electrical settings for the configurable pins.(ptr)
+  * @retval      interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_pin_conf_set(const stmdev_ctx_t *ctx, const lis2dux12_pin_conf_t *val);
+/**
+  * @brief       Electrical pin configuration.[get]
+  *
+  * @param  ctx  read / write interface definitions
+  * @param  val  the electrical settings for the configurable pins.(ptr)
+  * @retval      interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_pin_conf_get(const stmdev_ctx_t *ctx, lis2dux12_pin_conf_t *val);
 
 typedef enum
@@ -2281,7 +2662,25 @@ typedef enum
   LIS2DUX12_ACTIVE_HIGH = 0x0,
   LIS2DUX12_ACTIVE_LOW  = 0x1,
 } lis2dux12_int_pin_polarity_t;
+
+/**
+  * @brief  Interrupt activation level.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      ACTIVE_HIGH, ACTIVE_LOW,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_int_pin_polarity_set(const stmdev_ctx_t *ctx, lis2dux12_int_pin_polarity_t val);
+
+/**
+  * @brief  Interrupt activation level.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      ACTIVE_HIGH, ACTIVE_LOW,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_int_pin_polarity_get(const stmdev_ctx_t *ctx, lis2dux12_int_pin_polarity_t *val);
 
 typedef enum
@@ -2289,12 +2688,30 @@ typedef enum
   LIS2DUX12_SPI_4_WIRE  = 0x0, /* SPI 4 wires */
   LIS2DUX12_SPI_3_WIRE  = 0x1, /* SPI 3 wires */
 } lis2dux12_spi_mode;
+
+/**
+  * @brief  SPI mode.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      SPI_4_WIRE, SPI_3_WIRE,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_spi_mode_set(const stmdev_ctx_t *ctx, lis2dux12_spi_mode val);
+
+/**
+  * @brief  SPI mode.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      SPI_4_WIRE, SPI_3_WIRE,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_spi_mode_get(const stmdev_ctx_t *ctx, lis2dux12_spi_mode *val);
 
 typedef struct
 {
-  uint8_t int_on_res                   : 1; /* Interrupt on RES pin */
+  uint8_t int_on_res                   : 1; /* Interrupt on RES pin (only INT1) */
   uint8_t drdy                         : 1; /* Accelerometer data ready */
   uint8_t boot                         : 1; /* Restoring calibration parameters */
   uint8_t fifo_th                      : 1; /* FIFO threshold reached */
@@ -2308,12 +2725,46 @@ typedef struct
   uint8_t emb_function                 : 1; /* Embedded Function */
   uint8_t timestamp                    : 1; /* Timestamp */
 } lis2dux12_pin_int_route_t;
+
+/**
+  * @brief  routes interrupt signals on INT 1 pin.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      routes interrupt signals on INT 1 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                      const lis2dux12_pin_int_route_t *val);
+
+/**
+  * @brief  routes interrupt signals on INT 1 pin.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Get interrupt signals routing on INT 1 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                      lis2dux12_pin_int_route_t *val);
+/**
+  * @brief  routes interrupt signals on INT 2 pin.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      routes interrupt signals on INT 2 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                      const lis2dux12_pin_int_route_t *val);
+/**
+  * @brief  routes interrupt signals on INT 2 pin.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Get interrupt signals routing on INT 2 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                      lis2dux12_pin_int_route_t *val);
 
@@ -2324,12 +2775,45 @@ typedef struct
   uint8_t sig_mot                      : 1; /* route significant motion event on INT pad */
   uint8_t fsm_lc                       : 1; /* route FSM long counter event on INT pad */
 } lis2dux12_emb_pin_int_route_t;
+
+/**
+  * @brief  routes embedded func interrupt signals on INT 1 pin.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      routes embedded func interrupt signals on INT 1 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_emb_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                          const lis2dux12_emb_pin_int_route_t *val);
+/**
+  * @brief  routes embedded func interrupt signals on INT 1 pin.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      routes embedded func interrupt signals on INT 1 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_emb_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                          lis2dux12_emb_pin_int_route_t *val);
+/**
+  * @brief  routes embedded func interrupt signals on INT 2 pin.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      routes embedded func interrupt signals on INT 2 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_emb_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                          const lis2dux12_emb_pin_int_route_t *val);
+/**
+  * @brief  routes embedded func interrupt signals on INT 2 pin.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      routes embedded func interrupt signals on INT 2 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_emb_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                          lis2dux12_emb_pin_int_route_t *val);
 
@@ -2346,7 +2830,25 @@ typedef struct
   uint8_t sleep_status_on_int          : 1;  /* route sleep_status on interrupt */
   uint8_t dis_rst_lir_all_int          : 1;  /* disable LIR reset when reading ALL_INT_SRC */
 } lis2dux12_int_config_t;
+
+/**
+  * @brief  Interrupt configuration mode.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      INT_DISABLED, INT_LEVEL, INT_LATCHED
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_int_config_set(const stmdev_ctx_t *ctx, const lis2dux12_int_config_t *val);
+
+/**
+  * @brief  Interrupt configuration mode.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      INT_DISABLED, INT_LEVEL, INT_LATCHED
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_int_config_get(const stmdev_ctx_t *ctx, lis2dux12_int_config_t *val);
 
 typedef enum
@@ -2354,8 +2856,26 @@ typedef enum
   LIS2DUX12_EMBEDDED_INT_LEVEL         = 0x0,
   LIS2DUX12_EMBEDDED_INT_LATCHED       = 0x1,
 } lis2dux12_embedded_int_config_t;
+
+/**
+  * @brief  Embedded Interrupt configuration mode.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      INT_PULSED, INT_LATCHED
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_embedded_int_cfg_set(const stmdev_ctx_t *ctx,
                                        lis2dux12_embedded_int_config_t val);
+
+/**
+  * @brief  Interrupt configuration mode.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      INT_DISABLED, INT_PULSED, INT_LATCHED
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_embedded_int_cfg_get(const stmdev_ctx_t *ctx,
                                        lis2dux12_embedded_int_config_t *val);
 
@@ -2409,10 +2929,57 @@ typedef struct
   uint8_t xl_only                      : 1; /* only XL samples (16-bit) are stored in FIFO */
   uint8_t cfg_change_in_fifo           : 1;
 } lis2dux12_fifo_mode_t;
+
+/**
+  * @}
+  *
+  */
+
+/**
+  * @defgroup FIFO FIFO
+  * @brief    FIFO
+  * @{
+  *
+  */
+
+/**
+  * @brief  FIFO mode selection.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      BYPASS_MODE, FIFO_MODE, STREAM_TO_FIFO_MODE, BYPASS_TO_STREAM_MODE, STREAM_MODE, BYPASS_TO_FIFO_MODE,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_fifo_mode_set(const stmdev_ctx_t *ctx, lis2dux12_fifo_mode_t val);
+
+/**
+  * @brief  FIFO mode selection.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      BYPASS_MODE, FIFO_MODE, STREAM_TO_FIFO_MODE, BYPASS_TO_STREAM_MODE, STREAM_MODE, BYPASS_TO_FIFO_MODE,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_fifo_mode_get(const stmdev_ctx_t *ctx, lis2dux12_fifo_mode_t *val);
 
+/**
+  * @brief  FIFO watermark threshold.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      FIFO watermark threshold, maximum value is 127.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  FIFO watermark threshold.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      FIFO watermark threshold, maximum value is 127.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef struct
@@ -2421,12 +2988,58 @@ typedef struct
   lis2dux12_bdr_xl_t bdr_xl; /* accelerometer batch data rate*/
 } lis2dux12_fifo_batch_t;
 
+/**
+  * @brief  FIFO batch.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Select value for bdr_xl: BDR_XL_ODR, BDR_XL_ODR_DIV_2, BDR_XL_ODR_DIV_4, BDR_XL_ODR_DIV_8,
+  *   BDR_XL_ODR_DIV_16, BDR_XL_ODR_DIV_32, BDR_XL_ODR_DIV_64, BDR_XL_ODR_OFF;
+  *   and dec_ts: DEC_TS_OFF, DEC_TS_1, DEC_TS_8, DEC_TS_32
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_fifo_batch_set(const stmdev_ctx_t *ctx, lis2dux12_fifo_batch_t val);
+
+/**
+  * @brief  FIFO batch.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Select value for bdr_xl: BDR_XL_ODR, BDR_XL_ODR_DIV_2, BDR_XL_ODR_DIV_4, BDR_XL_ODR_DIV_8,
+  *   BDR_XL_ODR_DIV_16, BDR_XL_ODR_DIV_32, BDR_XL_ODR_DIV_64, BDR_XL_ODR_OFF;
+  *   and dec_ts: DEC_TS_OFF, DEC_TS_1, DEC_TS_8, DEC_TS_32
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_fifo_batch_get(const stmdev_ctx_t *ctx, lis2dux12_fifo_batch_t *val);
 
+/**
+  * @brief  FIFO stop on wtm.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Enable/Disable stop on wtm functionality.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, lis2dux12_fifo_event_t val);
+
+/**
+  * @brief  FIFO stop on wtm.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Enable/Disable stop on wtm functionality.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, lis2dux12_fifo_event_t *val);
 
+/**
+  * @brief  Number of unread sensor data (TAG + 6 bytes) stored in FIFO.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Number of unread sensor data (TAG + 6 bytes) stored in FIFO.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val);
 int32_t lis2dux12_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
@@ -2480,6 +3093,17 @@ typedef struct
 int32_t lis2dux12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2dux12_md_t *md,
                                 const lis2dux12_fifo_mode_t *fmd,
                                 lis2dux12_fifo_data_t *data);
+/**
+  * @}
+  *
+  */
+
+/**
+  * @defgroup step_counter Step Counter (Pedometer)
+  * @brief    Step Counter (Pedometer)
+  * @{
+  *
+  */
 
 typedef struct
 {
@@ -2487,35 +3111,201 @@ typedef struct
   uint8_t step_counter_enable          : 1;
   uint8_t step_counter_in_fifo         : 1;
 } lis2dux12_stpcnt_mode_t;
+
+/**
+  * @brief  Step counter mode[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Step counter mode
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_stpcnt_mode_set(const stmdev_ctx_t *ctx, lis2dux12_stpcnt_mode_t val);
+
+/**
+  * @brief  Step counter mode[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Step counter mode
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_stpcnt_mode_get(const stmdev_ctx_t *ctx, lis2dux12_stpcnt_mode_t *val);
 
+/**
+  * @brief  Step counter output, number of detected steps.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Step counter output, number of detected steps.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_stpcnt_steps_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
+/**
+  * @brief  Reset step counter.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Reset step counter.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_stpcnt_rst_step_set(const stmdev_ctx_t *ctx);
 
+/**
+  * @brief  Pedometer debounce configuration.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Pedometer debounce configuration.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_stpcnt_debounce_set(const stmdev_ctx_t *ctx, uint8_t val);
+/**
+  * @brief  Pedometer debounce configuration.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Pedometer debounce configuration.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_stpcnt_debounce_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
+/**
+  * @brief  Time period register for step detection on delta time.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Time period register for step detection on delta time.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_stpcnt_period_set(const stmdev_ctx_t *ctx, uint16_t val);
+
+/**
+  * @brief  Time period register for step detection on delta time.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Time period register for step detection on delta time.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
 typedef struct
 {
   uint8_t enable                       : 1;
-  uint8_t window                       : 1;
-  uint8_t duration                     : 1;
+  uint8_t window                       : 4;
+  uint8_t duration                     : 4;
 } lis2dux12_smart_power_cfg_t;
+
+/**
+  * @brief  smart_power functionality configuration.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      lis2dux12_smart_power_cfg_t structure.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  */
 int32_t lis2dux12_smart_power_set(const stmdev_ctx_t *ctx, lis2dux12_smart_power_cfg_t val);
+
+/**
+  * @brief  smart_power functionality configuration.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      lis2dux12_smart_power_cfg_t structure.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  */
 int32_t lis2dux12_smart_power_get(const stmdev_ctx_t *ctx, lis2dux12_smart_power_cfg_t *val);
 
+/**
+  * @}
+  *
+  */
+
+/**
+  * @defgroup Tilt Tilt
+  * @brief    Tilt
+  * @{
+  *
+  */
+/**
+  * @brief  Tilt calculation.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Tilt calculation.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_tilt_mode_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  Tilt calculation.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Tilt calculation.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_tilt_mode_get(const stmdev_ctx_t *ctx, uint8_t *val);
+/**
+  * @}
+  *
+  */
+
+/**
+  * @defgroup sig_mot_detect Significant Motion Detection
+  * @brief    Significant motion detection
+  * @{
+  *
+  */
+/**
+  * @brief  Enables significant motion detection function.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Enables significant motion detection function.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_sigmot_mode_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  Enables significant motion detection function.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Enables significant motion detection function.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_sigmot_mode_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
+/**
+  * @}
+  *
+  */
 
+/**
+  * @defgroup free_fall Free Fall
+  * @brief    Free Fall
+  * @{
+  *
+  */
+/**
+  * @brief  Time windows configuration for Free Fall detection 1 LSB = 1/ODR_XL time[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Time windows configuration for Free Fall detection 1 LSB = 1/ODR_XL time
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_ff_duration_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  Time windows configuration for Free Fall detection 1 LSB = 1/ODR_XL time[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Time windows configuration for Free Fall detection 1 LSB = 1/ODR_XL time
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_ff_duration_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
@@ -2529,7 +3319,25 @@ typedef enum
   LIS2DUX12_469_mg = 0x6,
   LIS2DUX12_500_mg = 0x7,
 } lis2dux12_ff_thresholds_t;
+
+/**
+  * @brief  Free fall threshold setting.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      156_mg, 219_mg, 250_mg, 312_mg, 344_mg, 406_mg, 469_mg, 500_mg,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_ff_thresholds_set(const stmdev_ctx_t *ctx, lis2dux12_ff_thresholds_t val);
+
+/**
+  * @brief  Free fall threshold setting.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      156_mg, 219_mg, 250_mg, 312_mg, 344_mg, 406_mg, 469_mg, 500_mg,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_ff_thresholds_get(const stmdev_ctx_t *ctx, lis2dux12_ff_thresholds_t *val);
 
 typedef enum
@@ -2552,18 +3360,46 @@ typedef struct
   lis2dux12_mode_t mode;
 } lis2dux12_sixd_config_t;
 
+/**
+  * @}
+  *
+  */
+
+/**
+  * @defgroup sixd_fourd Orientation 6D (and 4D)
+  * @brief    Orientation 6D (and 4D)
+  * @{
+  *
+  */
+/**
+  * @brief  configuration for 4D/6D function.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      4D/6D, DEG_80, DEG_70, DEG_60, DEG_50,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_sixd_config_set(const stmdev_ctx_t *ctx, lis2dux12_sixd_config_t val);
+
+/**
+  * @brief  configuration for 4D/6D function.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      4D/6D, DEG_80, DEG_70, DEG_60, DEG_50,
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_sixd_config_get(const stmdev_ctx_t *ctx, lis2dux12_sixd_config_t *val);
 
 typedef enum
 {
-  LIS2DUX12_0_ODR  = 0x000, /* 0 ODR time */
-  LIS2DUX12_1_ODR  = 0x001, /* 1 ODR time */
-  LIS2DUX12_2_ODR  = 0x002, /* 2 ODR time */
-  LIS2DUX12_3_ODR  = 0x100, /* 3 ODR time */
-  LIS2DUX12_7_ODR  = 0x101, /* 7 ODR time */
-  LIS2DUX12_11_ODR = 0x102, /* 11 ODR time */
-  LIS2DUX12_15_ODR = 0x103, /* 15 ODR time */
+  LIS2DUX12_0_ODR  = 0x00, /* 0 ODR time */
+  LIS2DUX12_1_ODR  = 0x01, /* 1 ODR time */
+  LIS2DUX12_2_ODR  = 0x02, /* 2 ODR time */
+  LIS2DUX12_3_ODR  = 0x10, /* 3 ODR time */
+  LIS2DUX12_7_ODR  = 0x11, /* 7 ODR time */
+  LIS2DUX12_11_ODR = 0x12, /* 11 ODR time */
+  LIS2DUX12_15_ODR = 0x13, /* 15 ODR time */
 } lis2dux12_wake_dur_t;
 
 typedef enum
@@ -2589,9 +3425,50 @@ typedef struct
   lis2dux12_wake_enable_t wake_enable;
   lis2dux12_inact_odr_t inact_odr;
 } lis2dux12_wakeup_config_t;
+/**
+  * @}
+  *
+  */
 
+/**
+  * @defgroup wakeup_config Wakeup Configuration
+  * @brief    wakeup configuration
+  * @{
+  *
+  */
+
+/**
+  * @brief  configuration for wakeup function.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      threshold, duration, ...
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_wakeup_config_set(const stmdev_ctx_t *ctx, lis2dux12_wakeup_config_t val);
+
+/**
+  * @brief  configuration for wakeup function.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      threshold, duration, ...
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
 int32_t lis2dux12_wakeup_config_get(const stmdev_ctx_t *ctx, lis2dux12_wakeup_config_t *val);
+
+/**
+  * @}
+  *
+  */
+
+/**
+  * @defgroup   lis2dux12_Tap Tap
+  * @brief      This section groups all the functions that manage the
+  *             tap configuration.
+  * @{
+  *
+  */
 
 typedef enum
 {
@@ -2620,34 +3497,165 @@ typedef struct
   uint8_t triple_tap_on                : 1; /* enable triple tap */
 } lis2dux12_tap_config_t;
 
+
 int32_t lis2dux12_tap_config_set(const stmdev_ctx_t *ctx, lis2dux12_tap_config_t val);
 int32_t lis2dux12_tap_config_get(const stmdev_ctx_t *ctx, lis2dux12_tap_config_t *val);
+/**
+  * @}
+  *
+  */
 
+/**
+  * @defgroup   lis2dux12_Timestamp Timestamp
+  * @brief      This section groups all the functions that manage the
+  *             timestamp generation.
+  * @{
+  *
+  */
+
+/**
+  * @brief  Enables timestamp counter.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the values of timestamp_en in reg INTERRUPT_CFG
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  Enables timestamp counter.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the values of timestamp_en in reg INTERRUPT_CFG
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
+/**
+  * @brief  Timestamp first data output register (r).
+  *         The value is expressed as a 32-bit word and the bit resolution
+  *         is 10 us.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  buff   Buffer that stores data read
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val);
 
+/**
+  * @}
+  *
+  */
+
+/**
+  * @defgroup   LIS2DUX12_finite_state_machine Finite State Machine
+  * @brief      This section groups all the functions that manage the
+  *             state_machine.
+  * @{
+  *
+  */
+/**
+  * @brief  Interrupt status bit for FSM long counter timeout interrupt
+  *         event.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the values of is_fsm_lc in reg EMB_FUNC_STATUS
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_long_cnt_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                                uint8_t *val);
 
+/**
+  * @brief  Embedded final state machine functions mode.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the values of fsm_en in reg EMB_FUNC_EN_B
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_emb_fsm_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  Embedded final state machine functions mode.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Get the values of fsm_en in reg EMB_FUNC_EN_B
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef struct
 {
   lis2dux12_fsm_enable_t          fsm_enable;
 } lis2dux12_emb_fsm_enable_t;
+
+/**
+  * @brief  Embedded final state machine functions mode.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Structure of registers from FSM_ENABLE_A to FSM_ENABLE_B
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_enable_set(const stmdev_ctx_t *ctx,
                                  lis2dux12_emb_fsm_enable_t *val);
+
+/**
+  * @brief  Embedded final state machine functions mode.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Structure of registers from FSM_ENABLE_A to FSM_ENABLE_B
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_enable_get(const stmdev_ctx_t *ctx,
                                  lis2dux12_emb_fsm_enable_t *val);
 
+/**
+  * @brief  FSM long counter status register. Long counter value is an
+  *         unsigned integer value (16-bit format).[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  buff   Buffer that contains data to write
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val);
+
+/**
+  * @brief  FSM long counter status register. Long counter value is an
+  *         unsigned integer value (16-bit format).[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  buff   Buffer that stores data read
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
+/**
+  * @brief  FSM status.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      register FSM_STATUS_MAINPAGE
+  *
+  */
 int32_t lis2dux12_fsm_status_get(const stmdev_ctx_t *ctx,
                                  lis2dux12_fsm_status_mainpage_t *val);
+
+/**
+  * @brief  FSM output registers.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Structure of registers from FSM_OUTS1 to FSM_OUTS16
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_out_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
@@ -2660,29 +3668,153 @@ typedef enum
   LIS2DUX12_ODR_FSM_400Hz = 5,
   LIS2DUX12_ODR_FSM_800Hz = 6,
 } lis2dux12_fsm_val_odr_t;
+
+/**
+  * @brief  Finite State Machine ODR configuration.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the values of fsm_odr in reg EMB_FUNC_ODR_CFG_B
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_data_rate_set(const stmdev_ctx_t *ctx,
                                     lis2dux12_fsm_val_odr_t val);
+
+/**
+  * @brief  Finite State Machine ODR configuration.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Get the values of fsm_odr in reg EMB_FUNC_ODR_CFG_B
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_data_rate_get(const stmdev_ctx_t *ctx,
                                     lis2dux12_fsm_val_odr_t *val);
 
+/**
+  * @brief  FSM initialization request.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the values of fsm_init in reg FSM_INIT
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  FSM initialization request.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the values of fsm_init in reg FSM_INIT
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
+/**
+  * @brief  FSM FIFO en bit.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the value of fsm_fifo_en in reg LIS2DUX12_EMB_FUNC_FIFO_EN
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  FSM FIFO en bit.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Get the value of fsm_fifo_en in reg LIS2DUX12_EMB_FUNC_FIFO_EN
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
+/**
+  * @brief  FSM long counter timeout register (r/w). The long counter
+  *         timeout value is an unsigned integer value (16-bit format).
+  *         When the long counter value reached this value, the FSM
+  *         generates an interrupt.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  buff   Buffer that contains data to write
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_long_cnt_int_value_set(const stmdev_ctx_t *ctx,
                                          uint16_t val);
+
+/**
+  * @brief  FSM long counter timeout register (r/w). The long counter
+  *         timeout value is an unsigned integer value (16-bit format).
+  *         When the long counter value reached this value, the FSM generates
+  *         an interrupt.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  buff   Buffer that stores data read
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
                                          uint16_t *val);
 
+/**
+  * @brief  FSM number of programs register.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Buffer that contains data to write
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_programs_num_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  FSM number of programs register.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Buffer that stores data read
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_programs_num_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
+/**
+  * @brief  FSM start address register (r/w). First available address is
+  *         0x033C.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  buff   Buffer that contains data to write
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_start_address_set(const stmdev_ctx_t *ctx,
                                         uint16_t val);
+
+/**
+  * @brief  FSM start address register (r/w). First available address
+  *         is 0x033C.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  buff   Buffer that stores data read
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_fsm_start_address_get(const stmdev_ctx_t *ctx,
                                         uint16_t *val);
+
+/**
+  * @}
+  *
+  */
+
+/**
+  * @defgroup mlc Machine Learning Core
+  * @brief   This section group all the functions concerning the
+  *          usage of Machine Learning Core
+  * @{
+  *
+  */
 
 typedef enum
 {
@@ -2690,12 +3822,46 @@ typedef enum
   LIS2DUX12_MLC_ON                     = 1,
   LIS2DUX12_MLC_ON_BEFORE_FSM          = 2,
 } lis2dux12_mlc_mode_t;
+
+/**
+  * @brief  Enable Machine Learning Core.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      change the values of mlc_en in
+  *                  reg EMB_FUNC_EN_B and mlc_before_fsm_en
+  *                  in EMB_FUNC_INIT_A
+  *
+  */
 int32_t lis2dux12_mlc_set(const stmdev_ctx_t *ctx, lis2dux12_mlc_mode_t val);
+
+/**
+  * @brief  Enable Machine Learning Core.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      get the values of mlc_en in
+  *                  reg EMB_FUNC_EN_B and mlc_before_fsm_en
+  *                  in EMB_FUNC_INIT_A
+  *
+  */
 int32_t lis2dux12_mlc_get(const stmdev_ctx_t *ctx, lis2dux12_mlc_mode_t *val);
 
+/**
+  * @brief  Machine Learning Core status register[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      register MLC_STATUS_MAINPAGE
+  *
+  */
 int32_t lis2dux12_mlc_status_get(const stmdev_ctx_t *ctx,
                                  lis2dux12_mlc_status_mainpage_t *val);
 
+/**
+  * @brief  prgsens_out: [get] Output value of all MLCx decision trees.
+  *
+  * @param  ctx_t *ctx: read / write interface definitions
+  * @param  uint8_t * : buffer that stores data read
+  *
+  */
 int32_t lis2dux12_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
 typedef enum
@@ -2706,13 +3872,57 @@ typedef enum
   LIS2DUX12_ODR_PRGS_100Hz = 3,
   LIS2DUX12_ODR_PRGS_200Hz = 4,
 } lis2dux12_mlc_odr_val_t;
+
+/**
+  * @brief  Machine Learning Core data rate selection.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      get the values of mlc_odr in
+  *                  reg EMB_FUNC_ODR_CFG_C
+  *
+  */
 int32_t lis2dux12_mlc_data_rate_set(const stmdev_ctx_t *ctx,
                                     lis2dux12_mlc_odr_val_t val);
+
+/**
+  * @brief  Machine Learning Core data rate selection.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      change the values of mlc_odr in
+  *                  reg EMB_FUNC_ODR_CFG_C
+  *
+  */
 int32_t lis2dux12_mlc_data_rate_get(const stmdev_ctx_t *ctx,
                                     lis2dux12_mlc_odr_val_t *val);
 
+/**
+  * @brief  MLC FIFO en bit.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the value of mlc_fifo_en in reg LIS2DUX12_EMB_FUNC_FIFO_EN
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_mlc_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+
+/**
+  * @brief  MLC FIFO en bit.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Get the value of mlc_fifo_en in reg LIS2DUX12_EMB_FUNC_FIFO_EN
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
 int32_t lis2dux12_mlc_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
+/**
+  * @}
+  *
+  */
+/**
+  * @}
+  *
+  */
 
 #ifdef __cplusplus
 }

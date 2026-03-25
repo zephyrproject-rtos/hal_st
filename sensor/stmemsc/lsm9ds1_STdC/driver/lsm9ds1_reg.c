@@ -220,15 +220,15 @@ int32_t lsm9ds1_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg1_g.fs_g)
   {
-    case LSM9DS1_245dps:
+    case 0x00:
       *val = LSM9DS1_245dps;
       break;
 
-    case LSM9DS1_500dps:
+    case 0x01:
       *val = LSM9DS1_500dps;
       break;
 
-    case LSM9DS1_2000dps:
+    case 0x03:
       *val = LSM9DS1_2000dps;
       break;
 
@@ -325,103 +325,103 @@ int32_t lsm9ds1_imu_data_rate_get(const stmdev_ctx_t *ctx,
   switch ((ctrl_reg3_g.lp_mode << 7) | (ctrl_reg6_xl.odr_xl << 4) |
           ctrl_reg1_g.odr_g)
   {
-    case LSM9DS1_IMU_OFF:
+    case 0x00:
       *val = LSM9DS1_IMU_OFF;
       break;
 
-    case LSM9DS1_GY_OFF_XL_10Hz:
+    case 0x10:
       *val = LSM9DS1_GY_OFF_XL_10Hz;
       break;
 
-    case LSM9DS1_GY_OFF_XL_50Hz:
+    case 0x20:
       *val = LSM9DS1_GY_OFF_XL_50Hz;
       break;
 
-    case LSM9DS1_GY_OFF_XL_119Hz:
+    case 0x30:
       *val = LSM9DS1_GY_OFF_XL_119Hz;
       break;
 
-    case LSM9DS1_GY_OFF_XL_238Hz:
+    case 0x40:
       *val = LSM9DS1_GY_OFF_XL_238Hz;
       break;
 
-    case LSM9DS1_GY_OFF_XL_476Hz:
+    case 0x50:
       *val = LSM9DS1_GY_OFF_XL_476Hz;
       break;
 
-    case LSM9DS1_GY_OFF_XL_952Hz:
+    case 0x60:
       *val = LSM9DS1_GY_OFF_XL_952Hz;
       break;
 
-    case LSM9DS1_XL_OFF_GY_14Hz9:
+    case 0x01:
       *val = LSM9DS1_XL_OFF_GY_14Hz9;
       break;
 
-    case LSM9DS1_XL_OFF_GY_59Hz5:
+    case 0x02:
       *val = LSM9DS1_XL_OFF_GY_59Hz5;
       break;
 
-    case LSM9DS1_XL_OFF_GY_119Hz:
+    case 0x03:
       *val = LSM9DS1_XL_OFF_GY_119Hz;
       break;
 
-    case LSM9DS1_XL_OFF_GY_238Hz:
+    case 0x04:
       *val = LSM9DS1_XL_OFF_GY_238Hz;
       break;
 
-    case LSM9DS1_XL_OFF_GY_476Hz:
+    case 0x05:
       *val = LSM9DS1_XL_OFF_GY_476Hz;
       break;
 
-    case LSM9DS1_XL_OFF_GY_952Hz:
+    case 0x06:
       *val = LSM9DS1_XL_OFF_GY_952Hz;
       break;
 
-    case LSM9DS1_IMU_14Hz9:
+    case 0x11:
       *val = LSM9DS1_IMU_14Hz9;
       break;
 
-    case LSM9DS1_IMU_59Hz5:
+    case 0x22:
       *val = LSM9DS1_IMU_59Hz5;
       break;
 
-    case LSM9DS1_IMU_119Hz:
+    case 0x33:
       *val = LSM9DS1_IMU_119Hz;
       break;
 
-    case LSM9DS1_IMU_238Hz:
+    case 0x44:
       *val = LSM9DS1_IMU_238Hz;
       break;
 
-    case LSM9DS1_IMU_476Hz:
+    case 0x55:
       *val = LSM9DS1_IMU_476Hz;
       break;
 
-    case LSM9DS1_IMU_952Hz:
+    case 0x66:
       *val = LSM9DS1_IMU_952Hz;
       break;
 
-    case LSM9DS1_XL_OFF_GY_14Hz9_LP:
+    case 0x81:
       *val = LSM9DS1_XL_OFF_GY_14Hz9_LP;
       break;
 
-    case LSM9DS1_XL_OFF_GY_59Hz5_LP:
+    case 0x82:
       *val = LSM9DS1_XL_OFF_GY_59Hz5_LP;
       break;
 
-    case LSM9DS1_XL_OFF_GY_119Hz_LP:
+    case 0x83:
       *val = LSM9DS1_XL_OFF_GY_119Hz_LP;
       break;
 
-    case LSM9DS1_IMU_14Hz9_LP:
+    case 0x91:
       *val = LSM9DS1_IMU_14Hz9_LP;
       break;
 
-    case LSM9DS1_IMU_59Hz5_LP:
+    case 0xA2:
       *val = LSM9DS1_IMU_59Hz5_LP;
       break;
 
-    case LSM9DS1_IMU_119Hz_LP:
+    case 0xB3:
       *val = LSM9DS1_IMU_119Hz_LP;
       break;
 
@@ -706,19 +706,19 @@ int32_t lsm9ds1_xl_decimation_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg5_xl.dec)
   {
-    case LSM9DS1_NO_DECIMATION:
+    case 0x00:
       *val = LSM9DS1_NO_DECIMATION;
       break;
 
-    case LSM9DS1_EVERY_2_SAMPLES:
+    case 0x01:
       *val = LSM9DS1_EVERY_2_SAMPLES;
       break;
 
-    case LSM9DS1_EVERY_4_SAMPLES:
+    case 0x02:
       *val = LSM9DS1_EVERY_4_SAMPLES;
       break;
 
-    case LSM9DS1_EVERY_8_SAMPLES:
+    case 0x03:
       *val = LSM9DS1_EVERY_8_SAMPLES;
       break;
 
@@ -777,19 +777,19 @@ int32_t lsm9ds1_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg6_xl.fs_xl)
   {
-    case LSM9DS1_2g:
+    case 0x00:
       *val = LSM9DS1_2g;
       break;
 
-    case LSM9DS1_16g:
+    case 0x01:
       *val = LSM9DS1_16g;
       break;
 
-    case LSM9DS1_4g:
+    case 0x02:
       *val = LSM9DS1_4g;
       break;
 
-    case LSM9DS1_8g:
+    case 0x03:
       *val = LSM9DS1_8g;
       break;
 
@@ -1008,155 +1008,155 @@ int32_t lsm9ds1_mag_data_rate_get(const stmdev_ctx_t *ctx,
   switch ((ctrl_reg3_m.md << 6) | (ctrl_reg1_m.om << 4) |
           (ctrl_reg1_m.fast_odr << 3) | ctrl_reg1_m._do)
   {
-    case LSM9DS1_MAG_POWER_DOWN:
+    case 0xC0:
       *val = LSM9DS1_MAG_POWER_DOWN;
       break;
 
-    case LSM9DS1_MAG_LP_0Hz625:
+    case 0x00:
       *val = LSM9DS1_MAG_LP_0Hz625;
       break;
 
-    case LSM9DS1_MAG_LP_1Hz25:
+    case 0x01:
       *val = LSM9DS1_MAG_LP_1Hz25;
       break;
 
-    case LSM9DS1_MAG_LP_2Hz5:
+    case 0x02:
       *val = LSM9DS1_MAG_LP_2Hz5;
       break;
 
-    case LSM9DS1_MAG_LP_5Hz:
+    case 0x03:
       *val = LSM9DS1_MAG_LP_5Hz;
       break;
 
-    case LSM9DS1_MAG_LP_10Hz:
+    case 0x04:
       *val = LSM9DS1_MAG_LP_10Hz;
       break;
 
-    case LSM9DS1_MAG_LP_20Hz:
+    case 0x05:
       *val = LSM9DS1_MAG_LP_20Hz;
       break;
 
-    case LSM9DS1_MAG_LP_40Hz:
+    case 0x06:
       *val = LSM9DS1_MAG_LP_40Hz;
       break;
 
-    case LSM9DS1_MAG_LP_80Hz:
+    case 0x07:
       *val = LSM9DS1_MAG_LP_80Hz;
       break;
 
-    case LSM9DS1_MAG_MP_0Hz625:
+    case 0x10:
       *val = LSM9DS1_MAG_MP_0Hz625;
       break;
 
-    case LSM9DS1_MAG_MP_1Hz25:
+    case 0x11:
       *val = LSM9DS1_MAG_MP_1Hz25;
       break;
 
-    case LSM9DS1_MAG_MP_2Hz5:
+    case 0x12:
       *val = LSM9DS1_MAG_MP_2Hz5;
       break;
 
-    case LSM9DS1_MAG_MP_5Hz:
+    case 0x13:
       *val = LSM9DS1_MAG_MP_5Hz;
       break;
 
-    case LSM9DS1_MAG_MP_10Hz:
+    case 0x14:
       *val = LSM9DS1_MAG_MP_10Hz;
       break;
 
-    case LSM9DS1_MAG_MP_20Hz:
+    case 0x15:
       *val = LSM9DS1_MAG_MP_20Hz;
       break;
 
-    case LSM9DS1_MAG_MP_40Hz:
+    case 0x16:
       *val = LSM9DS1_MAG_MP_40Hz;
       break;
 
-    case LSM9DS1_MAG_MP_80Hz:
+    case 0x17:
       *val = LSM9DS1_MAG_MP_80Hz;
       break;
 
-    case LSM9DS1_MAG_HP_0Hz625:
+    case 0x20:
       *val = LSM9DS1_MAG_HP_0Hz625;
       break;
 
-    case LSM9DS1_MAG_HP_1Hz25:
+    case 0x21:
       *val = LSM9DS1_MAG_HP_1Hz25;
       break;
 
-    case LSM9DS1_MAG_HP_2Hz5:
+    case 0x22:
       *val = LSM9DS1_MAG_HP_2Hz5;
       break;
 
-    case LSM9DS1_MAG_HP_5Hz:
+    case 0x23:
       *val = LSM9DS1_MAG_HP_5Hz;
       break;
 
-    case LSM9DS1_MAG_HP_10Hz:
+    case 0x24:
       *val = LSM9DS1_MAG_HP_10Hz;
       break;
 
-    case LSM9DS1_MAG_HP_20Hz:
+    case 0x25:
       *val = LSM9DS1_MAG_HP_20Hz;
       break;
 
-    case LSM9DS1_MAG_HP_40Hz:
+    case 0x26:
       *val = LSM9DS1_MAG_HP_40Hz;
       break;
 
-    case LSM9DS1_MAG_HP_80Hz:
+    case 0x27:
       *val = LSM9DS1_MAG_HP_80Hz;
       break;
 
-    case LSM9DS1_MAG_UHP_0Hz625:
+    case 0x30:
       *val = LSM9DS1_MAG_UHP_0Hz625;
       break;
 
-    case LSM9DS1_MAG_UHP_1Hz25:
+    case 0x31:
       *val = LSM9DS1_MAG_UHP_1Hz25;
       break;
 
-    case LSM9DS1_MAG_UHP_2Hz5:
+    case 0x32:
       *val = LSM9DS1_MAG_UHP_2Hz5;
       break;
 
-    case LSM9DS1_MAG_UHP_5Hz:
+    case 0x33:
       *val = LSM9DS1_MAG_UHP_5Hz;
       break;
 
-    case LSM9DS1_MAG_UHP_10Hz:
+    case 0x34:
       *val = LSM9DS1_MAG_UHP_10Hz;
       break;
 
-    case LSM9DS1_MAG_UHP_20Hz:
+    case 0x35:
       *val = LSM9DS1_MAG_UHP_20Hz;
       break;
 
-    case LSM9DS1_MAG_UHP_40Hz:
+    case 0x36:
       *val = LSM9DS1_MAG_UHP_40Hz;
       break;
 
-    case LSM9DS1_MAG_UHP_80Hz:
+    case 0x37:
       *val = LSM9DS1_MAG_UHP_80Hz;
       break;
 
-    case LSM9DS1_MAG_UHP_155Hz:
+    case 0x38:
       *val = LSM9DS1_MAG_UHP_155Hz;
       break;
 
-    case LSM9DS1_MAG_HP_300Hz:
+    case 0x28:
       *val = LSM9DS1_MAG_HP_300Hz;
       break;
 
-    case LSM9DS1_MAG_MP_560Hz:
+    case 0x18:
       *val = LSM9DS1_MAG_MP_560Hz;
       break;
 
-    case LSM9DS1_MAG_LP_1000Hz:
+    case 0x08:
       *val = LSM9DS1_MAG_LP_1000Hz;
       break;
 
-    case LSM9DS1_MAG_ONE_SHOT:
+    case 0x70:
       *val = LSM9DS1_MAG_ONE_SHOT;
       break;
 
@@ -1215,19 +1215,19 @@ int32_t lsm9ds1_mag_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2_m.fs)
   {
-    case LSM9DS1_4Ga:
+    case 0x00:
       *val = LSM9DS1_4Ga;
       break;
 
-    case LSM9DS1_8Ga:
+    case 0x01:
       *val = LSM9DS1_8Ga;
       break;
 
-    case LSM9DS1_12Ga:
+    case 0x02:
       *val = LSM9DS1_12Ga;
       break;
 
-    case LSM9DS1_16Ga:
+    case 0x03:
       *val = LSM9DS1_16Ga;
       break;
 
@@ -1604,11 +1604,11 @@ int32_t lsm9ds1_dev_data_format_get(const stmdev_ctx_t *ctx_mag,
 
   switch (ctrl_reg8.ble & ctrl_reg4_m.ble)
   {
-    case LSM9DS1_LSB_LOW_ADDRESS:
+    case 0x00:
       *val = LSM9DS1_LSB_LOW_ADDRESS;
       break;
 
-    case LSM9DS1_MSB_LOW_ADDRESS:
+    case 0x01:
       *val = LSM9DS1_MSB_LOW_ADDRESS;
       break;
 
@@ -1787,19 +1787,19 @@ int32_t lsm9ds1_gy_filter_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg1_g.bw_g)
   {
-    case LSM9DS1_LP_STRONG:
+    case 0x00:
       *val = LSM9DS1_LP_STRONG;
       break;
 
-    case LSM9DS1_LP_MEDIUM:
+    case 0x01:
       *val = LSM9DS1_LP_MEDIUM;
       break;
 
-    case LSM9DS1_LP_LIGHT:
+    case 0x02:
       *val = LSM9DS1_LP_LIGHT;
       break;
 
-    case LSM9DS1_LP_ULTRA_LIGHT:
+    case 0x03:
       *val = LSM9DS1_LP_ULTRA_LIGHT;
       break;
 
@@ -1875,19 +1875,19 @@ int32_t lsm9ds1_gy_filter_out_path_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl_reg3_g.hp_en << 4) | ctrl_reg2_g.out_sel)
   {
-    case LSM9DS1_LPF1_OUT:
+    case 0x00:
       *val = LSM9DS1_LPF1_OUT;
       break;
 
-    case LSM9DS1_LPF1_HPF_OUT:
+    case 0x01:
       *val = LSM9DS1_LPF1_HPF_OUT;
       break;
 
-    case LSM9DS1_LPF1_LPF2_OUT:
+    case 0x02:
       *val = LSM9DS1_LPF1_LPF2_OUT;
       break;
 
-    case LSM9DS1_LPF1_HPF_LPF2_OUT:
+    case 0x12:
       *val = LSM9DS1_LPF1_HPF_LPF2_OUT;
       break;
 
@@ -1963,19 +1963,19 @@ int32_t lsm9ds1_gy_filter_int_path_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl_reg3_g.hp_en << 4) | ctrl_reg2_g.int_sel)
   {
-    case LSM9DS1_LPF1_INT:
+    case 0x00:
       *val = LSM9DS1_LPF1_INT;
       break;
 
-    case LSM9DS1_LPF1_HPF_INT:
+    case 0x01:
       *val = LSM9DS1_LPF1_HPF_INT;
       break;
 
-    case LSM9DS1_LPF1_LPF2_INT:
+    case 0x02:
       *val = LSM9DS1_LPF1_LPF2_INT;
       break;
 
-    case LSM9DS1_LPF1_HPF_LPF2_INT:
+    case 0x12:
       *val = LSM9DS1_LPF1_HPF_LPF2_INT;
       break;
 
@@ -2034,43 +2034,43 @@ int32_t lsm9ds1_gy_filter_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3_g.hpcf_g)
   {
-    case LSM9DS1_HP_EXTREME:
+    case 0x00:
       *val = LSM9DS1_HP_EXTREME;
       break;
 
-    case LSM9DS1_HP_ULTRA_STRONG:
+    case 0x01:
       *val = LSM9DS1_HP_ULTRA_STRONG;
       break;
 
-    case LSM9DS1_HP_STRONG:
+    case 0x02:
       *val = LSM9DS1_HP_STRONG;
       break;
 
-    case LSM9DS1_HP_ULTRA_HIGH:
+    case 0x03:
       *val = LSM9DS1_HP_ULTRA_HIGH;
       break;
 
-    case LSM9DS1_HP_HIGH:
+    case 0x04:
       *val = LSM9DS1_HP_HIGH;
       break;
 
-    case LSM9DS1_HP_MEDIUM:
+    case 0x05:
       *val = LSM9DS1_HP_MEDIUM;
       break;
 
-    case LSM9DS1_HP_LOW:
+    case 0x06:
       *val = LSM9DS1_HP_LOW;
       break;
 
-    case LSM9DS1_HP_ULTRA_LOW:
+    case 0x07:
       *val = LSM9DS1_HP_ULTRA_LOW;
       break;
 
-    case LSM9DS1_HP_LIGHT:
+    case 0x08:
       *val = LSM9DS1_HP_LIGHT;
       break;
 
-    case LSM9DS1_HP_ULTRA_LIGHT:
+    case 0x09:
       *val = LSM9DS1_HP_ULTRA_LIGHT;
       break;
 
@@ -2130,23 +2130,23 @@ int32_t lsm9ds1_xl_filter_aalias_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl_reg6_xl.bw_scal_odr << 4) | ctrl_reg6_xl.bw_xl)
   {
-    case LSM9DS1_AUTO:
+    case 0x00:
       *val = LSM9DS1_AUTO;
       break;
 
-    case LSM9DS1_408Hz:
+    case 0x10:
       *val = LSM9DS1_408Hz;
       break;
 
-    case LSM9DS1_211Hz:
+    case 0x11:
       *val = LSM9DS1_211Hz;
       break;
 
-    case LSM9DS1_105Hz:
+    case 0x12:
       *val = LSM9DS1_105Hz;
       break;
 
-    case LSM9DS1_50Hz:
+    case 0x13:
       *val = LSM9DS1_50Hz;
       break;
 
@@ -2205,11 +2205,11 @@ int32_t lsm9ds1_xl_filter_int_path_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg7_xl.hpis1)
   {
-    case LSM9DS1_HP_DIS:
+    case 0x00:
       *val = LSM9DS1_HP_DIS;
       break;
 
-    case LSM9DS1_HP_EN:
+    case 0x01:
       *val = LSM9DS1_HP_EN;
       break;
 
@@ -2268,11 +2268,11 @@ int32_t lsm9ds1_xl_filter_out_path_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg7_xl.fds)
   {
-    case LSM9DS1_LP_OUT:
+    case 0x00:
       *val = LSM9DS1_LP_OUT;
       break;
 
-    case LSM9DS1_HP_OUT:
+    case 0x01:
       *val = LSM9DS1_HP_OUT;
       break;
 
@@ -2334,23 +2334,23 @@ int32_t lsm9ds1_xl_filter_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl_reg7_xl.hr << 4) + ctrl_reg7_xl.dcf)
   {
-    case LSM9DS1_LP_DISABLE:
+    case 0x00:
       *val = LSM9DS1_LP_DISABLE;
       break;
 
-    case LSM9DS1_LP_ODR_DIV_50:
+    case 0x10:
       *val = LSM9DS1_LP_ODR_DIV_50;
       break;
 
-    case LSM9DS1_LP_ODR_DIV_100:
+    case 0x11:
       *val = LSM9DS1_LP_ODR_DIV_100;
       break;
 
-    case LSM9DS1_LP_ODR_DIV_9:
+    case 0x12:
       *val = LSM9DS1_LP_ODR_DIV_9;
       break;
 
-    case LSM9DS1_LP_ODR_DIV_400:
+    case 0x13:
       *val = LSM9DS1_LP_ODR_DIV_400;
       break;
 
@@ -2411,19 +2411,19 @@ int32_t lsm9ds1_xl_filter_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg7_xl.dcf)
   {
-    case LSM9DS1_HP_ODR_DIV_50:
+    case 0x00:
       *val = LSM9DS1_HP_ODR_DIV_50;
       break;
 
-    case LSM9DS1_HP_ODR_DIV_100:
+    case 0x01:
       *val = LSM9DS1_HP_ODR_DIV_100;
       break;
 
-    case LSM9DS1_HP_ODR_DIV_9:
+    case 0x02:
       *val = LSM9DS1_HP_ODR_DIV_9;
       break;
 
-    case LSM9DS1_HP_ODR_DIV_400:
+    case 0x03:
       *val = LSM9DS1_HP_ODR_DIV_400;
       break;
 
@@ -2610,11 +2610,11 @@ int32_t lsm9ds1_spi_mode_get(const stmdev_ctx_t *ctx_mag,
 
   switch (ctrl_reg8.sim & ctrl_reg3_m.sim)
   {
-    case LSM9DS1_SPI_4_WIRE:
+    case 0x00:
       *val = LSM9DS1_SPI_4_WIRE;
       break;
 
-    case LSM9DS1_SPI_3_WIRE:
+    case 0x01:
       *val = LSM9DS1_SPI_3_WIRE;
       break;
 
@@ -2694,11 +2694,11 @@ int32_t lsm9ds1_i2c_interface_get(const stmdev_ctx_t *ctx_mag,
 
   switch (ctrl_reg9.i2c_disable & ctrl_reg3_m.i2c_disable)
   {
-    case LSM9DS1_I2C_ENABLE:
+    case 0x00:
       *val = LSM9DS1_I2C_ENABLE;
       break;
 
-    case LSM9DS1_I2C_DISABLE:
+    case 0x01:
       *val = LSM9DS1_I2C_DISABLE;
       break;
 
@@ -2787,11 +2787,11 @@ int32_t lsm9ds1_pin_logic_get(const stmdev_ctx_t *ctx,
 
   switch (int_gen_cfg_xl.aoi_xl & int_gen_cfg_g.aoi_g)
   {
-    case LSM9DS1_LOGIC_OR:
+    case 0x00:
       *val = LSM9DS1_LOGIC_OR;
       break;
 
-    case LSM9DS1_LOGIC_AND:
+    case 0x01:
       *val = LSM9DS1_LOGIC_AND;
       break;
 
@@ -3008,11 +3008,11 @@ int32_t lsm9ds1_pin_notification_get(const stmdev_ctx_t *ctx_mag,
 
   switch (~int_cfg_m.iel & int_gen_cfg_g.lir_g & ctrl_reg4.lir_xl1)
   {
-    case LSM9DS1_INT_LATCHED:
+    case 0x01:
       *val = LSM9DS1_INT_LATCHED;
       break;
 
-    case LSM9DS1_INT_PULSED:
+    case 0x00:
       *val = LSM9DS1_INT_PULSED;
       break;
 
@@ -3065,11 +3065,11 @@ int32_t lsm9ds1_pin_mode_get(const stmdev_ctx_t *ctx, lsm9ds1_pp_od_t *val)
 
   switch (ctrl_reg8.pp_od)
   {
-    case LSM9DS1_PUSH_PULL:
+    case 0x00:
       *val = LSM9DS1_PUSH_PULL;
       break;
 
-    case LSM9DS1_OPEN_DRAIN:
+    case 0x01:
       *val = LSM9DS1_OPEN_DRAIN;
       break;
 
@@ -3196,11 +3196,11 @@ int32_t lsm9ds1_pin_polarity_get(const stmdev_ctx_t *ctx_mag,
 
   switch (int_cfg_m.iea & (~ctrl_reg8.h_lactive))
   {
-    case LSM9DS1_ACTIVE_LOW:
+    case 0x00:
       *val = LSM9DS1_ACTIVE_LOW;
       break;
 
-    case LSM9DS1_ACTIVE_HIGH:
+    case 0x01:
       *val = LSM9DS1_ACTIVE_HIGH;
       break;
 
@@ -3549,11 +3549,11 @@ int32_t lsm9ds1_gy_trshld_mode_get(const stmdev_ctx_t *ctx,
 
   switch (int_gen_ths_xh_g.dcrm_g)
   {
-    case LSM9DS1_RESET_MODE:
+    case 0x00:
       *val = LSM9DS1_RESET_MODE;
       break;
 
-    case LSM9DS1_DECREMENT_MODE:
+    case 0x01:
       *val = LSM9DS1_DECREMENT_MODE;
       break;
 
@@ -4049,11 +4049,11 @@ int32_t lsm9ds1_act_mode_get(const stmdev_ctx_t *ctx,
 
   switch (act_ths.sleep_on_inact_en & ctrl_reg9.sleep_g)
   {
-    case LSM9DS1_GYRO_POWER_DOWN:
+    case 0x00:
       *val = LSM9DS1_GYRO_POWER_DOWN;
       break;
 
-    case LSM9DS1_GYRO_SLEEP:
+    case 0x01:
       *val = LSM9DS1_GYRO_SLEEP;
       break;
 
@@ -4118,11 +4118,11 @@ int32_t lsm9ds1_act_src_get(const stmdev_ctx_t *ctx, lsm9ds1_inact_t *val)
 
   switch (status_reg.inact)
   {
-    case LSM9DS1_ACTIVITY:
+    case 0x0:
       *val = LSM9DS1_ACTIVITY;
       break;
 
-    case LSM9DS1_INACTIVITY:
+    case 0x01:
       *val = LSM9DS1_INACTIVITY;
       break;
 
@@ -4211,23 +4211,23 @@ int32_t lsm9ds1_6d_mode_get(const stmdev_ctx_t *ctx, lsm9ds1_6d_mode_t *val)
   switch ((ctrl_reg4._4d_xl1 << 2) | (int_gen_cfg_xl.aoi_xl << 1)
           | int_gen_cfg_xl.aoi_xl)
   {
-    case LSM9DS1_POS_MOVE_RECO_DISABLE:
+    case 0x00:
       *val = LSM9DS1_POS_MOVE_RECO_DISABLE;
       break;
 
-    case LSM9DS1_6D_MOVE_RECO:
+    case 0x01:
       *val = LSM9DS1_6D_MOVE_RECO;
       break;
 
-    case LSM9DS1_4D_MOVE_RECO:
+    case 0x05:
       *val = LSM9DS1_4D_MOVE_RECO;
       break;
 
-    case LSM9DS1_6D_POS_RECO:
+    case 0x03:
       *val = LSM9DS1_6D_POS_RECO;
       break;
 
-    case LSM9DS1_4D_POS_RECO:
+    case 0x07:
       *val = LSM9DS1_4D_POS_RECO;
       break;
 
@@ -4419,27 +4419,27 @@ int32_t lsm9ds1_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl_reg9.fifo_en << 4) | ctrl_reg9.fifo_en)
   {
-    case LSM9DS1_FIFO_OFF:
+    case 0x00:
       *val = LSM9DS1_FIFO_OFF;
       break;
 
-    case LSM9DS1_BYPASS_MODE:
+    case 0x10:
       *val = LSM9DS1_BYPASS_MODE;
       break;
 
-    case LSM9DS1_FIFO_MODE:
+    case 0x11:
       *val = LSM9DS1_FIFO_MODE;
       break;
 
-    case LSM9DS1_STREAM_TO_FIFO_MODE:
+    case 0x13:
       *val = LSM9DS1_STREAM_TO_FIFO_MODE;
       break;
 
-    case LSM9DS1_BYPASS_TO_STREAM_MODE:
+    case 0x14:
       *val = LSM9DS1_BYPASS_TO_STREAM_MODE;
       break;
 
-    case LSM9DS1_STREAM_MODE:
+    case 0x16:
       *val = LSM9DS1_STREAM_MODE;
       break;
 

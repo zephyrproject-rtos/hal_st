@@ -586,12 +586,12 @@ int32_t sths34pf80_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
-  STHS34PF80_AVG_TMOS_2 = 0x0,
-  STHS34PF80_AVG_TMOS_8 = 0x1,
-  STHS34PF80_AVG_TMOS_32 = 0x2,
-  STHS34PF80_AVG_TMOS_128 = 0x3,
-  STHS34PF80_AVG_TMOS_256 = 0x4,
-  STHS34PF80_AVG_TMOS_512 = 0x5,
+  STHS34PF80_AVG_TMOS_2    = 0x0,
+  STHS34PF80_AVG_TMOS_8    = 0x1,
+  STHS34PF80_AVG_TMOS_32   = 0x2,
+  STHS34PF80_AVG_TMOS_128  = 0x3,
+  STHS34PF80_AVG_TMOS_256  = 0x4,
+  STHS34PF80_AVG_TMOS_512  = 0x5,
   STHS34PF80_AVG_TMOS_1024 = 0x6,
   STHS34PF80_AVG_TMOS_2048 = 0x7,
 } sths34pf80_avg_tobject_num_t;
@@ -611,7 +611,7 @@ int32_t sths34pf80_avg_tambient_num_get(const stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  STHS34PF80_GAIN_WIDE_MODE = 0x0,
+  STHS34PF80_GAIN_WIDE_MODE    = 0x0,
   STHS34PF80_GAIN_DEFAULT_MODE = 0x7,
 } sths34pf80_gain_mode_t;
 
@@ -623,15 +623,15 @@ int32_t sths34pf80_tobject_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *va
 
 typedef enum
 {
-  STHS34PF80_ODR_OFF = 0x0,
+  STHS34PF80_ODR_OFF      = 0x0,
   STHS34PF80_ODR_AT_0Hz25 = 0x1,
   STHS34PF80_ODR_AT_0Hz50 = 0x2,
-  STHS34PF80_ODR_AT_1Hz = 0x3,
-  STHS34PF80_ODR_AT_2Hz = 0x4,
-  STHS34PF80_ODR_AT_4Hz = 0x5,
-  STHS34PF80_ODR_AT_8Hz = 0x6,
-  STHS34PF80_ODR_AT_15Hz = 0x7,
-  STHS34PF80_ODR_AT_30Hz = 0x8,
+  STHS34PF80_ODR_AT_1Hz   = 0x3,
+  STHS34PF80_ODR_AT_2Hz   = 0x4,
+  STHS34PF80_ODR_AT_4Hz   = 0x5,
+  STHS34PF80_ODR_AT_8Hz   = 0x6,
+  STHS34PF80_ODR_AT_15Hz  = 0x7,
+  STHS34PF80_ODR_AT_30Hz  = 0x8,
 } sths34pf80_odr_t;
 int32_t sths34pf80_odr_set(const stmdev_ctx_t *ctx, sths34pf80_odr_t val);
 int32_t sths34pf80_odr_get(const stmdev_ctx_t *ctx, sths34pf80_odr_t *val);
@@ -642,14 +642,14 @@ int32_t sths34pf80_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val);
 typedef enum
 {
   STHS34PF80_IDLE_MODE = 0x0,
-  STHS34PF80_ONE_SHOT = 0x1,
+  STHS34PF80_ONE_SHOT  = 0x1,
 } sths34pf80_one_shot_t;
 int32_t sths34pf80_one_shot_set(const stmdev_ctx_t *ctx, sths34pf80_one_shot_t val);
 int32_t sths34pf80_one_shot_get(const stmdev_ctx_t *ctx, sths34pf80_one_shot_t *val);
 
 typedef enum
 {
-  STHS34PF80_MAIN_MEM_BANK = 0x0,
+  STHS34PF80_MAIN_MEM_BANK       = 0x0,
   STHS34PF80_EMBED_FUNC_MEM_BANK = 0x1,
 } sths34pf80_mem_bank_t;
 int32_t sths34pf80_mem_bank_set(const stmdev_ctx_t *ctx, sths34pf80_mem_bank_t val);
@@ -675,9 +675,9 @@ int32_t sths34pf80_tamb_shock_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
 typedef enum
 {
-  STHS34PF80_LPF_ODR_DIV_9 = 0x0,
-  STHS34PF80_LPF_ODR_DIV_20 = 0x1,
-  STHS34PF80_LPF_ODR_DIV_50 = 0x2,
+  STHS34PF80_LPF_ODR_DIV_9   = 0x0,
+  STHS34PF80_LPF_ODR_DIV_20  = 0x1,
+  STHS34PF80_LPF_ODR_DIV_50  = 0x2,
   STHS34PF80_LPF_ODR_DIV_100 = 0x3,
   STHS34PF80_LPF_ODR_DIV_200 = 0x4,
   STHS34PF80_LPF_ODR_DIV_400 = 0x5,
@@ -694,23 +694,23 @@ int32_t sths34pf80_lpf_p_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_b
 
 typedef enum
 {
-  STHS34PF80_INT_HIZ = 0x0,
+  STHS34PF80_INT_HIZ  = 0x0,
   STHS34PF80_INT_DRDY = 0x1,
-  STHS34PF80_INT_OR = 0x2,
+  STHS34PF80_INT_OR   = 0x2,
 } sths34pf80_route_int_t;
 int32_t sths34pf80_route_int_set(const stmdev_ctx_t *ctx, sths34pf80_route_int_t val);
 int32_t sths34pf80_route_int_get(const stmdev_ctx_t *ctx, sths34pf80_route_int_t *val);
 
 typedef enum
 {
-  STHS34PF80_INT_NONE = 0x0,
-  STHS34PF80_INT_TSHOCK = 0x1,
-  STHS34PF80_INT_MOTION = 0x2,
-  STHS34PF80_INT_TSHOCK_MOTION = 0x3,
-  STHS34PF80_INT_PRESENCE = 0x4,
+  STHS34PF80_INT_NONE            = 0x0,
+  STHS34PF80_INT_TSHOCK          = 0x1,
+  STHS34PF80_INT_MOTION          = 0x2,
+  STHS34PF80_INT_TSHOCK_MOTION   = 0x3,
+  STHS34PF80_INT_PRESENCE        = 0x4,
   STHS34PF80_INT_TSHOCK_PRESENCE = 0x5,
   STHS34PF80_INT_MOTION_PRESENCE = 0x6,
-  STHS34PF80_INT_ALL = 0x7,
+  STHS34PF80_INT_ALL             = 0x7,
 } sths34pf80_int_or_t;
 int32_t sths34pf80_int_or_set(const stmdev_ctx_t *ctx, sths34pf80_int_or_t val);
 int32_t sths34pf80_int_or_get(const stmdev_ctx_t *ctx, sths34pf80_int_or_t *val);
@@ -719,14 +719,14 @@ typedef struct
 {
   enum
   {
-    STHS34PF80_PUSH_PULL = 0x0,
+    STHS34PF80_PUSH_PULL  = 0x0,
     STHS34PF80_OPEN_DRAIN = 0x1,
   } pin;
 
   enum
   {
     STHS34PF80_ACTIVE_HIGH = 0x0,
-    STHS34PF80_ACTIVE_LOW = 0x1,
+    STHS34PF80_ACTIVE_LOW  = 0x1,
   } polarity;
 } sths34pf80_int_mode_t;
 int32_t sths34pf80_int_mode_set(const stmdev_ctx_t *ctx, sths34pf80_int_mode_t val);

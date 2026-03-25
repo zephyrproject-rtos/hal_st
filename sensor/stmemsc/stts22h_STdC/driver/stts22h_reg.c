@@ -167,31 +167,31 @@ int32_t stts22h_temp_data_rate_get(const stmdev_ctx_t *ctx,
                                                  2) |
           (ctrl.avg << 4))
   {
-    case STTS22H_POWER_DOWN:
+    case 0x00:
       *val = STTS22H_POWER_DOWN;
       break;
 
-    case STTS22H_ONE_SHOT:
+    case 0x01:
       *val = STTS22H_ONE_SHOT;
       break;
 
-    case STTS22H_1Hz:
+    case 0x04:
       *val = STTS22H_1Hz;
       break;
 
-    case STTS22H_25Hz:
+    case 0x02:
       *val = STTS22H_25Hz;
       break;
 
-    case STTS22H_50Hz:
+    case 0x12:
       *val = STTS22H_50Hz;
       break;
 
-    case STTS22H_100Hz:
+    case 0x22:
       *val = STTS22H_100Hz;
       break;
 
-    case STTS22H_200Hz:
+    case 0x32:
       *val = STTS22H_200Hz;
       break;
 
@@ -429,11 +429,11 @@ int32_t stts22h_smbus_interface_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl.time_out_dis)
   {
-    case STTS22H_SMBUS_TIMEOUT_ENABLE:
+    case 0x00:
       *val = STTS22H_SMBUS_TIMEOUT_ENABLE;
       break;
 
-    case STTS22H_SMBUS_TIMEOUT_DISABLE:
+    case 0x01:
       *val = STTS22H_SMBUS_TIMEOUT_DISABLE;
       break;
 

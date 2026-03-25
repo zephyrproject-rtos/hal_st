@@ -139,38 +139,39 @@ int32_t hts221_humidity_avg_get(const stmdev_ctx_t *ctx, hts221_avgh_t *val)
 
   switch (reg.avgh)
   {
-    case HTS221_H_AVG_4:
+    case 0x00:
       *val = HTS221_H_AVG_4;
       break;
 
-    case HTS221_H_AVG_8:
+    case 0x01:
       *val = HTS221_H_AVG_8;
       break;
 
-    case HTS221_H_AVG_16:
+    case 0x02:
       *val = HTS221_H_AVG_16;
       break;
 
-    case HTS221_H_AVG_32:
+    case 0x03:
       *val = HTS221_H_AVG_32;
       break;
 
-    case HTS221_H_AVG_64:
+    case 0x04:
       *val = HTS221_H_AVG_64;
       break;
 
-    case HTS221_H_AVG_128:
+    case 0x05:
       *val = HTS221_H_AVG_128;
       break;
 
-    case HTS221_H_AVG_256:
+    case 0x06:
       *val = HTS221_H_AVG_256;
       break;
 
-    case HTS221_H_AVG_512:
+    case 0x07:
       *val = HTS221_H_AVG_512;
       break;
 
+    // mainly for 0x08 value
     default:
       *val = HTS221_H_AVG_ND;
       break;
@@ -223,38 +224,39 @@ int32_t hts221_temperature_avg_get(const stmdev_ctx_t *ctx,
 
   switch (reg.avgh)
   {
-    case HTS221_T_AVG_2:
+    case 0x00:
       *val = HTS221_T_AVG_2;
       break;
 
-    case HTS221_T_AVG_4:
+    case 0x01:
       *val = HTS221_T_AVG_4;
       break;
 
-    case HTS221_T_AVG_8:
+    case 0x02:
       *val = HTS221_T_AVG_8;
       break;
 
-    case HTS221_T_AVG_16:
+    case 0x03:
       *val = HTS221_T_AVG_16;
       break;
 
-    case HTS221_T_AVG_32:
+    case 0x04:
       *val = HTS221_T_AVG_32;
       break;
 
-    case HTS221_T_AVG_64:
+    case 0x05:
       *val = HTS221_T_AVG_64;
       break;
 
-    case HTS221_T_AVG_128:
+    case 0x06:
       *val = HTS221_T_AVG_128;
       break;
 
-    case HTS221_T_AVG_256:
+    case 0x07:
       *val = HTS221_T_AVG_256;
       break;
 
+    // mainly for 0x08 value
     default:
       *val = HTS221_T_AVG_ND;
       break;
@@ -305,22 +307,23 @@ int32_t hts221_data_rate_get(const stmdev_ctx_t *ctx, hts221_odr_t *val)
 
   switch (reg.odr)
   {
-    case HTS221_ONE_SHOT:
+    case 0x00:
       *val = HTS221_ONE_SHOT;
       break;
 
-    case HTS221_ODR_1Hz:
+    case 0x01:
       *val = HTS221_ODR_1Hz;
       break;
 
-    case HTS221_ODR_7Hz:
+    case 0x02:
       *val = HTS221_ODR_7Hz;
       break;
 
-    case HTS221_ODR_12Hz5:
+    case 0x03:
       *val = HTS221_ODR_12Hz5;
       break;
 
+    // mainly for 0x04 value
     default:
       *val = HTS221_ODR_ND;
       break;
@@ -794,14 +797,15 @@ int32_t hts221_pin_mode_get(const stmdev_ctx_t *ctx, hts221_pp_od_t *val)
 
   switch (reg.pp_od)
   {
-    case HTS221_PUSH_PULL:
+    case 0x00:
       *val = HTS221_PUSH_PULL;
       break;
 
-    case HTS221_OPEN_DRAIN:
+    case 0x01:
       *val = HTS221_OPEN_DRAIN;
       break;
 
+    // mainly for 0x02
     default:
       *val = HTS221_PIN_MODE_ND;
       break;
@@ -854,14 +858,15 @@ int32_t hts221_int_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (reg.drdy_h_l)
   {
-    case HTS221_ACTIVE_HIGH:
+    case 0x00:
       *val = HTS221_ACTIVE_HIGH;
       break;
 
-    case HTS221_ACTIVE_LOW:
+    case 0x01:
       *val = HTS221_ACTIVE_LOW;
       break;
 
+    // mainly for 0x02
     default:
       *val = HTS221_ACTIVE_ND;
       break;

@@ -119,9 +119,9 @@ float_t lis2ds12_from_fs16g_to_mg(int16_t lsb)
   return ((float_t)lsb * 0.488f);
 }
 
-float_t lis2ds12_from_lsb_to_celsius(int16_t lsb)
+float_t lis2ds12_from_lsb_to_celsius(int8_t lsb)
 {
-  return (((float_t)lsb / 256.0f) + 25.0f);
+  return (((float_t)lsb) + 25.0f);
 }
 
 /**
@@ -284,19 +284,19 @@ int32_t lis2ds12_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1.fs)
   {
-    case LIS2DS12_2g:
+    case 0x00:
       *val = LIS2DS12_2g;
       break;
 
-    case LIS2DS12_16g:
+    case 0x01:
       *val = LIS2DS12_16g;
       break;
 
-    case LIS2DS12_4g:
+    case 0x02:
       *val = LIS2DS12_4g;
       break;
 
-    case LIS2DS12_8g:
+    case 0x03:
       *val = LIS2DS12_8g;
       break;
 
@@ -354,79 +354,79 @@ int32_t lis2ds12_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl1.hf_odr << 4) + ctrl1.odr)
   {
-    case LIS2DS12_XL_ODR_OFF:
+    case 0x00:
       *val = LIS2DS12_XL_ODR_OFF;
       break;
 
-    case LIS2DS12_XL_ODR_1Hz_LP:
+    case 0x08:
       *val = LIS2DS12_XL_ODR_1Hz_LP;
       break;
 
-    case LIS2DS12_XL_ODR_12Hz5_LP:
+    case 0x09:
       *val = LIS2DS12_XL_ODR_12Hz5_LP;
       break;
 
-    case LIS2DS12_XL_ODR_25Hz_LP:
+    case 0x0A:
       *val = LIS2DS12_XL_ODR_25Hz_LP;
       break;
 
-    case LIS2DS12_XL_ODR_50Hz_LP:
+    case 0x0B:
       *val = LIS2DS12_XL_ODR_50Hz_LP;
       break;
 
-    case LIS2DS12_XL_ODR_100Hz_LP:
+    case 0x0C:
       *val = LIS2DS12_XL_ODR_100Hz_LP;
       break;
 
-    case LIS2DS12_XL_ODR_200Hz_LP:
+    case 0x0D:
       *val = LIS2DS12_XL_ODR_200Hz_LP;
       break;
 
-    case LIS2DS12_XL_ODR_400Hz_LP:
+    case 0x0E:
       *val = LIS2DS12_XL_ODR_400Hz_LP;
       break;
 
-    case LIS2DS12_XL_ODR_800Hz_LP:
+    case 0x0F:
       *val = LIS2DS12_XL_ODR_800Hz_LP;
       break;
 
-    case LIS2DS12_XL_ODR_12Hz5_HR:
+    case 0x01:
       *val = LIS2DS12_XL_ODR_12Hz5_HR;
       break;
 
-    case LIS2DS12_XL_ODR_25Hz_HR:
+    case 0x02:
       *val = LIS2DS12_XL_ODR_25Hz_HR;
       break;
 
-    case LIS2DS12_XL_ODR_50Hz_HR:
+    case 0x03:
       *val = LIS2DS12_XL_ODR_50Hz_HR;
       break;
 
-    case LIS2DS12_XL_ODR_100Hz_HR:
+    case 0x04:
       *val = LIS2DS12_XL_ODR_100Hz_HR;
       break;
 
-    case LIS2DS12_XL_ODR_200Hz_HR:
+    case 0x05:
       *val = LIS2DS12_XL_ODR_200Hz_HR;
       break;
 
-    case LIS2DS12_XL_ODR_400Hz_HR:
+    case 0x06:
       *val = LIS2DS12_XL_ODR_400Hz_HR;
       break;
 
-    case LIS2DS12_XL_ODR_800Hz_HR:
+    case 0x07:
       *val = LIS2DS12_XL_ODR_800Hz_HR;
       break;
 
-    case LIS2DS12_XL_ODR_1k6Hz_HF:
+    case 0x15:
       *val = LIS2DS12_XL_ODR_1k6Hz_HF;
       break;
 
-    case LIS2DS12_XL_ODR_3k2Hz_HF:
+    case 0x16:
       *val = LIS2DS12_XL_ODR_3k2Hz_HF;
       break;
 
-    case LIS2DS12_XL_ODR_6k4Hz_HF:
+    case 0x17:
       *val = LIS2DS12_XL_ODR_6k4Hz_HF;
       break;
 
@@ -510,19 +510,21 @@ int32_t lis2ds12_acceleration_module_raw_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Temperature data output register (r). L and H registers together
-  *         express a 16-bit word in two's complement.[get]
+  * @brief  Temperature data output register (r). The value is expressed
+  *         as two's complement sign. Sensitivity = 1 °C/LSB 0 LSB
+  *         represent T=25 °C ambient. (Use `lis2ds12_from_lsb_to_celsius`
+  *         to convert raw data)[get]
   *
   * @param  ctx    read / write interface definitions.(ptr)
   * @param  buff   buffer that stores data read.(ptr)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t lis2ds12_temperature_raw_get(const stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lis2ds12_temperature_raw_get(const stmdev_ctx_t *ctx, int8_t *buff)
 {
   int32_t ret;
 
-  ret = lis2ds12_read_reg(ctx, LIS2DS12_OUT_T, buff, 1);
+  ret = lis2ds12_read_reg(ctx, LIS2DS12_OUT_T, (uint8_t *)buff, 1);
 
   return ret;
 }
@@ -838,15 +840,15 @@ int32_t lis2ds12_xl_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3.st)
   {
-    case LIS2DS12_XL_ST_DISABLE:
+    case 0x00:
       *val = LIS2DS12_XL_ST_DISABLE;
       break;
 
-    case LIS2DS12_XL_ST_POSITIVE:
+    case 0x01:
       *val = LIS2DS12_XL_ST_POSITIVE;
       break;
 
-    case LIS2DS12_XL_ST_NEGATIVE:
+    case 0x02:
       *val = LIS2DS12_XL_ST_NEGATIVE;
       break;
 
@@ -903,11 +905,11 @@ int32_t lis2ds12_data_ready_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5.drdy_pulsed)
   {
-    case LIS2DS12_DRDY_LATCHED:
+    case 0x00:
       *val = LIS2DS12_DRDY_LATCHED;
       break;
 
-    case LIS2DS12_DRDY_PULSED:
+    case 0x01:
       *val = LIS2DS12_DRDY_PULSED;
       break;
 
@@ -977,11 +979,11 @@ int32_t lis2ds12_xl_hp_path_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2.fds_slope)
   {
-    case LIS2DS12_HP_INTERNAL_ONLY:
+    case 0x00:
       *val = LIS2DS12_HP_INTERNAL_ONLY;
       break;
 
-    case LIS2DS12_HP_ON_OUTPUTS:
+    case 0x01:
       *val = LIS2DS12_HP_ON_OUTPUTS;
       break;
 
@@ -1049,11 +1051,11 @@ int32_t lis2ds12_spi_mode_get(const stmdev_ctx_t *ctx, lis2ds12_sim_t *val)
 
   switch (ctrl2.sim)
   {
-    case LIS2DS12_SPI_4_WIRE:
+    case 0x00:
       *val = LIS2DS12_SPI_4_WIRE;
       break;
 
-    case LIS2DS12_SPI_3_WIRE:
+    case 0x01:
       *val = LIS2DS12_SPI_3_WIRE;
       break;
 
@@ -1110,11 +1112,11 @@ int32_t lis2ds12_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2.i2c_disable)
   {
-    case LIS2DS12_I2C_ENABLE:
+    case 0x00:
       *val = LIS2DS12_I2C_ENABLE;
       break;
 
-    case LIS2DS12_I2C_DISABLE:
+    case 0x01:
       *val = LIS2DS12_I2C_DISABLE;
       break;
 
@@ -1174,11 +1176,11 @@ int32_t lis2ds12_cs_mode_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl.if_cs_pu_dis)
   {
-    case LIS2DS12_PULL_UP_CONNECTED:
+    case 0x00:
       *val = LIS2DS12_PULL_UP_CONNECTED;
       break;
 
-    case LIS2DS12_PULL_UP_DISCONNECTED:
+    case 0x01:
       *val = LIS2DS12_PULL_UP_DISCONNECTED;
       break;
 
@@ -1247,11 +1249,11 @@ int32_t lis2ds12_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3.pp_od)
   {
-    case LIS2DS12_PUSH_PULL:
+    case 0x00:
       *val = LIS2DS12_PUSH_PULL;
       break;
 
-    case LIS2DS12_OPEN_DRAIN:
+    case 0x01:
       *val = LIS2DS12_OPEN_DRAIN;
       break;
 
@@ -1308,11 +1310,11 @@ int32_t lis2ds12_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3.h_lactive)
   {
-    case LIS2DS12_ACTIVE_HIGH:
+    case 0x00:
       *val = LIS2DS12_ACTIVE_HIGH;
       break;
 
-    case LIS2DS12_ACTIVE_LOW:
+    case 0x01:
       *val = LIS2DS12_ACTIVE_LOW;
       break;
 
@@ -1369,11 +1371,11 @@ int32_t lis2ds12_int_notification_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3.lir)
   {
-    case LIS2DS12_INT_PULSED:
+    case 0x00:
       *val = LIS2DS12_INT_PULSED;
       break;
 
-    case LIS2DS12_INT_LATCHED:
+    case 0x01:
       *val = LIS2DS12_INT_LATCHED;
       break;
 
@@ -1631,11 +1633,11 @@ int32_t lis2ds12_sh_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (func_ctrl.tud_en)
   {
-    case LIS2DS12_EXT_PULL_UP:
+    case 0x00:
       *val = LIS2DS12_EXT_PULL_UP;
       break;
 
-    case LIS2DS12_INTERNAL_PULL_UP:
+    case 0x01:
       *val = LIS2DS12_INTERNAL_PULL_UP;
       break;
 
@@ -2285,11 +2287,11 @@ int32_t lis2ds12_tap_mode_get(const stmdev_ctx_t *ctx,
 
   switch (wake_up_ths.single_double_tap)
   {
-    case LIS2DS12_ONLY_SINGLE:
+    case 0x00:
       *val = LIS2DS12_ONLY_SINGLE;
       break;
 
-    case LIS2DS12_ONLY_DOUBLE:
+    case 0x01:
       *val = LIS2DS12_ONLY_DOUBLE;
       break;
 
@@ -2380,19 +2382,19 @@ int32_t lis2ds12_6d_threshold_get(const stmdev_ctx_t *ctx,
 
   switch (tap_6d_ths._6d_ths)
   {
-    case LIS2DS12_DEG_80:
+    case 0x00:
       *val = LIS2DS12_DEG_80;
       break;
 
-    case LIS2DS12_DEG_70:
+    case 0x01:
       *val = LIS2DS12_DEG_70;
       break;
 
-    case LIS2DS12_DEG_60:
+    case 0x02:
       *val = LIS2DS12_DEG_60;
       break;
 
-    case LIS2DS12_DEG_50:
+    case 0x03:
       *val = LIS2DS12_DEG_50;
       break;
 
@@ -2713,23 +2715,23 @@ int32_t lis2ds12_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl.fmode)
   {
-    case LIS2DS12_BYPASS_MODE:
+    case 0x00:
       *val = LIS2DS12_BYPASS_MODE;
       break;
 
-    case LIS2DS12_FIFO_MODE:
+    case 0x01:
       *val = LIS2DS12_FIFO_MODE;
       break;
 
-    case LIS2DS12_STREAM_TO_FIFO_MODE:
+    case 0x03:
       *val = LIS2DS12_STREAM_TO_FIFO_MODE;
       break;
 
-    case LIS2DS12_BYPASS_TO_STREAM_MODE:
+    case 0x04:
       *val = LIS2DS12_BYPASS_TO_STREAM_MODE;
       break;
 
-    case LIS2DS12_STREAM_MODE:
+    case 0x06:
       *val = LIS2DS12_STREAM_MODE;
       break;
 
@@ -2994,11 +2996,11 @@ int32_t lis2ds12_pedo_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (step_counter_minths.pedo4g)
   {
-    case LIS2DS12_PEDO_AT_2g:
+    case 0x00:
       *val = LIS2DS12_PEDO_AT_2g;
       break;
 
-    case LIS2DS12_PEDO_AT_4g:
+    case 0x01:
       *val = LIS2DS12_PEDO_AT_4g;
       break;
 

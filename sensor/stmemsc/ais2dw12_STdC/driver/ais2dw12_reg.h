@@ -97,11 +97,6 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } bitwise_t;
 
-/**
-  * @}
-  *
-  */
-
 #define PROPERTY_DISABLE                (0U)
 #define PROPERTY_ENABLE                 (1U)
 
@@ -201,7 +196,7 @@ typedef struct
   uint8_t odr                        : 4;
   uint8_t op_mode                    : 2;
   uint8_t pw_mode                    : 2;
-#endif /* DRV_BYTE_ORDER*/
+#endif /* DRV_BYTE_ORDER */
 } ais2dw12_ctrl1_t;
 
 #define AIS2DW12_CTRL2                       0x21U
@@ -373,13 +368,13 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t not_used_01                 : 5;
-  uint8_t _6d_ths                     : 2;
-  uint8_t _4d_en                      : 1;
+  uint8_t not_used_01                : 5;
+  uint8_t _6d_ths                    : 2;
+  uint8_t _4d_en                     : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t _4d_en                      : 1;
-  uint8_t _6d_ths                     : 2;
-  uint8_t not_used_01                 : 5;
+  uint8_t _4d_en                     : 1;
+  uint8_t _6d_ths                    : 2;
+  uint8_t not_used_01                : 5;
 #endif /* DRV_BYTE_ORDER */
 } ais2dw12_sixd_ths_t;
 
@@ -499,15 +494,15 @@ typedef struct
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ff_ia                      : 1;
   uint8_t wu_ia                      : 1;
-  uint8_t not_used_01                : 2;
+  uint8_t not_used_02                : 2;
   uint8_t _6d_ia                     : 1;
   uint8_t sleep_change_ia            : 1;
-  uint8_t not_used_02                : 2;
+  uint8_t not_used_01                : 2;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used_02                : 2;
+  uint8_t not_used_01                : 2;
   uint8_t sleep_change_ia            : 1;
   uint8_t _6d_ia                     : 1;
-  uint8_t not_used_01                : 2;
+  uint8_t not_used_02                : 2;
   uint8_t wu_ia                      : 1;
   uint8_t ff_ia                      : 1;
 #endif /* DRV_BYTE_ORDER */
@@ -603,21 +598,22 @@ int32_t ais2dw12_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
 
 float_t ais2dw12_from_fs2_to_mg(int16_t lsb);
 float_t ais2dw12_from_fs4_to_mg(int16_t lsb);
-float_t ais2dw12_from_fs2_12bit_to_mg(int16_t lsb);
-float_t ais2dw12_from_fs4_12bit_to_mg(int16_t lsb);
+
+float_t ais2dw12_from_fs2_pw1_to_mg(int16_t lsb);
+float_t ais2dw12_from_fs4_pw1_to_mg(int16_t lsb);
 
 float_t ais2dw12_from_lsb_to_celsius(int16_t lsb);
 
 typedef enum
 {
-  AIS2DW12_PWR_MD_4                           = 0x03,
-  AIS2DW12_PWR_MD_3                           = 0x02,
-  AIS2DW12_PWR_MD_2                           = 0x01,
-  AIS2DW12_PWR_MD_12bit                       = 0x00,
-  AIS2DW12_SINGLE_PWR_MD_4                    = 0x0B,
-  AIS2DW12_SINGLE_PWR_MD_3                    = 0x0A,
-  AIS2DW12_SINGLE_PWR_MD_2                    = 0x09,
-  AIS2DW12_SINGLE_PWR_MD_12bit                = 0x08,
+  AIS2DW12_CONT_PWR_4                          = 0x03,
+  AIS2DW12_CONT_PWR_3                          = 0x02,
+  AIS2DW12_CONT_PWR_2                          = 0x01,
+  AIS2DW12_CONT_PWR_12bit                      = 0x00,
+  AIS2DW12_SINGLE_PWR_4                        = 0x0B,
+  AIS2DW12_SINGLE_PWR_3                        = 0x0A,
+  AIS2DW12_SINGLE_PWR_2                        = 0x09,
+  AIS2DW12_SINGLE_PWR_12bit                    = 0x08,
 } ais2dw12_mode_t;
 int32_t ais2dw12_power_mode_set(const stmdev_ctx_t *ctx,
                                 ais2dw12_mode_t val);
@@ -697,10 +693,10 @@ int32_t ais2dw12_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 int32_t ais2dw12_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2dw12_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ais2dw12_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ais2dw12_reset_set(const stmdev_ctx_t *ctx);
 int32_t ais2dw12_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ais2dw12_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ais2dw12_boot_set(const stmdev_ctx_t *ctx);
 int32_t ais2dw12_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
@@ -735,7 +731,7 @@ int32_t ais2dw12_filter_path_get(const stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  AIS2DW12_ODR_DIV_2     = 0,
+  AIS2DW12_LPF1_ONLY     = 0,
   AIS2DW12_ODR_DIV_4     = 1,
   AIS2DW12_ODR_DIV_10    = 2,
   AIS2DW12_ODR_DIV_20    = 3,

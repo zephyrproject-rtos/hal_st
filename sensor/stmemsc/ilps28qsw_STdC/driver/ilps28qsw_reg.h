@@ -554,6 +554,13 @@ typedef struct
 int32_t ilps28qsw_all_sources_get(const stmdev_ctx_t *ctx,
                                   ilps28qsw_all_sources_t *val);
 
+typedef struct
+{
+  uint8_t drdy_pres   :  1; /* Pressure data ready */
+  uint8_t drdy_temp   :  1; /* Temperature data ready */
+} ilps28qsw_data_ready_t;
+int32_t ilps28qsw_flag_data_ready_get(const stmdev_ctx_t *ctx, ilps28qsw_data_ready_t *val);
+
 typedef enum
 {
   ILPS28QSW_1260hPa = 0x00,
@@ -662,7 +669,14 @@ typedef enum
 int32_t ilps28qsw_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, ilps28qsw_fifo_event_t val);
 int32_t ilps28qsw_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, ilps28qsw_fifo_event_t *val);
 
-int32_t ilps28qsw_fifo_level_get(const stmdev_ctx_t *ctx, uint8_t *val);
+typedef struct
+{
+  uint8_t fifo_level;
+  uint8_t fifo_full                    : 1;
+  uint8_t fifo_ovr                     : 1;
+  uint8_t fifo_th                      : 1;
+} ilps28qsw_fifo_status_t;
+int32_t ilps28qsw_fifo_status_get(const stmdev_ctx_t *ctx, ilps28qsw_fifo_status_t *val);
 
 typedef struct
 {

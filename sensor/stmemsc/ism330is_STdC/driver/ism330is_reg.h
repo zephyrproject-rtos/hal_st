@@ -108,8 +108,18 @@ typedef struct
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, const uint8_t *, uint16_t);
-typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_write_ptr)(
+  void *handle,
+  uint8_t reg,
+  const uint8_t *buf,
+  uint16_t len);
+
+typedef int32_t (*stmdev_read_ptr)(
+  void *handle,
+  uint8_t reg,
+  uint8_t *buf,
+  uint16_t len);
+
 typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
@@ -2390,7 +2400,7 @@ typedef enum
 {
   ISM330IS_XL_ODR_OFF =                0x0,
   ISM330IS_XL_ODR_AT_12Hz5_HP =        0x1,
-  ISM330IS_XL_ODR_AT_26H_HP =          0x2,
+  ISM330IS_XL_ODR_AT_26Hz_HP =         0x2,
   ISM330IS_XL_ODR_AT_52Hz_HP =         0x3,
   ISM330IS_XL_ODR_AT_104Hz_HP =        0x4,
   ISM330IS_XL_ODR_AT_208Hz_HP =        0x5,
@@ -2400,15 +2410,10 @@ typedef enum
   ISM330IS_XL_ODR_AT_3333Hz_HP =       0x9,
   ISM330IS_XL_ODR_AT_6667Hz_HP =       0xa,
   ISM330IS_XL_ODR_AT_12Hz5_LP =        0x11,
-  ISM330IS_XL_ODR_AT_26H_LP =          0x12,
+  ISM330IS_XL_ODR_AT_26Hz_LP =         0x12,
   ISM330IS_XL_ODR_AT_52Hz_LP =         0x13,
   ISM330IS_XL_ODR_AT_104Hz_LP =        0x14,
   ISM330IS_XL_ODR_AT_208Hz_LP =        0x15,
-  ISM330IS_XL_ODR_AT_416Hz_LP =        0x16,
-  ISM330IS_XL_ODR_AT_833Hz_LP =        0x17,
-  ISM330IS_XL_ODR_AT_1667Hz_LP =       0x18,
-  ISM330IS_XL_ODR_AT_3333Hz_LP =       0x19,
-  ISM330IS_XL_ODR_AT_6667Hz_LP =       0x1a,
   ISM330IS_XL_ODR_AT_1Hz6_LP =         0x1b,
 } ism330is_xl_data_rate_t;
 int32_t ism330is_xl_data_rate_set(const stmdev_ctx_t *ctx,
@@ -2433,7 +2438,7 @@ typedef enum
 {
   ISM330IS_GY_ODR_OFF =                0x0,
   ISM330IS_GY_ODR_AT_12Hz5_HP =        0x1,
-  ISM330IS_GY_ODR_AT_26H_HP =          0x2,
+  ISM330IS_GY_ODR_AT_26Hz_HP =         0x2,
   ISM330IS_GY_ODR_AT_52Hz_HP =         0x3,
   ISM330IS_GY_ODR_AT_104Hz_HP =        0x4,
   ISM330IS_GY_ODR_AT_208Hz_HP =        0x5,
@@ -2443,15 +2448,10 @@ typedef enum
   ISM330IS_GY_ODR_AT_3333Hz_HP =       0x9,
   ISM330IS_GY_ODR_AT_6667Hz_HP =       0xa,
   ISM330IS_GY_ODR_AT_12Hz5_LP =        0x11,
-  ISM330IS_GY_ODR_AT_26H_LP =          0x12,
+  ISM330IS_GY_ODR_AT_26Hz_LP =         0x12,
   ISM330IS_GY_ODR_AT_52Hz_LP =         0x13,
   ISM330IS_GY_ODR_AT_104Hz_LP =        0x14,
   ISM330IS_GY_ODR_AT_208Hz_LP =        0x15,
-  ISM330IS_GY_ODR_AT_416Hz_LP =        0x16,
-  ISM330IS_GY_ODR_AT_833Hz_LP =        0x17,
-  ISM330IS_GY_ODR_AT_1667Hz_LP =       0x18,
-  ISM330IS_GY_ODR_AT_3333Hz_LP =       0x19,
-  ISM330IS_GY_ODR_AT_6667Hz_LP =       0x1a,
 } ism330is_gy_data_rate_t;
 int32_t ism330is_gy_data_rate_set(const stmdev_ctx_t *ctx,
                                   ism330is_gy_data_rate_t val);
@@ -2805,3 +2805,4 @@ int32_t ism330is_ispu_algo_set(const stmdev_ctx_t *ctx, uint32_t val);
 #endif
 
 #endif /*ISM330IS_DRIVER_H */
+

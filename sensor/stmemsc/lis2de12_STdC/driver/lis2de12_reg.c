@@ -266,11 +266,11 @@ int32_t lis2de12_temperature_meas_get(const stmdev_ctx_t *ctx,
 
   switch (temp_cfg_reg.temp_en)
   {
-    case LIS2DE12_TEMP_DISABLE:
+    case 0x00:
       *val = LIS2DE12_TEMP_DISABLE;
       break;
 
-    case LIS2DE12_TEMP_ENABLE:
+    case 0x03:
       *val = LIS2DE12_TEMP_ENABLE;
       break;
 
@@ -329,43 +329,43 @@ int32_t lis2de12_data_rate_get(const stmdev_ctx_t *ctx, lis2de12_odr_t *val)
 
   switch (ctrl_reg1.odr)
   {
-    case LIS2DE12_POWER_DOWN:
+    case 0x00:
       *val = LIS2DE12_POWER_DOWN;
       break;
 
-    case LIS2DE12_ODR_1Hz:
+    case 0x01:
       *val = LIS2DE12_ODR_1Hz;
       break;
 
-    case LIS2DE12_ODR_10Hz:
+    case 0x02:
       *val = LIS2DE12_ODR_10Hz;
       break;
 
-    case LIS2DE12_ODR_25Hz:
+    case 0x03:
       *val = LIS2DE12_ODR_25Hz;
       break;
 
-    case LIS2DE12_ODR_50Hz:
+    case 0x04:
       *val = LIS2DE12_ODR_50Hz;
       break;
 
-    case LIS2DE12_ODR_100Hz:
+    case 0x05:
       *val = LIS2DE12_ODR_100Hz;
       break;
 
-    case LIS2DE12_ODR_200Hz:
+    case 0x06:
       *val = LIS2DE12_ODR_200Hz;
       break;
 
-    case LIS2DE12_ODR_400Hz:
+    case 0x07:
       *val = LIS2DE12_ODR_400Hz;
       break;
 
-    case LIS2DE12_ODR_1kHz620_LP:
+    case 0x08:
       *val = LIS2DE12_ODR_1kHz620_LP;
       break;
 
-    case LIS2DE12_ODR_5kHz376_LP_1kHz344_NM_HP:
+    case 0x09:
       *val = LIS2DE12_ODR_5kHz376_LP_1kHz344_NM_HP;
       break;
 
@@ -490,19 +490,19 @@ int32_t lis2de12_high_pass_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hpcf)
   {
-    case LIS2DE12_AGGRESSIVE:
+    case 0x00:
       *val = LIS2DE12_AGGRESSIVE;
       break;
 
-    case LIS2DE12_STRONG:
+    case 0x01:
       *val = LIS2DE12_STRONG;
       break;
 
-    case LIS2DE12_MEDIUM:
+    case 0x02:
       *val = LIS2DE12_MEDIUM;
       break;
 
-    case LIS2DE12_LIGHT:
+    case 0x03:
       *val = LIS2DE12_LIGHT;
       break;
 
@@ -562,19 +562,19 @@ int32_t lis2de12_high_pass_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hpm)
   {
-    case LIS2DE12_NORMAL_WITH_RST:
+    case 0x00:
       *val = LIS2DE12_NORMAL_WITH_RST;
       break;
 
-    case LIS2DE12_REFERENCE_MODE:
+    case 0x01:
       *val = LIS2DE12_REFERENCE_MODE;
       break;
 
-    case LIS2DE12_NORMAL:
+    case 0x02:
       *val = LIS2DE12_NORMAL;
       break;
 
-    case LIS2DE12_AUTORST_ON_INT:
+    case 0x03:
       *val = LIS2DE12_AUTORST_ON_INT;
       break;
 
@@ -632,19 +632,19 @@ int32_t lis2de12_full_scale_get(const stmdev_ctx_t *ctx, lis2de12_fs_t *val)
 
   switch (ctrl_reg4.fs)
   {
-    case LIS2DE12_2g:
+    case 0x00:
       *val = LIS2DE12_2g;
       break;
 
-    case LIS2DE12_4g:
+    case 0x01:
       *val = LIS2DE12_4g;
       break;
 
-    case LIS2DE12_8g:
+    case 0x02:
       *val = LIS2DE12_8g;
       break;
 
-    case LIS2DE12_16g:
+    case 0x03:
       *val = LIS2DE12_16g;
       break;
 
@@ -887,15 +887,15 @@ int32_t lis2de12_self_test_get(const stmdev_ctx_t *ctx, lis2de12_st_t *val)
 
   switch (ctrl_reg4.st)
   {
-    case LIS2DE12_ST_DISABLE:
+    case 0x00:
       *val = LIS2DE12_ST_DISABLE;
       break;
 
-    case LIS2DE12_ST_POSITIVE:
+    case 0x01:
       *val = LIS2DE12_ST_POSITIVE;
       break;
 
-    case LIS2DE12_ST_NEGATIVE:
+    case 0x02:
       *val = LIS2DE12_ST_NEGATIVE;
       break;
 
@@ -1372,35 +1372,35 @@ int32_t lis2de12_high_pass_int_conf_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hp)
   {
-    case LIS2DE12_DISC_FROM_INT_GENERATOR:
+    case 0x00:
       *val = LIS2DE12_DISC_FROM_INT_GENERATOR;
       break;
 
-    case LIS2DE12_ON_INT1_GEN:
+    case 0x01:
       *val = LIS2DE12_ON_INT1_GEN;
       break;
 
-    case LIS2DE12_ON_INT2_GEN:
+    case 0x02:
       *val = LIS2DE12_ON_INT2_GEN;
       break;
 
-    case LIS2DE12_ON_TAP_GEN:
+    case 0x04:
       *val = LIS2DE12_ON_TAP_GEN;
       break;
 
-    case LIS2DE12_ON_INT1_INT2_GEN:
+    case 0x03:
       *val = LIS2DE12_ON_INT1_INT2_GEN;
       break;
 
-    case LIS2DE12_ON_INT1_TAP_GEN:
+    case 0x05:
       *val = LIS2DE12_ON_INT1_TAP_GEN;
       break;
 
-    case LIS2DE12_ON_INT2_TAP_GEN:
+    case 0x06:
       *val = LIS2DE12_ON_INT2_TAP_GEN;
       break;
 
-    case LIS2DE12_ON_INT1_INT2_TAP_GEN:
+    case 0x07:
       *val = LIS2DE12_ON_INT1_INT2_TAP_GEN;
       break;
 
@@ -1553,11 +1553,11 @@ int32_t lis2de12_int2_pin_notification_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg5.lir_int2)
   {
-    case LIS2DE12_INT2_PULSED:
+    case 0x00:
       *val = LIS2DE12_INT2_PULSED;
       break;
 
-    case LIS2DE12_INT2_LATCHED:
+    case 0x01:
       *val = LIS2DE12_INT2_LATCHED;
       break;
 
@@ -1672,11 +1672,11 @@ int32_t lis2de12_int1_pin_notification_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg5.lir_int1)
   {
-    case LIS2DE12_INT1_PULSED:
+    case 0x00:
       *val = LIS2DE12_INT1_PULSED;
       break;
 
-    case LIS2DE12_INT1_LATCHED:
+    case 0x01:
       *val = LIS2DE12_INT1_LATCHED;
       break;
 
@@ -1881,11 +1881,11 @@ int32_t lis2de12_fifo_trigger_event_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl_reg.tr)
   {
-    case LIS2DE12_INT1_GEN:
+    case 0x00:
       *val = LIS2DE12_INT1_GEN;
       break;
 
-    case LIS2DE12_INT2_GEN:
+    case 0x01:
       *val = LIS2DE12_INT2_GEN;
       break;
 
@@ -1943,19 +1943,19 @@ int32_t lis2de12_fifo_mode_get(const stmdev_ctx_t *ctx, lis2de12_fm_t *val)
 
   switch (fifo_ctrl_reg.fm)
   {
-    case LIS2DE12_BYPASS_MODE:
+    case 0x00:
       *val = LIS2DE12_BYPASS_MODE;
       break;
 
-    case LIS2DE12_FIFO_MODE:
+    case 0x01:
       *val = LIS2DE12_FIFO_MODE;
       break;
 
-    case LIS2DE12_DYNAMIC_STREAM_MODE:
+    case 0x02:
       *val = LIS2DE12_DYNAMIC_STREAM_MODE;
       break;
 
-    case LIS2DE12_STREAM_TO_FIFO_MODE:
+    case 0x03:
       *val = LIS2DE12_STREAM_TO_FIFO_MODE;
       break;
 
@@ -2242,11 +2242,11 @@ int32_t lis2de12_tap_notification_mode_get(const stmdev_ctx_t *ctx,
 
   switch (click_ths.lir_click)
   {
-    case LIS2DE12_TAP_PULSED:
+    case 0x00:
       *val = LIS2DE12_TAP_PULSED;
       break;
 
-    case LIS2DE12_TAP_LATCHED:
+    case 0x01:
       *val = LIS2DE12_TAP_LATCHED;
       break;
 
@@ -2595,11 +2595,11 @@ int32_t lis2de12_pin_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg0.sdo_pu_disc)
   {
-    case LIS2DE12_PULL_UP_DISCONNECT:
+    case 0x01:
       *val = LIS2DE12_PULL_UP_DISCONNECT;
       break;
 
-    case LIS2DE12_PULL_UP_CONNECT:
+    case 0x00:
       *val = LIS2DE12_PULL_UP_CONNECT;
       break;
 
@@ -2657,11 +2657,11 @@ int32_t lis2de12_spi_mode_get(const stmdev_ctx_t *ctx, lis2de12_sim_t *val)
 
   switch (ctrl_reg4.sim)
   {
-    case LIS2DE12_SPI_4_WIRE:
+    case 0x00:
       *val = LIS2DE12_SPI_4_WIRE;
       break;
 
-    case LIS2DE12_SPI_3_WIRE:
+    case 0x01:
       *val = LIS2DE12_SPI_3_WIRE;
       break;
 

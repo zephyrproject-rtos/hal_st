@@ -181,19 +181,19 @@ int32_t iis2iclx_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1_xl.fs_xl)
   {
-    case IIS2ICLX_500mg:
+    case 0x00:
       *val = IIS2ICLX_500mg;
       break;
 
-    case IIS2ICLX_3g:
+    case 0x01:
       *val = IIS2ICLX_3g;
       break;
 
-    case IIS2ICLX_1g:
+    case 0x02:
       *val = IIS2ICLX_1g;
       break;
 
-    case IIS2ICLX_2g:
+    case 0x03:
       *val = IIS2ICLX_2g;
       break;
 
@@ -530,35 +530,35 @@ int32_t iis2iclx_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1_xl.odr_xl)
   {
-    case IIS2ICLX_XL_ODR_OFF:
+    case 0x00:
       *val = IIS2ICLX_XL_ODR_OFF;
       break;
 
-    case IIS2ICLX_XL_ODR_12Hz5:
+    case 0x01:
       *val = IIS2ICLX_XL_ODR_12Hz5;
       break;
 
-    case IIS2ICLX_XL_ODR_26Hz:
+    case 0x02:
       *val = IIS2ICLX_XL_ODR_26Hz;
       break;
 
-    case IIS2ICLX_XL_ODR_52Hz:
+    case 0x03:
       *val = IIS2ICLX_XL_ODR_52Hz;
       break;
 
-    case IIS2ICLX_XL_ODR_104Hz:
+    case 0x04:
       *val = IIS2ICLX_XL_ODR_104Hz;
       break;
 
-    case IIS2ICLX_XL_ODR_208Hz:
+    case 0x05:
       *val = IIS2ICLX_XL_ODR_208Hz;
       break;
 
-    case IIS2ICLX_XL_ODR_416Hz:
+    case 0x06:
       *val = IIS2ICLX_XL_ODR_416Hz;
       break;
 
-    case IIS2ICLX_XL_ODR_833Hz:
+    case 0x07:
       *val = IIS2ICLX_XL_ODR_833Hz;
       break;
 
@@ -662,11 +662,11 @@ int32_t iis2iclx_xl_offset_weight_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl6_c.usr_off_w)
   {
-    case IIS2ICLX_LSb_1mg:
+    case 0x00:
       *val = IIS2ICLX_LSb_1mg;
       break;
 
-    case IIS2ICLX_LSb_16mg:
+    case 0x01:
       *val = IIS2ICLX_LSb_16mg;
       break;
 
@@ -1254,15 +1254,15 @@ int32_t iis2iclx_mem_bank_get(const stmdev_ctx_t *ctx,
 
   switch (func_cfg_access.reg_access)
   {
-    case IIS2ICLX_USER_BANK:
+    case 0x00:
       *val = IIS2ICLX_USER_BANK;
       break;
 
-    case IIS2ICLX_SENSOR_HUB_BANK:
+    case 0x01:
       *val = IIS2ICLX_SENSOR_HUB_BANK;
       break;
 
-    case IIS2ICLX_EMBEDDED_FUNC_BANK:
+    case 0x02:
       *val = IIS2ICLX_EMBEDDED_FUNC_BANK;
       break;
 
@@ -1482,11 +1482,11 @@ int32_t iis2iclx_data_ready_mode_get(const stmdev_ctx_t *ctx,
 
   switch (counter_bdr_reg1.dataready_pulsed)
   {
-    case IIS2ICLX_DRDY_LATCHED:
+    case 0x00:
       *val = IIS2ICLX_DRDY_LATCHED;
       break;
 
-    case IIS2ICLX_DRDY_PULSED:
+    case 0x01:
       *val = IIS2ICLX_DRDY_PULSED;
       break;
 
@@ -1698,15 +1698,15 @@ int32_t iis2iclx_xl_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5_c.st_xl)
   {
-    case IIS2ICLX_XL_ST_DISABLE:
+    case 0x00:
       *val = IIS2ICLX_XL_ST_DISABLE;
       break;
 
-    case IIS2ICLX_XL_ST_POSITIVE:
+    case 0x01:
       *val = IIS2ICLX_XL_ST_POSITIVE;
       break;
 
-    case IIS2ICLX_XL_ST_NEGATIVE:
+    case 0x02:
       *val = IIS2ICLX_XL_ST_NEGATIVE;
       break;
 
@@ -1838,19 +1838,42 @@ int32_t iis2iclx_filter_settling_mask_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_hp_path_on_out_set(const stmdev_ctx_t *ctx,
                                        iis2iclx_hp_slope_xl_en_t val)
 {
+  iis2iclx_ctrl1_xl_t ctrl1_xl =  {0};
   iis2iclx_ctrl8_xl_t ctrl8_xl;
   int32_t ret;
+  uint8_t is_high_pass = (((uint8_t)val & 0x10) >> 4) == 1 ? 1 : 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret == 0)
+  if (ret != 0)
   {
-    ctrl8_xl.hp_slope_xl_en = (((uint8_t)val & 0x10U) >> 4);
-    ctrl8_xl.hp_ref_mode_xl = (((uint8_t)val & 0x20U) >> 5);
-    ctrl8_xl.hpcf_xl = (uint8_t)val & 0x07U;
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL8_XL,
-                             (uint8_t *)&ctrl8_xl, 1);
+    return ret;
   }
+
+  ctrl8_xl.hp_slope_xl_en = is_high_pass;
+  ctrl8_xl.hp_ref_mode_xl = (((uint8_t)val & 0x20U) >> 5);
+  ctrl8_xl.hpcf_xl = (uint8_t)val & 0x07U;
+
+  // low-pass filter
+  if (is_high_pass == 0)
+  {
+    ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL,
+                            (uint8_t *)&ctrl1_xl, 1);
+
+    if (ret != 0)
+    {
+      return ret;
+    }
+
+
+    ctrl1_xl.lpf2_xl_en = ((uint8_t)val & 0x80) >> 7;
+
+    ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL1_XL,
+                            (uint8_t *)&ctrl1_xl, 1);
+  }
+
+  ret += iis2iclx_write_reg(ctx, IIS2ICLX_CTRL8_XL,
+                           (uint8_t *)&ctrl8_xl, 1);
 
   return ret;
 }
@@ -1867,110 +1890,74 @@ int32_t iis2iclx_xl_hp_path_on_out_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_hp_path_on_out_get(const stmdev_ctx_t *ctx,
                                        iis2iclx_hp_slope_xl_en_t *val)
 {
+  iis2iclx_ctrl1_xl_t ctrl1_xl;
   iis2iclx_ctrl8_xl_t ctrl8_xl;
   int32_t ret;
+  uint8_t is_low_pass = 0;
+
+  ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
+  if (ret != 0) { return ret; }
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
   if (ret != 0) { return ret; }
 
-  switch (((ctrl8_xl.hp_ref_mode_xl << 5) + (ctrl8_xl.hp_slope_xl_en <<
-                                             4) +
-           ctrl8_xl.hpcf_xl))
+  if (ctrl8_xl.hp_slope_xl_en == 0 && ctrl1_xl.lpf2_xl_en == 0)
   {
-    case IIS2ICLX_HP_PATH_DISABLE_ON_OUT:
-      *val = IIS2ICLX_HP_PATH_DISABLE_ON_OUT;
+    *val = IIS2ICLX_LP_ODR_DIV_2;
+    return ret;
+  }
+
+  is_low_pass = ctrl8_xl.hp_slope_xl_en == 0 ? 1 : 0;
+
+  switch (ctrl8_xl.hpcf_xl)
+  {
+    case 0x00:
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_4 : IIS2ICLX_SLOPE_ODR_DIV_4;
       break;
 
-    case IIS2ICLX_SLOPE_ODR_DIV_4:
-      *val = IIS2ICLX_SLOPE_ODR_DIV_4;
+    case 0x01:
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_10 : IIS2ICLX_HP_ODR_DIV_10;
       break;
 
-    case IIS2ICLX_HP_ODR_DIV_10:
-      *val = IIS2ICLX_HP_ODR_DIV_10;
+    case 0x02:
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_20 : IIS2ICLX_HP_ODR_DIV_20;
       break;
 
-    case IIS2ICLX_HP_ODR_DIV_20:
-      *val = IIS2ICLX_HP_ODR_DIV_20;
+    case 0x03:
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_45 : IIS2ICLX_HP_ODR_DIV_45;
       break;
 
-    case IIS2ICLX_HP_ODR_DIV_45:
-      *val = IIS2ICLX_HP_ODR_DIV_45;
+    case 0x04:
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_100 : IIS2ICLX_HP_ODR_DIV_100;
       break;
 
-    case IIS2ICLX_HP_ODR_DIV_100:
-      *val = IIS2ICLX_HP_ODR_DIV_100;
+    case 0x05:
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_200 : IIS2ICLX_HP_ODR_DIV_200;
       break;
 
-    case IIS2ICLX_HP_ODR_DIV_200:
-      *val = IIS2ICLX_HP_ODR_DIV_200;
+    case 0x06:
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_400 : IIS2ICLX_HP_ODR_DIV_400;
       break;
 
-    case IIS2ICLX_HP_ODR_DIV_400:
-      *val = IIS2ICLX_HP_ODR_DIV_400;
-      break;
-
-    case IIS2ICLX_HP_ODR_DIV_800:
-      *val = IIS2ICLX_HP_ODR_DIV_800;
-      break;
-
-    case IIS2ICLX_HP_REF_MD_ODR_DIV_10:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_10;
-      break;
-
-    case IIS2ICLX_HP_REF_MD_ODR_DIV_20:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_20;
-      break;
-
-    case IIS2ICLX_HP_REF_MD_ODR_DIV_45:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_45;
-      break;
-
-    case IIS2ICLX_HP_REF_MD_ODR_DIV_100:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_100;
-      break;
-
-    case IIS2ICLX_HP_REF_MD_ODR_DIV_200:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_200;
-      break;
-
-    case IIS2ICLX_HP_REF_MD_ODR_DIV_400:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_400;
-      break;
-
-    case IIS2ICLX_HP_REF_MD_ODR_DIV_800:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_800;
-      break;
-
-    case IIS2ICLX_LP_ODR_DIV_10:
-      *val = IIS2ICLX_LP_ODR_DIV_10;
-      break;
-
-    case IIS2ICLX_LP_ODR_DIV_20:
-      *val = IIS2ICLX_LP_ODR_DIV_20;
-      break;
-
-    case IIS2ICLX_LP_ODR_DIV_45:
-      *val = IIS2ICLX_LP_ODR_DIV_45;
-      break;
-
-    case IIS2ICLX_LP_ODR_DIV_100:
-      *val = IIS2ICLX_LP_ODR_DIV_100;
-      break;
-
-    case IIS2ICLX_LP_ODR_DIV_200:
-      *val = IIS2ICLX_LP_ODR_DIV_200;
-      break;
-
-    case IIS2ICLX_LP_ODR_DIV_400:
-      *val = IIS2ICLX_LP_ODR_DIV_400;
-      break;
-
-    case IIS2ICLX_LP_ODR_DIV_800:
-      *val = IIS2ICLX_LP_ODR_DIV_800;
+    case 0x07:
+      if (is_low_pass)
+      {
+        *val = IIS2ICLX_LP_ODR_DIV_800;
+      }
+      else if (ctrl8_xl.hp_ref_mode_xl == 1)
+      {
+        // The application note requires the HPCF_XL field to be set to 111
+        // in order to enable HP_REF_MODE
+        *val = IIS2ICLX_HP_REF_MODE;
+      }
+      else
+      {
+        *val = IIS2ICLX_HP_ODR_DIV_800;
+      }
       break;
 
     default:
-      *val = IIS2ICLX_HP_PATH_DISABLE_ON_OUT;
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_4 : IIS2ICLX_SLOPE_ODR_DIV_4;
       break;
   }
 
@@ -2074,11 +2061,11 @@ int32_t iis2iclx_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg0.slope_fds)
   {
-    case IIS2ICLX_USE_SLOPE:
+    case 0x00:
       *val = IIS2ICLX_USE_SLOPE;
       break;
 
-    case IIS2ICLX_USE_HPF:
+    case 0x01:
       *val = IIS2ICLX_USE_HPF;
       break;
 
@@ -2147,11 +2134,11 @@ int32_t iis2iclx_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
 
   switch (pin_ctrl.sdo_pu_en)
   {
-    case IIS2ICLX_PULL_UP_DISC:
+    case 0x00:
       *val = IIS2ICLX_PULL_UP_DISC;
       break;
 
-    case IIS2ICLX_PULL_UP_CONNECT:
+    case 0x01:
       *val = IIS2ICLX_PULL_UP_CONNECT;
       break;
 
@@ -2205,11 +2192,11 @@ int32_t iis2iclx_spi_mode_get(const stmdev_ctx_t *ctx, iis2iclx_sim_t *val)
 
   switch (ctrl3_c.sim)
   {
-    case IIS2ICLX_SPI_4_WIRE:
+    case 0x00:
       *val = IIS2ICLX_SPI_4_WIRE;
       break;
 
-    case IIS2ICLX_SPI_3_WIRE:
+    case 0x01:
       *val = IIS2ICLX_SPI_3_WIRE;
       break;
 
@@ -2265,11 +2252,11 @@ int32_t iis2iclx_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl4_c.i2c_disable)
   {
-    case IIS2ICLX_I2C_ENABLE:
+    case 0x00:
       *val = IIS2ICLX_I2C_ENABLE;
       break;
 
-    case IIS2ICLX_I2C_DISABLE:
+    case 0x01:
       *val = IIS2ICLX_I2C_DISABLE;
       break;
 
@@ -2730,11 +2717,11 @@ int32_t iis2iclx_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3_c.pp_od)
   {
-    case IIS2ICLX_PUSH_PULL:
+    case 0x00:
       *val = IIS2ICLX_PUSH_PULL;
       break;
 
-    case IIS2ICLX_OPEN_DRAIN:
+    case 0x01:
       *val = IIS2ICLX_OPEN_DRAIN;
       break;
 
@@ -2790,11 +2777,11 @@ int32_t iis2iclx_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3_c.h_lactive)
   {
-    case IIS2ICLX_ACTIVE_HIGH:
+    case 0x00:
       *val = IIS2ICLX_ACTIVE_HIGH;
       break;
 
-    case IIS2ICLX_ACTIVE_LOW:
+    case 0x01:
       *val = IIS2ICLX_ACTIVE_LOW;
       break;
 
@@ -2931,19 +2918,19 @@ int32_t iis2iclx_int_notification_get(const stmdev_ctx_t *ctx,
 
   switch ((page_rw.emb_func_lir << 1) + tap_cfg0.lir)
   {
-    case IIS2ICLX_ALL_INT_PULSED:
+    case 0x00:
       *val = IIS2ICLX_ALL_INT_PULSED;
       break;
 
-    case IIS2ICLX_BASE_LATCHED_EMB_PULSED:
+    case 0x01:
       *val = IIS2ICLX_BASE_LATCHED_EMB_PULSED;
       break;
 
-    case IIS2ICLX_BASE_PULSED_EMB_LATCHED:
+    case 0x02:
       *val = IIS2ICLX_BASE_PULSED_EMB_LATCHED;
       break;
 
-    case IIS2ICLX_ALL_INT_LATCHED:
+    case 0x03:
       *val = IIS2ICLX_ALL_INT_LATCHED;
       break;
 
@@ -3019,11 +3006,11 @@ int32_t iis2iclx_wkup_ths_weight_get(const stmdev_ctx_t *ctx,
 
   switch (wake_up_dur.wake_ths_w)
   {
-    case IIS2ICLX_LSb_FS_DIV_64:
+    case 0x00:
       *val = IIS2ICLX_LSb_FS_DIV_64;
       break;
 
-    case IIS2ICLX_LSb_FS_DIV_256:
+    case 0x01:
       *val = IIS2ICLX_LSb_FS_DIV_256;
       break;
 
@@ -3245,11 +3232,11 @@ int32_t iis2iclx_act_pin_notification_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg0. sleep_status_on_int)
   {
-    case IIS2ICLX_DRIVE_SLEEP_CHG_EVENT:
+    case 0x00:
       *val = IIS2ICLX_DRIVE_SLEEP_CHG_EVENT;
       break;
 
-    case IIS2ICLX_DRIVE_SLEEP_STATUS:
+    case 0x01:
       *val = IIS2ICLX_DRIVE_SLEEP_STATUS;
       break;
 
@@ -3508,11 +3495,11 @@ int32_t iis2iclx_tap_axis_priority_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg1.tap_priority)
   {
-    case IIS2ICLX_XY:
+    case 0x00:
       *val = IIS2ICLX_XY;
       break;
 
-    case IIS2ICLX_YX:
+    case 0x01:
       *val = IIS2ICLX_YX;
       break;
 
@@ -3781,11 +3768,11 @@ int32_t iis2iclx_tap_mode_get(const stmdev_ctx_t *ctx,
 
   switch (wake_up_ths.single_double_tap)
   {
-    case IIS2ICLX_ONLY_SINGLE:
+    case 0x00:
       *val = IIS2ICLX_ONLY_SINGLE;
       break;
 
-    case IIS2ICLX_BOTH_SINGLE_DOUBLE:
+    case 0x01:
       *val = IIS2ICLX_BOTH_SINGLE_DOUBLE;
       break;
 
@@ -4022,39 +4009,39 @@ int32_t iis2iclx_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl3.bdr_xl)
   {
-    case IIS2ICLX_XL_NOT_BATCHED:
+    case 0x00:
       *val = IIS2ICLX_XL_NOT_BATCHED;
       break;
 
-    case IIS2ICLX_XL_BATCHED_AT_1Hz6:
+    case 0x11:
       *val = IIS2ICLX_XL_BATCHED_AT_1Hz6;
       break;
 
-    case IIS2ICLX_XL_BATCHED_AT_12Hz5:
+    case 0x01:
       *val = IIS2ICLX_XL_BATCHED_AT_12Hz5;
       break;
 
-    case IIS2ICLX_XL_BATCHED_AT_26Hz:
+    case 0x02:
       *val = IIS2ICLX_XL_BATCHED_AT_26Hz;
       break;
 
-    case IIS2ICLX_XL_BATCHED_AT_52Hz:
+    case 0x03:
       *val = IIS2ICLX_XL_BATCHED_AT_52Hz;
       break;
 
-    case IIS2ICLX_XL_BATCHED_AT_104Hz:
+    case 0x04:
       *val = IIS2ICLX_XL_BATCHED_AT_104Hz;
       break;
 
-    case IIS2ICLX_XL_BATCHED_AT_208Hz:
+    case 0x05:
       *val = IIS2ICLX_XL_BATCHED_AT_208Hz;
       break;
 
-    case IIS2ICLX_XL_BATCHED_AT_417Hz:
+    case 0x06:
       *val = IIS2ICLX_XL_BATCHED_AT_417Hz;
       break;
 
-    case IIS2ICLX_XL_BATCHED_AT_833Hz:
+    case 0x07:
       *val = IIS2ICLX_XL_BATCHED_AT_833Hz;
       break;
 
@@ -4113,27 +4100,27 @@ int32_t iis2iclx_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.fifo_mode)
   {
-    case IIS2ICLX_BYPASS_MODE:
+    case 0x00:
       *val = IIS2ICLX_BYPASS_MODE;
       break;
 
-    case IIS2ICLX_FIFO_MODE:
+    case 0x01:
       *val = IIS2ICLX_FIFO_MODE;
       break;
 
-    case IIS2ICLX_STREAM_TO_FIFO_MODE:
+    case 0x03:
       *val = IIS2ICLX_STREAM_TO_FIFO_MODE;
       break;
 
-    case IIS2ICLX_BYPASS_TO_STREAM_MODE:
+    case 0x04:
       *val = IIS2ICLX_BYPASS_TO_STREAM_MODE;
       break;
 
-    case IIS2ICLX_STREAM_MODE:
+    case 0x06:
       *val = IIS2ICLX_STREAM_MODE;
       break;
 
-    case IIS2ICLX_BYPASS_TO_FIFO_MODE:
+    case 0x07:
       *val = IIS2ICLX_BYPASS_TO_FIFO_MODE;
       break;
 
@@ -4194,19 +4181,19 @@ int32_t iis2iclx_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.odr_t_batch)
   {
-    case IIS2ICLX_TEMP_NOT_BATCHED:
+    case 0x00:
       *val = IIS2ICLX_TEMP_NOT_BATCHED;
       break;
 
-    case IIS2ICLX_TEMP_BATCHED_AT_1Hz6:
+    case 0x01:
       *val = IIS2ICLX_TEMP_BATCHED_AT_1Hz6;
       break;
 
-    case IIS2ICLX_TEMP_BATCHED_AT_52Hz:
+    case 0x03:
       *val = IIS2ICLX_TEMP_BATCHED_AT_52Hz;
       break;
 
-    case IIS2ICLX_TEMP_BATCHED_AT_12Hz5:
+    case 0x02:
       *val = IIS2ICLX_TEMP_BATCHED_AT_12Hz5;
       break;
 
@@ -4270,19 +4257,19 @@ int32_t iis2iclx_fifo_timestamp_decimation_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.odr_ts_batch)
   {
-    case IIS2ICLX_NO_DECIMATION:
+    case 0x00:
       *val = IIS2ICLX_NO_DECIMATION;
       break;
 
-    case IIS2ICLX_DEC_1:
+    case 0x01:
       *val = IIS2ICLX_DEC_1;
       break;
 
-    case IIS2ICLX_DEC_8:
+    case 0x02:
       *val = IIS2ICLX_DEC_8;
       break;
 
-    case IIS2ICLX_DEC_32:
+    case 0x03:
       *val = IIS2ICLX_DEC_32;
       break;
 
@@ -4546,39 +4533,39 @@ int32_t iis2iclx_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_data_out_tag.tag_sensor)
   {
-    case IIS2ICLX_XL_NC_TAG:
+    case 0x02:
       *val = IIS2ICLX_XL_NC_TAG;
       break;
 
-    case IIS2ICLX_TEMPERATURE_TAG:
+    case 0x03:
       *val = IIS2ICLX_TEMPERATURE_TAG;
       break;
 
-    case IIS2ICLX_TIMESTAMP_TAG:
+    case 0x04:
       *val = IIS2ICLX_TIMESTAMP_TAG;
       break;
 
-    case IIS2ICLX_CFG_CHANGE_TAG:
+    case 0x05:
       *val = IIS2ICLX_CFG_CHANGE_TAG;
       break;
 
-    case IIS2ICLX_SENSORHUB_SLAVE0_TAG:
+    case 0x06:
       *val = IIS2ICLX_SENSORHUB_SLAVE0_TAG;
       break;
 
-    case IIS2ICLX_SENSORHUB_SLAVE1_TAG:
+    case 0x07:
       *val = IIS2ICLX_SENSORHUB_SLAVE1_TAG;
       break;
 
-    case IIS2ICLX_SENSORHUB_SLAVE2_TAG:
+    case 0x08:
       *val = IIS2ICLX_SENSORHUB_SLAVE2_TAG;
       break;
 
-    case IIS2ICLX_SENSORHUB_SLAVE3_TAG:
+    case 0x09:
       *val = IIS2ICLX_SENSORHUB_SLAVE3_TAG;
       break;
 
-    case IIS2ICLX_SENSORHUB_NACK_TAG:
+    case 0x19:
       *val = IIS2ICLX_SENSORHUB_NACK_TAG;
       break;
 
@@ -4921,23 +4908,23 @@ int32_t iis2iclx_den_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl9_xl.den_en << 4) + ctrl6_c.den_mode)
   {
-    case IIS2ICLX_DEN_DISABLE:
+    case 0x00:
       *val = IIS2ICLX_DEN_DISABLE;
       break;
 
-    case IIS2ICLX_LEVEL_FIFO:
+    case 0x76:
       *val = IIS2ICLX_LEVEL_FIFO;
       break;
 
-    case IIS2ICLX_LEVEL_LETCHED:
+    case 0x73:
       *val = IIS2ICLX_LEVEL_LETCHED;
       break;
 
-    case IIS2ICLX_LEVEL_TRIGGER:
+    case 0x72:
       *val = IIS2ICLX_LEVEL_TRIGGER;
       break;
 
-    case IIS2ICLX_EDGE_TRIGGER:
+    case 0x74:
       *val = IIS2ICLX_EDGE_TRIGGER;
       break;
 
@@ -4994,11 +4981,11 @@ int32_t iis2iclx_den_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl9_xl.den_lh)
   {
-    case IIS2ICLX_DEN_ACT_LOW:
+    case 0x00:
       *val = IIS2ICLX_DEN_ACT_LOW;
       break;
 
-    case IIS2ICLX_DEN_ACT_HIGH:
+    case 0x01:
       *val = IIS2ICLX_DEN_ACT_HIGH;
       break;
 
@@ -5438,15 +5425,15 @@ int32_t iis2iclx_long_clr_get(const stmdev_ctx_t *ctx,
 
   switch (fsm_long_counter_clear.fsm_lc_clr)
   {
-    case IIS2ICLX_LC_NORMAL:
+    case 0x00:
       *val = IIS2ICLX_LC_NORMAL;
       break;
 
-    case IIS2ICLX_LC_CLEAR:
+    case 0x01:
       *val = IIS2ICLX_LC_CLEAR;
       break;
 
-    case IIS2ICLX_LC_CLEAR_DONE:
+    case 0x02:
       *val = IIS2ICLX_LC_CLEAR_DONE;
       break;
 
@@ -5548,19 +5535,19 @@ int32_t iis2iclx_fsm_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (emb_func_odr_cfg_b.fsm_odr)
   {
-    case IIS2ICLX_ODR_FSM_12Hz5:
+    case 0x00:
       *val = IIS2ICLX_ODR_FSM_12Hz5;
       break;
 
-    case IIS2ICLX_ODR_FSM_26Hz:
+    case 0x01:
       *val = IIS2ICLX_ODR_FSM_26Hz;
       break;
 
-    case IIS2ICLX_ODR_FSM_52Hz:
+    case 0x02:
       *val = IIS2ICLX_ODR_FSM_52Hz;
       break;
 
-    case IIS2ICLX_ODR_FSM_104Hz:
+    case 0x03:
       *val = IIS2ICLX_ODR_FSM_104Hz;
       break;
 
@@ -5970,19 +5957,19 @@ int32_t iis2iclx_mlc_data_rate_get(const stmdev_ctx_t *ctx,
   {
     switch (reg.mlc_odr)
     {
-      case IIS2ICLX_ODR_PRGS_12Hz5:
+      case 0x00:
         *val = IIS2ICLX_ODR_PRGS_12Hz5;
         break;
 
-      case IIS2ICLX_ODR_PRGS_26Hz:
+      case 0x01:
         *val = IIS2ICLX_ODR_PRGS_26Hz;
         break;
 
-      case IIS2ICLX_ODR_PRGS_52Hz:
+      case 0x02:
         *val = IIS2ICLX_ODR_PRGS_52Hz;
         break;
 
-      case IIS2ICLX_ODR_PRGS_104Hz:
+      case 0x03:
         *val = IIS2ICLX_ODR_PRGS_104Hz;
         break;
 
@@ -6126,19 +6113,19 @@ int32_t iis2iclx_sh_slave_connected_get(const stmdev_ctx_t *ctx,
 
   switch (master_config.aux_sens_on)
   {
-    case IIS2ICLX_SLV_0:
+    case 0x00:
       *val = IIS2ICLX_SLV_0;
       break;
 
-    case IIS2ICLX_SLV_0_1:
+    case 0x01:
       *val = IIS2ICLX_SLV_0_1;
       break;
 
-    case IIS2ICLX_SLV_0_1_2:
+    case 0x02:
       *val = IIS2ICLX_SLV_0_1_2;
       break;
 
-    case IIS2ICLX_SLV_0_1_2_3:
+    case 0x03:
       *val = IIS2ICLX_SLV_0_1_2_3;
       break;
 
@@ -6276,11 +6263,11 @@ int32_t iis2iclx_sh_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (master_config.shub_pu_en)
   {
-    case IIS2ICLX_EXT_PULL_UP:
+    case 0x00:
       *val = IIS2ICLX_EXT_PULL_UP;
       break;
 
-    case IIS2ICLX_INTERNAL_PULL_UP:
+    case 0x01:
       *val = IIS2ICLX_INTERNAL_PULL_UP;
       break;
 
@@ -6418,11 +6405,11 @@ int32_t iis2iclx_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
 
   switch (master_config.start_config)
   {
-    case IIS2ICLX_EXT_ON_INT2_PIN:
+    case 0x01:
       *val = IIS2ICLX_EXT_ON_INT2_PIN;
       break;
 
-    case IIS2ICLX_XL_GY_DRDY:
+    case 0x00:
       *val = IIS2ICLX_XL_GY_DRDY;
       break;
 
@@ -6498,11 +6485,11 @@ int32_t iis2iclx_sh_write_mode_get(const stmdev_ctx_t *ctx,
 
   switch (master_config.write_once)
   {
-    case IIS2ICLX_EACH_SH_CYCLE:
+    case 0x00:
       *val = IIS2ICLX_EACH_SH_CYCLE;
       break;
 
-    case IIS2ICLX_ONLY_FIRST_CYCLE:
+    case 0x01:
       *val = IIS2ICLX_ONLY_FIRST_CYCLE;
       break;
 
@@ -6646,19 +6633,19 @@ int32_t iis2iclx_sh_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (slv0_config.shub_odr)
   {
-    case IIS2ICLX_SH_ODR_104Hz:
+    case 0x00:
       *val = IIS2ICLX_SH_ODR_104Hz;
       break;
 
-    case IIS2ICLX_SH_ODR_52Hz:
+    case 0x01:
       *val = IIS2ICLX_SH_ODR_52Hz;
       break;
 
-    case IIS2ICLX_SH_ODR_26Hz:
+    case 0x02:
       *val = IIS2ICLX_SH_ODR_26Hz;
       break;
 
-    case IIS2ICLX_SH_ODR_13Hz:
+    case 0x03:
       *val = IIS2ICLX_SH_ODR_13Hz;
       break;
 
@@ -6691,7 +6678,7 @@ int32_t iis2iclx_sh_cfg_write(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv0_add.slave0 = (uint8_t)val->slv0_add;
+    slv0_add.slave0 = (uint8_t)(val->slv0_add >> 1);
     slv0_add.rw_0 = 0;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_SLV0_ADD,
                              (uint8_t *) & (slv0_add), 1);
@@ -6736,7 +6723,7 @@ int32_t iis2iclx_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv0_add.slave0 = (uint8_t) val->slv_add >> 1;
+    slv0_add.slave0 = (uint8_t)(val->slv_add >> 1);
     slv0_add.rw_0 = 1;
 
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_SLV0_ADD,
@@ -7002,15 +6989,15 @@ int32_t iis2iclx_bus_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl3_c.sim << 1) | ctrl4_c.i2c_disable)
   {
-    case IIS2ICLX_SEL_BY_HW:
+    case 0x00:
       *val = IIS2ICLX_SEL_BY_HW;
       break;
 
-    case IIS2ICLX_SPI_4W:
+    case 0x01:
       *val = IIS2ICLX_SPI_4W;
       break;
 
-    case IIS2ICLX_SPI_3W:
+    case 0x03:
       *val = IIS2ICLX_SPI_3W;
       break;
 

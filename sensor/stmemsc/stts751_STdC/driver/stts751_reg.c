@@ -210,51 +210,51 @@ int32_t stts751_temp_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch ((configuration.stop << 7) + conversion_rate.conv)
   {
-    case STTS751_TEMP_ODR_OFF:
+    case 0x80:
       *val = STTS751_TEMP_ODR_OFF;
       break;
 
-    case STTS751_TEMP_ODR_ONE_SHOT:
+    case 0x90:
       *val = STTS751_TEMP_ODR_ONE_SHOT;
       break;
 
-    case STTS751_TEMP_ODR_62mHz5:
+    case 0x00:
       *val = STTS751_TEMP_ODR_62mHz5;
       break;
 
-    case STTS751_TEMP_ODR_125mHz:
+    case 0x01:
       *val = STTS751_TEMP_ODR_125mHz;
       break;
 
-    case STTS751_TEMP_ODR_250mHz:
+    case 0x02:
       *val = STTS751_TEMP_ODR_250mHz;
       break;
 
-    case STTS751_TEMP_ODR_500mHz:
+    case 0x03:
       *val = STTS751_TEMP_ODR_500mHz;
       break;
 
-    case STTS751_TEMP_ODR_1Hz:
+    case 0x04:
       *val = STTS751_TEMP_ODR_1Hz;
       break;
 
-    case STTS751_TEMP_ODR_2Hz:
+    case 0x05:
       *val = STTS751_TEMP_ODR_2Hz;
       break;
 
-    case STTS751_TEMP_ODR_4Hz:
+    case 0x06:
       *val = STTS751_TEMP_ODR_4Hz;
       break;
 
-    case STTS751_TEMP_ODR_8Hz:
+    case 0x07:
       *val = STTS751_TEMP_ODR_8Hz;
       break;
 
-    case STTS751_TEMP_ODR_16Hz:
+    case 0x08:
       *val = STTS751_TEMP_ODR_16Hz;
       break;
 
-    case STTS751_TEMP_ODR_32Hz:
+    case 0x09:
       *val = STTS751_TEMP_ODR_32Hz;
       break;
 
@@ -308,19 +308,19 @@ int32_t stts751_resolution_get(const stmdev_ctx_t *ctx, stts751_tres_t *val)
 
   switch (reg.tres)
   {
-    case STTS751_9bit:
+    case 0x02:
       *val = STTS751_9bit;
       break;
 
-    case STTS751_10bit:
+    case 0x00:
       *val = STTS751_10bit;
       break;
 
-    case STTS751_11bit:
+    case 0x01:
       *val = STTS751_11bit;
       break;
 
-    case STTS751_12bit:
+    case 0x03:
       *val = STTS751_12bit;
       break;
 

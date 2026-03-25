@@ -2802,15 +2802,12 @@ int32_t lsm6dsv16b_pin_polarity_get(const stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t boot                          : 1;
   uint8_t drdy_xl                       : 1;
   uint8_t drdy_gy                       : 1;
-  uint8_t drdy_temp                     : 1;
   uint8_t fifo_th                       : 1;
   uint8_t fifo_ovr                      : 1;
   uint8_t fifo_full                     : 1;
   uint8_t fifo_bdr                      : 1;
-  uint8_t den_flag                      : 1;
   uint8_t timestamp                     : 1; // impact on int2 signals
   uint8_t six_d                         : 1;
   uint8_t double_tap                    : 1;
@@ -2834,6 +2831,7 @@ typedef struct
   uint8_t fsm7                          : 1;
   uint8_t fsm8                          : 1;
 } lsm6dsv16b_pin_int_route_t;
+
 int32_t lsm6dsv16b_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                       lsm6dsv16b_pin_int_route_t val);
 int32_t lsm6dsv16b_pin_int1_route_get(const stmdev_ctx_t *ctx,
@@ -3406,3 +3404,4 @@ int32_t lsm6dsv16b_tdm_xl_full_scale_get(const stmdev_ctx_t *ctx,
 #endif
 
 #endif /*LSM6DSV16B_DRIVER_H */
+

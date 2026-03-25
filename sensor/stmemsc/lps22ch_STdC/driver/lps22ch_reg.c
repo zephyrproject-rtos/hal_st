@@ -406,59 +406,59 @@ int32_t lps22ch_data_rate_get(const stmdev_ctx_t *ctx, lps22ch_odr_t *val)
     switch (((ctrl_reg2.low_noise_en << 4) + (ctrl_reg2.one_shot << 3) +
              ctrl_reg1.odr))
     {
-      case LPS22CH_POWER_DOWN:
+      case 0x00:
         *val = LPS22CH_POWER_DOWN;
         break;
 
-      case LPS22CH_ONE_SHOOT:
+      case 0x08:
         *val = LPS22CH_ONE_SHOOT;
         break;
 
-      case LPS22CH_1_Hz:
+      case 0x01:
         *val = LPS22CH_1_Hz;
         break;
 
-      case LPS22CH_10_Hz:
+      case 0x02:
         *val = LPS22CH_10_Hz;
         break;
 
-      case LPS22CH_25_Hz:
+      case 0x03:
         *val = LPS22CH_25_Hz;
         break;
 
-      case LPS22CH_50_Hz:
+      case 0x04:
         *val = LPS22CH_50_Hz;
         break;
 
-      case LPS22CH_75_Hz:
+      case 0x05:
         *val = LPS22CH_75_Hz;
         break;
 
-      case LPS22CH_1_Hz_LOW_NOISE:
+      case 0x11:
         *val = LPS22CH_1_Hz_LOW_NOISE;
         break;
 
-      case LPS22CH_10_Hz_LOW_NOISE:
+      case 0x12:
         *val = LPS22CH_10_Hz_LOW_NOISE;
         break;
 
-      case LPS22CH_25_Hz_LOW_NOISE:
+      case 0x13:
         *val = LPS22CH_25_Hz_LOW_NOISE;
         break;
 
-      case LPS22CH_50_Hz_LOW_NOISE:
+      case 0x14:
         *val = LPS22CH_50_Hz_LOW_NOISE;
         break;
 
-      case LPS22CH_75_Hz_LOW_NOISE:
+      case 0x15:
         *val = LPS22CH_75_Hz_LOW_NOISE;
         break;
 
-      case LPS22CH_100_Hz:
+      case 0x06:
         *val = LPS22CH_100_Hz;
         break;
 
-      case LPS22CH_200_Hz:
+      case 0x07:
         *val = LPS22CH_200_Hz;
         break;
 
@@ -1005,15 +1005,15 @@ int32_t lps22ch_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (reg.lpfp_cfg)
   {
-    case LPS22CH_LPF_ODR_DIV_2:
+    case 0x00:
       *val = LPS22CH_LPF_ODR_DIV_2;
       break;
 
-    case LPS22CH_LPF_ODR_DIV_9:
+    case 0x02:
       *val = LPS22CH_LPF_ODR_DIV_9;
       break;
 
-    case LPS22CH_LPF_ODR_DIV_20:
+    case 0x03:
       *val = LPS22CH_LPF_ODR_DIV_20;
       break;
 
@@ -1083,11 +1083,11 @@ int32_t lps22ch_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (reg.i2c_disable)
   {
-    case LPS22CH_I2C_ENABLE:
+    case 0x00:
       *val = LPS22CH_I2C_ENABLE;
       break;
 
-    case LPS22CH_I2C_DISABLE:
+    case 0x01:
       *val = LPS22CH_I2C_DISABLE;
       break;
 
@@ -1145,11 +1145,11 @@ int32_t lps22ch_i3c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (reg.i3c_disable)
   {
-    case LPS22CH_I3C_ENABLE:
+    case 0x00:
       *val = LPS22CH_I3C_ENABLE;
       break;
 
-    case LPS22CH_I3C_DISABLE:
+    case 0x01:
       *val = LPS22CH_I3C_DISABLE;
       break;
 
@@ -1206,11 +1206,11 @@ int32_t lps22ch_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.sdo_pu_en)
   {
-    case LPS22CH_PULL_UP_DISCONNECT:
+    case 0x00:
       *val = LPS22CH_PULL_UP_DISCONNECT;
       break;
 
-    case LPS22CH_PULL_UP_CONNECT:
+    case 0x01:
       *val = LPS22CH_PULL_UP_CONNECT;
       break;
 
@@ -1265,11 +1265,11 @@ int32_t lps22ch_sda_mode_get(const stmdev_ctx_t *ctx, lps22ch_pu_en_t *val)
 
   switch (reg.sda_pu_en)
   {
-    case LPS22CH_PULL_UP_DISCONNECT:
+    case 0x00:
       *val = LPS22CH_PULL_UP_DISCONNECT;
       break;
 
-    case LPS22CH_PULL_UP_CONNECT:
+    case 0x01:
       *val = LPS22CH_PULL_UP_CONNECT;
       break;
 
@@ -1324,11 +1324,11 @@ int32_t lps22ch_spi_mode_get(const stmdev_ctx_t *ctx, lps22ch_sim_t *val)
 
   switch (reg.sim)
   {
-    case LPS22CH_SPI_4_WIRE:
+    case 0x00:
       *val = LPS22CH_SPI_4_WIRE;
       break;
 
-    case LPS22CH_SPI_3_WIRE:
+    case 0x01:
       *val = LPS22CH_SPI_3_WIRE;
       break;
 
@@ -1398,11 +1398,11 @@ int32_t lps22ch_int_notification_get(const stmdev_ctx_t *ctx,
 
   switch (reg.lir)
   {
-    case LPS22CH_INT_PULSED:
+    case 0x00:
       *val = LPS22CH_INT_PULSED;
       break;
 
-    case LPS22CH_INT_LATCHED:
+    case 0x01:
       *val = LPS22CH_INT_LATCHED;
       break;
 
@@ -1457,11 +1457,11 @@ int32_t lps22ch_pin_mode_get(const stmdev_ctx_t *ctx, lps22ch_pp_od_t *val)
 
   switch (reg.pp_od)
   {
-    case LPS22CH_PUSH_PULL:
+    case 0x00:
       *val = LPS22CH_PUSH_PULL;
       break;
 
-    case LPS22CH_OPEN_DRAIN:
+    case 0x01:
       *val = LPS22CH_OPEN_DRAIN;
       break;
 
@@ -1518,11 +1518,11 @@ int32_t lps22ch_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (reg.int_h_l)
   {
-    case LPS22CH_ACTIVE_HIGH:
+    case 0x00:
       *val = LPS22CH_ACTIVE_HIGH;
       break;
 
-    case LPS22CH_ACTIVE_LOW:
+    case 0x01:
       *val = LPS22CH_ACTIVE_LOW;
       break;
 
@@ -1639,19 +1639,19 @@ int32_t lps22ch_int_on_threshold_get(const stmdev_ctx_t *ctx,
 
   switch (reg.pe)
   {
-    case LPS22CH_NO_THRESHOLD:
+    case 0x00:
       *val = LPS22CH_NO_THRESHOLD;
       break;
 
-    case LPS22CH_POSITIVE:
+    case 0x01:
       *val = LPS22CH_POSITIVE;
       break;
 
-    case LPS22CH_NEGATIVE:
+    case 0x02:
       *val = LPS22CH_NEGATIVE;
       break;
 
-    case LPS22CH_BOTH:
+    case 0x03:
       *val = LPS22CH_BOTH;
       break;
 
@@ -1775,31 +1775,31 @@ int32_t lps22ch_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.f_mode)
   {
-    case LPS22CH_BYPASS_MODE:
+    case 0x00:
       *val = LPS22CH_BYPASS_MODE;
       break;
 
-    case LPS22CH_FIFO_MODE:
+    case 0x01:
       *val = LPS22CH_FIFO_MODE;
       break;
 
-    case LPS22CH_STREAM_MODE:
+    case 0x02:
       *val = LPS22CH_STREAM_MODE;
       break;
 
-    case LPS22CH_DYNAMIC_STREAM_MODE:
+    case 0x03:
       *val = LPS22CH_DYNAMIC_STREAM_MODE;
       break;
 
-    case LPS22CH_BYPASS_TO_FIFO_MODE:
+    case 0x05:
       *val = LPS22CH_BYPASS_TO_FIFO_MODE;
       break;
 
-    case LPS22CH_BYPASS_TO_STREAM_MODE:
+    case 0x06:
       *val = LPS22CH_BYPASS_TO_STREAM_MODE;
       break;
 
-    case LPS22CH_STREAM_TO_FIFO_MODE:
+    case 0x07:
       *val = LPS22CH_STREAM_TO_FIFO_MODE;
       break;
 

@@ -340,11 +340,11 @@ int32_t ism303dac_mg_data_format_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_c_m.ble)
   {
-    case ISM303DAC_MG_LSB_AT_LOW_ADD:
+    case 0x00:
       *val = ISM303DAC_MG_LSB_AT_LOW_ADD;
       break;
 
-    case ISM303DAC_MG_MSB_AT_LOW_ADD:
+    case 0x01:
       *val = ISM303DAC_MG_MSB_AT_LOW_ADD;
       break;
 
@@ -404,19 +404,19 @@ int32_t ism303dac_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1_a.fs)
   {
-    case ISM303DAC_XL_2g:
+    case 0x00:
       *val = ISM303DAC_XL_2g;
       break;
 
-    case ISM303DAC_XL_16g:
+    case 0x01:
       *val = ISM303DAC_XL_16g;
       break;
 
-    case ISM303DAC_XL_4g:
+    case 0x02:
       *val = ISM303DAC_XL_4g;
       break;
 
-    case ISM303DAC_XL_8g:
+    case 0x03:
       *val = ISM303DAC_XL_8g;
       break;
 
@@ -477,79 +477,79 @@ int32_t ism303dac_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl1_a.hf_odr << 4) + ctrl1_a.odr)
   {
-    case ISM303DAC_XL_ODR_OFF:
+    case 0x00:
       *val = ISM303DAC_XL_ODR_OFF;
       break;
 
-    case ISM303DAC_XL_ODR_1Hz_LP:
+    case 0x08:
       *val = ISM303DAC_XL_ODR_1Hz_LP;
       break;
 
-    case ISM303DAC_XL_ODR_12Hz5_LP:
+    case 0x09:
       *val = ISM303DAC_XL_ODR_12Hz5_LP;
       break;
 
-    case ISM303DAC_XL_ODR_25Hz_LP:
+    case 0x0A:
       *val = ISM303DAC_XL_ODR_25Hz_LP;
       break;
 
-    case ISM303DAC_XL_ODR_50Hz_LP:
+    case 0x0B:
       *val = ISM303DAC_XL_ODR_50Hz_LP;
       break;
 
-    case ISM303DAC_XL_ODR_100Hz_LP:
+    case 0x0C:
       *val = ISM303DAC_XL_ODR_100Hz_LP;
       break;
 
-    case ISM303DAC_XL_ODR_200Hz_LP:
+    case 0x0D:
       *val = ISM303DAC_XL_ODR_200Hz_LP;
       break;
 
-    case ISM303DAC_XL_ODR_400Hz_LP:
+    case 0x0E:
       *val = ISM303DAC_XL_ODR_400Hz_LP;
       break;
 
-    case ISM303DAC_XL_ODR_800Hz_LP:
+    case 0x0F:
       *val = ISM303DAC_XL_ODR_800Hz_LP;
       break;
 
-    case ISM303DAC_XL_ODR_12Hz5_HR:
+    case 0x01:
       *val = ISM303DAC_XL_ODR_12Hz5_HR;
       break;
 
-    case ISM303DAC_XL_ODR_25Hz_HR:
+    case 0x02:
       *val = ISM303DAC_XL_ODR_25Hz_HR;
       break;
 
-    case ISM303DAC_XL_ODR_50Hz_HR:
+    case 0x03:
       *val = ISM303DAC_XL_ODR_50Hz_HR;
       break;
 
-    case ISM303DAC_XL_ODR_100Hz_HR:
+    case 0x04:
       *val = ISM303DAC_XL_ODR_100Hz_HR;
       break;
 
-    case ISM303DAC_XL_ODR_200Hz_HR:
+    case 0x05:
       *val = ISM303DAC_XL_ODR_200Hz_HR;
       break;
 
-    case ISM303DAC_XL_ODR_400Hz_HR:
+    case 0x06:
       *val = ISM303DAC_XL_ODR_400Hz_HR;
       break;
 
-    case ISM303DAC_XL_ODR_800Hz_HR:
+    case 0x07:
       *val = ISM303DAC_XL_ODR_800Hz_HR;
       break;
 
-    case ISM303DAC_XL_ODR_1k6Hz_HF:
+    case 0x15:
       *val = ISM303DAC_XL_ODR_1k6Hz_HF;
       break;
 
-    case ISM303DAC_XL_ODR_3k2Hz_HF:
+    case 0x16:
       *val = ISM303DAC_XL_ODR_3k2Hz_HF;
       break;
 
-    case ISM303DAC_XL_ODR_6k4Hz_HF:
+    case 0x17:
       *val = ISM303DAC_XL_ODR_6k4Hz_HF;
       break;
 
@@ -777,15 +777,15 @@ int32_t ism303dac_mg_operating_mode_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_a_m.md)
   {
-    case ISM303DAC_MG_CONTINUOUS_MODE:
+    case 0x00:
       *val = ISM303DAC_MG_CONTINUOUS_MODE;
       break;
 
-    case ISM303DAC_MG_SINGLE_TRIGGER:
+    case 0x01:
       *val = ISM303DAC_MG_SINGLE_TRIGGER;
       break;
 
-    case ISM303DAC_MG_POWER_DOWN:
+    case 0x02:
       *val = ISM303DAC_MG_POWER_DOWN;
       break;
 
@@ -847,19 +847,19 @@ int32_t ism303dac_mg_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_a_m.odr)
   {
-    case ISM303DAC_MG_ODR_10Hz:
+    case 0x00:
       *val = ISM303DAC_MG_ODR_10Hz;
       break;
 
-    case ISM303DAC_MG_ODR_20Hz:
+    case 0x01:
       *val = ISM303DAC_MG_ODR_20Hz;
       break;
 
-    case ISM303DAC_MG_ODR_50Hz:
+    case 0x02:
       *val = ISM303DAC_MG_ODR_50Hz;
       break;
 
-    case ISM303DAC_MG_ODR_100Hz:
+    case 0x03:
       *val = ISM303DAC_MG_ODR_100Hz;
       break;
 
@@ -921,11 +921,11 @@ int32_t ism303dac_mg_power_mode_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_a_m.lp)
   {
-    case ISM303DAC_MG_HIGH_RESOLUTION:
+    case 0x00:
       *val = ISM303DAC_MG_HIGH_RESOLUTION;
       break;
 
-    case ISM303DAC_MG_LOW_POWER:
+    case 0x01:
       *val = ISM303DAC_MG_LOW_POWER;
       break;
 
@@ -1038,15 +1038,15 @@ int32_t ism303dac_mg_set_rst_mode_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_b_m.set_rst)
   {
-    case ISM303DAC_MG_SET_SENS_ODR_DIV_63:
+    case 0x00:
       *val = ISM303DAC_MG_SET_SENS_ODR_DIV_63;
       break;
 
-    case ISM303DAC_MG_SENS_OFF_CANC_EVERY_ODR:
+    case 0x01:
       *val = ISM303DAC_MG_SENS_OFF_CANC_EVERY_ODR;
       break;
 
-    case ISM303DAC_MG_SET_SENS_ONLY_AT_POWER_ON:
+    case 0x02:
       *val = ISM303DAC_MG_SET_SENS_ONLY_AT_POWER_ON;
       break;
 
@@ -1558,15 +1558,15 @@ int32_t ism303dac_xl_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3_a.st)
   {
-    case ISM303DAC_XL_ST_DISABLE:
+    case 0x00:
       *val = ISM303DAC_XL_ST_DISABLE;
       break;
 
-    case ISM303DAC_XL_ST_POSITIVE:
+    case 0x01:
       *val = ISM303DAC_XL_ST_POSITIVE;
       break;
 
-    case ISM303DAC_XL_ST_NEGATIVE:
+    case 0x02:
       *val = ISM303DAC_XL_ST_NEGATIVE;
       break;
 
@@ -1674,11 +1674,11 @@ int32_t ism303dac_xl_data_ready_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5_a.drdy_pulsed)
   {
-    case ISM303DAC_XL_DRDY_LATCHED:
+    case 0x00:
       *val = ISM303DAC_XL_DRDY_LATCHED;
       break;
 
-    case ISM303DAC_XL_DRDY_PULSED:
+    case 0x01:
       *val = ISM303DAC_XL_DRDY_PULSED;
       break;
 
@@ -1750,11 +1750,11 @@ int32_t ism303dac_xl_hp_path_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2_a.fds_slope)
   {
-    case ISM303DAC_XL_HP_INTERNAL_ONLY:
+    case 0x00:
       *val = ISM303DAC_XL_HP_INTERNAL_ONLY;
       break;
 
-    case ISM303DAC_XL_HP_ON_OUTPUTS:
+    case 0x01:
       *val = ISM303DAC_XL_HP_ON_OUTPUTS;
       break;
 
@@ -1816,11 +1816,11 @@ int32_t ism303dac_mg_low_pass_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_b_m.lpf)
   {
-    case ISM303DAC_MG_ODR_DIV_2:
+    case 0x00:
       *val = ISM303DAC_MG_ODR_DIV_2;
       break;
 
-    case ISM303DAC_MG_ODR_DIV_4:
+    case 0x01:
       *val = ISM303DAC_MG_ODR_DIV_4;
       break;
 
@@ -1892,11 +1892,11 @@ int32_t ism303dac_xl_spi_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2_a.sim)
   {
-    case ISM303DAC_XL_SPI_4_WIRE:
+    case 0x00:
       *val = ISM303DAC_XL_SPI_4_WIRE;
       break;
 
-    case ISM303DAC_XL_SPI_3_WIRE:
+    case 0x01:
       *val = ISM303DAC_XL_SPI_3_WIRE;
       break;
 
@@ -1955,11 +1955,11 @@ int32_t ism303dac_xl_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2_a.i2c_disable)
   {
-    case ISM303DAC_XL_I2C_ENABLE:
+    case 0x00:
       *val = ISM303DAC_XL_I2C_ENABLE;
       break;
 
-    case ISM303DAC_XL_I2C_DISABLE:
+    case 0x01:
       *val = ISM303DAC_XL_I2C_DISABLE;
       break;
 
@@ -2021,11 +2021,11 @@ int32_t ism303dac_mg_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_c_m.i2c_dis)
   {
-    case ISM303DAC_MG_I2C_ENABLE:
+    case 0x00:
       *val = ISM303DAC_MG_I2C_ENABLE;
       break;
 
-    case ISM303DAC_MG_I2C_DISABLE:
+    case 0x01:
       *val = ISM303DAC_MG_I2C_DISABLE;
       break;
 
@@ -2088,11 +2088,11 @@ int32_t ism303dac_xl_cs_mode_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl_a.if_cs_pu_dis)
   {
-    case ISM303DAC_XL_PULL_UP_CONNECTED:
+    case 0x00:
       *val = ISM303DAC_XL_PULL_UP_CONNECTED;
       break;
 
-    case ISM303DAC_XL_PULL_UP_DISCONNECTED:
+    case 0x01:
       *val = ISM303DAC_XL_PULL_UP_DISCONNECTED;
       break;
 
@@ -2164,11 +2164,11 @@ int32_t ism303dac_xl_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3_a.pp_od)
   {
-    case ISM303DAC_XL_PUSH_PULL:
+    case 0x00:
       *val = ISM303DAC_XL_PUSH_PULL;
       break;
 
-    case ISM303DAC_XL_OPEN_DRAIN:
+    case 0x01:
       *val = ISM303DAC_XL_OPEN_DRAIN;
       break;
 
@@ -2227,11 +2227,11 @@ int32_t ism303dac_xl_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3_a.h_lactive)
   {
-    case ISM303DAC_XL_ACTIVE_HIGH:
+    case 0x00:
       *val = ISM303DAC_XL_ACTIVE_HIGH;
       break;
 
-    case ISM303DAC_XL_ACTIVE_LOW:
+    case 0x01:
       *val = ISM303DAC_XL_ACTIVE_LOW;
       break;
 
@@ -2290,11 +2290,11 @@ int32_t ism303dac_xl_int_notification_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3_a.lir)
   {
-    case ISM303DAC_XL_INT_PULSED:
+    case 0x00:
       *val = ISM303DAC_XL_INT_PULSED;
       break;
 
-    case ISM303DAC_XL_INT_LATCHED:
+    case 0x01:
       *val = ISM303DAC_XL_INT_LATCHED;
       break;
 
@@ -2769,11 +2769,11 @@ int32_t ism303dac_mg_offset_int_conf_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_b_m.int_on_dataoff)
   {
-    case ISM303DAC_MG_CHECK_BEFORE:
+    case 0x00:
       *val = ISM303DAC_MG_CHECK_BEFORE;
       break;
 
-    case ISM303DAC_MG_CHECK_AFTER:
+    case 0x01:
       *val = ISM303DAC_MG_CHECK_AFTER;
       break;
 
@@ -3427,11 +3427,11 @@ int32_t ism303dac_xl_tap_mode_get(const stmdev_ctx_t *ctx,
 
   switch (wake_up_ths_a.single_double_tap)
   {
-    case ISM303DAC_XL_ONLY_SINGLE:
+    case 0x00:
       *val = ISM303DAC_XL_ONLY_SINGLE;
       break;
 
-    case ISM303DAC_XL_ONLY_DOUBLE:
+    case 0x01:
       *val = ISM303DAC_XL_ONLY_DOUBLE;
       break;
 
@@ -3524,19 +3524,19 @@ int32_t ism303dac_xl_6d_threshold_get(const stmdev_ctx_t *ctx,
 
   switch (tap_6d_ths_a._6d_ths)
   {
-    case ISM303DAC_XL_DEG_80:
+    case 0x00:
       *val = ISM303DAC_XL_DEG_80;
       break;
 
-    case ISM303DAC_XL_DEG_70:
+    case 0x01:
       *val = ISM303DAC_XL_DEG_70;
       break;
 
-    case ISM303DAC_XL_DEG_60:
+    case 0x02:
       *val = ISM303DAC_XL_DEG_60;
       break;
 
-    case ISM303DAC_XL_DEG_50:
+    case 0x03:
       *val = ISM303DAC_XL_DEG_50;
       break;
 
@@ -3863,23 +3863,23 @@ int32_t ism303dac_xl_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl_a.fmode)
   {
-    case ISM303DAC_XL_BYPASS_MODE:
+    case 0x00:
       *val = ISM303DAC_XL_BYPASS_MODE;
       break;
 
-    case ISM303DAC_XL_FIFO_MODE:
+    case 0x01:
       *val = ISM303DAC_XL_FIFO_MODE;
       break;
 
-    case ISM303DAC_XL_STREAM_TO_FIFO_MODE:
+    case 0x03:
       *val = ISM303DAC_XL_STREAM_TO_FIFO_MODE;
       break;
 
-    case ISM303DAC_XL_BYPASS_TO_STREAM_MODE:
+    case 0x04:
       *val = ISM303DAC_XL_BYPASS_TO_STREAM_MODE;
       break;
 
-    case ISM303DAC_XL_STREAM_MODE:
+    case 0x06:
       *val = ISM303DAC_XL_STREAM_MODE;
       break;
 

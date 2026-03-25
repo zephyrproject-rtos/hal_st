@@ -237,35 +237,35 @@ int32_t l3gd20h_gy_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl1.pd << 7) + (low_odr.low_odr << 4) + ctrl1.dr)
   {
-    case L3GD20H_POWER_DOWN:
+    case 0x00:
       *val = L3GD20H_POWER_DOWN;
       break;
 
-    case L3GD20H_12Hz5:
+    case 0x90:
       *val = L3GD20H_12Hz5;
       break;
 
-    case L3GD20H_25Hz:
+    case 0x91:
       *val = L3GD20H_25Hz;
       break;
 
-    case L3GD20H_50Hz:
+    case 0x92:
       *val = L3GD20H_50Hz;
       break;
 
-    case L3GD20H_100Hz:
+    case 0x80:
       *val = L3GD20H_100Hz;
       break;
 
-    case L3GD20H_200Hz:
+    case 0x81:
       *val = L3GD20H_200Hz;
       break;
 
-    case L3GD20H_400Hz:
+    case 0x82:
       *val = L3GD20H_400Hz;
       break;
 
-    case L3GD20H_800Hz:
+    case 0x83:
       *val = L3GD20H_800Hz;
       break;
 
@@ -320,12 +320,16 @@ int32_t l3gd20h_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl4.fs)
   {
-    case L3GD20H_245dps:
+    case 0x00:
       *val = L3GD20H_245dps;
       break;
 
-    case L3GD20H_500dps:
+    case 0x01:
       *val = L3GD20H_500dps;
+      break;
+
+    case 0x02:
+      *val = L3GD20H_2000dps;
       break;
 
     default:
@@ -526,11 +530,11 @@ int32_t l3gd20h_dev_data_format_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl4.ble)
   {
-    case L3GD20H_LSB_LOW_ADDRESS:
+    case 0x00:
       *val = L3GD20H_LSB_LOW_ADDRESS;
       break;
 
-    case L3GD20H_MSB_LOW_ADDRESS:
+    case 0x01:
       *val = L3GD20H_MSB_LOW_ADDRESS;
       break;
 
@@ -716,51 +720,51 @@ int32_t l3gd20h_gy_filter_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch ((low_odr.low_odr << 7) + (ctrl1.dr << 4) + ctrl1.bw)
   {
-    case L3GD20H_16Hz6_USE_ODR_50Hz:
+    case 0xA0:
       *val = L3GD20H_16Hz6_USE_ODR_50Hz;
       break;
 
-    case L3GD20H_12Hz5_USE_ODR_100Hz:
+    case 0x00:
       *val = L3GD20H_12Hz5_USE_ODR_100Hz;
       break;
 
-    case L3GD20H_25Hz_USE_ODR_100Hz:
+    case 0x01:
       *val = L3GD20H_25Hz_USE_ODR_100Hz;
       break;
 
-    case L3GD20H_12Hz5_USE_ODR_200Hz:
+    case 0x10:
       *val = L3GD20H_12Hz5_USE_ODR_200Hz;
       break;
 
-    case L3GD20H_70Hz_USE_ODR_200Hz:
+    case 0x13:
       *val = L3GD20H_70Hz_USE_ODR_200Hz;
       break;
 
-    case L3GD20H_20Hz_USE_ODR_400Hz:
+    case 0x20:
       *val = L3GD20H_20Hz_USE_ODR_400Hz;
       break;
 
-    case L3GD20H_25Hz_USE_ODR_400Hz:
+    case 0x21:
       *val = L3GD20H_25Hz_USE_ODR_400Hz;
       break;
 
-    case L3GD20H_50Hz_USE_ODR_400Hz:
+    case 0x22:
       *val = L3GD20H_50Hz_USE_ODR_400Hz;
       break;
 
-    case L3GD20H_110Hz_USE_ODR_400Hz:
+    case 0x23:
       *val = L3GD20H_110Hz_USE_ODR_400Hz;
       break;
 
-    case L3GD20H_30Hz_USE_ODR_800Hz:
+    case 0x30:
       *val = L3GD20H_30Hz_USE_ODR_800Hz;
       break;
 
-    case L3GD20H_35Hz_USE_ODR_800Hz:
+    case 0x31:
       *val = L3GD20H_35Hz_USE_ODR_800Hz;
       break;
 
-    case L3GD20H_100Hz_USE_ODR_800Hz:
+    case 0x33:
       *val = L3GD20H_100Hz_USE_ODR_800Hz;
       break;
 
@@ -816,51 +820,51 @@ int32_t l3gd20h_gy_filter_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl2.hpm << 4) + ctrl2.hpcf)
   {
-    case L3GD20H_NORMAL_MODE_LIGHT:
+    case 0x00:
       *val = L3GD20H_NORMAL_MODE_LIGHT;
       break;
 
-    case L3GD20H_NORMAL_MODE_NORMAL:
+    case 0x01:
       *val = L3GD20H_NORMAL_MODE_NORMAL;
       break;
 
-    case L3GD20H_NORMAL_MODE_STRONG:
+    case 0x02:
       *val = L3GD20H_NORMAL_MODE_STRONG;
       break;
 
-    case L3GD20H_NORMAL_MODE_EXTREME:
+    case 0x03:
       *val = L3GD20H_NORMAL_MODE_EXTREME;
       break;
 
-    case L3GD20H_USE_REFERENCE_LIGHT:
+    case 0x10:
       *val = L3GD20H_USE_REFERENCE_LIGHT;
       break;
 
-    case L3GD20H_USE_REFERENCE_NORMAL:
+    case 0x11:
       *val = L3GD20H_USE_REFERENCE_NORMAL;
       break;
 
-    case L3GD20H_USE_REFERENCE_STRONG:
+    case 0x12:
       *val = L3GD20H_USE_REFERENCE_STRONG;
       break;
 
-    case L3GD20H_USE_REFERENCE_EXTREME:
+    case 0x13:
       *val = L3GD20H_USE_REFERENCE_EXTREME;
       break;
 
-    case L3GD20H_AUTORESET_LIGHT:
+    case 0x30:
       *val = L3GD20H_AUTORESET_LIGHT;
       break;
 
-    case L3GD20H_AUTORESET_NORMAL:
+    case 0x31:
       *val = L3GD20H_AUTORESET_NORMAL;
       break;
 
-    case L3GD20H_AUTORESET_STRONG:
+    case 0x32:
       *val = L3GD20H_AUTORESET_STRONG;
       break;
 
-    case L3GD20H_AUTORESET_EXTREME:
+    case 0x33:
       *val = L3GD20H_AUTORESET_EXTREME;
       break;
 
@@ -916,19 +920,19 @@ int32_t l3gd20h_gy_filter_out_path_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl5.hpen << 4) + ctrl5.out_sel)
   {
-    case L3GD20H_LPF1_OUT:
+    case 0x00:
       *val = L3GD20H_LPF1_OUT;
       break;
 
-    case L3GD20H_LPF1_HPF_OUT:
+    case 0x11:
       *val = L3GD20H_LPF1_HPF_OUT;
       break;
 
-    case L3GD20H_LPF1_LPF2_OUT:
+    case 0x02:
       *val = L3GD20H_LPF1_LPF2_OUT;
       break;
 
-    case L3GD20H_LPF1_HPF_LPF2_OUT:
+    case 0x12:
       *val = L3GD20H_LPF1_HPF_LPF2_OUT;
       break;
 
@@ -985,19 +989,19 @@ int32_t l3gd20h_gy_filter_int_path_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl5.hpen << 4) + ctrl5.ig_sel)
   {
-    case L3GD20H_LPF1_INT:
+    case 0x00:
       *val = L3GD20H_LPF1_INT;
       break;
 
-    case L3GD20H_LPF1_HPF_INT:
+    case 0x11:
       *val = L3GD20H_LPF1_HPF_INT;
       break;
 
-    case L3GD20H_LPF1_LPF2_INT:
+    case 0x02:
       *val = L3GD20H_LPF1_LPF2_INT;
       break;
 
-    case L3GD20H_LPF1_HPF_LPF2_INT:
+    case 0x12:
       *val = L3GD20H_LPF1_HPF_LPF2_INT;
       break;
 
@@ -1097,11 +1101,11 @@ int32_t l3gd20h_spi_mode_get(const stmdev_ctx_t *ctx, l3gd20h_sim_t *val)
 
   switch (ctrl4.sim)
   {
-    case L3GD20H_SPI_4_WIRE:
+    case 0x00:
       *val = L3GD20H_SPI_4_WIRE;
       break;
 
-    case L3GD20H_SPI_3_WIRE:
+    case 0x01:
       *val = L3GD20H_SPI_3_WIRE;
       break;
 
@@ -1156,11 +1160,11 @@ int32_t l3gd20h_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (low_odr.i2c_dis)
   {
-    case L3GD20H_I2C_ENABLE:
+    case 0x00:
       *val = L3GD20H_I2C_ENABLE;
       break;
 
-    case L3GD20H_I2C_DISABLE:
+    case 0x01:
       *val = L3GD20H_I2C_DISABLE;
       break;
 
@@ -1276,11 +1280,11 @@ int32_t l3gd20h_pin_mode_get(const stmdev_ctx_t *ctx, l3gd20h_pp_od_t *val)
 
   switch (ctrl3.pp_od)
   {
-    case L3GD20H_PUSH_PULL:
+    case 0x00:
       *val = L3GD20H_PUSH_PULL;
       break;
 
-    case L3GD20H_OPEN_DRAIN:
+    case 0x01:
       *val = L3GD20H_OPEN_DRAIN;
       break;
 
@@ -1347,11 +1351,11 @@ int32_t l3gd20h_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3.h_lactive)
   {
-    case L3GD20H_ACTIVE_HIGH:
+    case 0x00:
       *val = L3GD20H_ACTIVE_HIGH;
       break;
 
-    case L3GD20H_ACTIVE_LOW:
+    case 0x01:
       *val = L3GD20H_ACTIVE_LOW;
       break;
 
@@ -1455,11 +1459,11 @@ int32_t l3gd20h_pin_notification_get(const stmdev_ctx_t *ctx,
 
   switch (ig_cfg.lir)
   {
-    case L3GD20H_INT_PULSED:
+    case 0x00:
       *val = L3GD20H_INT_PULSED;
       break;
 
-    case L3GD20H_INT_LATCHED:
+    case 0x01:
       *val = L3GD20H_INT_LATCHED;
       break;
 
@@ -1514,11 +1518,11 @@ int32_t l3gd20h_pin_logic_get(const stmdev_ctx_t *ctx,
 
   switch (ig_cfg.and_or)
   {
-    case L3GD20H_LOGIC_OR:
+    case 0x00:
       *val = L3GD20H_LOGIC_OR;
       break;
 
-    case L3GD20H_LOGIC_AND:
+    case 0x01:
       *val = L3GD20H_LOGIC_AND;
       break;
 
@@ -1736,11 +1740,11 @@ int32_t l3gd20h_gy_trshld_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ig_ths_xh.dcrm)
   {
-    case L3GD20H_RESET_MODE:
+    case 0x00:
       *val = L3GD20H_RESET_MODE;
       break;
 
-    case L3GD20H_DECREMENT_MODE:
+    case 0x01:
       *val = L3GD20H_DECREMENT_MODE;
       break;
 
@@ -2051,27 +2055,31 @@ int32_t l3gd20h_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl5.fifo_en << 4) + fifo_ctrl.fm)
   {
-    case L3GD20H_BYPASS_MODE:
+    case 0x00:
       *val = L3GD20H_BYPASS_MODE;
       break;
 
-    case L3GD20H_FIFO_MODE:
+    case 0x11:
       *val = L3GD20H_FIFO_MODE;
       break;
 
-    case L3GD20H_STREAM_MODE:
+    case 0x12:
       *val = L3GD20H_STREAM_MODE;
       break;
 
-    case L3GD20H_STREAM_TO_FIFO_MODE:
+    case 0x13:
       *val = L3GD20H_STREAM_TO_FIFO_MODE;
       break;
 
-    case L3GD20H_BYPASS_TO_STREAM_MODE:
+    case 0x14:
       *val = L3GD20H_BYPASS_TO_STREAM_MODE;
       break;
 
-    case L3GD20H_BYPASS_TO_FIFO_MODE:
+    case 0x15:
+      *val = L3GD20H_DYNAMIC_STREAM_MODE;
+      break;
+
+    case 0x17:
       *val = L3GD20H_BYPASS_TO_FIFO_MODE;
       break;
 
@@ -2282,19 +2290,19 @@ int32_t l3gd20h_den_mode_get(const stmdev_ctx_t *ctx, l3gd20h_den_md_t *val)
 
   switch ((ctrl2.lvlen << 2) + (ctrl2.extren << 1) + ctrl4.impen)
   {
-    case L3GD20H_DEN_DISABLE:
+    case 0x00:
       *val = L3GD20H_DEN_DISABLE;
       break;
 
-    case L3GD20H_DEN_ON_LEVEL_TRIGGER:
+    case 0x03:
       *val = L3GD20H_DEN_ON_LEVEL_TRIGGER;
       break;
 
-    case L3GD20H_DEN_ON_EDGE_TRIGGER:
+    case 0x02:
       *val = L3GD20H_DEN_ON_EDGE_TRIGGER;
       break;
 
-    case L3GD20H_DEN_IMPULSE_TRIGGER:
+    case 0x05:
       *val = L3GD20H_DEN_IMPULSE_TRIGGER;
       break;
 
@@ -2360,15 +2368,15 @@ int32_t l3gd20h_gy_self_test_get(const stmdev_ctx_t *ctx, l3gd20h_st_t *val)
 
   switch (ctrl4.st)
   {
-    case L3GD20H_ST_DISABLE:
+    case 0x00:
       *val = L3GD20H_ST_DISABLE;
       break;
 
-    case L3GD20H_ST_POSITIVE:
+    case 0x01:
       *val = L3GD20H_ST_POSITIVE;
       break;
 
-    case L3GD20H_ST_NEGATIVE:
+    case 0x03:
       *val = L3GD20H_ST_NEGATIVE;
       break;
 

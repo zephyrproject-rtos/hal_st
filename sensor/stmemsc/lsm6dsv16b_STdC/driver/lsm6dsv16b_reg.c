@@ -255,19 +255,19 @@ int32_t lsm6dsv16b_reset_get(const stmdev_ctx_t *ctx, lsm6dsv16b_reset_t *val)
 
   switch ((ctrl3.sw_reset << 2) + (ctrl3.boot << 1) + func_cfg_access.sw_por)
   {
-    case LSM6DSV16B_READY:
+    case 0x00:
       *val = LSM6DSV16B_READY;
       break;
 
-    case LSM6DSV16B_GLOBAL_RST:
+    case 0x01:
       *val = LSM6DSV16B_GLOBAL_RST;
       break;
 
-    case LSM6DSV16B_RESTORE_CAL_PARAM:
+    case 0x02:
       *val = LSM6DSV16B_RESTORE_CAL_PARAM;
       break;
 
-    case LSM6DSV16B_RESTORE_CTRL_REGS:
+    case 0x04:
       *val = LSM6DSV16B_RESTORE_CTRL_REGS;
       break;
 
@@ -322,11 +322,11 @@ int32_t lsm6dsv16b_mem_bank_get(const stmdev_ctx_t *ctx, lsm6dsv16b_mem_bank_t *
 
   switch (func_cfg_access.emb_func_reg_access)
   {
-    case LSM6DSV16B_MAIN_MEM_BANK:
+    case 0x00:
       *val = LSM6DSV16B_MAIN_MEM_BANK;
       break;
 
-    case LSM6DSV16B_EMBED_FUNC_MEM_BANK:
+    case 0x01:
       *val = LSM6DSV16B_EMBED_FUNC_MEM_BANK;
       break;
 
@@ -407,55 +407,55 @@ int32_t lsm6dsv16b_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1.odr_xl)
   {
-    case LSM6DSV16B_XL_ODR_OFF:
+    case 0x00:
       *val = LSM6DSV16B_XL_ODR_OFF;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_1Hz875:
+    case 0x01:
       *val = LSM6DSV16B_XL_ODR_AT_1Hz875;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_7Hz5:
+    case 0x02:
       *val = LSM6DSV16B_XL_ODR_AT_7Hz5;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_15Hz:
+    case 0x03:
       *val = LSM6DSV16B_XL_ODR_AT_15Hz;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_30Hz:
+    case 0x04:
       *val = LSM6DSV16B_XL_ODR_AT_30Hz;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_60Hz:
+    case 0x05:
       *val = LSM6DSV16B_XL_ODR_AT_60Hz;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_120Hz:
+    case 0x06:
       *val = LSM6DSV16B_XL_ODR_AT_120Hz;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_240Hz:
+    case 0x07:
       *val = LSM6DSV16B_XL_ODR_AT_240Hz;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_480Hz:
+    case 0x08:
       *val = LSM6DSV16B_XL_ODR_AT_480Hz;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_960Hz:
+    case 0x09:
       *val = LSM6DSV16B_XL_ODR_AT_960Hz;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_1920Hz:
+    case 0x0A:
       *val = LSM6DSV16B_XL_ODR_AT_1920Hz;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_3840Hz:
+    case 0x0B:
       *val = LSM6DSV16B_XL_ODR_AT_3840Hz;
       break;
 
-    case LSM6DSV16B_XL_ODR_AT_7680Hz:
+    case 0x0C:
       *val = LSM6DSV16B_XL_ODR_AT_7680Hz;
       break;
 
@@ -511,23 +511,23 @@ int32_t lsm6dsv16b_xl_mode_get(const stmdev_ctx_t *ctx, lsm6dsv16b_xl_mode_t *va
 
   switch (ctrl1.op_mode_xl)
   {
-    case LSM6DSV16B_XL_HIGH_PERFORMANCE_MD:
+    case 0x00:
       *val = LSM6DSV16B_XL_HIGH_PERFORMANCE_MD;
       break;
 
-    case LSM6DSV16B_XL_HIGH_PERFORMANCE_TDM_MD:
+    case 0x02:
       *val = LSM6DSV16B_XL_HIGH_PERFORMANCE_TDM_MD;
       break;
 
-    case LSM6DSV16B_XL_LOW_POWER_2_AVG_MD:
+    case 0x04:
       *val = LSM6DSV16B_XL_LOW_POWER_2_AVG_MD;
       break;
 
-    case LSM6DSV16B_XL_LOW_POWER_4_AVG_MD:
+    case 0x05:
       *val = LSM6DSV16B_XL_LOW_POWER_4_AVG_MD;
       break;
 
-    case LSM6DSV16B_XL_LOW_POWER_8_AVG_MD:
+    case 0x06:
       *val = LSM6DSV16B_XL_LOW_POWER_8_AVG_MD;
       break;
 
@@ -585,51 +585,51 @@ int32_t lsm6dsv16b_gy_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2.odr_g)
   {
-    case LSM6DSV16B_GY_ODR_OFF:
+    case 0x00:
       *val = LSM6DSV16B_GY_ODR_OFF;
       break;
 
-    case LSM6DSV16B_GY_ODR_AT_7Hz5:
+    case 0x02:
       *val = LSM6DSV16B_GY_ODR_AT_7Hz5;
       break;
 
-    case LSM6DSV16B_GY_ODR_AT_15Hz:
+    case 0x03:
       *val = LSM6DSV16B_GY_ODR_AT_15Hz;
       break;
 
-    case LSM6DSV16B_GY_ODR_AT_30Hz:
+    case 0x04:
       *val = LSM6DSV16B_GY_ODR_AT_30Hz;
       break;
 
-    case LSM6DSV16B_GY_ODR_AT_60Hz:
+    case 0x05:
       *val = LSM6DSV16B_GY_ODR_AT_60Hz;
       break;
 
-    case LSM6DSV16B_GY_ODR_AT_120Hz:
+    case 0x06:
       *val = LSM6DSV16B_GY_ODR_AT_120Hz;
       break;
 
-    case LSM6DSV16B_GY_ODR_AT_240Hz:
+    case 0x07:
       *val = LSM6DSV16B_GY_ODR_AT_240Hz;
       break;
 
-    case LSM6DSV16B_GY_ODR_AT_480Hz:
+    case 0x08:
       *val = LSM6DSV16B_GY_ODR_AT_480Hz;
       break;
 
-    case LSM6DSV16B_GY_ODR_AT_960Hz:
+    case 0x09:
       *val = LSM6DSV16B_GY_ODR_AT_960Hz;
       break;
 
-    case LSM6DSV16B_GY_ODR_AT_1920Hz:
+    case 0x0A:
       *val = LSM6DSV16B_GY_ODR_AT_1920Hz;
       break;
 
-    case LSM6DSV16B_GY_ODR_AT_3840Hz:
+    case 0x0B:
       *val = LSM6DSV16B_GY_ODR_AT_3840Hz;
       break;
 
-    case LSM6DSV16B_GY_ODR_AT_7680Hz:
+    case 0x0C:
       *val = LSM6DSV16B_GY_ODR_AT_7680Hz;
       break;
 
@@ -684,15 +684,15 @@ int32_t lsm6dsv16b_gy_mode_get(const stmdev_ctx_t *ctx, lsm6dsv16b_gy_mode_t *va
 
   switch (ctrl2.op_mode_g)
   {
-    case LSM6DSV16B_GY_HIGH_PERFORMANCE_MD:
+    case 0x00:
       *val = LSM6DSV16B_GY_HIGH_PERFORMANCE_MD;
       break;
 
-    case LSM6DSV16B_GY_SLEEP_MD:
+    case 0x04:
       *val = LSM6DSV16B_GY_SLEEP_MD;
       break;
 
-    case LSM6DSV16B_GY_LOW_POWER_MD:
+    case 0x05:
       *val = LSM6DSV16B_GY_LOW_POWER_MD;
       break;
 
@@ -846,11 +846,11 @@ int32_t lsm6dsv16b_data_ready_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl4.drdy_pulsed)
   {
-    case LSM6DSV16B_DRDY_LATCHED:
+    case 0x00:
       *val = LSM6DSV16B_DRDY_LATCHED;
       break;
 
-    case LSM6DSV16B_DRDY_PULSED:
+    case 0x01:
       *val = LSM6DSV16B_DRDY_PULSED;
       break;
 
@@ -908,27 +908,27 @@ int32_t lsm6dsv16b_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl6.fs_g)
   {
-    case LSM6DSV16B_125dps:
+    case 0x00:
       *val = LSM6DSV16B_125dps;
       break;
 
-    case LSM6DSV16B_250dps:
+    case 0x01:
       *val = LSM6DSV16B_250dps;
       break;
 
-    case LSM6DSV16B_500dps:
+    case 0x02:
       *val = LSM6DSV16B_500dps;
       break;
 
-    case LSM6DSV16B_1000dps:
+    case 0x03:
       *val = LSM6DSV16B_1000dps;
       break;
 
-    case LSM6DSV16B_2000dps:
+    case 0x04:
       *val = LSM6DSV16B_2000dps;
       break;
 
-    case LSM6DSV16B_4000dps:
+    case 0x0C:
       *val = LSM6DSV16B_4000dps;
       break;
 
@@ -986,19 +986,19 @@ int32_t lsm6dsv16b_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl8.fs_xl)
   {
-    case LSM6DSV16B_2g:
+    case 0x00:
       *val = LSM6DSV16B_2g;
       break;
 
-    case LSM6DSV16B_4g:
+    case 0x01:
       *val = LSM6DSV16B_4g;
       break;
 
-    case LSM6DSV16B_8g:
+    case 0x02:
       *val = LSM6DSV16B_8g;
       break;
 
-    case LSM6DSV16B_16g:
+    case 0x03:
       *val = LSM6DSV16B_16g;
       break;
 
@@ -1106,16 +1106,16 @@ int32_t lsm6dsv16b_xl_self_test_get(const stmdev_ctx_t *ctx,
   //switch (ctrl10.xl_st_offset)
   switch (ctrl10.st_xl)
   {
-    case LSM6DSV16B_XL_ST_DISABLE:
+    case 0x00:
       *val = LSM6DSV16B_XL_ST_DISABLE;
       break;
 
-    case LSM6DSV16B_XL_ST_POSITIVE:
-      *val = LSM6DSV16B_XL_ST_POSITIVE;
+    case 0x01:
+      *val = ctrl10.xl_st_offset == 0 ? LSM6DSV16B_XL_ST_POSITIVE : LSM6DSV16B_XL_ST_OFFSET_POS;
       break;
 
-    case LSM6DSV16B_XL_ST_NEGATIVE:
-      *val = LSM6DSV16B_XL_ST_NEGATIVE;
+    case 0x02:
+      *val = ctrl10.xl_st_offset == 0 ? LSM6DSV16B_XL_ST_NEGATIVE : LSM6DSV16B_XL_ST_OFFSET_NEG;
       break;
 
     default:
@@ -1172,15 +1172,15 @@ int32_t lsm6dsv16b_gy_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl10.st_g)
   {
-    case LSM6DSV16B_GY_ST_DISABLE:
+    case 0x00:
       *val = LSM6DSV16B_GY_ST_DISABLE;
       break;
 
-    case LSM6DSV16B_GY_ST_POSITIVE:
+    case 0x01:
       *val = LSM6DSV16B_GY_ST_POSITIVE;
       break;
 
-    case LSM6DSV16B_GY_ST_NEGATIVE:
+    case 0x02:
       *val = LSM6DSV16B_GY_ST_NEGATIVE;
       break;
 
@@ -1931,11 +1931,11 @@ int32_t lsm6dsv16b_filt_anti_spike_get(const stmdev_ctx_t *ctx,
 
   switch (if_cfg.asf_ctrl)
   {
-    case LSM6DSV16B_AUTO:
+    case 0x00:
       *val = LSM6DSV16B_AUTO;
       break;
 
-    case LSM6DSV16B_ALWAYS_ACTIVE:
+    case 0x01:
       *val = LSM6DSV16B_ALWAYS_ACTIVE;
       break;
 
@@ -2076,35 +2076,35 @@ int32_t lsm6dsv16b_filt_gy_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl6.lpf1_g_bw)
   {
-    case LSM6DSV16B_GY_ULTRA_LIGHT:
+    case 0x00:
       *val = LSM6DSV16B_GY_ULTRA_LIGHT;
       break;
 
-    case LSM6DSV16B_GY_VERY_LIGHT:
+    case 0x01:
       *val = LSM6DSV16B_GY_VERY_LIGHT;
       break;
 
-    case LSM6DSV16B_GY_LIGHT:
+    case 0x02:
       *val = LSM6DSV16B_GY_LIGHT;
       break;
 
-    case LSM6DSV16B_GY_MEDIUM:
+    case 0x03:
       *val = LSM6DSV16B_GY_MEDIUM;
       break;
 
-    case LSM6DSV16B_GY_STRONG:
+    case 0x04:
       *val = LSM6DSV16B_GY_STRONG;
       break;
 
-    case LSM6DSV16B_GY_VERY_STRONG:
+    case 0x05:
       *val = LSM6DSV16B_GY_VERY_STRONG;
       break;
 
-    case LSM6DSV16B_GY_AGGRESSIVE:
+    case 0x06:
       *val = LSM6DSV16B_GY_AGGRESSIVE;
       break;
 
-    case LSM6DSV16B_GY_XTREME:
+    case 0x07:
       *val = LSM6DSV16B_GY_XTREME;
       break;
 
@@ -2209,35 +2209,35 @@ int32_t lsm6dsv16b_filt_xl_lp2_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl8.hp_lpf2_xl_bw)
   {
-    case LSM6DSV16B_XL_ULTRA_LIGHT:
+    case 0x00:
       *val = LSM6DSV16B_XL_ULTRA_LIGHT;
       break;
 
-    case LSM6DSV16B_XL_VERY_LIGHT:
+    case 0x01:
       *val = LSM6DSV16B_XL_VERY_LIGHT;
       break;
 
-    case LSM6DSV16B_XL_LIGHT:
+    case 0x02:
       *val = LSM6DSV16B_XL_LIGHT;
       break;
 
-    case LSM6DSV16B_XL_MEDIUM:
+    case 0x03:
       *val = LSM6DSV16B_XL_MEDIUM;
       break;
 
-    case LSM6DSV16B_XL_STRONG:
+    case 0x04:
       *val = LSM6DSV16B_XL_STRONG;
       break;
 
-    case LSM6DSV16B_XL_VERY_STRONG:
+    case 0x05:
       *val = LSM6DSV16B_XL_VERY_STRONG;
       break;
 
-    case LSM6DSV16B_XL_AGGRESSIVE:
+    case 0x06:
       *val = LSM6DSV16B_XL_AGGRESSIVE;
       break;
 
-    case LSM6DSV16B_XL_XTREME:
+    case 0x07:
       *val = LSM6DSV16B_XL_XTREME;
       break;
 
@@ -2435,11 +2435,11 @@ int32_t lsm6dsv16b_filt_xl_hp_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl9.hp_ref_mode_xl)
   {
-    case LSM6DSV16B_HP_MD_NORMAL:
+    case 0x00:
       *val = LSM6DSV16B_HP_MD_NORMAL;
       break;
 
-    case LSM6DSV16B_HP_MD_REFERENCE:
+    case 0x01:
       *val = LSM6DSV16B_HP_MD_REFERENCE;
       break;
 
@@ -2515,15 +2515,15 @@ int32_t lsm6dsv16b_filt_wkup_act_feed_get(const stmdev_ctx_t *ctx,
 
   switch ((wake_up_ths.usr_off_on_wu << 1) + tap_cfg0.slope_fds)
   {
-    case LSM6DSV16B_WK_FEED_SLOPE:
+    case 0x00:
       *val = LSM6DSV16B_WK_FEED_SLOPE;
       break;
 
-    case LSM6DSV16B_WK_FEED_HIGH_PASS:
+    case 0x01:
       *val = LSM6DSV16B_WK_FEED_HIGH_PASS;
       break;
 
-    case LSM6DSV16B_WK_FEED_LP_WITH_OFFSET:
+    case 0x02:
       *val = LSM6DSV16B_WK_FEED_LP_WITH_OFFSET;
       break;
 
@@ -2629,11 +2629,11 @@ int32_t lsm6dsv16b_filt_sixd_feed_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg0.low_pass_on_6d)
   {
-    case LSM6DSV16B_SIXD_FEED_ODR_DIV_2:
+    case 0x00:
       *val = LSM6DSV16B_SIXD_FEED_ODR_DIV_2;
       break;
 
-    case LSM6DSV16B_SIXD_FEED_LOW_PASS:
+    case 0x01:
       *val = LSM6DSV16B_SIXD_FEED_LOW_PASS;
       break;
 
@@ -2750,11 +2750,11 @@ int32_t lsm6dsv16b_ui_i2c_i3c_mode_get(const stmdev_ctx_t *ctx,
 
   switch (if_cfg.i2c_i3c_disable)
   {
-    case LSM6DSV16B_I2C_I3C_ENABLE:
+    case 0x00:
       *val = LSM6DSV16B_I2C_I3C_ENABLE;
       break;
 
-    case LSM6DSV16B_I2C_I3C_DISABLE:
+    case 0x01:
       *val = LSM6DSV16B_I2C_I3C_DISABLE;
       break;
 
@@ -2809,11 +2809,11 @@ int32_t lsm6dsv16b_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsv16b_spi_mode_t *
 
   switch (if_cfg.sim)
   {
-    case LSM6DSV16B_SPI_4_WIRE:
+    case 0x00:
       *val = LSM6DSV16B_SPI_4_WIRE;
       break;
 
-    case LSM6DSV16B_SPI_3_WIRE:
+    case 0x01:
       *val = LSM6DSV16B_SPI_3_WIRE;
       break;
 
@@ -2917,19 +2917,19 @@ int32_t lsm6dsv16b_i3c_ibi_time_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5.bus_act_sel)
   {
-    case LSM6DSV16B_IBI_2us:
+    case 0x00:
       *val = LSM6DSV16B_IBI_2us;
       break;
 
-    case LSM6DSV16B_IBI_50us:
+    case 0x01:
       *val = LSM6DSV16B_IBI_50us;
       break;
 
-    case LSM6DSV16B_IBI_1ms:
+    case 0x02:
       *val = LSM6DSV16B_IBI_1ms;
       break;
 
-    case LSM6DSV16B_IBI_25ms:
+    case 0x03:
       *val = LSM6DSV16B_IBI_25ms;
       break;
 
@@ -2998,11 +2998,11 @@ int32_t lsm6dsv16b_int_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (if_cfg.pp_od)
   {
-    case LSM6DSV16B_PUSH_PULL:
+    case 0x00:
       *val = LSM6DSV16B_PUSH_PULL;
       break;
 
-    case LSM6DSV16B_OPEN_DRAIN:
+    case 0x01:
       *val = LSM6DSV16B_OPEN_DRAIN;
       break;
 
@@ -3059,11 +3059,11 @@ int32_t lsm6dsv16b_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (if_cfg.h_lactive)
   {
-    case LSM6DSV16B_ACTIVE_HIGH:
+    case 0x00:
       *val = LSM6DSV16B_ACTIVE_HIGH;
       break;
 
-    case LSM6DSV16B_ACTIVE_LOW:
+    case 0x01:
       *val = LSM6DSV16B_ACTIVE_LOW;
       break;
 
@@ -3823,19 +3823,19 @@ int32_t lsm6dsv16b_int_notification_get(const stmdev_ctx_t *ctx,
 
   switch ((page_rw.emb_func_lir << 1) + tap_cfg0.lir)
   {
-    case LSM6DSV16B_ALL_INT_PULSED:
+    case 0x00:
       *val = LSM6DSV16B_ALL_INT_PULSED;
       break;
 
-    case LSM6DSV16B_BASE_LATCHED_EMB_PULSED:
+    case 0x01:
       *val = LSM6DSV16B_BASE_LATCHED_EMB_PULSED;
       break;
 
-    case LSM6DSV16B_BASE_PULSED_EMB_LATCHED:
+    case 0x02:
       *val = LSM6DSV16B_BASE_PULSED_EMB_LATCHED;
       break;
 
-    case LSM6DSV16B_ALL_INT_LATCHED:
+    case 0x03:
       *val = LSM6DSV16B_ALL_INT_LATCHED;
       break;
 
@@ -3903,19 +3903,19 @@ int32_t lsm6dsv16b_act_mode_get(const stmdev_ctx_t *ctx, lsm6dsv16b_act_mode_t *
 
   switch (functions_enable.inact_en)
   {
-    case LSM6DSV16B_XL_AND_GY_NOT_AFFECTED:
+    case 0x00:
       *val = LSM6DSV16B_XL_AND_GY_NOT_AFFECTED;
       break;
 
-    case LSM6DSV16B_XL_LOW_POWER_GY_NOT_AFFECTED:
+    case 0x01:
       *val = LSM6DSV16B_XL_LOW_POWER_GY_NOT_AFFECTED;
       break;
 
-    case LSM6DSV16B_XL_LOW_POWER_GY_SLEEP:
+    case 0x02:
       *val = LSM6DSV16B_XL_LOW_POWER_GY_SLEEP;
       break;
 
-    case LSM6DSV16B_XL_LOW_POWER_GY_POWER_DOWN:
+    case 0x03:
       *val = LSM6DSV16B_XL_LOW_POWER_GY_POWER_DOWN;
       break;
 
@@ -3972,19 +3972,19 @@ int32_t lsm6dsv16b_act_from_sleep_to_act_dur_get(const stmdev_ctx_t *ctx,
 
   switch (inactivity_dur.inact_dur)
   {
-    case LSM6DSV16B_SLEEP_TO_ACT_AT_1ST_SAMPLE:
+    case 0x00:
       *val = LSM6DSV16B_SLEEP_TO_ACT_AT_1ST_SAMPLE;
       break;
 
-    case LSM6DSV16B_SLEEP_TO_ACT_AT_2ND_SAMPLE:
+    case 0x01:
       *val = LSM6DSV16B_SLEEP_TO_ACT_AT_2ND_SAMPLE;
       break;
 
-    case LSM6DSV16B_SLEEP_TO_ACT_AT_3RD_SAMPLE:
+    case 0x02:
       *val = LSM6DSV16B_SLEEP_TO_ACT_AT_3RD_SAMPLE;
       break;
 
-    case LSM6DSV16B_SLEEP_TO_ACT_AT_4th_SAMPLE:
+    case 0x03:
       *val = LSM6DSV16B_SLEEP_TO_ACT_AT_4th_SAMPLE;
       break;
 
@@ -4041,19 +4041,19 @@ int32_t lsm6dsv16b_act_sleep_xl_odr_get(const stmdev_ctx_t *ctx,
 
   switch (inactivity_dur.xl_inact_odr)
   {
-    case LSM6DSV16B_1Hz875:
+    case 0x00:
       *val = LSM6DSV16B_1Hz875;
       break;
 
-    case LSM6DSV16B_15Hz:
+    case 0x01:
       *val = LSM6DSV16B_15Hz;
       break;
 
-    case LSM6DSV16B_30Hz:
+    case 0x02:
       *val = LSM6DSV16B_30Hz;
       break;
 
-    case LSM6DSV16B_60Hz:
+    case 0x03:
       *val = LSM6DSV16B_60Hz;
       break;
 
@@ -4499,28 +4499,36 @@ int32_t lsm6dsv16b_tap_axis_priority_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg1.tap_priority)
   {
-    case LSM6DSV16B_XYZ :
-      *val = LSM6DSV16B_XYZ ;
-      break;
-
-    case LSM6DSV16B_YXZ :
-      *val = LSM6DSV16B_YXZ ;
-      break;
-
-    case LSM6DSV16B_XZY:
-      *val = LSM6DSV16B_XZY;
-      break;
-
-    case LSM6DSV16B_ZYX :
+    case 0x00:
       *val = LSM6DSV16B_ZYX ;
       break;
 
-    case LSM6DSV16B_YZX :
+    case 0x01:
       *val = LSM6DSV16B_YZX ;
       break;
 
-    case LSM6DSV16B_ZXY :
+    case 0x02:
       *val = LSM6DSV16B_ZXY ;
+      break;
+
+    case 0x03:
+      *val = LSM6DSV16B_XYZ ;
+      break;
+
+    case 0x04:
+      *val = LSM6DSV16B_ZYX ;
+      break;
+
+    case 0x05:
+      *val = LSM6DSV16B_YXZ ;
+      break;
+
+    case 0x06:
+      *val = LSM6DSV16B_XZY;
+      break;
+
+    case 0x07:
+      *val = LSM6DSV16B_XYZ;
       break;
 
     default:
@@ -4628,11 +4636,11 @@ int32_t lsm6dsv16b_tap_mode_get(const stmdev_ctx_t *ctx, lsm6dsv16b_tap_mode_t *
 
   switch (wake_up_ths.single_double_tap)
   {
-    case LSM6DSV16B_ONLY_SINGLE:
+    case 0x00:
       *val = LSM6DSV16B_ONLY_SINGLE;
       break;
 
-    case LSM6DSV16B_BOTH_SINGLE_DOUBLE:
+    case 0x01:
       *val = LSM6DSV16B_BOTH_SINGLE_DOUBLE;
       break;
 
@@ -4702,19 +4710,19 @@ int32_t lsm6dsv16b_6d_threshold_get(const stmdev_ctx_t *ctx,
 
   switch (tap_ths_6d.sixd_ths)
   {
-    case LSM6DSV16B_DEG_80:
+    case 0x00:
       *val = LSM6DSV16B_DEG_80;
       break;
 
-    case LSM6DSV16B_DEG_70:
+    case 0x01:
       *val = LSM6DSV16B_DEG_70;
       break;
 
-    case LSM6DSV16B_DEG_60:
+    case 0x02:
       *val = LSM6DSV16B_DEG_60;
       break;
 
-    case LSM6DSV16B_DEG_50:
+    case 0x03:
       *val = LSM6DSV16B_DEG_50;
       break;
 
@@ -4844,35 +4852,35 @@ int32_t lsm6dsv16b_ff_thresholds_get(const stmdev_ctx_t *ctx,
 
   switch (free_fall.ff_ths)
   {
-    case LSM6DSV16B_156_mg:
+    case 0x00:
       *val = LSM6DSV16B_156_mg;
       break;
 
-    case LSM6DSV16B_219_mg:
+    case 0x01:
       *val = LSM6DSV16B_219_mg;
       break;
 
-    case LSM6DSV16B_250_mg:
+    case 0x02:
       *val = LSM6DSV16B_250_mg;
       break;
 
-    case LSM6DSV16B_312_mg:
+    case 0x03:
       *val = LSM6DSV16B_312_mg;
       break;
 
-    case LSM6DSV16B_344_mg:
+    case 0x04:
       *val = LSM6DSV16B_344_mg;
       break;
 
-    case LSM6DSV16B_406_mg:
+    case 0x05:
       *val = LSM6DSV16B_406_mg;
       break;
 
-    case LSM6DSV16B_469_mg:
+    case 0x06:
       *val = LSM6DSV16B_469_mg;
       break;
 
-    case LSM6DSV16B_500_mg:
+    case 0x07:
       *val = LSM6DSV16B_500_mg;
       break;
 
@@ -5036,19 +5044,19 @@ int32_t lsm6dsv16b_fifo_compress_algo_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl2.uncompr_rate)
   {
-    case LSM6DSV16B_CMP_DISABLE:
+    case 0x00:
       *val = LSM6DSV16B_CMP_DISABLE;
       break;
 
-    case LSM6DSV16B_CMP_8_TO_1:
+    case 0x01:
       *val = LSM6DSV16B_CMP_8_TO_1;
       break;
 
-    case LSM6DSV16B_CMP_16_TO_1:
+    case 0x02:
       *val = LSM6DSV16B_CMP_16_TO_1;
       break;
 
-    case LSM6DSV16B_CMP_32_TO_1:
+    case 0x03:
       *val = LSM6DSV16B_CMP_32_TO_1;
       break;
 
@@ -5269,55 +5277,55 @@ int32_t lsm6dsv16b_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl3.bdr_xl)
   {
-    case LSM6DSV16B_XL_NOT_BATCHED:
+    case 0x00:
       *val = LSM6DSV16B_XL_NOT_BATCHED;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_1Hz875:
+    case 0x01:
       *val = LSM6DSV16B_XL_BATCHED_AT_1Hz875;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_7Hz5:
+    case 0x02:
       *val = LSM6DSV16B_XL_BATCHED_AT_7Hz5;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_15Hz:
+    case 0x03:
       *val = LSM6DSV16B_XL_BATCHED_AT_15Hz;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_30Hz:
+    case 0x04:
       *val = LSM6DSV16B_XL_BATCHED_AT_30Hz;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_60Hz:
+    case 0x05:
       *val = LSM6DSV16B_XL_BATCHED_AT_60Hz;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_120Hz:
+    case 0x06:
       *val = LSM6DSV16B_XL_BATCHED_AT_120Hz;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_240Hz:
+    case 0x07:
       *val = LSM6DSV16B_XL_BATCHED_AT_240Hz;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_480Hz:
+    case 0x08:
       *val = LSM6DSV16B_XL_BATCHED_AT_480Hz;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_960Hz:
+    case 0x09:
       *val = LSM6DSV16B_XL_BATCHED_AT_960Hz;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_1920Hz:
+    case 0x0A:
       *val = LSM6DSV16B_XL_BATCHED_AT_1920Hz;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_3840Hz:
+    case 0x0B:
       *val = LSM6DSV16B_XL_BATCHED_AT_3840Hz;
       break;
 
-    case LSM6DSV16B_XL_BATCHED_AT_7680Hz:
+    case 0x0C:
       *val = LSM6DSV16B_XL_BATCHED_AT_7680Hz;
       break;
 
@@ -5374,55 +5382,55 @@ int32_t lsm6dsv16b_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl3.bdr_gy)
   {
-    case LSM6DSV16B_GY_NOT_BATCHED:
+    case 0x00:
       *val = LSM6DSV16B_GY_NOT_BATCHED;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_1Hz875:
+    case 0x01:
       *val = LSM6DSV16B_GY_BATCHED_AT_1Hz875;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_7Hz5:
+    case 0x02:
       *val = LSM6DSV16B_GY_BATCHED_AT_7Hz5;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_15Hz:
+    case 0x03:
       *val = LSM6DSV16B_GY_BATCHED_AT_15Hz;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_30Hz:
+    case 0x04:
       *val = LSM6DSV16B_GY_BATCHED_AT_30Hz;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_60Hz:
+    case 0x05:
       *val = LSM6DSV16B_GY_BATCHED_AT_60Hz;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_120Hz:
+    case 0x06:
       *val = LSM6DSV16B_GY_BATCHED_AT_120Hz;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_240Hz:
+    case 0x07:
       *val = LSM6DSV16B_GY_BATCHED_AT_240Hz;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_480Hz:
+    case 0x08:
       *val = LSM6DSV16B_GY_BATCHED_AT_480Hz;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_960Hz:
+    case 0x09:
       *val = LSM6DSV16B_GY_BATCHED_AT_960Hz;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_1920Hz:
+    case 0x0A:
       *val = LSM6DSV16B_GY_BATCHED_AT_1920Hz;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_3840Hz:
+    case 0x0B:
       *val = LSM6DSV16B_GY_BATCHED_AT_3840Hz;
       break;
 
-    case LSM6DSV16B_GY_BATCHED_AT_7680Hz:
+    case 0x0C:
       *val = LSM6DSV16B_GY_BATCHED_AT_7680Hz;
       break;
 
@@ -5479,31 +5487,31 @@ int32_t lsm6dsv16b_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.fifo_mode)
   {
-    case LSM6DSV16B_BYPASS_MODE:
+    case 0x00:
       *val = LSM6DSV16B_BYPASS_MODE;
       break;
 
-    case LSM6DSV16B_FIFO_MODE:
+    case 0x01:
       *val = LSM6DSV16B_FIFO_MODE;
       break;
 
-    case LSM6DSV16B_STREAM_WTM_TO_FULL_MODE:
+    case 0x02:
       *val = LSM6DSV16B_STREAM_WTM_TO_FULL_MODE;
       break;
 
-    case LSM6DSV16B_STREAM_TO_FIFO_MODE:
+    case 0x03:
       *val = LSM6DSV16B_STREAM_TO_FIFO_MODE;
       break;
 
-    case LSM6DSV16B_BYPASS_TO_STREAM_MODE:
+    case 0x04:
       *val = LSM6DSV16B_BYPASS_TO_STREAM_MODE;
       break;
 
-    case LSM6DSV16B_STREAM_MODE:
+    case 0x06:
       *val = LSM6DSV16B_STREAM_MODE;
       break;
 
-    case LSM6DSV16B_BYPASS_TO_FIFO_MODE:
+    case 0x07:
       *val = LSM6DSV16B_BYPASS_TO_FIFO_MODE;
       break;
 
@@ -5560,19 +5568,19 @@ int32_t lsm6dsv16b_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.odr_t_batch)
   {
-    case LSM6DSV16B_TEMP_NOT_BATCHED:
+    case 0x00:
       *val = LSM6DSV16B_TEMP_NOT_BATCHED;
       break;
 
-    case LSM6DSV16B_TEMP_BATCHED_AT_1Hz875:
+    case 0x01:
       *val = LSM6DSV16B_TEMP_BATCHED_AT_1Hz875;
       break;
 
-    case LSM6DSV16B_TEMP_BATCHED_AT_15Hz:
+    case 0x02:
       *val = LSM6DSV16B_TEMP_BATCHED_AT_15Hz;
       break;
 
-    case LSM6DSV16B_TEMP_BATCHED_AT_60Hz:
+    case 0x03:
       *val = LSM6DSV16B_TEMP_BATCHED_AT_60Hz;
       break;
 
@@ -5629,19 +5637,19 @@ int32_t lsm6dsv16b_fifo_timestamp_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.dec_ts_batch)
   {
-    case LSM6DSV16B_TMSTMP_NOT_BATCHED:
+    case 0x00:
       *val = LSM6DSV16B_TMSTMP_NOT_BATCHED;
       break;
 
-    case LSM6DSV16B_TMSTMP_DEC_1:
+    case 0x01:
       *val = LSM6DSV16B_TMSTMP_DEC_1;
       break;
 
-    case LSM6DSV16B_TMSTMP_DEC_8:
+    case 0x02:
       *val = LSM6DSV16B_TMSTMP_DEC_8;
       break;
 
-    case LSM6DSV16B_TMSTMP_DEC_32:
+    case 0x03:
       *val = LSM6DSV16B_TMSTMP_DEC_32;
       break;
 
@@ -5753,11 +5761,11 @@ int32_t lsm6dsv16b_fifo_batch_cnt_event_get(const stmdev_ctx_t *ctx,
 
   switch (counter_bdr_reg1.trig_counter_bdr)
   {
-    case LSM6DSV16B_XL_BATCH_EVENT:
+    case 0x00:
       *val = LSM6DSV16B_XL_BATCH_EVENT;
       break;
 
-    case LSM6DSV16B_GY_BATCH_EVENT:
+    case 0x01:
       *val = LSM6DSV16B_GY_BATCH_EVENT;
       break;
 
@@ -5893,79 +5901,79 @@ int32_t lsm6dsv16b_fifo_out_raw_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_data_out_tag.tag_sensor)
   {
-    case LSM6DSV16B_FIFO_EMPTY:
+    case 0x00:
       val->tag = LSM6DSV16B_FIFO_EMPTY;
       break;
 
-    case LSM6DSV16B_GY_NC_TAG:
+    case 0x01:
       val->tag = LSM6DSV16B_GY_NC_TAG;
       break;
 
-    case LSM6DSV16B_XL_NC_TAG:
+    case 0x02:
       val->tag = LSM6DSV16B_XL_NC_TAG;
       break;
 
-    case LSM6DSV16B_TIMESTAMP_TAG:
+    case 0x03:
       val->tag = LSM6DSV16B_TIMESTAMP_TAG;
       break;
 
-    case LSM6DSV16B_TEMPERATURE_TAG:
+    case 0x04:
       val->tag = LSM6DSV16B_TEMPERATURE_TAG;
       break;
 
-    case LSM6DSV16B_CFG_CHANGE_TAG:
+    case 0x05:
       val->tag = LSM6DSV16B_CFG_CHANGE_TAG;
       break;
 
-    case LSM6DSV16B_XL_NC_T_2_TAG:
+    case 0x06:
       val->tag = LSM6DSV16B_XL_NC_T_2_TAG;
       break;
 
-    case LSM6DSV16B_XL_NC_T_1_TAG:
+    case 0x07:
       val->tag = LSM6DSV16B_XL_NC_T_1_TAG;
       break;
 
-    case LSM6DSV16B_XL_2XC_TAG:
+    case 0x08:
       val->tag = LSM6DSV16B_XL_2XC_TAG;
       break;
 
-    case LSM6DSV16B_XL_3XC_TAG:
+    case 0x09:
       val->tag = LSM6DSV16B_XL_3XC_TAG;
       break;
 
-    case LSM6DSV16B_GY_NC_T_2_TAG:
+    case 0x0A:
       val->tag = LSM6DSV16B_GY_NC_T_2_TAG;
       break;
 
-    case LSM6DSV16B_GY_NC_T_1_TAG:
+    case 0x0B:
       val->tag = LSM6DSV16B_GY_NC_T_1_TAG;
       break;
 
-    case LSM6DSV16B_GY_2XC_TAG:
+    case 0x0C:
       val->tag = LSM6DSV16B_GY_2XC_TAG;
       break;
 
-    case LSM6DSV16B_GY_3XC_TAG:
+    case 0x0D:
       val->tag = LSM6DSV16B_GY_3XC_TAG;
       break;
 
-    case LSM6DSV16B_STEP_COUNTER_TAG:
+    case 0x12:
       val->tag = LSM6DSV16B_STEP_COUNTER_TAG;
       break;
 
-    case LSM6DSV16B_SFLP_GAME_ROTATION_VECTOR_TAG:
+    case 0x13:
       val->tag = LSM6DSV16B_SFLP_GAME_ROTATION_VECTOR_TAG;
       break;
 
-    case LSM6DSV16B_SFLP_GYROSCOPE_BIAS_TAG:
+    case 0x16:
       val->tag = LSM6DSV16B_SFLP_GYROSCOPE_BIAS_TAG;
       break;
 
-    case LSM6DSV16B_SFLP_GRAVITY_VECTOR_TAG:
+    case 0x17:
       val->tag = LSM6DSV16B_SFLP_GRAVITY_VECTOR_TAG;
       break;
 
-    case LSM6DSV16B_XL_DUAL_CORE:
+    case 0x1D:
       val->tag = LSM6DSV16B_XL_DUAL_CORE;
       break;
 
@@ -6591,27 +6599,27 @@ int32_t lsm6dsv16b_sflp_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (sflp_odr.sflp_game_odr)
   {
-    case LSM6DSV16B_SFLP_15Hz:
+    case 0x00:
       *val = LSM6DSV16B_SFLP_15Hz;
       break;
 
-    case LSM6DSV16B_SFLP_30Hz:
+    case 0x01:
       *val = LSM6DSV16B_SFLP_30Hz;
       break;
 
-    case LSM6DSV16B_SFLP_60Hz:
+    case 0x02:
       *val = LSM6DSV16B_SFLP_60Hz;
       break;
 
-    case LSM6DSV16B_SFLP_120Hz:
+    case 0x03:
       *val = LSM6DSV16B_SFLP_120Hz;
       break;
 
-    case LSM6DSV16B_SFLP_240Hz:
+    case 0x04:
       *val = LSM6DSV16B_SFLP_240Hz;
       break;
 
-    case LSM6DSV16B_SFLP_480Hz:
+    case 0x05:
       *val = LSM6DSV16B_SFLP_480Hz;
       break;
 
@@ -7077,11 +7085,11 @@ int32_t lsm6dsv16b_fsm_permission_get(const stmdev_ctx_t *ctx,
 
   switch (func_cfg_access.fsm_wr_ctrl_en)
   {
-    case LSM6DSV16B_PROTECT_CTRL_REGS:
+    case 0x00:
       *val = LSM6DSV16B_PROTECT_CTRL_REGS;
       break;
 
-    case LSM6DSV16B_WRITE_CTRL_REG:
+    case 0x01:
       *val = LSM6DSV16B_WRITE_CTRL_REG;
       break;
 
@@ -7351,31 +7359,31 @@ int32_t lsm6dsv16b_fsm_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (fsm_odr.fsm_odr)
   {
-    case LSM6DSV16B_FSM_15Hz:
+    case 0x00:
       *val = LSM6DSV16B_FSM_15Hz;
       break;
 
-    case LSM6DSV16B_FSM_30Hz:
+    case 0x01:
       *val = LSM6DSV16B_FSM_30Hz;
       break;
 
-    case LSM6DSV16B_FSM_60Hz:
+    case 0x02:
       *val = LSM6DSV16B_FSM_60Hz;
       break;
 
-    case LSM6DSV16B_FSM_120Hz:
+    case 0x03:
       *val = LSM6DSV16B_FSM_120Hz;
       break;
 
-    case LSM6DSV16B_FSM_240Hz:
+    case 0x04:
       *val = LSM6DSV16B_FSM_240Hz;
       break;
 
-    case LSM6DSV16B_FSM_480Hz:
+    case 0x05:
       *val = LSM6DSV16B_FSM_480Hz;
       break;
 
-    case LSM6DSV16B_FSM_960Hz:
+    case 0x06:
       *val = LSM6DSV16B_FSM_960Hz;
       break;
 
@@ -7771,11 +7779,11 @@ int32_t lsm6dsv16b_i3c_reset_mode_get(const stmdev_ctx_t *ctx,
 
   switch (pin_ctrl.ibhr_por_en)
   {
-    case LSM6DSV16B_SW_RST_DYN_ADDRESS_RST:
+    case 0x00:
       *val = LSM6DSV16B_SW_RST_DYN_ADDRESS_RST;
       break;
 
-    case LSM6DSV16B_I3C_GLOBAL_RST:
+    case 0x01:
       *val = LSM6DSV16B_I3C_GLOBAL_RST;
       break;
 
@@ -7940,11 +7948,11 @@ int32_t lsm6dsv16b_tdm_wclk_bclk_get(const stmdev_ctx_t *ctx,
 
   switch ((tdm_cfg0.tdm_wclk_bclk_sel << 2) + tdm_cfg0.tdm_wclk)
   {
-    case LSM6DSV16B_WCLK_16kHZ_BCLK_2048kHz:
+    case 0x01:
       *val = LSM6DSV16B_WCLK_16kHZ_BCLK_2048kHz;
       break;
 
-    case LSM6DSV16B_WCLK_8kHZ_BCLK_2048kHz:
+    case 0x04:
       *val = LSM6DSV16B_WCLK_8kHZ_BCLK_2048kHz;
       break;
 
@@ -7999,11 +8007,11 @@ int32_t lsm6dsv16b_tdm_slot_get(const stmdev_ctx_t *ctx, lsm6dsv16b_tdm_slot_t *
 
   switch (tdm_cfg0.tdm_slot_sel)
   {
-    case LSM6DSV16B_SLOT_012:
+    case 0x00:
       *val = LSM6DSV16B_SLOT_012;
       break;
 
-    case LSM6DSV16B_SLOT_456:
+    case 0x01:
       *val = LSM6DSV16B_SLOT_456;
       break;
 
@@ -8060,11 +8068,11 @@ int32_t lsm6dsv16b_tdm_bclk_edge_get(const stmdev_ctx_t *ctx,
 
   switch (tdm_cfg0.tdm_bclk_edge_sel)
   {
-    case LSM6DSV16B_BCLK_RISING:
+    case 0x00:
       *val = LSM6DSV16B_BCLK_RISING;
       break;
 
-    case LSM6DSV16B_BCLK_FALLING:
+    case 0x01:
       *val = LSM6DSV16B_BCLK_FALLING;
       break;
 
@@ -8169,15 +8177,15 @@ int32_t lsm6dsv16b_tdm_axis_order_get(const stmdev_ctx_t *ctx,
 
   switch (tdm_cfg1.tdm_axes_ord_sel)
   {
-    case LSM6DSV16B_TDM_ORDER_ZYX:
+    case 0x00:
       *val = LSM6DSV16B_TDM_ORDER_ZYX;
       break;
 
-    case LSM6DSV16B_TDM_ORDER_XZY:
+    case 0x01:
       *val = LSM6DSV16B_TDM_ORDER_XZY;
       break;
 
-    case LSM6DSV16B_TDM_ORDER_XYZ:
+    case 0x02:
       *val = LSM6DSV16B_TDM_ORDER_XYZ;
       break;
 
@@ -8234,15 +8242,15 @@ int32_t lsm6dsv16b_tdm_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (tdm_cfg2.tdm_fs_xl)
   {
-    case LSM6DSV16B_TDM_2g:
+    case 0x00:
       *val = LSM6DSV16B_TDM_2g;
       break;
 
-    case LSM6DSV16B_TDM_4g:
+    case 0x01:
       *val = LSM6DSV16B_TDM_4g;
       break;
 
-    case LSM6DSV16B_TDM_8g:
+    case 0x02:
       *val = LSM6DSV16B_TDM_8g;
       break;
 

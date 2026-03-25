@@ -17,7 +17,6 @@
   */
 
 #include "lps22df_reg.h"
-#include <assert.h>
 
 /**
   * @defgroup    LPS22DF
@@ -224,16 +223,16 @@ int32_t lps22df_bus_mode_get(const stmdev_ctx_t *ctx, lps22df_bus_mode_t *val)
     switch ((if_ctrl.int_en_i3c << 2) | (if_ctrl.i2c_i3c_dis << 1) |
             if_ctrl.sim)
     {
-      case LPS22DF_SEL_BY_HW:
+      case 0x00:
         val->interface = LPS22DF_SEL_BY_HW;
         break;
-      case LPS22DF_SPI_3W:
+      case 0x03:
         val->interface = LPS22DF_SPI_3W;
         break;
-      case LPS22DF_SPI_4W:
+      case 0x02:
         val->interface = LPS22DF_SPI_4W;
         break;
-      case LPS22DF_INT_PIN_ON_I3C:
+      case 0x04:
         val->interface = LPS22DF_INT_PIN_ON_I3C;
         break;
       default:
@@ -243,10 +242,10 @@ int32_t lps22df_bus_mode_get(const stmdev_ctx_t *ctx, lps22df_bus_mode_t *val)
 
     switch (i3c_if_ctrl.asf_on)
     {
-      case LPS22DF_FILTER_AUTO:
+      case 0x00:
         val->filter = LPS22DF_FILTER_AUTO;
         break;
-      case LPS22DF_FILTER_ALWAYS_ON:
+      case 0x01:
         val->filter = LPS22DF_FILTER_ALWAYS_ON;
         break;
       default:
@@ -256,16 +255,16 @@ int32_t lps22df_bus_mode_get(const stmdev_ctx_t *ctx, lps22df_bus_mode_t *val)
 
     switch (i3c_if_ctrl.i3c_bus_avb_sel)
     {
-      case LPS22DF_IBI_50us:
+      case 0x00:
         val->i3c_ibi_time = LPS22DF_IBI_50us;
         break;
-      case LPS22DF_IBI_2us:
+      case 0x01:
         val->i3c_ibi_time = LPS22DF_IBI_2us;
         break;
-      case LPS22DF_IBI_1ms:
+      case 0x02:
         val->i3c_ibi_time = LPS22DF_IBI_1ms;
         break;
-      case LPS22DF_IBI_25ms:
+      case 0x03:
         val->i3c_ibi_time = LPS22DF_IBI_25ms;
         break;
       default:
@@ -610,31 +609,31 @@ int32_t lps22df_mode_get(const stmdev_ctx_t *ctx, lps22df_md_t *val)
 
     switch (ctrl_reg1.odr)
     {
-      case LPS22DF_ONE_SHOT:
+      case 0x00:
         val->odr = LPS22DF_ONE_SHOT;
         break;
-      case LPS22DF_1Hz:
+      case 0x01:
         val->odr = LPS22DF_1Hz;
         break;
-      case LPS22DF_4Hz:
+      case 0x02:
         val->odr = LPS22DF_4Hz;
         break;
-      case LPS22DF_10Hz:
+      case 0x03:
         val->odr = LPS22DF_10Hz;
         break;
-      case LPS22DF_25Hz:
+      case 0x04:
         val->odr = LPS22DF_25Hz;
         break;
-      case LPS22DF_50Hz:
+      case 0x05:
         val->odr = LPS22DF_50Hz;
         break;
-      case LPS22DF_75Hz:
+      case 0x06:
         val->odr = LPS22DF_75Hz;
         break;
-      case LPS22DF_100Hz:
+      case 0x07:
         val->odr = LPS22DF_100Hz;
         break;
-      case LPS22DF_200Hz:
+      case 0x08:
         val->odr = LPS22DF_200Hz;
         break;
       default:
@@ -644,28 +643,28 @@ int32_t lps22df_mode_get(const stmdev_ctx_t *ctx, lps22df_md_t *val)
 
     switch (ctrl_reg1.avg)
     {
-      case LPS22DF_4_AVG:
+      case 0x00:
         val->avg = LPS22DF_4_AVG;
         break;
-      case LPS22DF_8_AVG:
+      case 0x01:
         val->avg = LPS22DF_8_AVG;
         break;
-      case LPS22DF_16_AVG:
+      case 0x02:
         val->avg = LPS22DF_16_AVG;
         break;
-      case LPS22DF_32_AVG:
+      case 0x03:
         val->avg = LPS22DF_32_AVG;
         break;
-      case LPS22DF_64_AVG:
+      case 0x04:
         val->avg = LPS22DF_64_AVG;
         break;
-      case LPS22DF_128_AVG:
+      case 0x05:
         val->avg = LPS22DF_128_AVG;
         break;
-      case LPS22DF_256_AVG:
+      case 0x06:
         val->avg = LPS22DF_256_AVG;
         break;
-      case LPS22DF_512_AVG:
+      case 0x07:
         val->avg = LPS22DF_512_AVG;
         break;
       default:
@@ -675,13 +674,13 @@ int32_t lps22df_mode_get(const stmdev_ctx_t *ctx, lps22df_md_t *val)
 
     switch ((ctrl_reg2.lfpf_cfg << 2) | ctrl_reg2.en_lpfp)
     {
-      case LPS22DF_LPF_DISABLE:
+      case 0x00:
         val->lpf = LPS22DF_LPF_DISABLE;
         break;
-      case LPS22DF_LPF_ODR_DIV_4:
+      case 0x01:
         val->lpf = LPS22DF_LPF_ODR_DIV_4;
         break;
-      case LPS22DF_LPF_ODR_DIV_9:
+      case 0x03:
         val->lpf = LPS22DF_LPF_ODR_DIV_9;
         break;
       default:
@@ -863,22 +862,22 @@ int32_t lps22df_fifo_mode_get(const stmdev_ctx_t *ctx, lps22df_operation_t *val)
 
   switch ((fifo_ctrl.trig_modes << 2) | fifo_ctrl.f_mode)
   {
-    case LPS22DF_BYPASS:
+    case 0x00:
       *val = LPS22DF_BYPASS;
       break;
-    case LPS22DF_FIFO:
+    case 0x01:
       *val = LPS22DF_FIFO;
       break;
-    case LPS22DF_STREAM:
+    case 0x02:
       *val = LPS22DF_STREAM;
       break;
-    case LPS22DF_STREAM_TO_FIFO:
+    case 0x07:
       *val = LPS22DF_STREAM_TO_FIFO;
       break;
-    case LPS22DF_BYPASS_TO_STREAM:
+    case 0x06:
       *val = LPS22DF_BYPASS_TO_STREAM;
       break;
-    case LPS22DF_BYPASS_TO_FIFO:
+    case 0x05:
       *val = LPS22DF_BYPASS_TO_FIFO;
       break;
     default:
@@ -903,7 +902,11 @@ int32_t lps22df_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
   lps22df_fifo_wtm_t fifo_wtm;
   int32_t ret;
 
-  assert(val < 128);
+  if (val >= 128)
+  {
+    ret = -1;
+    goto exit;
+  }
 
   ret = lps22df_read_reg(ctx, LPS22DF_FIFO_WTM, (uint8_t *)&fifo_wtm, 1);
   if (ret == 0)
@@ -912,6 +915,8 @@ int32_t lps22df_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
 
     ret = lps22df_write_reg(ctx, LPS22DF_FIFO_WTM, (uint8_t *)&fifo_wtm, 1);
   }
+
+exit:
   return ret;
 }
 
@@ -1319,8 +1324,8 @@ int32_t lps22df_reference_mode_set(const stmdev_ctx_t *ctx, lps22df_ref_md_t *va
     interrupt_cfg.reset_az  = ((uint8_t)val->apply_ref & 0x02U) >> 1;
     interrupt_cfg.reset_arp = ((uint8_t)val->apply_ref & 0x02U) >> 1;
 
-    ret = lps22df_read_reg(ctx, LPS22DF_INTERRUPT_CFG,
-                           (uint8_t *)&interrupt_cfg, 1);
+    ret = lps22df_write_reg(ctx, LPS22DF_INTERRUPT_CFG,
+                            (uint8_t *)&interrupt_cfg, 1);
   }
   return ret;
 }
@@ -1348,12 +1353,14 @@ int32_t lps22df_reference_mode_get(const stmdev_ctx_t *ctx, lps22df_ref_md_t *va
   switch ((interrupt_cfg.reset_az << 1) |
           interrupt_cfg.autorefp)
   {
-    case LPS22DF_OUT_AND_INTERRUPT:
+    case 0x00:
       val->apply_ref = LPS22DF_OUT_AND_INTERRUPT;
       break;
-    case LPS22DF_ONLY_INTERRUPT:
+    case 0x01:
       val->apply_ref = LPS22DF_ONLY_INTERRUPT;
       break;
+
+    // mainly for 0x02 value
     default:
       val->apply_ref = LPS22DF_RST_REFS;
       break;

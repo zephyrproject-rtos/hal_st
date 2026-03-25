@@ -225,15 +225,15 @@ int32_t lis2mdl_operating_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.md)
   {
-    case LIS2MDL_POWER_DOWN:
+    case 0x02:
       *val = LIS2MDL_POWER_DOWN;
       break;
 
-    case LIS2MDL_CONTINUOUS_MODE:
+    case 0x00:
       *val = LIS2MDL_CONTINUOUS_MODE;
       break;
 
-    case LIS2MDL_SINGLE_TRIGGER:
+    case 0x01:
       *val = LIS2MDL_SINGLE_TRIGGER;
       break;
 
@@ -288,19 +288,19 @@ int32_t lis2mdl_data_rate_get(const stmdev_ctx_t *ctx, lis2mdl_odr_t *val)
 
   switch (reg.odr)
   {
-    case LIS2MDL_ODR_10Hz:
+    case 0x00:
       *val = LIS2MDL_ODR_10Hz;
       break;
 
-    case LIS2MDL_ODR_20Hz:
+    case 0x01:
       *val = LIS2MDL_ODR_20Hz;
       break;
 
-    case LIS2MDL_ODR_50Hz:
+    case 0x02:
       *val = LIS2MDL_ODR_50Hz;
       break;
 
-    case LIS2MDL_ODR_100Hz:
+    case 0x03:
       *val = LIS2MDL_ODR_100Hz;
       break;
 
@@ -355,11 +355,11 @@ int32_t lis2mdl_power_mode_get(const stmdev_ctx_t *ctx, lis2mdl_lp_t *val)
 
   switch (reg.lp)
   {
-    case LIS2MDL_HIGH_RESOLUTION:
+    case 0x00:
       *val = LIS2MDL_HIGH_RESOLUTION;
       break;
 
-    case LIS2MDL_LOW_POWER:
+    case 0x01:
       *val = LIS2MDL_LOW_POWER;
       break;
 
@@ -462,11 +462,11 @@ int32_t lis2mdl_low_pass_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (reg.lpf)
   {
-    case LIS2MDL_ODR_DIV_2:
+    case 0x00:
       *val = LIS2MDL_ODR_DIV_2;
       break;
 
-    case LIS2MDL_ODR_DIV_4:
+    case 0x01:
       *val = LIS2MDL_ODR_DIV_4;
       break;
 
@@ -523,15 +523,15 @@ int32_t lis2mdl_set_rst_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.set_rst)
   {
-    case LIS2MDL_SET_SENS_ODR_DIV_63:
+    case 0x00:
       *val = LIS2MDL_SET_SENS_ODR_DIV_63;
       break;
 
-    case LIS2MDL_SENS_OFF_CANC_EVERY_ODR:
+    case 0x01:
       *val = LIS2MDL_SENS_OFF_CANC_EVERY_ODR;
       break;
 
-    case LIS2MDL_SET_SENS_ONLY_AT_POWER_ON:
+    case 0x02:
       *val = LIS2MDL_SET_SENS_ONLY_AT_POWER_ON;
       break;
 
@@ -775,6 +775,8 @@ int32_t lis2mdl_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 /**
   * @brief  Software reset. Restore the default values in user registers.[set]
   *
+  * Deprecated: Please use sw_reset to align with the AN
+  *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   change the values of soft_rst in reg CFG_REG_A
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
@@ -799,6 +801,8 @@ int32_t lis2mdl_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 /**
   * @brief  Software reset. Restore the default values in user registers.[get]
   *
+  * Deprecated: Please use sw_reset to align with the AN
+  *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   change the values of soft_rst in reg CFG_REG_A.(ptr)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
@@ -820,6 +824,8 @@ int32_t lis2mdl_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
 /**
   * @brief  Reboot memory content. Reload the calibration parameters.[set]
+  *
+  * Deprecated: please use reboot to align with the AN
   *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   change the values of reboot in reg CFG_REG_A
@@ -845,6 +851,8 @@ int32_t lis2mdl_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 /**
   * @brief  Reboot memory content. Reload the calibration parameters.[get]
   *
+  * Deprecated: please use reboot to align with the AN
+  *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   change the values of reboot in reg CFG_REG_A.(ptr)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
@@ -861,6 +869,94 @@ int32_t lis2mdl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   *val = reg.reboot;
 
+  return ret;
+}
+
+/**
+  * @brief  Software reset. Restore the default values in user registers.
+  *
+  * @param  ctx   read / write interface definitions.(ptr)
+  * @retval       interface status.(MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lis2mdl_sw_reset(const stmdev_ctx_t *ctx)
+{
+  lis2mdl_cfg_reg_a_t reg = {0};
+  uint8_t retry = {0};
+  int32_t ret;
+
+  if (ctx->mdelay == NULL)
+  {
+    ret = -1;
+    goto exit;
+  }
+
+  /* 1. Set the SOFT_RST bit of the CFG_REG_A register to 1. */
+  reg.soft_rst = 1;
+  ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* 2. Poll the SOFT_RST bit of the CFG_REG_A register until it returns
+   * to 0. (should require 5us) */
+  do {
+    ret += lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+    if (ret != 0)
+    {
+      goto exit;
+    }
+
+    ctx->mdelay(1);
+  } while (reg.soft_rst == 1 && retry++ < 3);
+
+  return (reg.soft_rst == 0) ? 0 : -1;
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief  Reboot memory content. Reload the calibration paramters.
+  * (20 ms boot procedure)
+  *
+  * @param  ctx   read / write interface definitions.(ptr)
+  * @retval       interface status.(MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lis2mdl_reboot(const stmdev_ctx_t *ctx)
+{
+  lis2mdl_cfg_reg_a_t reg;
+  int32_t ret;
+
+  if (ctx->mdelay == NULL) {
+    ret = -1;
+    goto exit;
+  }
+
+  ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* 1. Set the REBOOT bit of the CFG_REG_A register to 1. */
+  reg.reboot = 1;
+  ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* 2. Wait 20 ms for boot time */
+  ctx->mdelay(20);
+
+exit:
   return ret;
 }
 
@@ -953,11 +1049,11 @@ int32_t lis2mdl_data_format_get(const stmdev_ctx_t *ctx, lis2mdl_ble_t *val)
 
   switch (reg.ble)
   {
-    case LIS2MDL_LSB_AT_LOW_ADD:
+    case 0x00:
       *val = LIS2MDL_LSB_AT_LOW_ADD;
       break;
 
-    case LIS2MDL_MSB_AT_LOW_ADD:
+    case 0x01:
       *val = LIS2MDL_MSB_AT_LOW_ADD;
       break;
 
@@ -1046,11 +1142,11 @@ int32_t lis2mdl_offset_int_conf_get(const stmdev_ctx_t *ctx,
 
   switch (reg.int_on_dataoff)
   {
-    case LIS2MDL_CHECK_BEFORE:
+    case 0x00:
       *val = LIS2MDL_CHECK_BEFORE;
       break;
 
-    case LIS2MDL_CHECK_AFTER:
+    case 0x01:
       *val = LIS2MDL_CHECK_AFTER;
       break;
 
@@ -1311,11 +1407,11 @@ int32_t lis2mdl_spi_mode_get(const stmdev_ctx_t *ctx, lis2mdl_sim_t *val)
 
   switch (reg._4wspi)
   {
-    case LIS2MDL_SPI_4_WIRE:
+    case 0x01:
       *val = LIS2MDL_SPI_4_WIRE;
       break;
 
-    case LIS2MDL_SPI_3_WIRE:
+    case 0x00:
       *val = LIS2MDL_SPI_3_WIRE;
       break;
 
@@ -1372,11 +1468,11 @@ int32_t lis2mdl_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (reg.i2c_dis)
   {
-    case LIS2MDL_I2C_ENABLE:
+    case 0x00:
       *val = LIS2MDL_I2C_ENABLE;
       break;
 
-    case LIS2MDL_I2C_DISABLE:
+    case 0x01:
       *val = LIS2MDL_I2C_DISABLE;
       break;
 

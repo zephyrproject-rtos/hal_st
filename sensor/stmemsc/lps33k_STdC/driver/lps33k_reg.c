@@ -211,15 +211,15 @@ int32_t lps33k_low_pass_filter_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg1.lpfp)
   {
-    case LPS33K_LPF_ODR_DIV_2:
+    case 0x00:
       *val = LPS33K_LPF_ODR_DIV_2;
       break;
 
-    case LPS33K_LPF_ODR_DIV_9:
+    case 0x02:
       *val = LPS33K_LPF_ODR_DIV_9;
       break;
 
-    case LPS33K_LPF_ODR_DIV_20:
+    case 0x03:
       *val = LPS33K_LPF_ODR_DIV_20;
       break;
 
@@ -274,27 +274,27 @@ int32_t lps33k_data_rate_get(const stmdev_ctx_t *ctx, lps33k_odr_t *val)
 
   switch (ctrl_reg1.odr)
   {
-    case LPS33K_POWER_DOWN:
+    case 0x00:
       *val = LPS33K_POWER_DOWN;
       break;
 
-    case LPS33K_ODR_1_Hz:
+    case 0x01:
       *val = LPS33K_ODR_1_Hz;
       break;
 
-    case LPS33K_ODR_10_Hz:
+    case 0x02:
       *val = LPS33K_ODR_10_Hz;
       break;
 
-    case LPS33K_ODR_25_Hz:
+    case 0x03:
       *val = LPS33K_ODR_25_Hz;
       break;
 
-    case LPS33K_ODR_50_Hz:
+    case 0x04:
       *val = LPS33K_ODR_50_Hz;
       break;
 
-    case LPS33K_ODR_75_Hz:
+    case 0x05:
       *val = LPS33K_ODR_75_Hz;
       break;
 

@@ -276,31 +276,31 @@ int32_t lis2hh12_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1.odr)
   {
-    case LIS2HH12_XL_ODR_OFF:
+    case 0x00:
       *val = LIS2HH12_XL_ODR_OFF;
       break;
 
-    case LIS2HH12_XL_ODR_10Hz:
+    case 0x01:
       *val = LIS2HH12_XL_ODR_10Hz;
       break;
 
-    case LIS2HH12_XL_ODR_50Hz:
+    case 0x02:
       *val = LIS2HH12_XL_ODR_50Hz;
       break;
 
-    case LIS2HH12_XL_ODR_100Hz:
+    case 0x03:
       *val = LIS2HH12_XL_ODR_100Hz;
       break;
 
-    case LIS2HH12_XL_ODR_200Hz:
+    case 0x04:
       *val = LIS2HH12_XL_ODR_200Hz;
       break;
 
-    case LIS2HH12_XL_ODR_400Hz:
+    case 0x05:
       *val = LIS2HH12_XL_ODR_400Hz;
       break;
 
-    case LIS2HH12_XL_ODR_800Hz:
+    case 0x06:
       *val = LIS2HH12_XL_ODR_800Hz;
       break;
 
@@ -357,15 +357,15 @@ int32_t lis2hh12_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl4.fs)
   {
-    case LIS2HH12_2g:
+    case 0x00:
       *val = LIS2HH12_2g;
       break;
 
-    case LIS2HH12_4g:
+    case 0x02:
       *val = LIS2HH12_4g;
       break;
 
-    case LIS2HH12_8g:
+    case 0x03:
       *val = LIS2HH12_8g;
       break;
 
@@ -422,19 +422,19 @@ int32_t lis2hh12_xl_decimation_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5.dec)
   {
-    case LIS2HH12_NO_DECIMATION:
+    case 0x00:
       *val = LIS2HH12_NO_DECIMATION;
       break;
 
-    case LIS2HH12_EVERY_2_SAMPLES:
+    case 0x01:
       *val = LIS2HH12_EVERY_2_SAMPLES;
       break;
 
-    case LIS2HH12_EVERY_4_SAMPLES:
+    case 0x02:
       *val = LIS2HH12_EVERY_4_SAMPLES;
       break;
 
-    case LIS2HH12_EVERY_8_SAMPLES:
+    case 0x03:
       *val = LIS2HH12_EVERY_8_SAMPLES;
       break;
 
@@ -744,16 +744,20 @@ int32_t lis2hh12_xl_filter_int_path_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2.hpis)
   {
-    case LIS2HH12_HP_DISABLE:
+    case 0x00:
       *val = LIS2HH12_HP_DISABLE;
       break;
 
-    case LIS2HH12_HP_ON_INT_GEN_1:
+    case 0x02:
       *val = LIS2HH12_HP_ON_INT_GEN_1;
       break;
 
-    case LIS2HH12_HP_ON_INT_GEN_2:
+    case 0x01:
       *val = LIS2HH12_HP_ON_INT_GEN_2;
+      break;
+
+    case 0x03:
+      *val = LIS2HH12_HP_ON_BOTH_GEN;
       break;
 
     default:
@@ -819,15 +823,15 @@ int32_t lis2hh12_xl_filter_out_path_get(const stmdev_ctx_t *ctx,
   {
     switch ((ctrl2.fds << 1) | ctrl1.hr)
     {
-      case LIS2HH12_BYPASSED:
+      case 0x00:
         *val = LIS2HH12_BYPASSED;
         break;
 
-      case LIS2HH12_FILT_HP:
+      case 0x02:
         *val = LIS2HH12_FILT_HP;
         break;
 
-      case LIS2HH12_FILT_LP:
+      case 0x01:
         *val = LIS2HH12_FILT_LP;
         break;
 
@@ -888,35 +892,35 @@ int32_t lis2hh12_xl_filter_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl2.dfc << 4) | ctrl2.hpm)
   {
-    case LIS2HH12_HP_ODR_DIV_50:
+    case 0x00:
       *val = LIS2HH12_HP_ODR_DIV_50;
       break;
 
-    case LIS2HH12_HP_ODR_DIV_100:
+    case 0x10:
       *val = LIS2HH12_HP_ODR_DIV_100;
       break;
 
-    case LIS2HH12_HP_ODR_DIV_9:
+    case 0x20:
       *val = LIS2HH12_HP_ODR_DIV_9;
       break;
 
-    case LIS2HH12_HP_ODR_DIV_400:
+    case 0x30:
       *val = LIS2HH12_HP_ODR_DIV_400;
       break;
 
-    case LIS2HH12_HP_ODR_DIV_50_REF_MD:
+    case 0x01:
       *val = LIS2HH12_HP_ODR_DIV_50_REF_MD;
       break;
 
-    case LIS2HH12_HP_ODR_DIV_100_REF_MD:
+    case 0x11:
       *val = LIS2HH12_HP_ODR_DIV_100_REF_MD;
       break;
 
-    case LIS2HH12_HP_ODR_DIV_9_REF_MD:
+    case 0x21:
       *val = LIS2HH12_HP_ODR_DIV_9_REF_MD;
       break;
 
-    case LIS2HH12_HP_ODR_DIV_400_REF_MD:
+    case 0x31:
       *val = LIS2HH12_HP_ODR_DIV_400_REF_MD;
       break;
 
@@ -975,19 +979,19 @@ int32_t lis2hh12_xl_filter_low_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2.dfc)
   {
-    case LIS2HH12_LP_ODR_DIV_50:
+    case 0x00:
       *val = LIS2HH12_LP_ODR_DIV_50;
       break;
 
-    case LIS2HH12_LP_ODR_DIV_100:
+    case 0x01:
       *val = LIS2HH12_LP_ODR_DIV_100;
       break;
 
-    case LIS2HH12_LP_ODR_DIV_9:
+    case 0x02:
       *val = LIS2HH12_LP_ODR_DIV_9;
       break;
 
-    case LIS2HH12_LP_ODR_DIV_400:
+    case 0x03:
       *val = LIS2HH12_LP_ODR_DIV_400;
       break;
 
@@ -1045,23 +1049,23 @@ int32_t lis2hh12_xl_filter_aalias_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl4.bw_scale_odr << 4) | ctrl4.bw)
   {
-    case LIS2HH12_AUTO:
+    case 0x00:
       *val = LIS2HH12_AUTO;
       break;
 
-    case LIS2HH12_408Hz:
+    case 0x10:
       *val = LIS2HH12_408Hz;
       break;
 
-    case LIS2HH12_211Hz:
+    case 0x11:
       *val = LIS2HH12_211Hz;
       break;
 
-    case LIS2HH12_105Hz:
+    case 0x12:
       *val = LIS2HH12_105Hz;
       break;
 
-    case LIS2HH12_50Hz:
+    case 0x13:
       *val = LIS2HH12_50Hz;
       break;
 
@@ -1182,11 +1186,11 @@ int32_t lis2hh12_spi_mode_get(const stmdev_ctx_t *ctx, lis2hh12_sim_t *val)
 
   switch (ctrl4.sim)
   {
-    case LIS2HH12_SPI_4_WIRE:
+    case 0x00:
       *val = LIS2HH12_SPI_4_WIRE;
       break;
 
-    case LIS2HH12_SPI_3_WIRE:
+    case 0x01:
       *val = LIS2HH12_SPI_3_WIRE;
       break;
 
@@ -1243,11 +1247,11 @@ int32_t lis2hh12_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl4.i2c_disable)
   {
-    case LIS2HH12_I2C_ENABLE:
+    case 0x00:
       *val = LIS2HH12_I2C_ENABLE;
       break;
 
-    case LIS2HH12_I2C_DISABLE:
+    case 0x01:
       *val = LIS2HH12_I2C_DISABLE;
       break;
 
@@ -1306,11 +1310,11 @@ int32_t lis2hh12_auto_increment_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl4.if_add_inc)
   {
-    case LIS2HH12_DISABLE:
+    case 0x00:
       *val = LIS2HH12_DISABLE;
       break;
 
-    case LIS2HH12_ENABLE:
+    case 0x01:
       *val = LIS2HH12_ENABLE;
       break;
 
@@ -1437,11 +1441,11 @@ int32_t lis2hh12_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5.pp_od)
   {
-    case LIS2HH12_PUSH_PULL:
+    case 0x00:
       *val = LIS2HH12_PUSH_PULL;
       break;
 
-    case LIS2HH12_OPEN_DRAIN:
+    case 0x01:
       *val = LIS2HH12_OPEN_DRAIN;
       break;
 
@@ -1498,11 +1502,11 @@ int32_t lis2hh12_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5.h_lactive)
   {
-    case LIS2HH12_ACTIVE_HIGH:
+    case 0x00:
       *val = LIS2HH12_ACTIVE_HIGH;
       break;
 
-    case LIS2HH12_ACTIVE_LOW:
+    case 0x01:
       *val = LIS2HH12_ACTIVE_LOW;
       break;
 
@@ -1617,11 +1621,11 @@ int32_t lis2hh12_pin_notification_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl7.lir)
   {
-    case LIS2HH12_INT_PULSED:
+    case 0x00:
       *val = LIS2HH12_INT_PULSED;
       break;
 
-    case LIS2HH12_INT_LATCHED:
+    case 0x01:
       *val = LIS2HH12_INT_LATCHED;
       break;
 
@@ -1688,19 +1692,19 @@ int32_t lis2hh12_pin_logic_get(const stmdev_ctx_t *ctx,
 
   switch ((ig_cfg2.aoi << 1) |  ig_cfg1.aoi)
   {
-    case LIS2HH12_IG1_OR_IG2_OR:
+    case 0x00:
       *val = LIS2HH12_IG1_OR_IG2_OR;
       break;
 
-    case LIS2HH12_IG1_AND_IG2_OR:
+    case 0x01:
       *val = LIS2HH12_IG1_AND_IG2_OR;
       break;
 
-    case LIS2HH12_IG1_OR_IG2_AND:
+    case 0x10:
       *val = LIS2HH12_IG1_OR_IG2_AND;
       break;
 
-    case LIS2HH12_IG1_AND_IG2_AND:
+    case 0x11:
       *val = LIS2HH12_IG1_AND_IG2_AND;
       break;
 
@@ -1770,11 +1774,11 @@ int32_t lis2hh12_xl_trshld_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl7.dcrm)
   {
-    case LIS2HH12_RESET_MODE:
+    case 0x00:
       *val = LIS2HH12_RESET_MODE;
       break;
 
-    case LIS2HH12_DECREMENT_MODE:
+    case 0x01:
       *val = LIS2HH12_DECREMENT_MODE;
       break;
 
@@ -2236,23 +2240,23 @@ int32_t lis2hh12_6d_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl7._4d_ig << 4) | (ig_cfg2._6d << 1) | ig_cfg1._6d)
   {
-    case LIS2HH12_6D_4D_DISABLE:
+    case 0x00:
       *val = LIS2HH12_6D_4D_DISABLE;
       break;
 
-    case LIS2HH12_ENABLE_ON_IG1_6D:
+    case 0x01:
       *val = LIS2HH12_ENABLE_ON_IG1_6D;
       break;
 
-    case LIS2HH12_ENABLE_ON_IG2_6D:
+    case 0x02:
       *val = LIS2HH12_ENABLE_ON_IG2_6D;
       break;
 
-    case LIS2HH12_ENABLE_ON_IG1_4D:
+    case 0x11:
       *val = LIS2HH12_ENABLE_ON_IG1_4D;
       break;
 
-    case LIS2HH12_ENABLE_ON_IG2_4D:
+    case 0x12:
       *val = LIS2HH12_ENABLE_ON_IG2_4D;
       break;
 
@@ -2401,31 +2405,31 @@ int32_t lis2hh12_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl3.fifo_en << 4) | fifo_ctrl.fmode)
   {
-    case LIS2HH12_FIFO_OFF:
+    case 0x00:
       *val = LIS2HH12_FIFO_OFF;
       break;
 
-    case LIS2HH12_BYPASS_MODE:
+    case 0x10:
       *val = LIS2HH12_BYPASS_MODE;
       break;
 
-    case LIS2HH12_FIFO_MODE:
+    case 0x11:
       *val = LIS2HH12_FIFO_MODE;
       break;
 
-    case LIS2HH12_STREAM_MODE:
+    case 0x12:
       *val = LIS2HH12_STREAM_MODE;
       break;
 
-    case LIS2HH12_STREAM_TO_FIFO_MODE:
+    case 0x13:
       *val = LIS2HH12_STREAM_TO_FIFO_MODE;
       break;
 
-    case LIS2HH12_BYPASS_TO_STREAM_MODE:
+    case 0x14:
       *val = LIS2HH12_BYPASS_TO_STREAM_MODE;
       break;
 
-    case LIS2HH12_BYPASS_TO_FIFO_MODE:
+    case 0x17:
       *val = LIS2HH12_BYPASS_TO_FIFO_MODE;
       break;
 
@@ -2521,15 +2525,15 @@ int32_t lis2hh12_xl_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5.st)
   {
-    case LIS2HH12_ST_DISABLE:
+    case 0x00:
       *val = LIS2HH12_ST_DISABLE;
       break;
 
-    case LIS2HH12_ST_POSITIVE:
+    case 0x01:
       *val = LIS2HH12_ST_POSITIVE;
       break;
 
-    case LIS2HH12_ST_NEGATIVE:
+    case 0x02:
       *val = LIS2HH12_ST_NEGATIVE;
       break;
 

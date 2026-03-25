@@ -212,11 +212,11 @@ int32_t iis3dhhc_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg1.norm_mod_en)
   {
-    case IIS3DHHC_POWER_DOWN:
+    case 0x00:
       *val = IIS3DHHC_POWER_DOWN;
       break;
 
-    case IIS3DHHC_1kHz1:
+    case 0x01:
       *val = IIS3DHHC_1kHz1;
       break;
 
@@ -536,15 +536,15 @@ int32_t iis3dhhc_self_test_get(const stmdev_ctx_t *ctx, iis3dhhc_st_t *val)
 
   switch (ctrl_reg4.st)
   {
-    case IIS3DHHC_ST_DISABLE:
+    case 0x00:
       *val = IIS3DHHC_ST_DISABLE;
       break;
 
-    case IIS3DHHC_ST_POSITIVE:
+    case 0x01:
       *val = IIS3DHHC_ST_POSITIVE;
       break;
 
-    case IIS3DHHC_ST_NEGATIVE:
+    case 0x02:
       *val = IIS3DHHC_ST_NEGATIVE;
       break;
 
@@ -603,19 +603,19 @@ int32_t iis3dhhc_filter_config_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4.dsp)
   {
-    case IIS3DHHC_LINEAR_PHASE_440Hz:
+    case 0x00:
       *val = IIS3DHHC_LINEAR_PHASE_440Hz;
       break;
 
-    case IIS3DHHC_LINEAR_PHASE_235Hz:
+    case 0x01:
       *val = IIS3DHHC_LINEAR_PHASE_235Hz;
       break;
 
-    case IIS3DHHC_NO_LINEAR_PHASE_440Hz:
+    case 0x02:
       *val = IIS3DHHC_NO_LINEAR_PHASE_440Hz;
       break;
 
-    case IIS3DHHC_NO_LINEAR_PHASE_235Hz:
+    case 0x03:
       *val = IIS3DHHC_NO_LINEAR_PHASE_235Hz;
       break;
 
@@ -703,11 +703,11 @@ int32_t iis3dhhc_drdy_notification_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg1.drdy_pulse)
   {
-    case IIS3DHHC_LATCHED:
+    case 0x00:
       *val = IIS3DHHC_LATCHED;
       break;
 
-    case IIS3DHHC_PULSED:
+    case 0x01:
       *val = IIS3DHHC_PULSED;
       break;
 
@@ -768,11 +768,11 @@ int32_t iis3dhhc_int1_mode_get(const stmdev_ctx_t *ctx,
 
   switch (int1_ctrl.int1_ext)
   {
-    case IIS3DHHC_PIN_AS_INTERRUPT:
+    case 0x00:
       *val = IIS3DHHC_PIN_AS_INTERRUPT;
       break;
 
-    case IIS3DHHC_PIN_AS_TRIGGER:
+    case 0x01:
       *val = IIS3DHHC_PIN_AS_TRIGGER;
       break;
 
@@ -1316,19 +1316,19 @@ int32_t iis3dhhc_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4.pp_od)
   {
-    case IIS3DHHC_ALL_PUSH_PULL:
+    case 0x00:
       *val = IIS3DHHC_ALL_PUSH_PULL;
       break;
 
-    case IIS3DHHC_INT1_OD_INT2_PP:
+    case 0x01:
       *val = IIS3DHHC_INT1_OD_INT2_PP;
       break;
 
-    case IIS3DHHC_INT1_PP_INT2_OD:
+    case 0x02:
       *val = IIS3DHHC_INT1_PP_INT2_OD;
       break;
 
-    case IIS3DHHC_ALL_OPEN_DRAIN:
+    case 0x03:
       *val = IIS3DHHC_ALL_OPEN_DRAIN;
       break;
 
@@ -1551,23 +1551,23 @@ int32_t iis3dhhc_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl.fmode)
   {
-    case IIS3DHHC_BYPASS_MODE:
+    case 0x00:
       *val = IIS3DHHC_BYPASS_MODE;
       break;
 
-    case IIS3DHHC_FIFO_MODE:
+    case 0x01:
       *val = IIS3DHHC_FIFO_MODE;
       break;
 
-    case IIS3DHHC_STREAM_TO_FIFO_MODE:
+    case 0x03:
       *val = IIS3DHHC_STREAM_TO_FIFO_MODE;
       break;
 
-    case IIS3DHHC_BYPASS_TO_STREAM_MODE:
+    case 0x04:
       *val = IIS3DHHC_BYPASS_TO_STREAM_MODE;
       break;
 
-    case IIS3DHHC_DYNAMIC_STREAM_MODE:
+    case 0x06:
       *val = IIS3DHHC_DYNAMIC_STREAM_MODE;
       break;
 

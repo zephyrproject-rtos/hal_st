@@ -108,8 +108,18 @@ typedef struct
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, const uint8_t *, uint16_t);
-typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_write_ptr)(
+    void *handle,
+    uint8_t reg,
+    const uint8_t *buf,
+    uint16_t len);
+
+typedef int32_t (*stmdev_read_ptr)(
+    void *handle,
+    uint8_t reg,
+    uint8_t *buf,
+    uint16_t len);
+
 typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
@@ -920,7 +930,7 @@ float_t lis2ds12_from_fs4g_to_mg(int16_t lsb);
 float_t lis2ds12_from_fs8g_to_mg(int16_t lsb);
 float_t lis2ds12_from_fs16g_to_mg(int16_t lsb);
 
-float_t lis2ds12_from_lsb_to_celsius(int16_t lsb);
+float_t lis2ds12_from_lsb_to_celsius(int8_t lsb);
 
 typedef struct
 {
@@ -989,7 +999,7 @@ int32_t lis2ds12_acceleration_module_raw_get(const stmdev_ctx_t *ctx,
                                              uint8_t *buff);
 
 int32_t lis2ds12_temperature_raw_get(const stmdev_ctx_t *ctx,
-                                     uint8_t *buff);
+                                     int8_t *buff);
 
 int32_t lis2ds12_acceleration_raw_get(const stmdev_ctx_t *ctx,
                                       int16_t *val);

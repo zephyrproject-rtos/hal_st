@@ -17,7 +17,6 @@
   */
 
 #include "ilps22qs_reg.h"
-#include <assert.h>
 
 /**
   * @defgroup    ILPS22QS
@@ -231,10 +230,10 @@ int32_t ilps22qs_bus_mode_get(const stmdev_ctx_t *ctx, ilps22qs_bus_mode_t *val)
 
     switch (if_ctrl.i2c_i3c_dis << 1)
     {
-      case ILPS22QS_SEL_BY_HW:
+      case 0x00:
         val->interface = ILPS22QS_SEL_BY_HW;
         break;
-      case ILPS22QS_SPI_3W:
+      case 0x03:
         val->interface = ILPS22QS_SPI_3W;
         break;
       default:
@@ -244,10 +243,10 @@ int32_t ilps22qs_bus_mode_get(const stmdev_ctx_t *ctx, ilps22qs_bus_mode_t *val)
 
     switch (i3c_if_ctrl.asf_on)
     {
-      case ILPS22QS_FILTER_AUTO:
+      case 0x00:
         val->filter = ILPS22QS_FILTER_AUTO;
         break;
-      case ILPS22QS_FILTER_ALWAYS_ON:
+      case 0x01:
         val->filter = ILPS22QS_FILTER_ALWAYS_ON;
         break;
       default:
@@ -619,10 +618,10 @@ int32_t ilps22qs_mode_get(const stmdev_ctx_t *ctx, ilps22qs_md_t *val)
 
     switch (ctrl_reg2.fs_mode)
     {
-      case ILPS22QS_1260hPa:
+      case 0x00:
         val->fs = ILPS22QS_1260hPa;
         break;
-      case ILPS22QS_4060hPa:
+      case 0x01:
         val->fs = ILPS22QS_4060hPa;
         break;
       default:
@@ -632,31 +631,31 @@ int32_t ilps22qs_mode_get(const stmdev_ctx_t *ctx, ilps22qs_md_t *val)
 
     switch (ctrl_reg1.odr)
     {
-      case ILPS22QS_ONE_SHOT:
+      case 0x00:
         val->odr = ILPS22QS_ONE_SHOT;
         break;
-      case ILPS22QS_1Hz:
+      case 0x01:
         val->odr = ILPS22QS_1Hz;
         break;
-      case ILPS22QS_4Hz:
+      case 0x02:
         val->odr = ILPS22QS_4Hz;
         break;
-      case ILPS22QS_10Hz:
+      case 0x03:
         val->odr = ILPS22QS_10Hz;
         break;
-      case ILPS22QS_25Hz:
+      case 0x04:
         val->odr = ILPS22QS_25Hz;
         break;
-      case ILPS22QS_50Hz:
+      case 0x05:
         val->odr = ILPS22QS_50Hz;
         break;
-      case ILPS22QS_75Hz:
+      case 0x06:
         val->odr = ILPS22QS_75Hz;
         break;
-      case ILPS22QS_100Hz:
+      case 0x07:
         val->odr = ILPS22QS_100Hz;
         break;
-      case ILPS22QS_200Hz:
+      case 0x08:
         val->odr = ILPS22QS_200Hz;
         break;
       default:
@@ -666,28 +665,28 @@ int32_t ilps22qs_mode_get(const stmdev_ctx_t *ctx, ilps22qs_md_t *val)
 
     switch (ctrl_reg1.avg)
     {
-      case ILPS22QS_4_AVG:
+      case 0x00:
         val->avg = ILPS22QS_4_AVG;
         break;
-      case ILPS22QS_8_AVG:
+      case 0x01:
         val->avg = ILPS22QS_8_AVG;
         break;
-      case ILPS22QS_16_AVG:
+      case 0x02:
         val->avg = ILPS22QS_16_AVG;
         break;
-      case ILPS22QS_32_AVG:
+      case 0x03:
         val->avg = ILPS22QS_32_AVG;
         break;
-      case ILPS22QS_64_AVG:
+      case 0x04:
         val->avg = ILPS22QS_64_AVG;
         break;
-      case ILPS22QS_128_AVG:
+      case 0x05:
         val->avg = ILPS22QS_128_AVG;
         break;
-      case ILPS22QS_256_AVG:
+      case 0x06:
         val->avg = ILPS22QS_256_AVG;
         break;
-      case ILPS22QS_512_AVG:
+      case 0x07:
         val->avg = ILPS22QS_512_AVG;
         break;
       default:
@@ -697,13 +696,13 @@ int32_t ilps22qs_mode_get(const stmdev_ctx_t *ctx, ilps22qs_md_t *val)
 
     switch ((ctrl_reg2.lfpf_cfg << 2) | ctrl_reg2.en_lpfp)
     {
-      case ILPS22QS_LPF_DISABLE:
+      case 0x00:
         val->lpf = ILPS22QS_LPF_DISABLE;
         break;
-      case ILPS22QS_LPF_ODR_DIV_4:
+      case 0x01:
         val->lpf = ILPS22QS_LPF_ODR_DIV_4;
         break;
-      case ILPS22QS_LPF_ODR_DIV_9:
+      case 0x03:
         val->lpf = ILPS22QS_LPF_ODR_DIV_9;
         break;
       default:
@@ -1010,22 +1009,22 @@ int32_t ilps22qs_fifo_mode_get(const stmdev_ctx_t *ctx, ilps22qs_operation_t *va
 
   switch ((fifo_ctrl.trig_modes << 2) | fifo_ctrl.f_mode)
   {
-    case ILPS22QS_BYPASS:
+    case 0x00:
       *val = ILPS22QS_BYPASS;
       break;
-    case ILPS22QS_FIFO:
+    case 0x01:
       *val = ILPS22QS_FIFO;
       break;
-    case ILPS22QS_STREAM:
+    case 0x02:
       *val = ILPS22QS_STREAM;
       break;
-    case ILPS22QS_STREAM_TO_FIFO:
+    case 0x07:
       *val = ILPS22QS_STREAM_TO_FIFO;
       break;
-    case ILPS22QS_BYPASS_TO_STREAM:
+    case 0x06:
       *val = ILPS22QS_BYPASS_TO_STREAM;
       break;
-    case ILPS22QS_BYPASS_TO_FIFO:
+    case 0x05:
       *val = ILPS22QS_BYPASS_TO_FIFO;
       break;
     default:
@@ -1050,7 +1049,11 @@ int32_t ilps22qs_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
   ilps22qs_fifo_wtm_t fifo_wtm;
   int32_t ret;
 
-  assert(val < 128);
+  if (val >= 128)
+  {
+    ret = -1;
+    goto exit;
+  }
 
   ret = ilps22qs_read_reg(ctx, ILPS22QS_FIFO_WTM, (uint8_t *)&fifo_wtm, 1);
   if (ret == 0)
@@ -1059,6 +1062,8 @@ int32_t ilps22qs_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
 
     ret = ilps22qs_write_reg(ctx, ILPS22QS_FIFO_WTM, (uint8_t *)&fifo_wtm, 1);
   }
+
+exit:
   return ret;
 }
 
@@ -1433,8 +1438,8 @@ int32_t ilps22qs_reference_mode_set(const stmdev_ctx_t *ctx, ilps22qs_ref_md_t *
     interrupt_cfg.reset_az  = ((uint8_t)val->apply_ref & 0x02U) >> 1;
     interrupt_cfg.reset_arp = ((uint8_t)val->apply_ref & 0x02U) >> 1;
 
-    ret = ilps22qs_read_reg(ctx, ILPS22QS_INTERRUPT_CFG,
-                            (uint8_t *)&interrupt_cfg, 1);
+    ret = ilps22qs_write_reg(ctx, ILPS22QS_INTERRUPT_CFG,
+                             (uint8_t *)&interrupt_cfg, 1);
   }
   return ret;
 }
@@ -1462,12 +1467,14 @@ int32_t ilps22qs_reference_mode_get(const stmdev_ctx_t *ctx, ilps22qs_ref_md_t *
   switch ((interrupt_cfg.reset_az << 1) |
           interrupt_cfg.autorefp)
   {
-    case ILPS22QS_OUT_AND_INTERRUPT:
+    case 0x00:
       val->apply_ref = ILPS22QS_OUT_AND_INTERRUPT;
       break;
-    case ILPS22QS_ONLY_INTERRUPT:
+    case 0x01:
       val->apply_ref = ILPS22QS_ONLY_INTERRUPT;
       break;
+
+    // mainly for 0x02 value
     default:
       val->apply_ref = ILPS22QS_RST_REFS;
       break;

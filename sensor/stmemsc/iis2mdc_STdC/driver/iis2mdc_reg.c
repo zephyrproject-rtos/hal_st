@@ -225,15 +225,15 @@ int32_t iis2mdc_operating_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.md)
   {
-    case IIS2MDC_CONTINUOUS_MODE:
+    case 0x00:
       *val = IIS2MDC_CONTINUOUS_MODE;
       break;
 
-    case IIS2MDC_SINGLE_TRIGGER:
+    case 0x01:
       *val = IIS2MDC_SINGLE_TRIGGER;
       break;
 
-    case IIS2MDC_POWER_DOWN:
+    case 0x02:
       *val = IIS2MDC_POWER_DOWN;
       break;
 
@@ -287,19 +287,19 @@ int32_t iis2mdc_data_rate_get(const stmdev_ctx_t *ctx, iis2mdc_odr_t *val)
 
   switch (reg.odr)
   {
-    case IIS2MDC_ODR_10Hz:
+    case 0x00:
       *val = IIS2MDC_ODR_10Hz;
       break;
 
-    case IIS2MDC_ODR_20Hz:
+    case 0x01:
       *val = IIS2MDC_ODR_20Hz;
       break;
 
-    case IIS2MDC_ODR_50Hz:
+    case 0x02:
       *val = IIS2MDC_ODR_50Hz;
       break;
 
-    case IIS2MDC_ODR_100Hz:
+    case 0x03:
       *val = IIS2MDC_ODR_100Hz;
       break;
 
@@ -353,11 +353,11 @@ int32_t iis2mdc_power_mode_get(const stmdev_ctx_t *ctx, iis2mdc_lp_t *val)
 
   switch (reg.lp)
   {
-    case IIS2MDC_HIGH_RESOLUTION:
+    case 0x00:
       *val = IIS2MDC_HIGH_RESOLUTION;
       break;
 
-    case IIS2MDC_LOW_POWER:
+    case 0x01:
       *val = IIS2MDC_LOW_POWER;
       break;
 
@@ -458,11 +458,11 @@ int32_t iis2mdc_low_pass_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (reg.lpf)
   {
-    case IIS2MDC_ODR_DIV_2:
+    case 0x00:
       *val = IIS2MDC_ODR_DIV_2;
       break;
 
-    case IIS2MDC_ODR_DIV_4:
+    case 0x01:
       *val = IIS2MDC_ODR_DIV_4;
       break;
 
@@ -519,15 +519,15 @@ int32_t iis2mdc_set_rst_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.set_rst)
   {
-    case IIS2MDC_SET_SENS_ODR_DIV_63:
+    case 0x00:
       *val = IIS2MDC_SET_SENS_ODR_DIV_63;
       break;
 
-    case IIS2MDC_SENS_OFF_CANC_EVERY_ODR:
+    case 0x01:
       *val = IIS2MDC_SENS_OFF_CANC_EVERY_ODR;
       break;
 
-    case IIS2MDC_SET_SENS_ONLY_AT_POWER_ON:
+    case 0x02:
       *val = IIS2MDC_SET_SENS_ONLY_AT_POWER_ON;
       break;
 
@@ -935,11 +935,11 @@ int32_t iis2mdc_data_format_get(const stmdev_ctx_t *ctx, iis2mdc_ble_t *val)
 
   switch (reg.ble)
   {
-    case IIS2MDC_LSB_AT_LOW_ADD:
+    case 0x00:
       *val = IIS2MDC_LSB_AT_LOW_ADD;
       break;
 
-    case IIS2MDC_MSB_AT_LOW_ADD:
+    case 0x01:
       *val = IIS2MDC_MSB_AT_LOW_ADD;
       break;
 
@@ -1030,11 +1030,11 @@ int32_t iis2mdc_offset_int_conf_get(const stmdev_ctx_t *ctx,
 
   switch (reg.int_on_dataoff)
   {
-    case IIS2MDC_CHECK_BEFORE:
+    case 0x00:
       *val = IIS2MDC_CHECK_BEFORE;
       break;
 
-    case IIS2MDC_CHECK_AFTER:
+    case 0x01:
       *val = IIS2MDC_CHECK_AFTER;
       break;
 
@@ -1293,11 +1293,11 @@ int32_t iis2mdc_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (reg.i2c_dis)
   {
-    case IIS2MDC_I2C_ENABLE:
+    case 0x00:
       *val = IIS2MDC_I2C_ENABLE;
       break;
 
-    case IIS2MDC_I2C_DISABLE:
+    case 0x01:
       *val = IIS2MDC_I2C_DISABLE;
       break;
 

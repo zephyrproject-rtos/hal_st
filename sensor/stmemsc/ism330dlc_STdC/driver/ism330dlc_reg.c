@@ -210,24 +210,24 @@ int32_t ism330dlc_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1_xl.fs_xl)
   {
-    case ISM330DLC_2g:
+    case 0x00:
       *val = ISM330DLC_2g;
       break;
 
-    case ISM330DLC_16g:
+    case 0x01:
       *val = ISM330DLC_16g;
       break;
 
-    case ISM330DLC_4g:
+    case 0x02:
       *val = ISM330DLC_4g;
       break;
 
-    case ISM330DLC_8g:
+    case 0x03:
       *val = ISM330DLC_8g;
       break;
 
     default:
-      *val = ISM330DLC_2g;
+      *val = ISM330DLC_XL_FS_ND;
       break;
   }
 
@@ -282,51 +282,51 @@ int32_t ism330dlc_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1_xl.odr_xl)
   {
-    case ISM330DLC_XL_ODR_OFF:
+    case 0x00:
       *val = ISM330DLC_XL_ODR_OFF;
       break;
 
-    case ISM330DLC_XL_ODR_12Hz5:
+    case 0x01:
       *val = ISM330DLC_XL_ODR_12Hz5;
       break;
 
-    case ISM330DLC_XL_ODR_26Hz:
+    case 0x02:
       *val = ISM330DLC_XL_ODR_26Hz;
       break;
 
-    case ISM330DLC_XL_ODR_52Hz:
+    case 0x03:
       *val = ISM330DLC_XL_ODR_52Hz;
       break;
 
-    case ISM330DLC_XL_ODR_104Hz:
+    case 0x04:
       *val = ISM330DLC_XL_ODR_104Hz;
       break;
 
-    case ISM330DLC_XL_ODR_208Hz:
+    case 0x05:
       *val = ISM330DLC_XL_ODR_208Hz;
       break;
 
-    case ISM330DLC_XL_ODR_416Hz:
+    case 0x06:
       *val = ISM330DLC_XL_ODR_416Hz;
       break;
 
-    case ISM330DLC_XL_ODR_833Hz:
+    case 0x07:
       *val = ISM330DLC_XL_ODR_833Hz;
       break;
 
-    case ISM330DLC_XL_ODR_1k66Hz:
+    case 0x08:
       *val = ISM330DLC_XL_ODR_1k66Hz;
       break;
 
-    case ISM330DLC_XL_ODR_3k33Hz:
+    case 0x09:
       *val = ISM330DLC_XL_ODR_3k33Hz;
       break;
 
-    case ISM330DLC_XL_ODR_6k66Hz:
+    case 0x0A:
       *val = ISM330DLC_XL_ODR_6k66Hz;
       break;
 
-    case ISM330DLC_XL_ODR_1Hz6:
+    case 0x0B:
       *val = ISM330DLC_XL_ODR_1Hz6;
       break;
 
@@ -384,23 +384,23 @@ int32_t ism330dlc_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2_g.fs_g)
   {
-    case ISM330DLC_250dps:
+    case 0x00:
       *val = ISM330DLC_250dps;
       break;
 
-    case ISM330DLC_125dps:
+    case 0x01:
       *val = ISM330DLC_125dps;
       break;
 
-    case ISM330DLC_500dps:
+    case 0x02:
       *val = ISM330DLC_500dps;
       break;
 
-    case ISM330DLC_1000dps:
+    case 0x04:
       *val = ISM330DLC_1000dps;
       break;
 
-    case ISM330DLC_2000dps:
+    case 0x06:
       *val = ISM330DLC_2000dps;
       break;
 
@@ -458,47 +458,47 @@ int32_t ism330dlc_gy_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2_g.odr_g)
   {
-    case ISM330DLC_GY_ODR_OFF:
+    case 0x00:
       *val = ISM330DLC_GY_ODR_OFF;
       break;
 
-    case ISM330DLC_GY_ODR_12Hz5:
+    case 0x01:
       *val = ISM330DLC_GY_ODR_12Hz5;
       break;
 
-    case ISM330DLC_GY_ODR_26Hz:
+    case 0x02:
       *val = ISM330DLC_GY_ODR_26Hz;
       break;
 
-    case ISM330DLC_GY_ODR_52Hz:
+    case 0x03:
       *val = ISM330DLC_GY_ODR_52Hz;
       break;
 
-    case ISM330DLC_GY_ODR_104Hz:
+    case 0x04:
       *val = ISM330DLC_GY_ODR_104Hz;
       break;
 
-    case ISM330DLC_GY_ODR_208Hz:
+    case 0x05:
       *val = ISM330DLC_GY_ODR_208Hz;
       break;
 
-    case ISM330DLC_GY_ODR_416Hz:
+    case 0x06:
       *val = ISM330DLC_GY_ODR_416Hz;
       break;
 
-    case ISM330DLC_GY_ODR_833Hz:
+    case 0x07:
       *val = ISM330DLC_GY_ODR_833Hz;
       break;
 
-    case ISM330DLC_GY_ODR_1k66Hz:
+    case 0x08:
       *val = ISM330DLC_GY_ODR_1k66Hz;
       break;
 
-    case ISM330DLC_GY_ODR_3k33Hz:
+    case 0x09:
       *val = ISM330DLC_GY_ODR_3k33Hz;
       break;
 
-    case ISM330DLC_GY_ODR_6k66Hz:
+    case 0x0A:
       *val = ISM330DLC_GY_ODR_6k66Hz;
       break;
 
@@ -603,11 +603,11 @@ int32_t ism330dlc_xl_offset_weight_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl6_c.usr_off_w)
   {
-    case ISM330DLC_LSb_1mg:
+    case 0x00:
       *val = ISM330DLC_LSb_1mg;
       break;
 
-    case ISM330DLC_LSb_16mg:
+    case 0x01:
       *val = ISM330DLC_LSb_16mg;
       break;
 
@@ -664,11 +664,11 @@ int32_t ism330dlc_xl_power_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl6_c.xl_hm_mode)
   {
-    case ISM330DLC_XL_HIGH_PERFORMANCE:
+    case 0x00:
       *val = ISM330DLC_XL_HIGH_PERFORMANCE;
       break;
 
-    case ISM330DLC_XL_NORMAL:
+    case 0x01:
       *val = ISM330DLC_XL_NORMAL;
       break;
 
@@ -729,11 +729,11 @@ int32_t ism330dlc_rounding_on_status_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl7_g.rounding_status)
   {
-    case ISM330DLC_STAT_RND_DISABLE:
+    case 0x00:
       *val = ISM330DLC_STAT_RND_DISABLE;
       break;
 
-    case ISM330DLC_STAT_RND_ENABLE:
+    case 0x01:
       *val = ISM330DLC_STAT_RND_ENABLE;
       break;
 
@@ -790,11 +790,11 @@ int32_t ism330dlc_gy_power_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl7_g.g_hm_mode)
   {
-    case ISM330DLC_GY_HIGH_PERFORMANCE:
+    case 0x00:
       *val = ISM330DLC_GY_HIGH_PERFORMANCE;
       break;
 
-    case ISM330DLC_GY_NORMAL:
+    case 0x01:
       *val = ISM330DLC_GY_NORMAL;
       break;
 
@@ -1106,11 +1106,11 @@ int32_t ism330dlc_timestamp_res_get(const stmdev_ctx_t *ctx,
 
   switch (wake_up_dur.timer_hr)
   {
-    case ISM330DLC_LSB_6ms4:
+    case 0x00:
       *val = ISM330DLC_LSB_6ms4;
       break;
 
-    case ISM330DLC_LSB_25us:
+    case 0x01:
       *val = ISM330DLC_LSB_25us;
       break;
 
@@ -1181,35 +1181,35 @@ int32_t ism330dlc_rounding_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5_c.rounding)
   {
-    case ISM330DLC_ROUND_DISABLE:
+    case 0x00:
       *val = ISM330DLC_ROUND_DISABLE;
       break;
 
-    case ISM330DLC_ROUND_XL:
+    case 0x01:
       *val = ISM330DLC_ROUND_XL;
       break;
 
-    case ISM330DLC_ROUND_GY:
+    case 0x02:
       *val = ISM330DLC_ROUND_GY;
       break;
 
-    case ISM330DLC_ROUND_GY_XL:
+    case 0x03:
       *val = ISM330DLC_ROUND_GY_XL;
       break;
 
-    case ISM330DLC_ROUND_SH1_TO_SH6:
+    case 0x04:
       *val = ISM330DLC_ROUND_SH1_TO_SH6;
       break;
 
-    case ISM330DLC_ROUND_XL_SH1_TO_SH6:
+    case 0x05:
       *val = ISM330DLC_ROUND_XL_SH1_TO_SH6;
       break;
 
-    case ISM330DLC_ROUND_GY_XL_SH1_TO_SH12:
+    case 0x06:
       *val = ISM330DLC_ROUND_GY_XL_SH1_TO_SH12;
       break;
 
-    case ISM330DLC_ROUND_GY_XL_SH1_TO_SH6:
+    case 0x07:
       *val = ISM330DLC_ROUND_GY_XL_SH1_TO_SH6;
       break;
 
@@ -1414,8 +1414,12 @@ int32_t ism330dlc_mem_bank_get(const stmdev_ctx_t *ctx,
 
   switch (func_cfg_access.func_cfg_en)
   {
-    case ISM330DLC_USER_BANK:
+    case 0x00:
       *val = ISM330DLC_USER_BANK;
+      break;
+
+    case 0x01:
+      *val = ISM330DLC_BANK_A;
       break;
 
     default:
@@ -1474,11 +1478,11 @@ int32_t ism330dlc_data_ready_mode_get(const stmdev_ctx_t *ctx,
 
   switch (drdy_pulse_cfg_g.drdy_pulsed)
   {
-    case ISM330DLC_DRDY_LATCHED:
+    case 0x00:
       *val = ISM330DLC_DRDY_LATCHED;
       break;
 
-    case ISM330DLC_DRDY_PULSED:
+    case 0x01:
       *val = ISM330DLC_DRDY_PULSED;
       break;
 
@@ -1595,11 +1599,11 @@ int32_t ism330dlc_data_format_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3_c.ble)
   {
-    case ISM330DLC_LSB_AT_LOW_ADD:
+    case 0x00:
       *val = ISM330DLC_LSB_AT_LOW_ADD;
       break;
 
-    case ISM330DLC_MSB_AT_LOW_ADD:
+    case 0x01:
       *val = ISM330DLC_MSB_AT_LOW_ADD;
       break;
 
@@ -1747,15 +1751,15 @@ int32_t ism330dlc_xl_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5_c.st_xl)
   {
-    case ISM330DLC_XL_ST_DISABLE:
+    case 0x00:
       *val = ISM330DLC_XL_ST_DISABLE;
       break;
 
-    case ISM330DLC_XL_ST_POSITIVE:
+    case 0x01:
       *val = ISM330DLC_XL_ST_POSITIVE;
       break;
 
-    case ISM330DLC_XL_ST_NEGATIVE:
+    case 0x02:
       *val = ISM330DLC_XL_ST_NEGATIVE;
       break;
 
@@ -1813,15 +1817,15 @@ int32_t ism330dlc_gy_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5_c.st_g)
   {
-    case ISM330DLC_GY_ST_DISABLE:
+    case 0x00:
       *val = ISM330DLC_GY_ST_DISABLE;
       break;
 
-    case ISM330DLC_GY_ST_POSITIVE:
+    case 0x01:
       *val = ISM330DLC_GY_ST_POSITIVE;
       break;
 
-    case ISM330DLC_GY_ST_NEGATIVE:
+    case 0x03:
       *val = ISM330DLC_GY_ST_NEGATIVE;
       break;
 
@@ -1943,11 +1947,11 @@ int32_t ism330dlc_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg.slope_fds)
   {
-    case ISM330DLC_USE_SLOPE:
+    case 0x00:
       *val = ISM330DLC_USE_SLOPE;
       break;
 
-    case ISM330DLC_USE_HPF:
+    case 0x01:
       *val = ISM330DLC_USE_HPF;
       break;
 
@@ -2022,11 +2026,11 @@ int32_t ism330dlc_xl_filter_analog_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1_xl.bw0_xl)
   {
-    case ISM330DLC_XL_ANA_BW_1k5Hz:
+    case 0x00:
       *val = ISM330DLC_XL_ANA_BW_1k5Hz;
       break;
 
-    case ISM330DLC_XL_ANA_BW_400Hz:
+    case 0x01:
       *val = ISM330DLC_XL_ANA_BW_400Hz;
       break;
 
@@ -2131,11 +2135,11 @@ int32_t ism330dlc_xl_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
 
       switch (ctrl1_xl.lpf1_bw_sel)
       {
-        case ISM330DLC_XL_LP1_ODR_DIV_2:
+        case 0x00:
           *val = ISM330DLC_XL_LP1_ODR_DIV_2;
           break;
 
-        case ISM330DLC_XL_LP1_ODR_DIV_4:
+        case 0x01:
           *val = ISM330DLC_XL_LP1_ODR_DIV_4;
           break;
 
@@ -2206,35 +2210,35 @@ int32_t ism330dlc_xl_lp2_bandwidth_get(const stmdev_ctx_t *ctx,
     {
       switch ((ctrl8_xl.input_composite << 4) + ctrl8_xl.hpcf_xl)
       {
-        case ISM330DLC_XL_LOW_LAT_LP_ODR_DIV_50:
+        case 0x00:
           *val = ISM330DLC_XL_LOW_LAT_LP_ODR_DIV_50;
           break;
 
-        case ISM330DLC_XL_LOW_LAT_LP_ODR_DIV_100:
+        case 0x01:
           *val = ISM330DLC_XL_LOW_LAT_LP_ODR_DIV_100;
           break;
 
-        case ISM330DLC_XL_LOW_LAT_LP_ODR_DIV_9:
+        case 0x02:
           *val = ISM330DLC_XL_LOW_LAT_LP_ODR_DIV_9;
           break;
 
-        case ISM330DLC_XL_LOW_LAT_LP_ODR_DIV_400:
+        case 0x03:
           *val = ISM330DLC_XL_LOW_LAT_LP_ODR_DIV_400;
           break;
 
-        case ISM330DLC_XL_LOW_NOISE_LP_ODR_DIV_50:
+        case 0x10:
           *val = ISM330DLC_XL_LOW_NOISE_LP_ODR_DIV_50;
           break;
 
-        case ISM330DLC_XL_LOW_NOISE_LP_ODR_DIV_100:
+        case 0x11:
           *val = ISM330DLC_XL_LOW_NOISE_LP_ODR_DIV_100;
           break;
 
-        case ISM330DLC_XL_LOW_NOISE_LP_ODR_DIV_9:
+        case 0x12:
           *val = ISM330DLC_XL_LOW_NOISE_LP_ODR_DIV_9;
           break;
 
-        case ISM330DLC_XL_LOW_NOISE_LP_ODR_DIV_400:
+        case 0x13:
           *val = ISM330DLC_XL_LOW_NOISE_LP_ODR_DIV_400;
           break;
 
@@ -2353,19 +2357,20 @@ int32_t ism330dlc_xl_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl8_xl.hpcf_xl)
   {
-    case ISM330DLC_XL_HP_ODR_DIV_4:
+    // Slope filter
+    case 0x00:
       *val = ISM330DLC_XL_HP_ODR_DIV_4;
       break;
 
-    case ISM330DLC_XL_HP_ODR_DIV_100:
+    case 0x01:
       *val = ISM330DLC_XL_HP_ODR_DIV_100;
       break;
 
-    case ISM330DLC_XL_HP_ODR_DIV_9:
+    case 0x02:
       *val = ISM330DLC_XL_HP_ODR_DIV_9;
       break;
 
-    case ISM330DLC_XL_HP_ODR_DIV_400:
+    case 0x03:
       *val = ISM330DLC_XL_HP_ODR_DIV_400;
       break;
 
@@ -2472,11 +2477,11 @@ int32_t ism330dlc_xl_ui_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
 
     switch (ctrl1_xl.lpf1_bw_sel)
     {
-      case ISM330DLC_XL_UI_LP1_ODR_DIV_2:
+      case 0x00:
         *val = ISM330DLC_XL_UI_LP1_ODR_DIV_2;
         break;
 
-      case ISM330DLC_XL_UI_LP1_ODR_DIV_4:
+      case 0x01:
         *val = ISM330DLC_XL_UI_LP1_ODR_DIV_4;
         break;
 
@@ -2604,19 +2609,19 @@ int32_t ism330dlc_xl_aux_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (reg.filter_xl_conf_ois)
   {
-    case ISM330DLC_AUX_LP_LIGHT:
+    case 0x02:
       *val = ISM330DLC_AUX_LP_LIGHT;
       break;
 
-    case ISM330DLC_AUX_LP_NORMAL:
+    case 0x03:
       *val = ISM330DLC_AUX_LP_NORMAL;
       break;
 
-    case ISM330DLC_AUX_LP_STRONG:
+    case 0x00:
       *val = ISM330DLC_AUX_LP_STRONG;
       break;
 
-    case ISM330DLC_AUX_LP_AGGRESSIVE:
+    case 0x01:
       *val = ISM330DLC_AUX_LP_AGGRESSIVE;
       break;
 
@@ -2727,51 +2732,55 @@ int32_t ism330dlc_gy_band_pass_get(const stmdev_ctx_t *ctx,
       switch ((ctrl7_g.hp_en_g << 7) + (ctrl7_g.hpm_g << 4) +
               (ctrl4_c.lpf1_sel_g << 3) + ctrl6_c.ftype)
       {
-        case ISM330DLC_HP_16mHz_LP2:
+        case 0x00:
+          *val = ISM330DLC_LP2_ONLY;
+          break;
+
+        case 0x80:
           *val = ISM330DLC_HP_16mHz_LP2;
           break;
 
-        case ISM330DLC_HP_65mHz_LP2:
+        case 0x90:
           *val = ISM330DLC_HP_65mHz_LP2;
           break;
 
-        case ISM330DLC_HP_260mHz_LP2:
+        case 0xA0:
           *val = ISM330DLC_HP_260mHz_LP2;
           break;
 
-        case ISM330DLC_HP_1Hz04_LP2:
+        case 0xB0:
           *val = ISM330DLC_HP_1Hz04_LP2;
           break;
 
-        case ISM330DLC_HP_DISABLE_LP1_LIGHT:
+        case 0x0A:
           *val = ISM330DLC_HP_DISABLE_LP1_LIGHT;
           break;
 
-        case ISM330DLC_HP_DISABLE_LP1_NORMAL:
+        case 0x09:
           *val = ISM330DLC_HP_DISABLE_LP1_NORMAL;
           break;
 
-        case ISM330DLC_HP_DISABLE_LP_STRONG:
+        case 0x08:
           *val = ISM330DLC_HP_DISABLE_LP_STRONG;
           break;
 
-        case ISM330DLC_HP_DISABLE_LP1_AGGRESSIVE:
+        case 0x0B:
           *val = ISM330DLC_HP_DISABLE_LP1_AGGRESSIVE;
           break;
 
-        case ISM330DLC_HP_16mHz_LP1_LIGHT:
+        case 0x8A:
           *val = ISM330DLC_HP_16mHz_LP1_LIGHT;
           break;
 
-        case ISM330DLC_HP_65mHz_LP1_NORMAL:
+        case 0x99:
           *val = ISM330DLC_HP_65mHz_LP1_NORMAL;
           break;
 
-        case ISM330DLC_HP_260mHz_LP1_STRONG:
+        case 0xA8:
           *val = ISM330DLC_HP_260mHz_LP1_STRONG;
           break;
 
-        case ISM330DLC_HP_1Hz04_LP1_AGGRESSIVE:
+        case 0xBB:
           *val = ISM330DLC_HP_1Hz04_LP1_AGGRESSIVE;
           break;
 
@@ -2913,35 +2922,35 @@ int32_t ism330dlc_gy_aux_bandwidth_get(const stmdev_ctx_t *ctx,
   switch ((reg.hp_en_ois << 7) + (reg.hpm_ois << 4) +
           reg.ftype_ois)
   {
-    case ISM330DLC_HP_DISABLE_LP_173Hz:
+    case 0x02:
       *val = ISM330DLC_HP_DISABLE_LP_173Hz;
       break;
 
-    case ISM330DLC_HP_DISABLE_LP_237Hz:
+    case 0x01:
       *val = ISM330DLC_HP_DISABLE_LP_237Hz;
       break;
 
-    case ISM330DLC_HP_DISABLE_LP_351Hz:
+    case 0x00:
       *val = ISM330DLC_HP_DISABLE_LP_351Hz;
       break;
 
-    case ISM330DLC_HP_DISABLE_LP_937Hz:
+    case 0x03:
       *val = ISM330DLC_HP_DISABLE_LP_937Hz;
       break;
 
-    case ISM330DLC_HP_16mHz_LP_173Hz:
+    case 0x82:
       *val = ISM330DLC_HP_16mHz_LP_173Hz;
       break;
 
-    case ISM330DLC_HP_65mHz_LP_237Hz:
+    case 0x91:
       *val = ISM330DLC_HP_65mHz_LP_237Hz;
       break;
 
-    case ISM330DLC_HP_260mHz_LP_351Hz:
+    case 0xA0:
       *val = ISM330DLC_HP_260mHz_LP_351Hz;
       break;
 
-    case ISM330DLC_HP_1Hz04_LP_937Hz:
+    case 0xB3:
       *val = ISM330DLC_HP_1Hz04_LP_937Hz;
       break;
 
@@ -3121,15 +3130,15 @@ int32_t ism330dlc_aux_den_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl1_ois.lvl1_ois << 1) | int_ois.lvl2_ois)
   {
-    case ISM330DLC_AUX_DEN_DISABLE:
+    case 0x00:
       *val = ISM330DLC_AUX_DEN_DISABLE;
       break;
 
-    case ISM330DLC_AUX_DEN_LEVEL_LATCH:
+    case 0x03:
       *val = ISM330DLC_AUX_DEN_LEVEL_LATCH;
       break;
 
-    case ISM330DLC_AUX_DEN_LEVEL_TRIG:
+    case 0x02:
       *val = ISM330DLC_AUX_DEN_LEVEL_TRIG;
       break;
 
@@ -3249,15 +3258,15 @@ int32_t ism330dlc_aux_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((reg.mode4_en << 1) + reg.ois_en_spi2)
   {
-    case ISM330DLC_AUX_DISABLE:
+    case 0x00:
       *val = ISM330DLC_AUX_DISABLE;
       break;
 
-    case ISM330DLC_MODE_3_GY:
+    case 0x01:
       *val = ISM330DLC_MODE_3_GY;
       break;
 
-    case ISM330DLC_MODE_4_GY_XL:
+    case 0x03:
       *val = ISM330DLC_MODE_4_GY_XL;
       break;
 
@@ -3315,23 +3324,23 @@ int32_t ism330dlc_aux_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (reg.fs_g_ois)
   {
-    case ISM330DLC_250dps_AUX:
+    case 0x00:
       *val = ISM330DLC_250dps_AUX;
       break;
 
-    case ISM330DLC_125dps_AUX:
+    case 0x01:
       *val = ISM330DLC_125dps_AUX;
       break;
 
-    case ISM330DLC_500dps_AUX:
+    case 0x02:
       *val = ISM330DLC_500dps_AUX;
       break;
 
-    case ISM330DLC_1000dps_AUX:
+    case 0x04:
       *val = ISM330DLC_1000dps_AUX;
       break;
 
-    case ISM330DLC_2000dps_AUX:
+    case 0x06:
       *val = ISM330DLC_2000dps_AUX;
       break;
 
@@ -3389,11 +3398,11 @@ int32_t ism330dlc_aux_spi_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.sim_ois)
   {
-    case ISM330DLC_AUX_SPI_4_WIRE:
+    case 0x00:
       *val = ISM330DLC_AUX_SPI_4_WIRE;
       break;
 
-    case ISM330DLC_AUX_SPI_3_WIRE:
+    case 0x01:
       *val = ISM330DLC_AUX_SPI_3_WIRE;
       break;
 
@@ -3451,11 +3460,11 @@ int32_t ism330dlc_aux_data_format_get(const stmdev_ctx_t *ctx,
 
   switch (reg.ble_ois)
   {
-    case ISM330DLC_AUX_LSB_AT_LOW_ADD:
+    case 0x00:
       *val = ISM330DLC_AUX_LSB_AT_LOW_ADD;
       break;
 
-    case ISM330DLC_AUX_MSB_AT_LOW_ADD:
+    case 0x01:
       *val = ISM330DLC_AUX_MSB_AT_LOW_ADD;
       break;
 
@@ -3519,11 +3528,11 @@ int32_t ism330dlc_aux_gy_clamp_get(const stmdev_ctx_t *ctx,
 
   switch (reg.st_ois_clampdis)
   {
-    case ISM330DLC_ENABLE_CLAMP:
+    case 0x00:
       *val = ISM330DLC_ENABLE_CLAMP;
       break;
 
-    case ISM330DLC_DISABLE_CLAMP:
+    case 0x01:
       *val = ISM330DLC_DISABLE_CLAMP;
       break;
 
@@ -3581,15 +3590,15 @@ int32_t ism330dlc_aux_gy_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (reg.st_ois)
   {
-    case ISM330DLC_AUX_GY_DISABLE:
+    case 0x00:
       *val = ISM330DLC_AUX_GY_DISABLE;
       break;
 
-    case ISM330DLC_AUX_GY_POS:
+    case 0x01:
       *val = ISM330DLC_AUX_GY_POS;
       break;
 
-    case ISM330DLC_AUX_GY_NEG:
+    case 0x03:
       *val = ISM330DLC_AUX_GY_NEG;
       break;
 
@@ -3647,19 +3656,19 @@ int32_t ism330dlc_aux_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (reg.fs_xl_ois)
   {
-    case ISM330DLC_AUX_2g:
+    case 0x00:
       *val = ISM330DLC_AUX_2g;
       break;
 
-    case ISM330DLC_AUX_16g:
+    case 0x01:
       *val = ISM330DLC_AUX_16g;
       break;
 
-    case ISM330DLC_AUX_4g:
+    case 0x02:
       *val = ISM330DLC_AUX_4g;
       break;
 
-    case ISM330DLC_AUX_8g:
+    case 0x03:
       *val = ISM330DLC_AUX_8g;
       break;
 
@@ -3717,11 +3726,11 @@ int32_t ism330dlc_aux_den_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (reg.den_lh_ois)
   {
-    case ISM330DLC_AUX_DEN_ACTIVE_LOW:
+    case 0x00:
       *val = ISM330DLC_AUX_DEN_ACTIVE_LOW;
       break;
 
-    case ISM330DLC_AUX_DEN_ACTIVE_HIGH:
+    case 0x01:
       *val = ISM330DLC_AUX_DEN_ACTIVE_HIGH;
       break;
 
@@ -3791,11 +3800,11 @@ int32_t ism330dlc_spi_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3_c.sim)
   {
-    case ISM330DLC_SPI_4_WIRE:
+    case 0x00:
       *val = ISM330DLC_SPI_4_WIRE;
       break;
 
-    case ISM330DLC_SPI_3_WIRE:
+    case 0x01:
       *val = ISM330DLC_SPI_3_WIRE;
       break;
 
@@ -3853,11 +3862,11 @@ int32_t ism330dlc_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl4_c.i2c_disable)
   {
-    case ISM330DLC_I2C_ENABLE:
+    case 0x00:
       *val = ISM330DLC_I2C_ENABLE;
       break;
 
-    case ISM330DLC_I2C_DISABLE:
+    case 0x01:
       *val = ISM330DLC_I2C_DISABLE;
       break;
 
@@ -4246,11 +4255,11 @@ int32_t ism330dlc_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3_c.pp_od)
   {
-    case ISM330DLC_PUSH_PULL:
+    case 0x00:
       *val = ISM330DLC_PUSH_PULL;
       break;
 
-    case ISM330DLC_OPEN_DRAIN:
+    case 0x01:
       *val = ISM330DLC_OPEN_DRAIN;
       break;
 
@@ -4308,11 +4317,11 @@ int32_t ism330dlc_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl3_c.h_lactive)
   {
-    case ISM330DLC_ACTIVE_HIGH:
+    case 0x00:
       *val = ISM330DLC_ACTIVE_HIGH;
       break;
 
-    case ISM330DLC_ACTIVE_LOW:
+    case 0x01:
       *val = ISM330DLC_ACTIVE_LOW;
       break;
 
@@ -4414,11 +4423,11 @@ int32_t ism330dlc_int_notification_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg.lir)
   {
-    case ISM330DLC_INT_PULSED:
+    case 0x00:
       *val = ISM330DLC_INT_PULSED;
       break;
 
-    case ISM330DLC_INT_LATCHED:
+    case 0x01:
       *val = ISM330DLC_INT_LATCHED;
       break;
 
@@ -4640,19 +4649,19 @@ int32_t ism330dlc_act_mode_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg.inact_en)
   {
-    case ISM330DLC_PROPERTY_DISABLE:
+    case 0x00:
       *val = ISM330DLC_PROPERTY_DISABLE;
       break;
 
-    case ISM330DLC_XL_12Hz5_GY_NOT_AFFECTED:
+    case 0x01:
       *val = ISM330DLC_XL_12Hz5_GY_NOT_AFFECTED;
       break;
 
-    case ISM330DLC_XL_12Hz5_GY_SLEEP:
+    case 0x02:
       *val = ISM330DLC_XL_12Hz5_GY_SLEEP;
       break;
 
-    case ISM330DLC_XL_12Hz5_GY_PD:
+    case 0x03:
       *val = ISM330DLC_XL_12Hz5_GY_PD;
       break;
 
@@ -5147,11 +5156,11 @@ int32_t ism330dlc_tap_mode_get(const stmdev_ctx_t *ctx,
 
   switch (wake_up_ths.single_double_tap)
   {
-    case ISM330DLC_ONLY_SINGLE:
+    case 0x00:
       *val = ISM330DLC_ONLY_SINGLE;
       break;
 
-    case ISM330DLC_BOTH_SINGLE_DOUBLE:
+    case 0x01:
       *val = ISM330DLC_BOTH_SINGLE_DOUBLE;
       break;
 
@@ -5225,11 +5234,11 @@ int32_t ism330dlc_6d_feed_data_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl8_xl.low_pass_on_6d)
   {
-    case ISM330DLC_ODR_DIV_2_FEED:
+    case 0x00:
       *val = ISM330DLC_ODR_DIV_2_FEED;
       break;
 
-    case ISM330DLC_LPF2_FEED:
+    case 0x01:
       *val = ISM330DLC_LPF2_FEED;
       break;
 
@@ -5290,19 +5299,19 @@ int32_t ism330dlc_6d_threshold_get(const stmdev_ctx_t *ctx,
 
   switch (tap_ths_6d.sixd_ths)
   {
-    case ISM330DLC_DEG_80:
+    case 0x00:
       *val = ISM330DLC_DEG_80;
       break;
 
-    case ISM330DLC_DEG_70:
+    case 0x01:
       *val = ISM330DLC_DEG_70;
       break;
 
-    case ISM330DLC_DEG_60:
+    case 0x02:
       *val = ISM330DLC_DEG_60;
       break;
 
-    case ISM330DLC_DEG_50:
+    case 0x03:
       *val = ISM330DLC_DEG_50;
       break;
 
@@ -5492,35 +5501,35 @@ int32_t ism330dlc_ff_threshold_get(const stmdev_ctx_t *ctx,
 
   switch (free_fall.ff_ths)
   {
-    case ISM330DLC_FF_TSH_156mg:
+    case 0x00:
       *val = ISM330DLC_FF_TSH_156mg;
       break;
 
-    case ISM330DLC_FF_TSH_219mg:
+    case 0x01:
       *val = ISM330DLC_FF_TSH_219mg;
       break;
 
-    case ISM330DLC_FF_TSH_250mg:
+    case 0x02:
       *val = ISM330DLC_FF_TSH_250mg;
       break;
 
-    case ISM330DLC_FF_TSH_312mg:
+    case 0x03:
       *val = ISM330DLC_FF_TSH_312mg;
       break;
 
-    case ISM330DLC_FF_TSH_344mg:
+    case 0x04:
       *val = ISM330DLC_FF_TSH_344mg;
       break;
 
-    case ISM330DLC_FF_TSH_406mg:
+    case 0x05:
       *val = ISM330DLC_FF_TSH_406mg;
       break;
 
-    case ISM330DLC_FF_TSH_469mg:
+    case 0x06:
       *val = ISM330DLC_FF_TSH_469mg;
       break;
 
-    case ISM330DLC_FF_TSH_500mg:
+    case 0x07:
       *val = ISM330DLC_FF_TSH_500mg;
       break;
 
@@ -5821,35 +5830,35 @@ int32_t ism330dlc_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl3.dec_fifo_xl)
   {
-    case ISM330DLC_FIFO_XL_DISABLE:
+    case 0x00:
       *val = ISM330DLC_FIFO_XL_DISABLE;
       break;
 
-    case ISM330DLC_FIFO_XL_NO_DEC:
+    case 0x01:
       *val = ISM330DLC_FIFO_XL_NO_DEC;
       break;
 
-    case ISM330DLC_FIFO_XL_DEC_2:
+    case 0x02:
       *val = ISM330DLC_FIFO_XL_DEC_2;
       break;
 
-    case ISM330DLC_FIFO_XL_DEC_3:
+    case 0x03:
       *val = ISM330DLC_FIFO_XL_DEC_3;
       break;
 
-    case ISM330DLC_FIFO_XL_DEC_4:
+    case 0x04:
       *val = ISM330DLC_FIFO_XL_DEC_4;
       break;
 
-    case ISM330DLC_FIFO_XL_DEC_8:
+    case 0x05:
       *val = ISM330DLC_FIFO_XL_DEC_8;
       break;
 
-    case ISM330DLC_FIFO_XL_DEC_16:
+    case 0x06:
       *val = ISM330DLC_FIFO_XL_DEC_16;
       break;
 
-    case ISM330DLC_FIFO_XL_DEC_32:
+    case 0x07:
       *val = ISM330DLC_FIFO_XL_DEC_32;
       break;
 
@@ -5912,35 +5921,35 @@ int32_t ism330dlc_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl3.dec_fifo_gyro)
   {
-    case ISM330DLC_FIFO_GY_DISABLE:
+    case 0x00:
       *val = ISM330DLC_FIFO_GY_DISABLE;
       break;
 
-    case ISM330DLC_FIFO_GY_NO_DEC:
+    case 0x01:
       *val = ISM330DLC_FIFO_GY_NO_DEC;
       break;
 
-    case ISM330DLC_FIFO_GY_DEC_2:
+    case 0x02:
       *val = ISM330DLC_FIFO_GY_DEC_2;
       break;
 
-    case ISM330DLC_FIFO_GY_DEC_3:
+    case 0x03:
       *val = ISM330DLC_FIFO_GY_DEC_3;
       break;
 
-    case ISM330DLC_FIFO_GY_DEC_4:
+    case 0x04:
       *val = ISM330DLC_FIFO_GY_DEC_4;
       break;
 
-    case ISM330DLC_FIFO_GY_DEC_8:
+    case 0x05:
       *val = ISM330DLC_FIFO_GY_DEC_8;
       break;
 
-    case ISM330DLC_FIFO_GY_DEC_16:
+    case 0x06:
       *val = ISM330DLC_FIFO_GY_DEC_16;
       break;
 
-    case ISM330DLC_FIFO_GY_DEC_32:
+    case 0x07:
       *val = ISM330DLC_FIFO_GY_DEC_32;
       break;
 
@@ -6003,35 +6012,35 @@ int32_t ism330dlc_fifo_dataset_3_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.dec_ds3_fifo)
   {
-    case ISM330DLC_FIFO_DS3_DISABLE:
+    case 0x00:
       *val = ISM330DLC_FIFO_DS3_DISABLE;
       break;
 
-    case ISM330DLC_FIFO_DS3_NO_DEC:
+    case 0x01:
       *val = ISM330DLC_FIFO_DS3_NO_DEC;
       break;
 
-    case ISM330DLC_FIFO_DS3_DEC_2:
+    case 0x02:
       *val = ISM330DLC_FIFO_DS3_DEC_2;
       break;
 
-    case ISM330DLC_FIFO_DS3_DEC_3:
+    case 0x03:
       *val = ISM330DLC_FIFO_DS3_DEC_3;
       break;
 
-    case ISM330DLC_FIFO_DS3_DEC_4:
+    case 0x04:
       *val = ISM330DLC_FIFO_DS3_DEC_4;
       break;
 
-    case ISM330DLC_FIFO_DS3_DEC_8:
+    case 0x05:
       *val = ISM330DLC_FIFO_DS3_DEC_8;
       break;
 
-    case ISM330DLC_FIFO_DS3_DEC_16:
+    case 0x06:
       *val = ISM330DLC_FIFO_DS3_DEC_16;
       break;
 
-    case ISM330DLC_FIFO_DS3_DEC_32:
+    case 0x07:
       *val = ISM330DLC_FIFO_DS3_DEC_32;
       break;
 
@@ -6094,35 +6103,35 @@ int32_t ism330dlc_fifo_dataset_4_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.dec_ds4_fifo)
   {
-    case ISM330DLC_FIFO_DS4_DISABLE:
+    case 0x00:
       *val = ISM330DLC_FIFO_DS4_DISABLE;
       break;
 
-    case ISM330DLC_FIFO_DS4_NO_DEC:
+    case 0x01:
       *val = ISM330DLC_FIFO_DS4_NO_DEC;
       break;
 
-    case ISM330DLC_FIFO_DS4_DEC_2:
+    case 0x02:
       *val = ISM330DLC_FIFO_DS4_DEC_2;
       break;
 
-    case ISM330DLC_FIFO_DS4_DEC_3:
+    case 0x03:
       *val = ISM330DLC_FIFO_DS4_DEC_3;
       break;
 
-    case ISM330DLC_FIFO_DS4_DEC_4:
+    case 0x04:
       *val = ISM330DLC_FIFO_DS4_DEC_4;
       break;
 
-    case ISM330DLC_FIFO_DS4_DEC_8:
+    case 0x05:
       *val = ISM330DLC_FIFO_DS4_DEC_8;
       break;
 
-    case ISM330DLC_FIFO_DS4_DEC_16:
+    case 0x06:
       *val = ISM330DLC_FIFO_DS4_DEC_16;
       break;
 
-    case ISM330DLC_FIFO_DS4_DEC_32:
+    case 0x07:
       *val = ISM330DLC_FIFO_DS4_DEC_32;
       break;
 
@@ -6282,23 +6291,23 @@ int32_t ism330dlc_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl5.fifo_mode)
   {
-    case ISM330DLC_BYPASS_MODE:
+    case 0x00:
       *val = ISM330DLC_BYPASS_MODE;
       break;
 
-    case ISM330DLC_FIFO_MODE:
+    case 0x01:
       *val = ISM330DLC_FIFO_MODE;
       break;
 
-    case ISM330DLC_STREAM_TO_FIFO_MODE:
+    case 0x03:
       *val = ISM330DLC_STREAM_TO_FIFO_MODE;
       break;
 
-    case ISM330DLC_BYPASS_TO_STREAM_MODE:
+    case 0x04:
       *val = ISM330DLC_BYPASS_TO_STREAM_MODE;
       break;
 
-    case ISM330DLC_STREAM_MODE:
+    case 0x06:
       *val = ISM330DLC_STREAM_MODE;
       break;
 
@@ -6359,47 +6368,47 @@ int32_t ism330dlc_fifo_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl5.odr_fifo)
   {
-    case ISM330DLC_FIFO_DISABLE:
+    case 0x00:
       *val = ISM330DLC_FIFO_DISABLE;
       break;
 
-    case ISM330DLC_FIFO_12Hz5:
+    case 0x01:
       *val = ISM330DLC_FIFO_12Hz5;
       break;
 
-    case ISM330DLC_FIFO_26Hz:
+    case 0x02:
       *val = ISM330DLC_FIFO_26Hz;
       break;
 
-    case ISM330DLC_FIFO_52Hz:
+    case 0x03:
       *val = ISM330DLC_FIFO_52Hz;
       break;
 
-    case ISM330DLC_FIFO_104Hz:
+    case 0x04:
       *val = ISM330DLC_FIFO_104Hz;
       break;
 
-    case ISM330DLC_FIFO_208Hz:
+    case 0x05:
       *val = ISM330DLC_FIFO_208Hz;
       break;
 
-    case ISM330DLC_FIFO_416Hz:
+    case 0x06:
       *val = ISM330DLC_FIFO_416Hz;
       break;
 
-    case ISM330DLC_FIFO_833Hz:
+    case 0x07:
       *val = ISM330DLC_FIFO_833Hz;
       break;
 
-    case ISM330DLC_FIFO_1k66Hz:
+    case 0x08:
       *val = ISM330DLC_FIFO_1k66Hz;
       break;
 
-    case ISM330DLC_FIFO_3k33Hz:
+    case 0x09:
       *val = ISM330DLC_FIFO_3k33Hz;
       break;
 
-    case ISM330DLC_FIFO_6k66Hz:
+    case 0x0A:
       *val = ISM330DLC_FIFO_6k66Hz;
       break;
 
@@ -6470,11 +6479,11 @@ int32_t ism330dlc_den_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5_c.den_lh)
   {
-    case ISM330DLC_DEN_ACT_LOW:
+    case 0x00:
       *val = ISM330DLC_DEN_ACT_LOW;
       break;
 
-    case ISM330DLC_DEN_ACT_HIGH:
+    case 0x01:
       *val = ISM330DLC_DEN_ACT_HIGH;
       break;
 
@@ -6532,19 +6541,23 @@ int32_t ism330dlc_den_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl6_c.den_mode)
   {
-    case ISM330DLC_DEN_DISABLE:
+    case 0x00:
       *val = ISM330DLC_DEN_DISABLE;
       break;
 
-    case ISM330DLC_LEVEL_LETCHED:
+    case 0x06:
+      *val = ISM330DLC_LEVEL_FIFO;
+      break;
+
+    case 0x03:
       *val = ISM330DLC_LEVEL_LETCHED;
       break;
 
-    case ISM330DLC_LEVEL_TRIGGER:
+    case 0x02:
       *val = ISM330DLC_LEVEL_TRIGGER;
       break;
 
-    case ISM330DLC_EDGE_TRIGGER:
+    case 0x04:
       *val = ISM330DLC_EDGE_TRIGGER;
       break;
 
@@ -6626,15 +6639,15 @@ int32_t ism330dlc_den_enable_get(const stmdev_ctx_t *ctx,
 
     switch ((ctrl4_c.den_xl_en << 1) + ctrl9_xl.den_xl_g)
     {
-      case ISM330DLC_STAMP_IN_GY_DATA:
+      case 0x00:
         *val = ISM330DLC_STAMP_IN_GY_DATA;
         break;
 
-      case ISM330DLC_STAMP_IN_XL_DATA:
+      case 0x01:
         *val = ISM330DLC_STAMP_IN_XL_DATA;
         break;
 
-      case ISM330DLC_STAMP_IN_GY_XL_DATA:
+      case 0x02:
         *val = ISM330DLC_STAMP_IN_GY_XL_DATA;
         break;
 
@@ -7142,19 +7155,19 @@ int32_t ism330dlc_sh_sync_sens_ratio_get(const stmdev_ctx_t *ctx,
 
   switch (sensor_sync_res_ratio.rr)
   {
-    case ISM330DLC_RES_RATIO_2_11:
+    case 0x00:
       *val = ISM330DLC_RES_RATIO_2_11;
       break;
 
-    case ISM330DLC_RES_RATIO_2_12:
+    case 0x01:
       *val = ISM330DLC_RES_RATIO_2_12;
       break;
 
-    case ISM330DLC_RES_RATIO_2_13:
+    case 0x02:
       *val = ISM330DLC_RES_RATIO_2_13;
       break;
 
-    case ISM330DLC_RES_RATIO_2_14:
+    case 0x03:
       *val = ISM330DLC_RES_RATIO_2_14;
       break;
 
@@ -7309,11 +7322,11 @@ int32_t ism330dlc_sh_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (master_config.pull_up_en)
   {
-    case ISM330DLC_EXT_PULL_UP:
+    case 0x00:
       *val = ISM330DLC_EXT_PULL_UP;
       break;
 
-    case ISM330DLC_INTERNAL_PULL_UP:
+    case 0x01:
       *val = ISM330DLC_INTERNAL_PULL_UP;
       break;
 
@@ -7374,11 +7387,11 @@ int32_t ism330dlc_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
 
   switch (master_config.start_config)
   {
-    case ISM330DLC_XL_GY_DRDY:
+    case 0x01:
       *val = ISM330DLC_XL_GY_DRDY;
       break;
 
-    case ISM330DLC_EXT_ON_INT2_PIN:
+    case 0x00:
       *val = ISM330DLC_EXT_ON_INT2_PIN;
       break;
 
@@ -7619,19 +7632,19 @@ int32_t ism330dlc_sh_num_of_dev_connected_get(const stmdev_ctx_t *ctx,
     {
       switch (slave0_config.aux_sens_on)
       {
-        case ISM330DLC_SLV_0:
+        case 0x00:
           *val = ISM330DLC_SLV_0;
           break;
 
-        case ISM330DLC_SLV_0_1:
+        case 0x01:
           *val = ISM330DLC_SLV_0_1;
           break;
 
-        case ISM330DLC_SLV_0_1_2:
+        case 0x02:
           *val = ISM330DLC_SLV_0_1_2;
           break;
 
-        case ISM330DLC_SLV_0_1_2_3:
+        case 0x03:
           *val = ISM330DLC_SLV_0_1_2_3;
           break;
 
@@ -7668,7 +7681,7 @@ int32_t ism330dlc_sh_cfg_write(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv0_add.slave0_add = val->slv0_add;
+    slv0_add.slave0_add = (uint8_t)(val->slv0_add >> 1);
     slv0_add.rw_0 = 0;
     ret = ism330dlc_write_reg(ctx, ISM330DLC_SLV0_ADD,
                               (uint8_t *)&slv0_add, 1);
@@ -7712,7 +7725,7 @@ int32_t ism330dlc_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv0_add.slave0_add = val->slv_add;
+    slv0_add.slave0_add = (uint8_t)(val->slv_add >> 1);
     slv0_add.rw_0 = 1;
     ret = ism330dlc_write_reg(ctx, ISM330DLC_SLV0_ADD,
                               (uint8_t *)&slv0_add, 1);
@@ -7763,7 +7776,7 @@ int32_t ism330dlc_sh_slv1_cfg_read(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv1_add.slave1_add  = val->slv_add;
+    slv1_add.slave1_add  = (uint8_t)(val->slv_add >> 1);
     slv1_add.r_1 = 1;
     ret = ism330dlc_write_reg(ctx, ISM330DLC_SLV1_ADD,
                               (uint8_t *)&slv1_add, 1);
@@ -7814,7 +7827,7 @@ int32_t ism330dlc_sh_slv2_cfg_read(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv2_add.slave2_add  = val->slv_add;
+    slv2_add.slave2_add  = (uint8_t)(val->slv_add >> 1);
     slv2_add.r_2 = 1;
     ret = ism330dlc_write_reg(ctx, ISM330DLC_SLV2_ADD,
                               (uint8_t *)&slv2_add, 1);
@@ -7865,7 +7878,7 @@ int32_t ism330dlc_sh_slv3_cfg_read(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv3_add.slave3_add  = val->slv_add;
+    slv3_add.slave3_add  = (uint8_t)(val->slv_add >> 1);
     slv3_add.r_3 = 1;
     ret = ism330dlc_write_reg(ctx, ISM330DLC_SLV3_ADD,
                               (uint8_t *)&slv3_add, 1);
@@ -7955,19 +7968,19 @@ int32_t ism330dlc_sh_slave_0_dec_get(const stmdev_ctx_t *ctx,
     {
       switch (slave0_config.slave0_rate)
       {
-        case ISM330DLC_SL0_NO_DEC:
+        case 0x00:
           *val = ISM330DLC_SL0_NO_DEC;
           break;
 
-        case ISM330DLC_SL0_DEC_2:
+        case 0x01:
           *val = ISM330DLC_SL0_DEC_2;
           break;
 
-        case ISM330DLC_SL0_DEC_4:
+        case 0x02:
           *val = ISM330DLC_SL0_DEC_4;
           break;
 
-        case ISM330DLC_SL0_DEC_8:
+        case 0x03:
           *val = ISM330DLC_SL0_DEC_8;
           break;
 
@@ -8046,11 +8059,11 @@ int32_t ism330dlc_sh_write_mode_get(const stmdev_ctx_t *ctx,
     {
       switch (slave1_config.write_once)
       {
-        case ISM330DLC_EACH_SH_CYCLE:
+        case 0x00:
           *val = ISM330DLC_EACH_SH_CYCLE;
           break;
 
-        case ISM330DLC_ONLY_FIRST_CYCLE:
+        case 0x01:
           *val = ISM330DLC_ONLY_FIRST_CYCLE;
           break;
 
@@ -8124,19 +8137,19 @@ int32_t ism330dlc_sh_slave_1_dec_get(const stmdev_ctx_t *ctx,
     {
       switch (slave1_config.slave1_rate)
       {
-        case ISM330DLC_SL1_NO_DEC:
+        case 0x00:
           *val = ISM330DLC_SL1_NO_DEC;
           break;
 
-        case ISM330DLC_SL1_DEC_2:
+        case 0x01:
           *val = ISM330DLC_SL1_DEC_2;
           break;
 
-        case ISM330DLC_SL1_DEC_4:
+        case 0x02:
           *val = ISM330DLC_SL1_DEC_4;
           break;
 
-        case ISM330DLC_SL1_DEC_8:
+        case 0x03:
           *val = ISM330DLC_SL1_DEC_8;
           break;
 
@@ -8211,19 +8224,19 @@ int32_t ism330dlc_sh_slave_2_dec_get(const stmdev_ctx_t *ctx,
     {
       switch (slave2_config.slave2_rate)
       {
-        case ISM330DLC_SL2_NO_DEC:
+        case 0x00:
           *val = ISM330DLC_SL2_NO_DEC;
           break;
 
-        case ISM330DLC_SL2_DEC_2:
+        case 0x01:
           *val = ISM330DLC_SL2_DEC_2;
           break;
 
-        case ISM330DLC_SL2_DEC_4:
+        case 0x02:
           *val = ISM330DLC_SL2_DEC_4;
           break;
 
-        case ISM330DLC_SL2_DEC_8:
+        case 0x03:
           *val = ISM330DLC_SL2_DEC_8;
           break;
 
@@ -8299,19 +8312,19 @@ int32_t ism330dlc_sh_slave_3_dec_get(const stmdev_ctx_t *ctx,
     {
       switch (slave3_config.slave3_rate)
       {
-        case ISM330DLC_SL3_NO_DEC:
+        case 0x00:
           *val = ISM330DLC_SL3_NO_DEC;
           break;
 
-        case ISM330DLC_SL3_DEC_2:
+        case 0x01:
           *val = ISM330DLC_SL3_DEC_2;
           break;
 
-        case ISM330DLC_SL3_DEC_4:
+        case 0x02:
           *val = ISM330DLC_SL3_DEC_4;
           break;
 
-        case ISM330DLC_SL3_DEC_8:
+        case 0x03:
           *val = ISM330DLC_SL3_DEC_8;
           break;
 

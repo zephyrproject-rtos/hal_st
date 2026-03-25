@@ -336,23 +336,23 @@ int32_t lis25ba_mode_get(const stmdev_ctx_t *ctx, lis25ba_md_t *val)
                                               1) |
           ctrl_reg.pd)
   {
-    case LIS25BA_XL_OFF:
+    case 0x01:
       val->xl.odr = LIS25BA_XL_OFF;
       break;
 
-    case LIS25BA_XL_8kHz:
+    case 0x00:
       val->xl.odr = LIS25BA_XL_8kHz;
       break;
 
-    case LIS25BA_XL_16kHz:
+    case 0x02:
       val->xl.odr = LIS25BA_XL_16kHz;
       break;
 
-    case LIS25BA_XL_24kHz:
+    case 0x04:
       val->xl.odr = LIS25BA_XL_24kHz;
       break;
 
-    case LIS25BA_XL_HW_SEL:
+    case 0x10:
       val->xl.odr = LIS25BA_XL_HW_SEL;
       break;
 

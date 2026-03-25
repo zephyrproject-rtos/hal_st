@@ -255,19 +255,19 @@ int32_t st1vafe6ax_reset_get(const stmdev_ctx_t *ctx, st1vafe6ax_reset_t *val)
 
   switch ((ctrl3.sw_reset << 2) + (ctrl3.boot << 1) + func_cfg_access.sw_por)
   {
-    case ST1VAFE6AX_READY:
+    case 0x00:
       *val = ST1VAFE6AX_READY;
       break;
 
-    case ST1VAFE6AX_GLOBAL_RST:
+    case 0x01:
       *val = ST1VAFE6AX_GLOBAL_RST;
       break;
 
-    case ST1VAFE6AX_RESTORE_CAL_PARAM:
+    case 0x02:
       *val = ST1VAFE6AX_RESTORE_CAL_PARAM;
       break;
 
-    case ST1VAFE6AX_RESTORE_CTRL_REGS:
+    case 0x04:
       *val = ST1VAFE6AX_RESTORE_CTRL_REGS;
       break;
 
@@ -322,11 +322,11 @@ int32_t st1vafe6ax_mem_bank_get(const stmdev_ctx_t *ctx, st1vafe6ax_mem_bank_t *
 
   switch (func_cfg_access.emb_func_reg_access)
   {
-    case ST1VAFE6AX_MAIN_MEM_BANK:
+    case 0x00:
       *val = ST1VAFE6AX_MAIN_MEM_BANK;
       break;
 
-    case ST1VAFE6AX_EMBED_FUNC_MEM_BANK:
+    case 0x01:
       *val = ST1VAFE6AX_EMBED_FUNC_MEM_BANK;
       break;
 
@@ -407,51 +407,51 @@ int32_t st1vafe6ax_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl1.odr_xl)
   {
-    case ST1VAFE6AX_XL_ODR_OFF:
+    case 0x00:
       *val = ST1VAFE6AX_XL_ODR_OFF;
       break;
 
-    case ST1VAFE6AX_XL_ODR_AT_1Hz875:
+    case 0x01:
       *val = ST1VAFE6AX_XL_ODR_AT_1Hz875;
       break;
 
-    case ST1VAFE6AX_XL_ODR_AT_7Hz5:
+    case 0x02:
       *val = ST1VAFE6AX_XL_ODR_AT_7Hz5;
       break;
 
-    case ST1VAFE6AX_XL_ODR_AT_15Hz:
+    case 0x03:
       *val = ST1VAFE6AX_XL_ODR_AT_15Hz;
       break;
 
-    case ST1VAFE6AX_XL_ODR_AT_30Hz:
+    case 0x04:
       *val = ST1VAFE6AX_XL_ODR_AT_30Hz;
       break;
 
-    case ST1VAFE6AX_XL_ODR_AT_60Hz:
+    case 0x05:
       *val = ST1VAFE6AX_XL_ODR_AT_60Hz;
       break;
 
-    case ST1VAFE6AX_XL_ODR_AT_120Hz:
+    case 0x06:
       *val = ST1VAFE6AX_XL_ODR_AT_120Hz;
       break;
 
-    case ST1VAFE6AX_XL_ODR_AT_240Hz:
+    case 0x07:
       *val = ST1VAFE6AX_XL_ODR_AT_240Hz;
       break;
 
-    case ST1VAFE6AX_XL_ODR_AT_480Hz:
+    case 0x08:
       *val = ST1VAFE6AX_XL_ODR_AT_480Hz;
       break;
 
-    case ST1VAFE6AX_XL_ODR_AT_960Hz:
+    case 0x09:
       *val = ST1VAFE6AX_XL_ODR_AT_960Hz;
       break;
 
-    case ST1VAFE6AX_XL_ODR_AT_1920Hz:
+    case 0x0A:
       *val = ST1VAFE6AX_XL_ODR_AT_1920Hz;
       break;
 
-    case ST1VAFE6AX_XL_ODR_AT_3840Hz:
+    case 0x0B:
       *val = ST1VAFE6AX_XL_ODR_AT_3840Hz;
       break;
 
@@ -507,23 +507,23 @@ int32_t st1vafe6ax_xl_mode_get(const stmdev_ctx_t *ctx, st1vafe6ax_xl_mode_t *va
 
   switch (ctrl1.op_mode_xl)
   {
-    case ST1VAFE6AX_XL_HIGH_PERFORMANCE_MD:
+    case 0x00:
       *val = ST1VAFE6AX_XL_HIGH_PERFORMANCE_MD;
       break;
 
-    case ST1VAFE6AX_XL_HIGH_PERFORMANCE_2_MD:
+    case 0x02:
       *val = ST1VAFE6AX_XL_HIGH_PERFORMANCE_2_MD;
       break;
 
-    case ST1VAFE6AX_XL_LOW_POWER_2_AVG_MD:
+    case 0x04:
       *val = ST1VAFE6AX_XL_LOW_POWER_2_AVG_MD;
       break;
 
-    case ST1VAFE6AX_XL_LOW_POWER_4_AVG_MD:
+    case 0x05:
       *val = ST1VAFE6AX_XL_LOW_POWER_4_AVG_MD;
       break;
 
-    case ST1VAFE6AX_XL_LOW_POWER_8_AVG_MD:
+    case 0x06:
       *val = ST1VAFE6AX_XL_LOW_POWER_8_AVG_MD;
       break;
 
@@ -581,47 +581,47 @@ int32_t st1vafe6ax_gy_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl2.odr_g)
   {
-    case ST1VAFE6AX_GY_ODR_OFF:
+    case 0x00:
       *val = ST1VAFE6AX_GY_ODR_OFF;
       break;
 
-    case ST1VAFE6AX_GY_ODR_AT_7Hz5:
+    case 0x02:
       *val = ST1VAFE6AX_GY_ODR_AT_7Hz5;
       break;
 
-    case ST1VAFE6AX_GY_ODR_AT_15Hz:
+    case 0x03:
       *val = ST1VAFE6AX_GY_ODR_AT_15Hz;
       break;
 
-    case ST1VAFE6AX_GY_ODR_AT_30Hz:
+    case 0x04:
       *val = ST1VAFE6AX_GY_ODR_AT_30Hz;
       break;
 
-    case ST1VAFE6AX_GY_ODR_AT_60Hz:
+    case 0x05:
       *val = ST1VAFE6AX_GY_ODR_AT_60Hz;
       break;
 
-    case ST1VAFE6AX_GY_ODR_AT_120Hz:
+    case 0x06:
       *val = ST1VAFE6AX_GY_ODR_AT_120Hz;
       break;
 
-    case ST1VAFE6AX_GY_ODR_AT_240Hz:
+    case 0x07:
       *val = ST1VAFE6AX_GY_ODR_AT_240Hz;
       break;
 
-    case ST1VAFE6AX_GY_ODR_AT_480Hz:
+    case 0x08:
       *val = ST1VAFE6AX_GY_ODR_AT_480Hz;
       break;
 
-    case ST1VAFE6AX_GY_ODR_AT_960Hz:
+    case 0x09:
       *val = ST1VAFE6AX_GY_ODR_AT_960Hz;
       break;
 
-    case ST1VAFE6AX_GY_ODR_AT_1920Hz:
+    case 0x0A:
       *val = ST1VAFE6AX_GY_ODR_AT_1920Hz;
       break;
 
-    case ST1VAFE6AX_GY_ODR_AT_3840Hz:
+    case 0x0B:
       *val = ST1VAFE6AX_GY_ODR_AT_3840Hz;
       break;
 
@@ -676,15 +676,15 @@ int32_t st1vafe6ax_gy_mode_get(const stmdev_ctx_t *ctx, st1vafe6ax_gy_mode_t *va
 
   switch (ctrl2.op_mode_g)
   {
-    case ST1VAFE6AX_GY_HIGH_PERFORMANCE_MD:
+    case 0x00:
       *val = ST1VAFE6AX_GY_HIGH_PERFORMANCE_MD;
       break;
 
-    case ST1VAFE6AX_GY_SLEEP_MD:
+    case 0x04:
       *val = ST1VAFE6AX_GY_SLEEP_MD;
       break;
 
-    case ST1VAFE6AX_GY_LOW_POWER_MD:
+    case 0x05:
       *val = ST1VAFE6AX_GY_LOW_POWER_MD;
       break;
 
@@ -838,11 +838,11 @@ int32_t st1vafe6ax_data_ready_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl4.drdy_pulsed)
   {
-    case ST1VAFE6AX_DRDY_LATCHED:
+    case 0x00:
       *val = ST1VAFE6AX_DRDY_LATCHED;
       break;
 
-    case ST1VAFE6AX_DRDY_PULSED:
+    case 0x01:
       *val = ST1VAFE6AX_DRDY_PULSED;
       break;
 
@@ -900,27 +900,27 @@ int32_t st1vafe6ax_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl6.fs_g)
   {
-    case ST1VAFE6AX_125dps:
+    case 0x00:
       *val = ST1VAFE6AX_125dps;
       break;
 
-    case ST1VAFE6AX_250dps:
+    case 0x01:
       *val = ST1VAFE6AX_250dps;
       break;
 
-    case ST1VAFE6AX_500dps:
+    case 0x02:
       *val = ST1VAFE6AX_500dps;
       break;
 
-    case ST1VAFE6AX_1000dps:
+    case 0x03:
       *val = ST1VAFE6AX_1000dps;
       break;
 
-    case ST1VAFE6AX_2000dps:
+    case 0x04:
       *val = ST1VAFE6AX_2000dps;
       break;
 
-    case ST1VAFE6AX_4000dps:
+    case 0x0C:
       *val = ST1VAFE6AX_4000dps;
       break;
 
@@ -978,15 +978,15 @@ int32_t st1vafe6ax_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl8.fs_xl)
   {
-    case ST1VAFE6AX_2g:
+    case 0x00:
       *val = ST1VAFE6AX_2g;
       break;
 
-    case ST1VAFE6AX_4g:
+    case 0x01:
       *val = ST1VAFE6AX_4g;
       break;
 
-    case ST1VAFE6AX_8g:
+    case 0x02:
       *val = ST1VAFE6AX_8g;
       break;
 
@@ -1094,16 +1094,16 @@ int32_t st1vafe6ax_xl_self_test_get(const stmdev_ctx_t *ctx,
   //switch (ctrl10.xl_st_offset)
   switch (ctrl10.st_xl)
   {
-    case ST1VAFE6AX_XL_ST_DISABLE:
+    case 0x00:
       *val = ST1VAFE6AX_XL_ST_DISABLE;
       break;
 
-    case ST1VAFE6AX_XL_ST_POSITIVE:
-      *val = ST1VAFE6AX_XL_ST_POSITIVE;
+    case 0x01:
+      *val = ctrl10.xl_st_offset == 0 ? ST1VAFE6AX_XL_ST_POSITIVE : ST1VAFE6AX_XL_ST_OFFSET_POS;
       break;
 
-    case ST1VAFE6AX_XL_ST_NEGATIVE:
-      *val = ST1VAFE6AX_XL_ST_NEGATIVE;
+    case 0x02:
+      *val = ctrl10.xl_st_offset == 0 ? ST1VAFE6AX_XL_ST_NEGATIVE : ST1VAFE6AX_XL_ST_OFFSET_NEG;
       break;
 
     default:
@@ -1160,15 +1160,15 @@ int32_t st1vafe6ax_gy_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl10.st_g)
   {
-    case ST1VAFE6AX_GY_ST_DISABLE:
+    case 0x00:
       *val = ST1VAFE6AX_GY_ST_DISABLE;
       break;
 
-    case ST1VAFE6AX_GY_ST_POSITIVE:
+    case 0x01:
       *val = ST1VAFE6AX_GY_ST_POSITIVE;
       break;
 
-    case ST1VAFE6AX_GY_ST_NEGATIVE:
+    case 0x02:
       *val = ST1VAFE6AX_GY_ST_NEGATIVE;
       break;
 
@@ -1901,11 +1901,11 @@ int32_t st1vafe6ax_filt_anti_spike_get(const stmdev_ctx_t *ctx,
 
   switch (if_cfg.asf_ctrl)
   {
-    case ST1VAFE6AX_AUTO:
+    case 0x00:
       *val = ST1VAFE6AX_AUTO;
       break;
 
-    case ST1VAFE6AX_ALWAYS_ACTIVE:
+    case 0x01:
       *val = ST1VAFE6AX_ALWAYS_ACTIVE;
       break;
 
@@ -2031,35 +2031,35 @@ int32_t st1vafe6ax_filt_gy_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl6.lpf1_g_bw)
   {
-    case ST1VAFE6AX_GY_ULTRA_LIGHT:
+    case 0x00:
       *val = ST1VAFE6AX_GY_ULTRA_LIGHT;
       break;
 
-    case ST1VAFE6AX_GY_VERY_LIGHT:
+    case 0x01:
       *val = ST1VAFE6AX_GY_VERY_LIGHT;
       break;
 
-    case ST1VAFE6AX_GY_LIGHT:
+    case 0x02:
       *val = ST1VAFE6AX_GY_LIGHT;
       break;
 
-    case ST1VAFE6AX_GY_MEDIUM:
+    case 0x03:
       *val = ST1VAFE6AX_GY_MEDIUM;
       break;
 
-    case ST1VAFE6AX_GY_STRONG:
+    case 0x04:
       *val = ST1VAFE6AX_GY_STRONG;
       break;
 
-    case ST1VAFE6AX_GY_VERY_STRONG:
+    case 0x05:
       *val = ST1VAFE6AX_GY_VERY_STRONG;
       break;
 
-    case ST1VAFE6AX_GY_AGGRESSIVE:
+    case 0x06:
       *val = ST1VAFE6AX_GY_AGGRESSIVE;
       break;
 
-    case ST1VAFE6AX_GY_XTREME:
+    case 0x07:
       *val = ST1VAFE6AX_GY_XTREME;
       break;
 
@@ -2226,35 +2226,35 @@ int32_t st1vafe6ax_filt_xl_lp2_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl8.hp_lpf2_xl_bw)
   {
-    case ST1VAFE6AX_XL_ULTRA_LIGHT:
+    case 0x00:
       *val = ST1VAFE6AX_XL_ULTRA_LIGHT;
       break;
 
-    case ST1VAFE6AX_XL_VERY_LIGHT:
+    case 0x01:
       *val = ST1VAFE6AX_XL_VERY_LIGHT;
       break;
 
-    case ST1VAFE6AX_XL_LIGHT:
+    case 0x02:
       *val = ST1VAFE6AX_XL_LIGHT;
       break;
 
-    case ST1VAFE6AX_XL_MEDIUM:
+    case 0x03:
       *val = ST1VAFE6AX_XL_MEDIUM;
       break;
 
-    case ST1VAFE6AX_XL_STRONG:
+    case 0x04:
       *val = ST1VAFE6AX_XL_STRONG;
       break;
 
-    case ST1VAFE6AX_XL_VERY_STRONG:
+    case 0x05:
       *val = ST1VAFE6AX_XL_VERY_STRONG;
       break;
 
-    case ST1VAFE6AX_XL_AGGRESSIVE:
+    case 0x06:
       *val = ST1VAFE6AX_XL_AGGRESSIVE;
       break;
 
-    case ST1VAFE6AX_XL_XTREME:
+    case 0x07:
       *val = ST1VAFE6AX_XL_XTREME;
       break;
 
@@ -2452,11 +2452,11 @@ int32_t st1vafe6ax_filt_xl_hp_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl9.hp_ref_mode_xl)
   {
-    case ST1VAFE6AX_HP_MD_NORMAL:
+    case 0x00:
       *val = ST1VAFE6AX_HP_MD_NORMAL;
       break;
 
-    case ST1VAFE6AX_HP_MD_REFERENCE:
+    case 0x01:
       *val = ST1VAFE6AX_HP_MD_REFERENCE;
       break;
 
@@ -2532,15 +2532,15 @@ int32_t st1vafe6ax_filt_wkup_act_feed_get(const stmdev_ctx_t *ctx,
 
   switch ((wake_up_ths.usr_off_on_wu << 1) + tap_cfg0.slope_fds)
   {
-    case ST1VAFE6AX_WK_FEED_SLOPE:
+    case 0x00:
       *val = ST1VAFE6AX_WK_FEED_SLOPE;
       break;
 
-    case ST1VAFE6AX_WK_FEED_HIGH_PASS:
+    case 0x01:
       *val = ST1VAFE6AX_WK_FEED_HIGH_PASS;
       break;
 
-    case ST1VAFE6AX_WK_FEED_LP_WITH_OFFSET:
+    case 0x02:
       *val = ST1VAFE6AX_WK_FEED_LP_WITH_OFFSET;
       break;
 
@@ -2646,11 +2646,11 @@ int32_t st1vafe6ax_filt_sixd_feed_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg0.low_pass_on_6d)
   {
-    case ST1VAFE6AX_SIXD_FEED_ODR_DIV_2:
+    case 0x00:
       *val = ST1VAFE6AX_SIXD_FEED_ODR_DIV_2;
       break;
 
-    case ST1VAFE6AX_SIXD_FEED_LOW_PASS:
+    case 0x01:
       *val = ST1VAFE6AX_SIXD_FEED_LOW_PASS;
       break;
 
@@ -2767,11 +2767,11 @@ int32_t st1vafe6ax_ui_i2c_i3c_mode_get(const stmdev_ctx_t *ctx,
 
   switch (if_cfg.i2c_i3c_disable)
   {
-    case ST1VAFE6AX_I2C_I3C_ENABLE:
+    case 0x00:
       *val = ST1VAFE6AX_I2C_I3C_ENABLE;
       break;
 
-    case ST1VAFE6AX_I2C_I3C_DISABLE:
+    case 0x01:
       *val = ST1VAFE6AX_I2C_I3C_DISABLE;
       break;
 
@@ -2826,11 +2826,11 @@ int32_t st1vafe6ax_spi_mode_get(const stmdev_ctx_t *ctx, st1vafe6ax_spi_mode_t *
 
   switch (if_cfg.sim)
   {
-    case ST1VAFE6AX_SPI_4_WIRE:
+    case 0x00:
       *val = ST1VAFE6AX_SPI_4_WIRE;
       break;
 
-    case ST1VAFE6AX_SPI_3_WIRE:
+    case 0x01:
       *val = ST1VAFE6AX_SPI_3_WIRE;
       break;
 
@@ -2934,19 +2934,19 @@ int32_t st1vafe6ax_i3c_ibi_time_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl5.bus_act_sel)
   {
-    case ST1VAFE6AX_IBI_2us:
+    case 0x00:
       *val = ST1VAFE6AX_IBI_2us;
       break;
 
-    case ST1VAFE6AX_IBI_50us:
+    case 0x01:
       *val = ST1VAFE6AX_IBI_50us;
       break;
 
-    case ST1VAFE6AX_IBI_1ms:
+    case 0x02:
       *val = ST1VAFE6AX_IBI_1ms;
       break;
 
-    case ST1VAFE6AX_IBI_25ms:
+    case 0x03:
       *val = ST1VAFE6AX_IBI_25ms;
       break;
 
@@ -3015,11 +3015,11 @@ int32_t st1vafe6ax_int_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (if_cfg.pp_od)
   {
-    case ST1VAFE6AX_PUSH_PULL:
+    case 0x00:
       *val = ST1VAFE6AX_PUSH_PULL;
       break;
 
-    case ST1VAFE6AX_OPEN_DRAIN:
+    case 0x01:
       *val = ST1VAFE6AX_OPEN_DRAIN;
       break;
 
@@ -3076,11 +3076,11 @@ int32_t st1vafe6ax_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (if_cfg.h_lactive)
   {
-    case ST1VAFE6AX_ACTIVE_HIGH:
+    case 0x00:
       *val = ST1VAFE6AX_ACTIVE_HIGH;
       break;
 
-    case ST1VAFE6AX_ACTIVE_LOW:
+    case 0x01:
       *val = ST1VAFE6AX_ACTIVE_LOW;
       break;
 
@@ -3899,19 +3899,19 @@ int32_t st1vafe6ax_int_notification_get(const stmdev_ctx_t *ctx,
 
   switch ((page_rw.emb_func_lir << 1) + tap_cfg0.lir)
   {
-    case ST1VAFE6AX_ALL_INT_PULSED:
+    case 0x00:
       *val = ST1VAFE6AX_ALL_INT_PULSED;
       break;
 
-    case ST1VAFE6AX_BASE_LATCHED_EMB_PULSED:
+    case 0x01:
       *val = ST1VAFE6AX_BASE_LATCHED_EMB_PULSED;
       break;
 
-    case ST1VAFE6AX_BASE_PULSED_EMB_LATCHED:
+    case 0x02:
       *val = ST1VAFE6AX_BASE_PULSED_EMB_LATCHED;
       break;
 
-    case ST1VAFE6AX_ALL_INT_LATCHED:
+    case 0x03:
       *val = ST1VAFE6AX_ALL_INT_LATCHED;
       break;
 
@@ -3979,19 +3979,19 @@ int32_t st1vafe6ax_act_mode_get(const stmdev_ctx_t *ctx, st1vafe6ax_act_mode_t *
 
   switch (functions_enable.inact_en)
   {
-    case ST1VAFE6AX_XL_AND_GY_NOT_AFFECTED:
+    case 0x00:
       *val = ST1VAFE6AX_XL_AND_GY_NOT_AFFECTED;
       break;
 
-    case ST1VAFE6AX_XL_LOW_POWER_GY_NOT_AFFECTED:
+    case 0x01:
       *val = ST1VAFE6AX_XL_LOW_POWER_GY_NOT_AFFECTED;
       break;
 
-    case ST1VAFE6AX_XL_LOW_POWER_GY_SLEEP:
+    case 0x02:
       *val = ST1VAFE6AX_XL_LOW_POWER_GY_SLEEP;
       break;
 
-    case ST1VAFE6AX_XL_LOW_POWER_GY_POWER_DOWN:
+    case 0x03:
       *val = ST1VAFE6AX_XL_LOW_POWER_GY_POWER_DOWN;
       break;
 
@@ -4048,19 +4048,19 @@ int32_t st1vafe6ax_act_from_sleep_to_act_dur_get(const stmdev_ctx_t *ctx,
 
   switch (inactivity_dur.inact_dur)
   {
-    case ST1VAFE6AX_SLEEP_TO_ACT_AT_1ST_SAMPLE:
+    case 0x00:
       *val = ST1VAFE6AX_SLEEP_TO_ACT_AT_1ST_SAMPLE;
       break;
 
-    case ST1VAFE6AX_SLEEP_TO_ACT_AT_2ND_SAMPLE:
+    case 0x01:
       *val = ST1VAFE6AX_SLEEP_TO_ACT_AT_2ND_SAMPLE;
       break;
 
-    case ST1VAFE6AX_SLEEP_TO_ACT_AT_3RD_SAMPLE:
+    case 0x02:
       *val = ST1VAFE6AX_SLEEP_TO_ACT_AT_3RD_SAMPLE;
       break;
 
-    case ST1VAFE6AX_SLEEP_TO_ACT_AT_4th_SAMPLE:
+    case 0x03:
       *val = ST1VAFE6AX_SLEEP_TO_ACT_AT_4th_SAMPLE;
       break;
 
@@ -4117,19 +4117,19 @@ int32_t st1vafe6ax_act_sleep_xl_odr_get(const stmdev_ctx_t *ctx,
 
   switch (inactivity_dur.xl_inact_odr)
   {
-    case ST1VAFE6AX_1Hz875:
+    case 0x00:
       *val = ST1VAFE6AX_1Hz875;
       break;
 
-    case ST1VAFE6AX_15Hz:
+    case 0x01:
       *val = ST1VAFE6AX_15Hz;
       break;
 
-    case ST1VAFE6AX_30Hz:
+    case 0x02:
       *val = ST1VAFE6AX_30Hz;
       break;
 
-    case ST1VAFE6AX_60Hz:
+    case 0x03:
       *val = ST1VAFE6AX_60Hz;
       break;
 
@@ -4575,28 +4575,36 @@ int32_t st1vafe6ax_tap_axis_priority_get(const stmdev_ctx_t *ctx,
 
   switch (tap_cfg1.tap_priority)
   {
-    case ST1VAFE6AX_XYZ :
-      *val = ST1VAFE6AX_XYZ ;
-      break;
-
-    case ST1VAFE6AX_YXZ :
-      *val = ST1VAFE6AX_YXZ ;
-      break;
-
-    case ST1VAFE6AX_XZY:
-      *val = ST1VAFE6AX_XZY;
-      break;
-
-    case ST1VAFE6AX_ZYX :
+    case 0x00:
       *val = ST1VAFE6AX_ZYX ;
       break;
 
-    case ST1VAFE6AX_YZX :
+    case 0x01:
       *val = ST1VAFE6AX_YZX ;
       break;
 
-    case ST1VAFE6AX_ZXY :
+    case 0x02:
       *val = ST1VAFE6AX_ZXY ;
+      break;
+
+    case 0x03:
+      *val = ST1VAFE6AX_XYZ ;
+      break;
+
+    case 0x04:
+      *val = ST1VAFE6AX_ZYX ;
+      break;
+
+    case 0x05:
+      *val = ST1VAFE6AX_YXZ ;
+      break;
+
+    case 0x06:
+      *val = ST1VAFE6AX_XZY;
+      break;
+
+    case 0x07:
+      *val = ST1VAFE6AX_XYZ;
       break;
 
     default:
@@ -4704,11 +4712,11 @@ int32_t st1vafe6ax_tap_mode_get(const stmdev_ctx_t *ctx, st1vafe6ax_tap_mode_t *
 
   switch (wake_up_ths.single_double_tap)
   {
-    case ST1VAFE6AX_ONLY_SINGLE:
+    case 0x00:
       *val = ST1VAFE6AX_ONLY_SINGLE;
       break;
 
-    case ST1VAFE6AX_BOTH_SINGLE_DOUBLE:
+    case 0x01:
       *val = ST1VAFE6AX_BOTH_SINGLE_DOUBLE;
       break;
 
@@ -4778,19 +4786,19 @@ int32_t st1vafe6ax_6d_threshold_get(const stmdev_ctx_t *ctx,
 
   switch (tap_ths_6d.sixd_ths)
   {
-    case ST1VAFE6AX_DEG_80:
+    case 0x00:
       *val = ST1VAFE6AX_DEG_80;
       break;
 
-    case ST1VAFE6AX_DEG_70:
+    case 0x01:
       *val = ST1VAFE6AX_DEG_70;
       break;
 
-    case ST1VAFE6AX_DEG_60:
+    case 0x02:
       *val = ST1VAFE6AX_DEG_60;
       break;
 
-    case ST1VAFE6AX_DEG_50:
+    case 0x03:
       *val = ST1VAFE6AX_DEG_50;
       break;
 
@@ -4920,35 +4928,35 @@ int32_t st1vafe6ax_ff_thresholds_get(const stmdev_ctx_t *ctx,
 
   switch (free_fall.ff_ths)
   {
-    case ST1VAFE6AX_156_mg:
+    case 0x00:
       *val = ST1VAFE6AX_156_mg;
       break;
 
-    case ST1VAFE6AX_219_mg:
+    case 0x01:
       *val = ST1VAFE6AX_219_mg;
       break;
 
-    case ST1VAFE6AX_250_mg:
+    case 0x02:
       *val = ST1VAFE6AX_250_mg;
       break;
 
-    case ST1VAFE6AX_312_mg:
+    case 0x03:
       *val = ST1VAFE6AX_312_mg;
       break;
 
-    case ST1VAFE6AX_344_mg:
+    case 0x04:
       *val = ST1VAFE6AX_344_mg;
       break;
 
-    case ST1VAFE6AX_406_mg:
+    case 0x05:
       *val = ST1VAFE6AX_406_mg;
       break;
 
-    case ST1VAFE6AX_469_mg:
+    case 0x06:
       *val = ST1VAFE6AX_469_mg;
       break;
 
-    case ST1VAFE6AX_500_mg:
+    case 0x07:
       *val = ST1VAFE6AX_500_mg;
       break;
 
@@ -5112,19 +5120,19 @@ int32_t st1vafe6ax_fifo_compress_algo_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl2.uncompr_rate)
   {
-    case ST1VAFE6AX_CMP_DISABLE:
+    case 0x00:
       *val = ST1VAFE6AX_CMP_DISABLE;
       break;
 
-    case ST1VAFE6AX_CMP_8_TO_1:
+    case 0x01:
       *val = ST1VAFE6AX_CMP_8_TO_1;
       break;
 
-    case ST1VAFE6AX_CMP_16_TO_1:
+    case 0x02:
       *val = ST1VAFE6AX_CMP_16_TO_1;
       break;
 
-    case ST1VAFE6AX_CMP_32_TO_1:
+    case 0x03:
       *val = ST1VAFE6AX_CMP_32_TO_1;
       break;
 
@@ -5345,51 +5353,51 @@ int32_t st1vafe6ax_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl3.bdr_xl)
   {
-    case ST1VAFE6AX_XL_NOT_BATCHED:
+    case 0x00:
       *val = ST1VAFE6AX_XL_NOT_BATCHED;
       break;
 
-    case ST1VAFE6AX_XL_BATCHED_AT_1Hz875:
+    case 0x01:
       *val = ST1VAFE6AX_XL_BATCHED_AT_1Hz875;
       break;
 
-    case ST1VAFE6AX_XL_BATCHED_AT_7Hz5:
+    case 0x02:
       *val = ST1VAFE6AX_XL_BATCHED_AT_7Hz5;
       break;
 
-    case ST1VAFE6AX_XL_BATCHED_AT_15Hz:
+    case 0x03:
       *val = ST1VAFE6AX_XL_BATCHED_AT_15Hz;
       break;
 
-    case ST1VAFE6AX_XL_BATCHED_AT_30Hz:
+    case 0x04:
       *val = ST1VAFE6AX_XL_BATCHED_AT_30Hz;
       break;
 
-    case ST1VAFE6AX_XL_BATCHED_AT_60Hz:
+    case 0x05:
       *val = ST1VAFE6AX_XL_BATCHED_AT_60Hz;
       break;
 
-    case ST1VAFE6AX_XL_BATCHED_AT_120Hz:
+    case 0x06:
       *val = ST1VAFE6AX_XL_BATCHED_AT_120Hz;
       break;
 
-    case ST1VAFE6AX_XL_BATCHED_AT_240Hz:
+    case 0x07:
       *val = ST1VAFE6AX_XL_BATCHED_AT_240Hz;
       break;
 
-    case ST1VAFE6AX_XL_BATCHED_AT_480Hz:
+    case 0x08:
       *val = ST1VAFE6AX_XL_BATCHED_AT_480Hz;
       break;
 
-    case ST1VAFE6AX_XL_BATCHED_AT_960Hz:
+    case 0x09:
       *val = ST1VAFE6AX_XL_BATCHED_AT_960Hz;
       break;
 
-    case ST1VAFE6AX_XL_BATCHED_AT_1920Hz:
+    case 0x0A:
       *val = ST1VAFE6AX_XL_BATCHED_AT_1920Hz;
       break;
 
-    case ST1VAFE6AX_XL_BATCHED_AT_3840Hz:
+    case 0x0B:
       *val = ST1VAFE6AX_XL_BATCHED_AT_3840Hz;
       break;
 
@@ -5446,51 +5454,51 @@ int32_t st1vafe6ax_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl3.bdr_gy)
   {
-    case ST1VAFE6AX_GY_NOT_BATCHED:
+    case 0x00:
       *val = ST1VAFE6AX_GY_NOT_BATCHED;
       break;
 
-    case ST1VAFE6AX_GY_BATCHED_AT_1Hz875:
+    case 0x01:
       *val = ST1VAFE6AX_GY_BATCHED_AT_1Hz875;
       break;
 
-    case ST1VAFE6AX_GY_BATCHED_AT_7Hz5:
+    case 0x02:
       *val = ST1VAFE6AX_GY_BATCHED_AT_7Hz5;
       break;
 
-    case ST1VAFE6AX_GY_BATCHED_AT_15Hz:
+    case 0x03:
       *val = ST1VAFE6AX_GY_BATCHED_AT_15Hz;
       break;
 
-    case ST1VAFE6AX_GY_BATCHED_AT_30Hz:
+    case 0x04:
       *val = ST1VAFE6AX_GY_BATCHED_AT_30Hz;
       break;
 
-    case ST1VAFE6AX_GY_BATCHED_AT_60Hz:
+    case 0x05:
       *val = ST1VAFE6AX_GY_BATCHED_AT_60Hz;
       break;
 
-    case ST1VAFE6AX_GY_BATCHED_AT_120Hz:
+    case 0x06:
       *val = ST1VAFE6AX_GY_BATCHED_AT_120Hz;
       break;
 
-    case ST1VAFE6AX_GY_BATCHED_AT_240Hz:
+    case 0x07:
       *val = ST1VAFE6AX_GY_BATCHED_AT_240Hz;
       break;
 
-    case ST1VAFE6AX_GY_BATCHED_AT_480Hz:
+    case 0x08:
       *val = ST1VAFE6AX_GY_BATCHED_AT_480Hz;
       break;
 
-    case ST1VAFE6AX_GY_BATCHED_AT_960Hz:
+    case 0x09:
       *val = ST1VAFE6AX_GY_BATCHED_AT_960Hz;
       break;
 
-    case ST1VAFE6AX_GY_BATCHED_AT_1920Hz:
+    case 0x0A:
       *val = ST1VAFE6AX_GY_BATCHED_AT_1920Hz;
       break;
 
-    case ST1VAFE6AX_GY_BATCHED_AT_3840Hz:
+    case 0x0B:
       *val = ST1VAFE6AX_GY_BATCHED_AT_3840Hz;
       break;
 
@@ -5547,31 +5555,31 @@ int32_t st1vafe6ax_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.fifo_mode)
   {
-    case ST1VAFE6AX_BYPASS_MODE:
+    case 0x00:
       *val = ST1VAFE6AX_BYPASS_MODE;
       break;
 
-    case ST1VAFE6AX_FIFO_MODE:
+    case 0x01:
       *val = ST1VAFE6AX_FIFO_MODE;
       break;
 
-    case ST1VAFE6AX_STREAM_WTM_TO_FULL_MODE:
+    case 0x02:
       *val = ST1VAFE6AX_STREAM_WTM_TO_FULL_MODE;
       break;
 
-    case ST1VAFE6AX_STREAM_TO_FIFO_MODE:
+    case 0x03:
       *val = ST1VAFE6AX_STREAM_TO_FIFO_MODE;
       break;
 
-    case ST1VAFE6AX_BYPASS_TO_STREAM_MODE:
+    case 0x04:
       *val = ST1VAFE6AX_BYPASS_TO_STREAM_MODE;
       break;
 
-    case ST1VAFE6AX_STREAM_MODE:
+    case 0x06:
       *val = ST1VAFE6AX_STREAM_MODE;
       break;
 
-    case ST1VAFE6AX_BYPASS_TO_FIFO_MODE:
+    case 0x07:
       *val = ST1VAFE6AX_BYPASS_TO_FIFO_MODE;
       break;
 
@@ -5628,19 +5636,19 @@ int32_t st1vafe6ax_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.odr_t_batch)
   {
-    case ST1VAFE6AX_TEMP_NOT_BATCHED:
+    case 0x00:
       *val = ST1VAFE6AX_TEMP_NOT_BATCHED;
       break;
 
-    case ST1VAFE6AX_TEMP_BATCHED_AT_1Hz875:
+    case 0x01:
       *val = ST1VAFE6AX_TEMP_BATCHED_AT_1Hz875;
       break;
 
-    case ST1VAFE6AX_TEMP_BATCHED_AT_15Hz:
+    case 0x02:
       *val = ST1VAFE6AX_TEMP_BATCHED_AT_15Hz;
       break;
 
-    case ST1VAFE6AX_TEMP_BATCHED_AT_60Hz:
+    case 0x03:
       *val = ST1VAFE6AX_TEMP_BATCHED_AT_60Hz;
       break;
 
@@ -5697,19 +5705,19 @@ int32_t st1vafe6ax_fifo_timestamp_batch_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl4.dec_ts_batch)
   {
-    case ST1VAFE6AX_TMSTMP_NOT_BATCHED:
+    case 0x00:
       *val = ST1VAFE6AX_TMSTMP_NOT_BATCHED;
       break;
 
-    case ST1VAFE6AX_TMSTMP_DEC_1:
+    case 0x01:
       *val = ST1VAFE6AX_TMSTMP_DEC_1;
       break;
 
-    case ST1VAFE6AX_TMSTMP_DEC_8:
+    case 0x02:
       *val = ST1VAFE6AX_TMSTMP_DEC_8;
       break;
 
-    case ST1VAFE6AX_TMSTMP_DEC_32:
+    case 0x03:
       *val = ST1VAFE6AX_TMSTMP_DEC_32;
       break;
 
@@ -5868,11 +5876,11 @@ int32_t st1vafe6ax_fifo_batch_cnt_event_get(const stmdev_ctx_t *ctx,
 
   switch (counter_bdr_reg1.trig_counter_bdr)
   {
-    case ST1VAFE6AX_XL_BATCH_EVENT:
+    case 0x00:
       *val = ST1VAFE6AX_XL_BATCH_EVENT;
       break;
 
-    case ST1VAFE6AX_GY_BATCH_EVENT:
+    case 0x01:
       *val = ST1VAFE6AX_GY_BATCH_EVENT;
       break;
 
@@ -6008,95 +6016,95 @@ int32_t st1vafe6ax_fifo_out_raw_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_data_out_tag.tag_sensor)
   {
-    case ST1VAFE6AX_FIFO_EMPTY:
+    case 0x00:
       val->tag = ST1VAFE6AX_FIFO_EMPTY;
       break;
 
-    case ST1VAFE6AX_GY_NC_TAG:
+    case 0x01:
       val->tag = ST1VAFE6AX_GY_NC_TAG;
       break;
 
-    case ST1VAFE6AX_XL_NC_TAG:
+    case 0x02:
       val->tag = ST1VAFE6AX_XL_NC_TAG;
       break;
 
-    case ST1VAFE6AX_TIMESTAMP_TAG:
+    case 0x03:
       val->tag = ST1VAFE6AX_TIMESTAMP_TAG;
       break;
 
-    case ST1VAFE6AX_TEMPERATURE_TAG:
+    case 0x04:
       val->tag = ST1VAFE6AX_TEMPERATURE_TAG;
       break;
 
-    case ST1VAFE6AX_CFG_CHANGE_TAG:
+    case 0x05:
       val->tag = ST1VAFE6AX_CFG_CHANGE_TAG;
       break;
 
-    case ST1VAFE6AX_XL_NC_T_2_TAG:
+    case 0x06:
       val->tag = ST1VAFE6AX_XL_NC_T_2_TAG;
       break;
 
-    case ST1VAFE6AX_XL_NC_T_1_TAG:
+    case 0x07:
       val->tag = ST1VAFE6AX_XL_NC_T_1_TAG;
       break;
 
-    case ST1VAFE6AX_XL_2XC_TAG:
+    case 0x08:
       val->tag = ST1VAFE6AX_XL_2XC_TAG;
       break;
 
-    case ST1VAFE6AX_XL_3XC_TAG:
+    case 0x09:
       val->tag = ST1VAFE6AX_XL_3XC_TAG;
       break;
 
-    case ST1VAFE6AX_GY_NC_T_2_TAG:
+    case 0x0A:
       val->tag = ST1VAFE6AX_GY_NC_T_2_TAG;
       break;
 
-    case ST1VAFE6AX_GY_NC_T_1_TAG:
+    case 0x0B:
       val->tag = ST1VAFE6AX_GY_NC_T_1_TAG;
       break;
 
-    case ST1VAFE6AX_GY_2XC_TAG:
+    case 0x0C:
       val->tag = ST1VAFE6AX_GY_2XC_TAG;
       break;
 
-    case ST1VAFE6AX_GY_3XC_TAG:
+    case 0x0D:
       val->tag = ST1VAFE6AX_GY_3XC_TAG;
       break;
 
-    case ST1VAFE6AX_STEP_COUNTER_TAG:
+    case 0x12:
       val->tag = ST1VAFE6AX_STEP_COUNTER_TAG;
       break;
 
-    case ST1VAFE6AX_MLC_RESULT_TAG:
-      val->tag = ST1VAFE6AX_MLC_RESULT_TAG;
-      break;
-
-    case ST1VAFE6AX_SFLP_GAME_ROTATION_VECTOR_TAG:
+    case 0x13:
       val->tag = ST1VAFE6AX_SFLP_GAME_ROTATION_VECTOR_TAG;
       break;
 
-    case ST1VAFE6AX_SFLP_GYROSCOPE_BIAS_TAG:
+    case 0x16:
       val->tag = ST1VAFE6AX_SFLP_GYROSCOPE_BIAS_TAG;
       break;
 
-    case ST1VAFE6AX_SFLP_GRAVITY_VECTOR_TAG:
+    case 0x17:
       val->tag = ST1VAFE6AX_SFLP_GRAVITY_VECTOR_TAG;
       break;
 
-    case ST1VAFE6AX_MLC_FILTER:
+    case 0x1A:
+      val->tag = ST1VAFE6AX_MLC_RESULT_TAG;
+      break;
+
+    case 0x1B:
       val->tag = ST1VAFE6AX_MLC_FILTER;
       break;
 
-    case ST1VAFE6AX_MLC_FEATURE:
+    case 0x1C:
       val->tag = ST1VAFE6AX_MLC_FEATURE;
       break;
 
-    case ST1VAFE6AX_XL_DUAL_CORE:
+    case 0x1D:
       val->tag = ST1VAFE6AX_XL_DUAL_CORE;
       break;
 
-    case ST1VAFE6AX_AH_VAFE:
+    case 0x1F:
       val->tag = ST1VAFE6AX_AH_VAFE;
       break;
 
@@ -6846,27 +6854,27 @@ int32_t st1vafe6ax_sflp_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (sflp_odr.sflp_game_odr)
   {
-    case ST1VAFE6AX_SFLP_15Hz:
+    case 0x00:
       *val = ST1VAFE6AX_SFLP_15Hz;
       break;
 
-    case ST1VAFE6AX_SFLP_30Hz:
+    case 0x01:
       *val = ST1VAFE6AX_SFLP_30Hz;
       break;
 
-    case ST1VAFE6AX_SFLP_60Hz:
+    case 0x02:
       *val = ST1VAFE6AX_SFLP_60Hz;
       break;
 
-    case ST1VAFE6AX_SFLP_120Hz:
+    case 0x03:
       *val = ST1VAFE6AX_SFLP_120Hz;
       break;
 
-    case ST1VAFE6AX_SFLP_240Hz:
+    case 0x04:
       *val = ST1VAFE6AX_SFLP_240Hz;
       break;
 
-    case ST1VAFE6AX_SFLP_480Hz:
+    case 0x05:
       *val = ST1VAFE6AX_SFLP_480Hz;
       break;
 
@@ -7332,11 +7340,11 @@ int32_t st1vafe6ax_fsm_permission_get(const stmdev_ctx_t *ctx,
 
   switch (func_cfg_access.fsm_wr_ctrl_en)
   {
-    case ST1VAFE6AX_PROTECT_CTRL_REGS:
+    case 0x00:
       *val = ST1VAFE6AX_PROTECT_CTRL_REGS;
       break;
 
-    case ST1VAFE6AX_WRITE_CTRL_REG:
+    case 0x01:
       *val = ST1VAFE6AX_WRITE_CTRL_REG;
       break;
 
@@ -7606,31 +7614,31 @@ int32_t st1vafe6ax_fsm_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (fsm_odr.fsm_odr)
   {
-    case ST1VAFE6AX_FSM_15Hz:
+    case 0x00:
       *val = ST1VAFE6AX_FSM_15Hz;
       break;
 
-    case ST1VAFE6AX_FSM_30Hz:
+    case 0x01:
       *val = ST1VAFE6AX_FSM_30Hz;
       break;
 
-    case ST1VAFE6AX_FSM_60Hz:
+    case 0x02:
       *val = ST1VAFE6AX_FSM_60Hz;
       break;
 
-    case ST1VAFE6AX_FSM_120Hz:
+    case 0x03:
       *val = ST1VAFE6AX_FSM_120Hz;
       break;
 
-    case ST1VAFE6AX_FSM_240Hz:
+    case 0x04:
       *val = ST1VAFE6AX_FSM_240Hz;
       break;
 
-    case ST1VAFE6AX_FSM_480Hz:
+    case 0x05:
       *val = ST1VAFE6AX_FSM_480Hz;
       break;
 
-    case ST1VAFE6AX_FSM_960Hz:
+    case 0x06:
       *val = ST1VAFE6AX_FSM_960Hz;
       break;
 
@@ -7950,31 +7958,31 @@ int32_t st1vafe6ax_mlc_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (mlc_odr.mlc_odr)
   {
-    case ST1VAFE6AX_MLC_15Hz:
+    case 0x00:
       *val = ST1VAFE6AX_MLC_15Hz;
       break;
 
-    case ST1VAFE6AX_MLC_30Hz:
+    case 0x01:
       *val = ST1VAFE6AX_MLC_30Hz;
       break;
 
-    case ST1VAFE6AX_MLC_60Hz:
+    case 0x02:
       *val = ST1VAFE6AX_MLC_60Hz;
       break;
 
-    case ST1VAFE6AX_MLC_120Hz:
+    case 0x03:
       *val = ST1VAFE6AX_MLC_120Hz;
       break;
 
-    case ST1VAFE6AX_MLC_240Hz:
+    case 0x04:
       *val = ST1VAFE6AX_MLC_240Hz;
       break;
 
-    case ST1VAFE6AX_MLC_480Hz:
+    case 0x05:
       *val = ST1VAFE6AX_MLC_480Hz;
       break;
 
-    case ST1VAFE6AX_MLC_960Hz:
+    case 0x06:
       *val = ST1VAFE6AX_MLC_960Hz;
       break;
 
@@ -8338,7 +8346,7 @@ int32_t st1vafe6ax_ah_bio_mode_get(const stmdev_ctx_t *ctx,
   * @brief  Configures the equivalent input impedance of the AH_BIO buffers.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      2400MOhm, 730MOhm, 300MOhm, 255MOhm,
+  * @param  val      2400MOhm, 730MOhm, 300MOhm, 235MOhm,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -8362,7 +8370,7 @@ int32_t st1vafe6ax_ah_bio_zin_set(const stmdev_ctx_t *ctx,
   * @brief  Configures the equivalent input impedance of the AH_BIO buffers.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      2400MOhm, 730MOhm, 300MOhm, 255MOhm,
+  * @param  val      2400MOhm, 730MOhm, 300MOhm, 235MOhm,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -8380,20 +8388,20 @@ int32_t st1vafe6ax_ah_bio_zin_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl7.ah_bio_c_zin)
   {
-    case ST1VAFE6AX_2400MOhm:
+    case 0x00:
       *val = ST1VAFE6AX_2400MOhm;
       break;
 
-    case ST1VAFE6AX_730MOhm:
+    case 0x01:
       *val = ST1VAFE6AX_730MOhm;
       break;
 
-    case ST1VAFE6AX_300MOhm:
+    case 0x02:
       *val = ST1VAFE6AX_300MOhm;
       break;
 
-    case ST1VAFE6AX_255MOhm:
-      *val = ST1VAFE6AX_255MOhm;
+    case 0x03:
+      *val = ST1VAFE6AX_235MOhm;
       break;
 
     default:
@@ -8513,11 +8521,11 @@ int32_t st1vafe6ax_i3c_reset_mode_get(const stmdev_ctx_t *ctx,
 
   switch (pin_ctrl.ibhr_por_en)
   {
-    case ST1VAFE6AX_SW_RST_DYN_ADDRESS_RST:
+    case 0x00:
       *val = ST1VAFE6AX_SW_RST_DYN_ADDRESS_RST;
       break;
 
-    case ST1VAFE6AX_I3C_GLOBAL_RST:
+    case 0x01:
       *val = ST1VAFE6AX_I3C_GLOBAL_RST;
       break;
 

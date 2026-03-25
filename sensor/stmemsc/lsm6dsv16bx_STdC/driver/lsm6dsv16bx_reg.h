@@ -3057,16 +3057,13 @@ int32_t lsm6dsv16bx_pin_polarity_get(const stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t boot                          : 1;
   uint8_t drdy_xl                       : 1;
   uint8_t drdy_gy                       : 1;
-  uint8_t drdy_temp                     : 1;
-  uint8_t drdy_ah_qvar                  : 1;
+  uint8_t drdy_ah_qvar                  : 1; // only INT2
   uint8_t fifo_th                       : 1;
   uint8_t fifo_ovr                      : 1;
   uint8_t fifo_full                     : 1;
   uint8_t fifo_bdr                      : 1;
-  uint8_t den_flag                      : 1;
   uint8_t timestamp                     : 1; // impact on int2 signals
   uint8_t six_d                         : 1;
   uint8_t double_tap                    : 1;
@@ -3094,6 +3091,7 @@ typedef struct
   uint8_t mlc3                          : 1;
   uint8_t mlc4                          : 1;
 } lsm6dsv16bx_pin_int_route_t;
+
 int32_t lsm6dsv16bx_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                        lsm6dsv16bx_pin_int_route_t val);
 int32_t lsm6dsv16bx_pin_int1_route_get(const stmdev_ctx_t *ctx,
@@ -3651,7 +3649,7 @@ typedef enum
   LSM6DSV16BX_2400MOhm                            = 0x0,
   LSM6DSV16BX_730MOhm                             = 0x1,
   LSM6DSV16BX_300MOhm                             = 0x2,
-  LSM6DSV16BX_255MOhm                             = 0x3,
+  LSM6DSV16BX_235MOhm                             = 0x3,
 } lsm6dsv16bx_ah_qvar_zin_t;
 int32_t lsm6dsv16bx_ah_qvar_zin_set(const stmdev_ctx_t *ctx,
                                     lsm6dsv16bx_ah_qvar_zin_t val);
@@ -3741,3 +3739,4 @@ int32_t lsm6dsv16bx_tdm_xl_full_scale_get(const stmdev_ctx_t *ctx,
 #endif
 
 #endif /*LSM6DSV16BX_DRIVER_H */
+

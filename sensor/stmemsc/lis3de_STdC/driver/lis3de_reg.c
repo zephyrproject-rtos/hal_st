@@ -425,43 +425,43 @@ int32_t lis3de_data_rate_get(const stmdev_ctx_t *ctx, lis3de_odr_t *val)
 
   switch (ctrl_reg1.odr)
   {
-    case LIS3DE_POWER_DOWN:
+    case 0x00:
       *val = LIS3DE_POWER_DOWN;
       break;
 
-    case LIS3DE_ODR_1Hz:
+    case 0x01:
       *val = LIS3DE_ODR_1Hz;
       break;
 
-    case LIS3DE_ODR_10Hz:
+    case 0x02:
       *val = LIS3DE_ODR_10Hz;
       break;
 
-    case LIS3DE_ODR_25Hz:
+    case 0x03:
       *val = LIS3DE_ODR_25Hz;
       break;
 
-    case LIS3DE_ODR_50Hz:
+    case 0x04:
       *val = LIS3DE_ODR_50Hz;
       break;
 
-    case LIS3DE_ODR_100Hz:
+    case 0x05:
       *val = LIS3DE_ODR_100Hz;
       break;
 
-    case LIS3DE_ODR_200Hz:
+    case 0x06:
       *val = LIS3DE_ODR_200Hz;
       break;
 
-    case LIS3DE_ODR_400Hz:
+    case 0x07:
       *val = LIS3DE_ODR_400Hz;
       break;
 
-    case LIS3DE_ODR_1kHz6:
+    case 0x08:
       *val = LIS3DE_ODR_1kHz6;
       break;
 
-    case LIS3DE_ODR_5kHz376_LP_1kHz344_NM:
+    case 0x09:
       *val = LIS3DE_ODR_5kHz376_LP_1kHz344_NM;
       break;
 
@@ -580,19 +580,19 @@ int32_t lis3de_high_pass_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hpcf)
   {
-    case LIS3DE_AGGRESSIVE:
+    case 0x00:
       *val = LIS3DE_AGGRESSIVE;
       break;
 
-    case LIS3DE_STRONG:
+    case 0x01:
       *val = LIS3DE_STRONG;
       break;
 
-    case LIS3DE_MEDIUM:
+    case 0x02:
       *val = LIS3DE_MEDIUM;
       break;
 
-    case LIS3DE_LIGHT:
+    case 0x03:
       *val = LIS3DE_LIGHT;
       break;
 
@@ -648,19 +648,19 @@ int32_t lis3de_high_pass_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hpm)
   {
-    case LIS3DE_NORMAL_WITH_RST:
+    case 0x00:
       *val = LIS3DE_NORMAL_WITH_RST;
       break;
 
-    case LIS3DE_REFERENCE_MODE:
+    case 0x01:
       *val = LIS3DE_REFERENCE_MODE;
       break;
 
-    case LIS3DE_NORMAL:
+    case 0x02:
       *val = LIS3DE_NORMAL;
       break;
 
-    case LIS3DE_AUTORST_ON_INT:
+    case 0x03:
       *val = LIS3DE_AUTORST_ON_INT;
       break;
 
@@ -715,19 +715,19 @@ int32_t lis3de_full_scale_get(const stmdev_ctx_t *ctx, lis3de_fs_t *val)
 
   switch (ctrl_reg4.fs)
   {
-    case LIS3DE_2g:
+    case 0x00:
       *val = LIS3DE_2g;
       break;
 
-    case LIS3DE_4g:
+    case 0x01:
       *val = LIS3DE_4g;
       break;
 
-    case LIS3DE_8g:
+    case 0x02:
       *val = LIS3DE_8g;
       break;
 
-    case LIS3DE_16g:
+    case 0x03:
       *val = LIS3DE_16g;
       break;
 
@@ -964,15 +964,15 @@ int32_t lis3de_self_test_get(const stmdev_ctx_t *ctx, lis3de_st_t *val)
 
   switch (ctrl_reg4.st)
   {
-    case LIS3DE_ST_DISABLE:
+    case 0x00:
       *val = LIS3DE_ST_DISABLE;
       break;
 
-    case LIS3DE_ST_POSITIVE:
+    case 0x01:
       *val = LIS3DE_ST_POSITIVE;
       break;
 
-    case LIS3DE_ST_NEGATIVE:
+    case 0x02:
       *val = LIS3DE_ST_NEGATIVE;
       break;
 
@@ -1436,35 +1436,35 @@ int32_t lis3de_high_pass_int_conf_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hp)
   {
-    case LIS3DE_DISC_FROM_INT_GENERATOR:
+    case 0x00:
       *val = LIS3DE_DISC_FROM_INT_GENERATOR;
       break;
 
-    case LIS3DE_ON_INT1_GEN:
+    case 0x01:
       *val = LIS3DE_ON_INT1_GEN;
       break;
 
-    case LIS3DE_ON_INT2_GEN:
+    case 0x02:
       *val = LIS3DE_ON_INT2_GEN;
       break;
 
-    case LIS3DE_ON_TAP_GEN:
+    case 0x04:
       *val = LIS3DE_ON_TAP_GEN;
       break;
 
-    case LIS3DE_ON_INT1_INT2_GEN:
+    case 0x03:
       *val = LIS3DE_ON_INT1_INT2_GEN;
       break;
 
-    case LIS3DE_ON_INT1_TAP_GEN:
+    case 0x05:
       *val = LIS3DE_ON_INT1_TAP_GEN;
       break;
 
-    case LIS3DE_ON_INT2_TAP_GEN:
+    case 0x06:
       *val = LIS3DE_ON_INT2_TAP_GEN;
       break;
 
-    case LIS3DE_ON_INT1_INT2_TAP_GEN:
+    case 0x07:
       *val = LIS3DE_ON_INT1_INT2_TAP_GEN;
       break;
 
@@ -1609,11 +1609,11 @@ int32_t lis3de_int2_pin_notification_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg5.lir_ig2)
   {
-    case LIS3DE_INT2_PULSED:
+    case 0x00:
       *val = LIS3DE_INT2_PULSED;
       break;
 
-    case LIS3DE_INT2_LATCHED:
+    case 0x01:
       *val = LIS3DE_INT2_LATCHED;
       break;
 
@@ -1720,11 +1720,11 @@ int32_t lis3de_int1_pin_notification_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg5.lir_ig1)
   {
-    case LIS3DE_INT1_PULSED:
+    case 0x00:
       *val = LIS3DE_INT1_PULSED;
       break;
 
-    case LIS3DE_INT1_LATCHED:
+    case 0x01:
       *val = LIS3DE_INT1_LATCHED;
       break;
 
@@ -1926,11 +1926,11 @@ int32_t lis3de_fifo_trigger_event_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl_reg.tr)
   {
-    case LIS3DE_INT1_GEN:
+    case 0x00:
       *val = LIS3DE_INT1_GEN;
       break;
 
-    case LIS3DE_INT2_GEN:
+    case 0x01:
       *val = LIS3DE_INT2_GEN;
       break;
 
@@ -1988,19 +1988,19 @@ int32_t lis3de_fifo_mode_get(const stmdev_ctx_t *ctx, lis3de_fm_t *val)
 
   switch (fifo_ctrl_reg.fm)
   {
-    case LIS3DE_BYPASS_MODE:
+    case 0x00:
       *val = LIS3DE_BYPASS_MODE;
       break;
 
-    case LIS3DE_FIFO_MODE:
+    case 0x01:
       *val = LIS3DE_FIFO_MODE;
       break;
 
-    case LIS3DE_DYNAMIC_STREAM_MODE:
+    case 0x02:
       *val = LIS3DE_DYNAMIC_STREAM_MODE;
       break;
 
-    case LIS3DE_STREAM_TO_FIFO_MODE:
+    case 0x03:
       *val = LIS3DE_STREAM_TO_FIFO_MODE;
       break;
 
@@ -2281,11 +2281,11 @@ int32_t lis3de_tap_notification_mode_get(const stmdev_ctx_t *ctx,
 
   switch (click_ths.lir)
   {
-    case LIS3DE_TAP_PULSED:
+    case 0x00:
       *val = LIS3DE_TAP_PULSED;
       break;
 
-    case LIS3DE_TAP_LATCHED:
+    case 0x01:
       *val = LIS3DE_TAP_LATCHED;
       break;
 
@@ -2624,11 +2624,11 @@ int32_t lis3de_spi_mode_get(const stmdev_ctx_t *ctx, lis3de_sim_t *val)
 
   switch (ctrl_reg4.sim)
   {
-    case LIS3DE_SPI_4_WIRE:
+    case 0x00:
       *val = LIS3DE_SPI_4_WIRE;
       break;
 
-    case LIS3DE_SPI_3_WIRE:
+    case 0x01:
       *val = LIS3DE_SPI_3_WIRE;
       break;
 

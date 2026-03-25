@@ -162,27 +162,27 @@ int32_t i3g4250d_data_rate_get(const stmdev_ctx_t *ctx, i3g4250d_dr_t *val)
 
   switch ((ctrl_reg1.dr  << 4) + ctrl_reg1.pd)
   {
-    case I3G4250D_ODR_OFF:
+    case 0x00:
       *val = I3G4250D_ODR_OFF;
       break;
 
-    case I3G4250D_ODR_SLEEP:
+    case 0x08:
       *val = I3G4250D_ODR_SLEEP;
       break;
 
-    case I3G4250D_ODR_100Hz:
+    case 0x0F:
       *val = I3G4250D_ODR_100Hz;
       break;
 
-    case I3G4250D_ODR_200Hz:
+    case 0x1F:
       *val = I3G4250D_ODR_200Hz;
       break;
 
-    case I3G4250D_ODR_400Hz:
+    case 0x2F:
       *val = I3G4250D_ODR_400Hz;
       break;
 
-    case I3G4250D_ODR_800Hz:
+    case 0x3F:
       *val = I3G4250D_ODR_800Hz;
       break;
 
@@ -239,15 +239,15 @@ int32_t i3g4250d_full_scale_get(const stmdev_ctx_t *ctx, i3g4250d_fs_t *val)
 
   switch (ctrl_reg4.fs)
   {
-    case I3G4250D_245dps:
+    case 0x00:
       *val = I3G4250D_245dps;
       break;
 
-    case I3G4250D_500dps:
+    case 0x01:
       *val = I3G4250D_500dps;
       break;
 
-    case I3G4250D_2000dps:
+    case 0x02:
       *val = I3G4250D_2000dps;
       break;
 
@@ -428,15 +428,15 @@ int32_t i3g4250d_self_test_get(const stmdev_ctx_t *ctx, i3g4250d_st_t *val)
 
   switch (ctrl_reg4.st)
   {
-    case I3G4250D_GY_ST_DISABLE:
+    case 0x00:
       *val = I3G4250D_GY_ST_DISABLE;
       break;
 
-    case I3G4250D_GY_ST_POSITIVE:
+    case 0x01:
       *val = I3G4250D_GY_ST_POSITIVE;
       break;
 
-    case I3G4250D_GY_ST_NEGATIVE:
+    case 0x03:
       *val = I3G4250D_GY_ST_NEGATIVE;
       break;
 
@@ -495,11 +495,11 @@ int32_t i3g4250d_data_format_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4.ble)
   {
-    case I3G4250D_AUX_LSB_AT_LOW_ADD:
+    case 0x00:
       *val = I3G4250D_AUX_LSB_AT_LOW_ADD;
       break;
 
-    case I3G4250D_AUX_MSB_AT_LOW_ADD:
+    case 0x01:
       *val = I3G4250D_AUX_MSB_AT_LOW_ADD;
       break;
 
@@ -619,19 +619,19 @@ int32_t i3g4250d_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg1.bw)
   {
-    case I3G4250D_CUT_OFF_LOW:
+    case 0x00:
       *val = I3G4250D_CUT_OFF_LOW;
       break;
 
-    case I3G4250D_CUT_OFF_MEDIUM:
+    case 0x01:
       *val = I3G4250D_CUT_OFF_MEDIUM;
       break;
 
-    case I3G4250D_CUT_OFF_HIGH:
+    case 0x02:
       *val = I3G4250D_CUT_OFF_HIGH;
       break;
 
-    case I3G4250D_CUT_OFF_VERY_HIGH:
+    case 0x03:
       *val = I3G4250D_CUT_OFF_VERY_HIGH;
       break;
 
@@ -690,43 +690,43 @@ int32_t i3g4250d_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hpcf)
   {
-    case I3G4250D_HP_LEVEL_0:
+    case 0x00:
       *val = I3G4250D_HP_LEVEL_0;
       break;
 
-    case I3G4250D_HP_LEVEL_1:
+    case 0x01:
       *val = I3G4250D_HP_LEVEL_1;
       break;
 
-    case I3G4250D_HP_LEVEL_2:
+    case 0x02:
       *val = I3G4250D_HP_LEVEL_2;
       break;
 
-    case I3G4250D_HP_LEVEL_3:
+    case 0x03:
       *val = I3G4250D_HP_LEVEL_3;
       break;
 
-    case I3G4250D_HP_LEVEL_4:
+    case 0x04:
       *val = I3G4250D_HP_LEVEL_4;
       break;
 
-    case I3G4250D_HP_LEVEL_5:
+    case 0x05:
       *val = I3G4250D_HP_LEVEL_5;
       break;
 
-    case I3G4250D_HP_LEVEL_6:
+    case 0x06:
       *val = I3G4250D_HP_LEVEL_6;
       break;
 
-    case I3G4250D_HP_LEVEL_7:
+    case 0x07:
       *val = I3G4250D_HP_LEVEL_7;
       break;
 
-    case I3G4250D_HP_LEVEL_8:
+    case 0x08:
       *val = I3G4250D_HP_LEVEL_8;
       break;
 
-    case I3G4250D_HP_LEVEL_9:
+    case 0x09:
       *val = I3G4250D_HP_LEVEL_9;
       break;
 
@@ -783,19 +783,19 @@ int32_t i3g4250d_hp_mode_get(const stmdev_ctx_t *ctx, i3g4250d_hpm_t *val)
 
   switch (ctrl_reg2.hpm)
   {
-    case I3G4250D_HP_NORMAL_MODE_WITH_RST:
+    case 0x00:
       *val = I3G4250D_HP_NORMAL_MODE_WITH_RST;
       break;
 
-    case I3G4250D_HP_REFERENCE_SIGNAL:
+    case 0x01:
       *val = I3G4250D_HP_REFERENCE_SIGNAL;
       break;
 
-    case I3G4250D_HP_NORMAL_MODE:
+    case 0x02:
       *val = I3G4250D_HP_NORMAL_MODE;
       break;
 
-    case I3G4250D_HP_AUTO_RESET_ON_INT:
+    case 0x03:
       *val = I3G4250D_HP_AUTO_RESET_ON_INT;
       break;
 
@@ -855,19 +855,19 @@ int32_t i3g4250d_filter_path_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl_reg5.hpen << 2) + ctrl_reg5.out_sel)
   {
-    case I3G4250D_ONLY_LPF1_ON_OUT:
+    case 0x00:
       *val = I3G4250D_ONLY_LPF1_ON_OUT;
       break;
 
-    case I3G4250D_LPF1_HP_ON_OUT:
+    case 0x01:
       *val = I3G4250D_LPF1_HP_ON_OUT;
       break;
 
-    case I3G4250D_LPF1_LPF2_ON_OUT:
+    case 0x02:
       *val = I3G4250D_LPF1_LPF2_ON_OUT;
       break;
 
-    case I3G4250D_LPF1_HP_LPF2_ON_OUT:
+    case 0x06:
       *val = I3G4250D_LPF1_HP_LPF2_ON_OUT;
       break;
 
@@ -927,19 +927,19 @@ int32_t i3g4250d_filter_path_internal_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl_reg5.hpen << 2) + ctrl_reg5.int1_sel)
   {
-    case I3G4250D_ONLY_LPF1_ON_INT:
+    case 0x00:
       *val = I3G4250D_ONLY_LPF1_ON_INT;
       break;
 
-    case I3G4250D_LPF1_HP_ON_INT:
+    case 0x01:
       *val = I3G4250D_LPF1_HP_ON_INT;
       break;
 
-    case I3G4250D_LPF1_LPF2_ON_INT:
+    case 0x02:
       *val = I3G4250D_LPF1_LPF2_ON_INT;
       break;
 
-    case I3G4250D_LPF1_HP_LPF2_ON_INT:
+    case 0x06:
       *val = I3G4250D_LPF1_HP_LPF2_ON_INT;
       break;
 
@@ -1059,11 +1059,11 @@ int32_t i3g4250d_spi_mode_get(const stmdev_ctx_t *ctx, i3g4250d_sim_t *val)
 
   switch (ctrl_reg4.sim)
   {
-    case I3G4250D_SPI_4_WIRE:
+    case 0x00:
       *val = I3G4250D_SPI_4_WIRE;
       break;
 
-    case I3G4250D_SPI_3_WIRE:
+    case 0x01:
       *val = I3G4250D_SPI_3_WIRE;
       break;
 
@@ -1242,11 +1242,11 @@ int32_t i3g4250d_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.pp_od)
   {
-    case I3G4250D_PUSH_PULL:
+    case 0x00:
       *val = I3G4250D_PUSH_PULL;
       break;
 
-    case I3G4250D_OPEN_DRAIN:
+    case 0x01:
       *val = I3G4250D_OPEN_DRAIN;
       break;
 
@@ -1305,11 +1305,11 @@ int32_t i3g4250d_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.h_lactive)
   {
-    case I3G4250D_ACTIVE_HIGH:
+    case 0x00:
       *val = I3G4250D_ACTIVE_HIGH;
       break;
 
-    case I3G4250D_ACTIVE_LOW:
+    case 0x01:
       *val = I3G4250D_ACTIVE_LOW;
       break;
 
@@ -1365,11 +1365,11 @@ int32_t i3g4250d_int_notification_get(const stmdev_ctx_t *ctx,
 
   switch (int1_cfg.lir)
   {
-    case I3G4250D_INT_PULSED:
+    case 0x00:
       *val = I3G4250D_INT_PULSED;
       break;
 
-    case I3G4250D_INT_LATCHED:
+    case 0x01:
       *val = I3G4250D_INT_LATCHED;
       break;
 
@@ -1473,11 +1473,11 @@ int32_t i3g4250d_int_on_threshold_mode_get(const stmdev_ctx_t *ctx,
 
   switch (int1_cfg.and_or)
   {
-    case I3G4250D_INT1_ON_TH_OR:
+    case 0x00:
       *val = I3G4250D_INT1_ON_TH_OR;
       break;
 
-    case I3G4250D_INT1_ON_TH_AND:
+    case 0x01:
       *val = I3G4250D_INT1_ON_TH_AND;
       break;
 
@@ -1936,15 +1936,15 @@ int32_t i3g4250d_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl_reg.fm)
   {
-    case I3G4250D_FIFO_BYPASS_MODE:
+    case 0x00:
       *val = I3G4250D_FIFO_BYPASS_MODE;
       break;
 
-    case I3G4250D_FIFO_MODE:
+    case 0x01:
       *val = I3G4250D_FIFO_MODE;
       break;
 
-    case I3G4250D_FIFO_STREAM_MODE:
+    case 0x02:
       *val = I3G4250D_FIFO_STREAM_MODE;
       break;
 

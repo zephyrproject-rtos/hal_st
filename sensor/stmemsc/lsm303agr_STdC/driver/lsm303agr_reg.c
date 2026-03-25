@@ -326,11 +326,11 @@ int32_t lsm303agr_temperature_meas_get(const stmdev_ctx_t *ctx,
 
   switch (temp_cfg_reg_a.temp_en)
   {
-    case LSM303AGR_TEMP_DISABLE:
+    case 0x00:
       *val = LSM303AGR_TEMP_DISABLE;
       break;
 
-    case LSM303AGR_TEMP_ENABLE:
+    case 0x03:
       *val = LSM303AGR_TEMP_ENABLE;
       break;
 
@@ -493,43 +493,43 @@ int32_t lsm303agr_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg1_a.odr)
   {
-    case LSM303AGR_XL_POWER_DOWN:
+    case 0x00:
       *val = LSM303AGR_XL_POWER_DOWN;
       break;
 
-    case LSM303AGR_XL_ODR_1Hz:
+    case 0x01:
       *val = LSM303AGR_XL_ODR_1Hz;
       break;
 
-    case LSM303AGR_XL_ODR_10Hz:
+    case 0x02:
       *val = LSM303AGR_XL_ODR_10Hz;
       break;
 
-    case LSM303AGR_XL_ODR_25Hz:
+    case 0x03:
       *val = LSM303AGR_XL_ODR_25Hz;
       break;
 
-    case LSM303AGR_XL_ODR_50Hz:
+    case 0x04:
       *val = LSM303AGR_XL_ODR_50Hz;
       break;
 
-    case LSM303AGR_XL_ODR_100Hz:
+    case 0x05:
       *val = LSM303AGR_XL_ODR_100Hz;
       break;
 
-    case LSM303AGR_XL_ODR_200Hz:
+    case 0x06:
       *val = LSM303AGR_XL_ODR_200Hz;
       break;
 
-    case LSM303AGR_XL_ODR_400Hz:
+    case 0x07:
       *val = LSM303AGR_XL_ODR_400Hz;
       break;
 
-    case LSM303AGR_XL_ODR_1kHz620_LP:
+    case 0x08:
       *val = LSM303AGR_XL_ODR_1kHz620_LP;
       break;
 
-    case LSM303AGR_XL_ODR_1kHz344_NM_HP_5kHz376_LP:
+    case 0x09:
       *val = LSM303AGR_XL_ODR_1kHz344_NM_HP_5kHz376_LP;
       break;
 
@@ -655,19 +655,19 @@ int32_t lsm303agr_xl_high_pass_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2_a.hpcf)
   {
-    case LSM303AGR_AGGRESSIVE:
+    case 0x00:
       *val = LSM303AGR_AGGRESSIVE;
       break;
 
-    case LSM303AGR_STRONG:
+    case 0x01:
       *val = LSM303AGR_STRONG;
       break;
 
-    case LSM303AGR_MEDIUM:
+    case 0x02:
       *val = LSM303AGR_MEDIUM;
       break;
 
-    case LSM303AGR_LIGHT:
+    case 0x03:
       *val = LSM303AGR_LIGHT;
       break;
 
@@ -727,19 +727,19 @@ int32_t lsm303agr_xl_high_pass_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2_a.hpm)
   {
-    case LSM303AGR_NORMAL_WITH_RST:
+    case 0x00:
       *val = LSM303AGR_NORMAL_WITH_RST;
       break;
 
-    case LSM303AGR_REFERENCE_MODE:
+    case 0x01:
       *val = LSM303AGR_REFERENCE_MODE;
       break;
 
-    case LSM303AGR_NORMAL:
+    case 0x02:
       *val = LSM303AGR_NORMAL;
       break;
 
-    case LSM303AGR_AUTORST_ON_INT:
+    case 0x03:
       *val = LSM303AGR_AUTORST_ON_INT;
       break;
 
@@ -799,19 +799,19 @@ int32_t lsm303agr_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4_a.fs)
   {
-    case LSM303AGR_2g:
+    case 0x00:
       *val = LSM303AGR_2g;
       break;
 
-    case LSM303AGR_4g:
+    case 0x01:
       *val = LSM303AGR_4g;
       break;
 
-    case LSM303AGR_8g:
+    case 0x02:
       *val = LSM303AGR_8g;
       break;
 
-    case LSM303AGR_16g:
+    case 0x03:
       *val = LSM303AGR_16g;
       break;
 
@@ -1099,15 +1099,15 @@ int32_t lsm303agr_mag_operating_mode_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_a_m.md)
   {
-    case LSM303AGR_CONTINUOUS_MODE:
+    case 0x00:
       *val = LSM303AGR_CONTINUOUS_MODE;
       break;
 
-    case LSM303AGR_SINGLE_TRIGGER:
+    case 0x01:
       *val = LSM303AGR_SINGLE_TRIGGER;
       break;
 
-    case LSM303AGR_POWER_DOWN:
+    case 0x02:
       *val = LSM303AGR_POWER_DOWN;
       break;
 
@@ -1167,19 +1167,19 @@ int32_t lsm303agr_mag_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_a_m.odr)
   {
-    case LSM303AGR_MG_ODR_10Hz:
+    case 0x00:
       *val = LSM303AGR_MG_ODR_10Hz;
       break;
 
-    case LSM303AGR_MG_ODR_20Hz:
+    case 0x01:
       *val = LSM303AGR_MG_ODR_20Hz;
       break;
 
-    case LSM303AGR_MG_ODR_50Hz:
+    case 0x02:
       *val = LSM303AGR_MG_ODR_50Hz;
       break;
 
-    case LSM303AGR_MG_ODR_100Hz:
+    case 0x03:
       *val = LSM303AGR_MG_ODR_100Hz;
       break;
 
@@ -1239,11 +1239,11 @@ int32_t lsm303agr_mag_power_mode_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_a_m.lp)
   {
-    case LSM303AGR_HIGH_RESOLUTION:
+    case 0x00:
       *val = LSM303AGR_HIGH_RESOLUTION;
       break;
 
-    case LSM303AGR_LOW_POWER:
+    case 0x01:
       *val = LSM303AGR_LOW_POWER;
       break;
 
@@ -1354,11 +1354,11 @@ int32_t lsm303agr_mag_low_pass_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_b_m.lpf)
   {
-    case LSM303AGR_ODR_DIV_2:
+    case 0x00:
       *val = LSM303AGR_ODR_DIV_2;
       break;
 
-    case LSM303AGR_ODR_DIV_4:
+    case 0x01:
       *val = LSM303AGR_ODR_DIV_4;
       break;
 
@@ -1418,15 +1418,15 @@ int32_t lsm303agr_mag_set_rst_mode_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_b_m.set_rst)
   {
-    case LSM303AGR_SET_SENS_ODR_DIV_63:
+    case 0x00:
       *val = LSM303AGR_SET_SENS_ODR_DIV_63;
       break;
 
-    case LSM303AGR_SENS_OFF_CANC_EVERY_ODR:
+    case 0x01:
       *val = LSM303AGR_SENS_OFF_CANC_EVERY_ODR;
       break;
 
-    case LSM303AGR_SET_SENS_ONLY_AT_POWER_ON:
+    case 0x02:
       *val = LSM303AGR_SET_SENS_ONLY_AT_POWER_ON;
       break;
 
@@ -1703,15 +1703,15 @@ int32_t lsm303agr_xl_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4_a.st)
   {
-    case LSM303AGR_ST_DISABLE:
+    case 0x00:
       *val = LSM303AGR_ST_DISABLE;
       break;
 
-    case LSM303AGR_ST_POSITIVE:
+    case 0x01:
       *val = LSM303AGR_ST_POSITIVE;
       break;
 
-    case LSM303AGR_ST_NEGATIVE:
+    case 0x02:
       *val = LSM303AGR_ST_NEGATIVE;
       break;
 
@@ -1771,11 +1771,11 @@ int32_t lsm303agr_xl_data_format_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4_a.ble)
   {
-    case LSM303AGR_XL_LSB_AT_LOW_ADD:
+    case 0x00:
       *val = LSM303AGR_XL_LSB_AT_LOW_ADD;
       break;
 
-    case LSM303AGR_XL_MSB_AT_LOW_ADD:
+    case 0x01:
       *val = LSM303AGR_XL_MSB_AT_LOW_ADD;
       break;
 
@@ -2066,11 +2066,11 @@ int32_t lsm303agr_mag_data_format_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_c_m.ble)
   {
-    case LSM303AGR_MG_LSB_AT_LOW_ADD:
+    case 0x00:
       *val = LSM303AGR_MG_LSB_AT_LOW_ADD;
       break;
 
-    case LSM303AGR_MG_MSB_AT_LOW_ADD:
+    case 0x01:
       *val = LSM303AGR_MG_MSB_AT_LOW_ADD;
       break;
 
@@ -2511,35 +2511,35 @@ int32_t lsm303agr_xl_high_pass_int_conf_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2_a.hp)
   {
-    case LSM303AGR_DISC_FROM_INT_GENERATOR:
+    case 0x00:
       *val = LSM303AGR_DISC_FROM_INT_GENERATOR;
       break;
 
-    case LSM303AGR_ON_INT1_GEN:
+    case 0x01:
       *val = LSM303AGR_ON_INT1_GEN;
       break;
 
-    case LSM303AGR_ON_INT2_GEN:
+    case 0x02:
       *val = LSM303AGR_ON_INT2_GEN;
       break;
 
-    case LSM303AGR_ON_TAP_GEN:
+    case 0x04:
       *val = LSM303AGR_ON_TAP_GEN;
       break;
 
-    case LSM303AGR_ON_INT1_INT2_GEN:
+    case 0x03:
       *val = LSM303AGR_ON_INT1_INT2_GEN;
       break;
 
-    case LSM303AGR_ON_INT1_TAP_GEN:
+    case 0x05:
       *val = LSM303AGR_ON_INT1_TAP_GEN;
       break;
 
-    case LSM303AGR_ON_INT2_TAP_GEN:
+    case 0x06:
       *val = LSM303AGR_ON_INT2_TAP_GEN;
       break;
 
-    case LSM303AGR_ON_INT1_INT2_TAP_GEN:
+    case 0x07:
       *val = LSM303AGR_ON_INT1_INT2_TAP_GEN;
       break;
 
@@ -2692,11 +2692,11 @@ int32_t lsm303agr_xl_int2pin_notification_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg5_a.lir_int2)
   {
-    case LSM303AGR_INT2_PULSED:
+    case 0x00:
       *val = LSM303AGR_INT2_PULSED;
       break;
 
-    case LSM303AGR_INT2_LATCHED:
+    case 0x01:
       *val = LSM303AGR_INT2_LATCHED;
       break;
 
@@ -2813,11 +2813,11 @@ int32_t lsm303agr_xl_int1pin_notification_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg5_a.lir_int1)
   {
-    case LSM303AGR_INT1_PULSED:
+    case 0x00:
       *val = LSM303AGR_INT1_PULSED;
       break;
 
-    case LSM303AGR_INT1_LATCHED:
+    case 0x01:
       *val = LSM303AGR_INT1_LATCHED;
       break;
 
@@ -2930,11 +2930,11 @@ int32_t lsm303agr_mag_offset_int_conf_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_b_m.int_on_dataoff)
   {
-    case LSM303AGR_CHECK_BEFORE:
+    case 0x00:
       *val = LSM303AGR_CHECK_BEFORE;
       break;
 
-    case LSM303AGR_CHECK_AFTER:
+    case 0x01:
       *val = LSM303AGR_CHECK_AFTER;
       break;
 
@@ -3313,11 +3313,11 @@ int32_t lsm303agr_xl_fifo_trigger_event_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl_reg_a.tr)
   {
-    case LSM303AGR_INT1_GEN:
+    case 0x00:
       *val = LSM303AGR_INT1_GEN;
       break;
 
-    case LSM303AGR_INT2_GEN:
+    case 0x01:
       *val = LSM303AGR_INT2_GEN;
       break;
 
@@ -3377,19 +3377,19 @@ int32_t lsm303agr_xl_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_ctrl_reg_a.fm)
   {
-    case LSM303AGR_BYPASS_MODE:
+    case 0x00:
       *val = LSM303AGR_BYPASS_MODE;
       break;
 
-    case LSM303AGR_FIFO_MODE:
+    case 0x01:
       *val = LSM303AGR_FIFO_MODE;
       break;
 
-    case LSM303AGR_DYNAMIC_STREAM_MODE:
+    case 0x02:
       *val = LSM303AGR_DYNAMIC_STREAM_MODE;
       break;
 
-    case LSM303AGR_STREAM_TO_FIFO_MODE:
+    case 0x03:
       *val = LSM303AGR_STREAM_TO_FIFO_MODE;
       break;
 
@@ -3974,11 +3974,11 @@ int32_t lsm303agr_xl_spi_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4_a.spi_enable)
   {
-    case LSM303AGR_SPI_4_WIRE:
+    case 0x00:
       *val = LSM303AGR_SPI_4_WIRE;
       break;
 
-    case LSM303AGR_SPI_3_WIRE:
+    case 0x01:
       *val = LSM303AGR_SPI_3_WIRE;
       break;
 
@@ -4038,11 +4038,11 @@ int32_t lsm303agr_mag_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (cfg_reg_c_m.i2c_dis)
   {
-    case LSM303AGR_I2C_ENABLE:
+    case 0x00:
       *val = LSM303AGR_I2C_ENABLE;
       break;
 
-    case LSM303AGR_I2C_DISABLE:
+    case 0x01:
       *val = LSM303AGR_I2C_DISABLE;
       break;
 

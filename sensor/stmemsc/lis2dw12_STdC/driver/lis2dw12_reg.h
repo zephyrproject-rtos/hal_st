@@ -197,7 +197,6 @@ typedef struct
   uint8_t mode                       : 2;
   uint8_t lp_mode                    : 2;
 #endif /* DRV_BYTE_ORDER */
-
 } lis2dw12_ctrl1_t;
 
 #define LIS2DW12_CTRL2                       0x21U
@@ -222,14 +221,14 @@ typedef struct
   uint8_t i2c_disable                : 1;
   uint8_t sim                        : 1;
 #endif /* DRV_BYTE_ORDER */
-
 } lis2dw12_ctrl2_t;
 
 #define LIS2DW12_CTRL3                       0x22U
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t slp_mode                   : 2;  /* slp_mode_sel + slp_mode_1 */
+uint8_t slp_mode                   :
+  2;  /* slp_mode_sel + slp_mode_1 */
   uint8_t not_used_01                : 1;
   uint8_t h_lactive                  : 1;
   uint8_t lir                        : 1;
@@ -241,9 +240,9 @@ typedef struct
   uint8_t lir                        : 1;
   uint8_t h_lactive                  : 1;
   uint8_t not_used_01                : 1;
-  uint8_t slp_mode                   : 2;  /* slp_mode_sel + slp_mode_1 */
+uint8_t slp_mode                   :
+  2;  /* slp_mode_sel + slp_mode_1 */
 #endif /* DRV_BYTE_ORDER */
-
 } lis2dw12_ctrl3_t;
 
 #define LIS2DW12_CTRL4_INT1_PAD_CTRL         0x23U
@@ -555,7 +554,6 @@ typedef struct
   uint8_t zh                         : 1;
   uint8_t zl                         : 1;
   uint8_t yh                         : 1;
-  uint8_t xh                         : 1;
   uint8_t yl                         : 1;
   uint8_t xh                         : 1;
   uint8_t xl                         : 1;
@@ -587,7 +585,7 @@ typedef struct
 #define LIS2DW12_X_OFS_USR                   0x3CU
 #define LIS2DW12_Y_OFS_USR                   0x3DU
 #define LIS2DW12_Z_OFS_USR                   0x3EU
-#define LIS2DW12_CTRL_REG7                   0x3FU
+#define LIS2DW12_CTRL7                       0x3FU
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
@@ -609,7 +607,7 @@ typedef struct
   uint8_t hp_ref_mode                : 1;
   uint8_t lpass_on6d                 : 1;
 #endif /* DRV_BYTE_ORDER */
-} lis2dw12_ctrl_reg7_t;
+} lis2dw12_ctrl7_t;
 
 /**
   * @defgroup LIS2DW12_Register_Union
@@ -646,7 +644,7 @@ typedef union
   lis2dw12_tap_src_t                 tap_src;
   lis2dw12_sixd_src_t                sixd_src;
   lis2dw12_all_int_src_t             all_int_src;
-  lis2dw12_ctrl_reg7_t               ctrl_reg7;
+  lis2dw12_ctrl7_t                   ctrl7;
   bitwise_t                          bitwise;
   uint8_t                            byte;
 } lis2dw12_reg_t;
@@ -726,8 +724,8 @@ typedef enum
   LIS2DW12_XL_ODR_400Hz          = 0x07,
   LIS2DW12_XL_ODR_800Hz          = 0x08,
   LIS2DW12_XL_ODR_1k6Hz          = 0x09,
-  LIS2DW12_XL_SET_SW_TRIG        = 0x32,  /* Use this only in SINGLE mode */
-  LIS2DW12_XL_SET_PIN_TRIG       = 0x12,  /* Use this only in SINGLE mode */
+  LIS2DW12_XL_SET_SW_TRIG        = 0x12,  /* Use this only in SINGLE mode */
+  LIS2DW12_XL_SET_PIN_TRIG       = 0x22,  /* Use this only in SINGLE mode */
 } lis2dw12_odr_t;
 int32_t lis2dw12_data_rate_set(const stmdev_ctx_t *ctx, lis2dw12_odr_t val);
 int32_t lis2dw12_data_rate_get(const stmdev_ctx_t *ctx,
@@ -794,10 +792,10 @@ int32_t lis2dw12_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 int32_t lis2dw12_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lis2dw12_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lis2dw12_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2dw12_reset_set(const stmdev_ctx_t *ctx);
 int32_t lis2dw12_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lis2dw12_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2dw12_boot_set(const stmdev_ctx_t *ctx);
 int32_t lis2dw12_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum

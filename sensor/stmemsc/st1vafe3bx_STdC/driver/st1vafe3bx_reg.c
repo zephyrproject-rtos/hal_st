@@ -109,9 +109,54 @@ float_t st1vafe3bx_from_fs16g_to_mg(int16_t lsb)
   return (float_t)lsb * 0.488f;
 }
 
-float_t st1vafe3bx_from_lsb_to_mv(int16_t lsb)
+float_t st1vafe3bx_from_gain2_to_mv(int16_t lsb)
+{
+  return ((float_t)lsb) / 164.0f;
+}
+
+float_t st1vafe3bx_from_gain4_to_mv(int16_t lsb)
+{
+  return ((float_t)lsb) / 328.0f;
+}
+
+float_t st1vafe3bx_from_gain8_to_mv(int16_t lsb)
+{
+  return ((float_t)lsb) / 655.0f;
+}
+
+float_t st1vafe3bx_from_gain16_to_mv(int16_t lsb)
 {
   return ((float_t)lsb) / 1311.0f;
+}
+
+float_t st1vafe3bx_from_lsb_to_mv(int16_t lsb, enum st1vafe3bx_gain gain)
+{
+  float mV;
+
+  switch (gain)
+  {
+    case ST1VAFE3BX_GAIN_2:
+      mV = st1vafe3bx_from_gain2_to_mv(lsb);
+      break;
+
+    case ST1VAFE3BX_GAIN_4:
+      mV = st1vafe3bx_from_gain4_to_mv(lsb);
+      break;
+
+    case ST1VAFE3BX_GAIN_8:
+      mV = st1vafe3bx_from_gain8_to_mv(lsb);
+      break;
+
+    case ST1VAFE3BX_GAIN_16:
+      mV = st1vafe3bx_from_gain16_to_mv(lsb);
+      break;
+
+    default:
+      mV = 0.0f;
+      break;
+  }
+
+  return mV;
 }
 
 /**
@@ -135,179 +180,175 @@ float_t st1vafe3bx_from_lsb_to_mv(int16_t lsb)
   */
 int32_t st1vafe3bx_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  int32_t ret;
-
-  ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_WHO_AM_I, val, 1);
+  int32_t ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_WHO_AM_I, val, 1);
 
   return ret;
 }
 
 /**
-  * @brief  Configures the bus operating mode.[get]
+  * @brief  Initialize the device with optimal settings.[set]
   *
   * @param  ctx   communication interface handler.(ptr)
-  * @param  val   configures the bus operating mode.(ptr)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_init_set(const stmdev_ctx_t *ctx, st1vafe3bx_init_t val)
+int32_t st1vafe3bx_init_set(const stmdev_ctx_t *ctx)
 {
-  st1vafe3bx_ctrl1_t ctrl1;
-  st1vafe3bx_ctrl4_t ctrl4;
-  st1vafe3bx_status_t status;
-  st1vafe3bx_ctrl3_t ctrl3;
-  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
-  st1vafe3bx_ah_bio_cfg3_t ah_bio_cfg3;
-  uint8_t cnt = 0;
-  uint8_t ret;
+  st1vafe3bx_ctrl1_t ctrl1 = {0};
+  st1vafe3bx_ctrl4_t ctrl4 = {0};
+
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2,
-                             (uint8_t *)&ah_bio_cfg2, 1);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG3,
-                             (uint8_t *)&ah_bio_cfg3, 1);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
 
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
-  switch (val)
+  ctrl4.bdu = PROPERTY_ENABLE;
+  ctrl1.if_add_inc = PROPERTY_ENABLE;
+
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief Enables embedded functions
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  state    enables / disables embedded functions
+  * @retval          0: reboot has been performed, -1: error
+  *
+  */
+int32_t st1vafe3bx_embedded_state_set(const stmdev_ctx_t *ctx, uint8_t state)
+{
+  int32_t ret = 0;
+  st1vafe3bx_ctrl4_t ctrl4 = {0};
+
+  ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+
+  if (ret != 0)
   {
-    case ST1VAFE3BX_BOOT:
-      ctrl4.boot = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-      if (ret != 0)
-      {
-        break;
-      }
-
-      do
-      {
-        ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-        if (ret != 0)
-        {
-          break;
-        }
-
-        /* boot procedure ended correctly */
-        if (ctrl4.boot == 0U)
-        {
-          break;
-        }
-
-        if (ctx->mdelay != NULL)
-        {
-          ctx->mdelay(25); /* 25 ms of boot time */
-        }
-      } while (cnt++ < 5U);
-
-      if (cnt >= 5U)
-      {
-        ret = -1;  /* boot procedure failed */
-      }
-      break;
-    case ST1VAFE3BX_RESET:
-      ctrl1.sw_reset = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
-      if (ret != 0)
-      {
-        break;
-      }
-
-      do
-      {
-        ret = st1vafe3bx_status_get(ctx, &status);
-        if (ret != 0)
-        {
-          break;
-        }
-
-        /* sw-reset procedure ended correctly */
-        if (status.sw_reset == 0U)
-        {
-          break;
-        }
-
-        if (ctx->mdelay != NULL)
-        {
-          ctx->mdelay(1); /* should be 50 us */
-        }
-      } while (cnt++ < 5U);
-
-      if (cnt >= 5U)
-      {
-        ret = -1;  /* sw-reset procedure failed */
-      }
-      break;
-    case ST1VAFE3BX_SENSOR_ONLY_ON:
-      /* no embedded funcs are used */
-      ctrl4.emb_func_en = PROPERTY_DISABLE;
-      ctrl4.bdu = PROPERTY_ENABLE;
-      ctrl1.if_add_inc = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
-      break;
-    case ST1VAFE3BX_SENSOR_EMB_FUNC_ON:
-      /* complete configuration is used */
-      ctrl4.emb_func_en = PROPERTY_ENABLE;
-      ctrl4.bdu = PROPERTY_ENABLE;
-      ctrl1.if_add_inc = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
-      break;
-    case ST1VAFE3BX_VAFE_ONLY_LP:
-    case ST1VAFE3BX_VAFE_ONLY_HP:
-      /*
-        * when the device is in the AH / vAFE only state, the embedded low power
-        * features are not available
-        */
-      ctrl4.bdu = PROPERTY_ENABLE;
-      ctrl1.if_add_inc = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
-
-      ah_bio_cfg2.ah_bio_en = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2,
-                                  (uint8_t *)&ah_bio_cfg2, 1);
-
-      ah_bio_cfg3.ah_bio_active = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG3,
-                                  (uint8_t *)&ah_bio_cfg3, 1);
-
-      if (ctx->mdelay != NULL)
-      {
-        ctx->mdelay(10);
-      }
-
-      if (val == ST1VAFE3BX_VAFE_ONLY_HP)
-      {
-        ctrl3.hp_en = PROPERTY_ENABLE;
-      }
-      else
-      {
-        ctrl3.hp_en = PROPERTY_DISABLE;
-      }
-
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
-
-      ah_bio_cfg3.ah_bio_active = PROPERTY_DISABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG3,
-                                  (uint8_t *)&ah_bio_cfg3, 1);
-
-      if (ctx->mdelay != NULL)
-      {
-        ctx->mdelay(10);
-      }
-      break;
-    default:
-      ctrl1.sw_reset = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
-      break;
+    goto exit;
   }
 
+  ctrl4.emb_func_en = state;
+
+  ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief Perform device reboot (boot time: 25 ms)
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          0: reboot has been performed, -1: error
+  *
+  */
+int32_t st1vafe3bx_reboot(const stmdev_ctx_t *ctx)
+{
+  st1vafe3bx_ctrl4_t ctrl4 = {0};
+  uint8_t cnt = 0;
+  int32_t ret = 0;
+
+  ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  ctrl4.boot = PROPERTY_ENABLE;
+  ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  do
+  {
+    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+    if (ret != 0)
+    {
+      break;
+    }
+
+    /* boot procedure ended correctly */
+    if (ctrl4.boot == 0U)
+    {
+      break;
+    }
+
+    if (ctx->mdelay != NULL)
+    {
+      ctx->mdelay(25); /* 25 ms of boot time */
+    }
+  } while (cnt++ < 5U);
+
+  if (cnt >= 5U)
+  {
+    ret = -1;  /* boot procedure failed */
+  }
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief Software reset: resets configuration registers.
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t st1vafe3bx_sw_reset(const stmdev_ctx_t *ctx)
+{
+  st1vafe3bx_ctrl1_t ctrl1 = {0};
+  int32_t ret = 0;
+  uint8_t cnt = 0;
+
+  ctrl1.sw_reset = PROPERTY_ENABLE;
+
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  do
+  {
+    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
+    if (ret != 0)
+    {
+      break;
+    }
+
+    /* sw-reset procedure ended correctly */
+    if (ctrl1.sw_reset == 0U)
+    {
+      break;
+    }
+
+    if (ctx->mdelay != NULL)
+    {
+      ctx->mdelay(1); /* should be 50 us */
+    }
+  } while (cnt++ < 5U);
+
+  if (cnt >= 5U || ret != 0)
+  {
+    ret = -1;  /* sw-reset procedure failed */
+  }
+
+exit:
   return ret;
 }
 
@@ -321,9 +362,9 @@ int32_t st1vafe3bx_init_set(const stmdev_ctx_t *ctx, st1vafe3bx_init_t val)
   */
 int32_t st1vafe3bx_smart_power_set(const stmdev_ctx_t *ctx, st1vafe3bx_smart_power_t val)
 {
-  st1vafe3bx_ctrl1_t ctrl1;
-  st1vafe3bx_smart_power_ctrl_t pwr_ctrl;
-  int32_t ret;
+  st1vafe3bx_ctrl1_t ctrl1 = {0};
+  st1vafe3bx_smart_power_ctrl_t pwr_ctrl = {0};
+  int32_t ret = 0;
 
   /* Configure smart power */
   pwr_ctrl.smart_power_ctrl_win = val.pwr_ctrl_win;
@@ -352,9 +393,9 @@ int32_t st1vafe3bx_smart_power_set(const stmdev_ctx_t *ctx, st1vafe3bx_smart_pow
   */
 int32_t st1vafe3bx_smart_power_get(const stmdev_ctx_t *ctx, st1vafe3bx_smart_power_t *val)
 {
-  st1vafe3bx_ctrl1_t ctrl1;
-  st1vafe3bx_smart_power_ctrl_t pwr_ctrl;
-  int32_t ret;
+  st1vafe3bx_ctrl1_t ctrl1 = {0};
+  st1vafe3bx_smart_power_ctrl_t pwr_ctrl = {0};
+  int32_t ret = 0;
 
   /* Read smart power configuration */
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
@@ -380,10 +421,10 @@ int32_t st1vafe3bx_smart_power_get(const stmdev_ctx_t *ctx, st1vafe3bx_smart_pow
   */
 int32_t st1vafe3bx_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t *val)
 {
-  st1vafe3bx_status_register_t status_register;
-  st1vafe3bx_ctrl1_t ctrl1;
-  st1vafe3bx_ctrl4_t ctrl4;
-  int32_t ret;
+  st1vafe3bx_status_register_t status_register = {0};
+  st1vafe3bx_ctrl1_t ctrl1 = {0};
+  st1vafe3bx_ctrl4_t ctrl4 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_STATUS,
                             (uint8_t *)&status_register, 1);
@@ -412,8 +453,8 @@ int32_t st1vafe3bx_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t *val)
   */
 int32_t st1vafe3bx_drdy_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t *val)
 {
-  st1vafe3bx_status_register_t status_register;
-  int32_t ret;
+  st1vafe3bx_status_register_t status_register = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_STATUS, (uint8_t *)&status_register, 1);
 
@@ -438,8 +479,8 @@ int32_t st1vafe3bx_drdy_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t 
 int32_t st1vafe3bx_embedded_status_get(const stmdev_ctx_t *ctx,
                                        st1vafe3bx_embedded_status_t *val)
 {
-  st1vafe3bx_emb_func_status_t status;
-  int32_t ret;
+  st1vafe3bx_emb_func_status_t status = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -475,8 +516,8 @@ int32_t st1vafe3bx_embedded_status_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_data_ready_mode_set(const stmdev_ctx_t *ctx,
                                        st1vafe3bx_data_ready_mode_t val)
 {
-  st1vafe3bx_ctrl1_t ctrl1;
-  int32_t ret;
+  st1vafe3bx_ctrl1_t ctrl1 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
 
@@ -500,8 +541,8 @@ int32_t st1vafe3bx_data_ready_mode_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_data_ready_mode_get(const stmdev_ctx_t *ctx,
                                        st1vafe3bx_data_ready_mode_t *val)
 {
-  st1vafe3bx_ctrl1_t ctrl1;
-  int32_t ret;
+  st1vafe3bx_ctrl1_t ctrl1 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
 
@@ -512,11 +553,11 @@ int32_t st1vafe3bx_data_ready_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl1.drdy_pulsed))
   {
-    case ST1VAFE3BX_DRDY_LATCHED:
+    case 0x00:
       *val = ST1VAFE3BX_DRDY_LATCHED;
       break;
 
-    case ST1VAFE3BX_DRDY_PULSED:
+    case 0x01:
       *val = ST1VAFE3BX_DRDY_PULSED;
       break;
 
@@ -537,9 +578,9 @@ int32_t st1vafe3bx_data_ready_mode_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_mode_set(const stmdev_ctx_t *ctx, const st1vafe3bx_md_t *val)
 {
-  st1vafe3bx_ctrl3_t ctrl3;
-  st1vafe3bx_ctrl5_t ctrl5;
-  int32_t ret;
+  st1vafe3bx_ctrl3_t ctrl3 = {0};
+  st1vafe3bx_ctrl5_t ctrl5 = {0};
+  int32_t ret = 0;
   uint8_t hp_en_change = 0U;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
@@ -550,13 +591,15 @@ int32_t st1vafe3bx_mode_set(const stmdev_ctx_t *ctx, const st1vafe3bx_md_t *val)
     return ret;
   }
 
-  if (ctrl3.hp_en != val->hp_en)
+  uint8_t hp_en = (val->odr & 0x10) >> 4;
+
+  if (ctrl3.hp_en != hp_en)
   {
     hp_en_change = 1U;
   }
 
   /* Set the power mode */
-  ctrl3.hp_en = val->hp_en;
+  ctrl3.hp_en = hp_en;
 
   if (hp_en_change == 1U  &&  ctrl5.odr != 0x00)
   {
@@ -776,16 +819,14 @@ int32_t st1vafe3bx_mode_set(const stmdev_ctx_t *ctx, const st1vafe3bx_md_t *val)
   */
 int32_t st1vafe3bx_mode_get(const stmdev_ctx_t *ctx, st1vafe3bx_md_t *val)
 {
-  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
-  st1vafe3bx_ctrl3_t ctrl3;
-  st1vafe3bx_ctrl5_t ctrl5;
-  int32_t ret;
+  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2 = {0};
+  st1vafe3bx_ctrl3_t ctrl3 = {0};
+  st1vafe3bx_ctrl5_t ctrl5 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL5, (uint8_t *)&ctrl5, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&ah_bio_cfg2, 1);
-
-  val->hp_en = ctrl3.hp_en;
 
   if (ret != 0)
   {
@@ -955,7 +996,7 @@ int32_t st1vafe3bx_mode_get(const stmdev_ctx_t *ctx, st1vafe3bx_md_t *val)
 int32_t st1vafe3bx_exit_deep_power_down(const stmdev_ctx_t *ctx)
 {
   st1vafe3bx_en_device_config_t en_device_config = {0};
-  int32_t ret;
+  int32_t ret = 0;
 
   en_device_config.en_dev_conf = PROPERTY_ENABLE;
   ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EN_DEVICE_CONFIG,
@@ -980,7 +1021,7 @@ int32_t st1vafe3bx_exit_deep_power_down(const stmdev_ctx_t *ctx)
 int32_t st1vafe3bx_trigger_sw(const stmdev_ctx_t *ctx,
                               const st1vafe3bx_md_t *md)
 {
-  st1vafe3bx_ctrl4_t ctrl4;
+  st1vafe3bx_ctrl4_t ctrl4 = {0};
   int32_t ret = 0;
 
   if (md->odr == ST1VAFE3BX_TRIG_SW)
@@ -998,8 +1039,8 @@ int32_t st1vafe3bx_trigger_sw(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_all_sources_get(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_all_sources_t *val)
 {
-  st1vafe3bx_status_register_t status;
-  int32_t ret;
+  st1vafe3bx_status_register_t status = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_STATUS, (uint8_t *)&status, 1);
 
@@ -1064,10 +1105,10 @@ int32_t st1vafe3bx_xl_data_get(const stmdev_ctx_t *ctx,
                                const st1vafe3bx_md_t *md,
                                st1vafe3bx_xl_data_t *data)
 {
-  uint8_t buff[6];
-  int32_t ret;
-  uint8_t i;
-  uint8_t j;
+  uint8_t buff[6] = {0};
+  int32_t ret = 0;
+  uint8_t i = 0;
+  uint8_t j = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_OUT_X_L, buff, 6);
 
@@ -1117,8 +1158,8 @@ int32_t st1vafe3bx_xl_data_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_ah_bio_data_get(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_ah_bio_data_t *data)
 {
-  uint8_t buff[3];
-  int32_t ret;
+  uint8_t buff[3] = {0};
+  int32_t ret = 0;
 
   if (ctx->priv_data &&
       ((st1vafe3bx_priv_t *)(ctx->priv_data))->vafe_only == 1)
@@ -1132,7 +1173,8 @@ int32_t st1vafe3bx_ah_bio_data_get(const stmdev_ctx_t *ctx,
     data->raw = (int16_t)buff[1];
     data->raw = (data->raw * 256U) + (int16_t)buff[0];
 
-    data->mv = st1vafe3bx_from_lsb_to_mv(data->raw);
+    data->mv = st1vafe3bx_from_lsb_to_mv(data->raw,
+                                         ((st1vafe3bx_priv_t *)(ctx->priv_data))->gain);
   }
   else
   {
@@ -1146,7 +1188,8 @@ int32_t st1vafe3bx_ah_bio_data_get(const stmdev_ctx_t *ctx,
     data->raw = (int16_t)buff[2];
     data->raw = (data->raw * 256U) + (int16_t)buff[1];
 
-    data->mv = st1vafe3bx_from_lsb_to_mv(data->raw);
+    data->mv = st1vafe3bx_from_lsb_to_mv(data->raw,
+                                         ((st1vafe3bx_priv_t *)(ctx->priv_data))->gain);
   }
 
   return ret;
@@ -1163,9 +1206,9 @@ int32_t st1vafe3bx_ah_bio_data_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_self_test_sign_set(const stmdev_ctx_t *ctx,
                                       st1vafe3bx_xl_self_test_t val)
 {
-  st1vafe3bx_ctrl3_t ctrl3;
-  st1vafe3bx_wake_up_dur_t wkup_dur;
-  int32_t ret;
+  st1vafe3bx_ctrl3_t ctrl3 = {0};
+  st1vafe3bx_wake_up_dur_t wkup_dur = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_WAKE_UP_DUR,
@@ -1178,19 +1221,19 @@ int32_t st1vafe3bx_self_test_sign_set(const stmdev_ctx_t *ctx,
 
   switch (val)
   {
-    case ST1VAFE3BX_XL_ST_POSITIVE:
+    case 0x01:
       ctrl3.st_sign_x = 1;
       ctrl3.st_sign_y = 1;
       wkup_dur.st_sign_z = 0;
       break;
 
-    case ST1VAFE3BX_XL_ST_NEGATIVE:
+    case 0x02:
       ctrl3.st_sign_x = 0;
       ctrl3.st_sign_y = 0;
       wkup_dur.st_sign_z = 1;
       break;
 
-    case ST1VAFE3BX_XL_ST_DISABLE:
+    case 0x00:
     default:
       ret = -1;
       break;
@@ -1214,8 +1257,8 @@ int32_t st1vafe3bx_self_test_sign_set(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_self_test_start(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  st1vafe3bx_ah_bio_cfg3_t ah_bio_cfg3;
-  int32_t ret;
+  st1vafe3bx_ah_bio_cfg3_t ah_bio_cfg3 = {0};
+  int32_t ret = 0;
 
   if (val != 1U && val != 2U)
   {
@@ -1242,8 +1285,8 @@ int32_t st1vafe3bx_self_test_start(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_self_test_stop(const stmdev_ctx_t *ctx)
 {
-  st1vafe3bx_ah_bio_cfg3_t ah_bio_cfg3;
-  int32_t ret;
+  st1vafe3bx_ah_bio_cfg3_t ah_bio_cfg3 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG3,
                             (uint8_t *)&ah_bio_cfg3, 1);
@@ -1267,8 +1310,8 @@ int32_t st1vafe3bx_self_test_stop(const stmdev_ctx_t *ctx)
 int32_t st1vafe3bx_i3c_configure_set(const stmdev_ctx_t *ctx,
                                      const st1vafe3bx_i3c_cfg_t *val)
 {
-  st1vafe3bx_i3c_if_ctrl_t i3c_cfg;
-  int32_t ret;
+  st1vafe3bx_i3c_if_ctrl_t i3c_cfg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_I3C_IF_CTRL,
                             (uint8_t *)&i3c_cfg, 1);
@@ -1295,8 +1338,8 @@ int32_t st1vafe3bx_i3c_configure_set(const stmdev_ctx_t *ctx,
   */int32_t st1vafe3bx_i3c_configure_get(const stmdev_ctx_t *ctx,
                                          st1vafe3bx_i3c_cfg_t *val)
 {
-  st1vafe3bx_i3c_if_ctrl_t i3c_cfg;
-  int32_t ret;
+  st1vafe3bx_i3c_if_ctrl_t i3c_cfg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_I3C_IF_CTRL,
                             (uint8_t *)&i3c_cfg, 1);
@@ -1311,19 +1354,19 @@ int32_t st1vafe3bx_i3c_configure_set(const stmdev_ctx_t *ctx,
 
   switch (val->bus_act_sel)
   {
-    case ST1VAFE3BX_I3C_BUS_AVAIL_TIME_20US:
+    case 0x00:
       val->bus_act_sel = ST1VAFE3BX_I3C_BUS_AVAIL_TIME_20US;
       break;
 
-    case ST1VAFE3BX_I3C_BUS_AVAIL_TIME_50US:
+    case 0x01:
       val->bus_act_sel = ST1VAFE3BX_I3C_BUS_AVAIL_TIME_50US;
       break;
 
-    case ST1VAFE3BX_I3C_BUS_AVAIL_TIME_1MS:
+    case 0x02:
       val->bus_act_sel = ST1VAFE3BX_I3C_BUS_AVAIL_TIME_1MS;
       break;
 
-    case ST1VAFE3BX_I3C_BUS_AVAIL_TIME_25MS:
+    case 0x03:
     default:
       val->bus_act_sel = ST1VAFE3BX_I3C_BUS_AVAIL_TIME_25MS;
       break;
@@ -1344,8 +1387,8 @@ int32_t st1vafe3bx_i3c_configure_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_mem_bank_set(const stmdev_ctx_t *ctx,
                                 st1vafe3bx_mem_bank_t val)
 {
-  st1vafe3bx_func_cfg_access_t func_cfg_access;
-  int32_t ret;
+  st1vafe3bx_func_cfg_access_t func_cfg_access = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FUNC_CFG_ACCESS,
                             (uint8_t *)&func_cfg_access, 1);
@@ -1372,8 +1415,8 @@ int32_t st1vafe3bx_mem_bank_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_mem_bank_get(const stmdev_ctx_t *ctx,
                                 st1vafe3bx_mem_bank_t *val)
 {
-  st1vafe3bx_func_cfg_access_t func_cfg_access;
-  int32_t ret;
+  st1vafe3bx_func_cfg_access_t func_cfg_access = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FUNC_CFG_ACCESS,
                             (uint8_t *)&func_cfg_access, 1);
@@ -1414,13 +1457,13 @@ int32_t st1vafe3bx_mem_bank_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
                                uint8_t *buf, uint8_t len)
 {
-  st1vafe3bx_page_address_t  page_address;
-  st1vafe3bx_page_sel_t page_sel;
-  st1vafe3bx_page_rw_t page_rw;
-  uint8_t msb;
-  uint8_t lsb;
-  int32_t ret;
-  uint8_t i ;
+  st1vafe3bx_page_address_t  page_address = {0};
+  st1vafe3bx_page_sel_t page_sel = {0};
+  st1vafe3bx_page_rw_t page_rw = {0};
+  uint8_t msb = 0;
+  uint8_t lsb = 0;
+  int32_t ret = 0;
+  uint8_t i = 0;
 
   msb = ((uint8_t)(address >> 8) & 0x0FU);
   lsb = (uint8_t)address & 0xFFU;
@@ -1533,13 +1576,13 @@ exit:
 int32_t st1vafe3bx_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address,
                               uint8_t *buf, uint8_t len)
 {
-  st1vafe3bx_page_address_t  page_address;
-  st1vafe3bx_page_sel_t page_sel;
-  st1vafe3bx_page_rw_t page_rw;
-  uint8_t msb;
-  uint8_t lsb;
-  int32_t ret;
-  uint8_t i ;
+  st1vafe3bx_page_address_t  page_address = {0};
+  st1vafe3bx_page_sel_t page_sel = {0};
+  st1vafe3bx_page_rw_t page_rw = {0};
+  uint8_t msb = 0;
+  uint8_t lsb = 0;
+  int32_t ret = 0;
+  uint8_t i = 0;
 
   msb = ((uint8_t)(address >> 8) & 0x0FU);
   lsb = (uint8_t)address & 0xFFU;
@@ -1664,8 +1707,8 @@ exit:
   */
 int32_t st1vafe3bx_ext_clk_en_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  st1vafe3bx_ext_clk_cfg_t clk;
-  int32_t ret;
+  st1vafe3bx_ext_clk_cfg_t clk = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EXT_CLK_CFG, (uint8_t *)&clk, 1);
   if (ret != 0)
@@ -1689,8 +1732,8 @@ int32_t st1vafe3bx_ext_clk_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_ext_clk_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  st1vafe3bx_ext_clk_cfg_t clk;
-  int32_t ret;
+  st1vafe3bx_ext_clk_cfg_t clk = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EXT_CLK_CFG, (uint8_t *)&clk, 1);
   if (ret != 0)
@@ -1714,8 +1757,8 @@ int32_t st1vafe3bx_ext_clk_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t st1vafe3bx_pin_conf_set(const stmdev_ctx_t *ctx,
                                 const st1vafe3bx_pin_conf_t *val)
 {
-  st1vafe3bx_pin_ctrl_t pin_ctrl;
-  int32_t ret;
+  st1vafe3bx_pin_ctrl_t pin_ctrl = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
 
@@ -1744,8 +1787,8 @@ int32_t st1vafe3bx_pin_conf_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_pin_conf_get(const stmdev_ctx_t *ctx,
                                 st1vafe3bx_pin_conf_t *val)
 {
-  st1vafe3bx_pin_ctrl_t pin_ctrl;
-  int32_t ret;
+  st1vafe3bx_pin_ctrl_t pin_ctrl = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   if (ret != 0)
@@ -1772,8 +1815,8 @@ int32_t st1vafe3bx_pin_conf_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_int_pin_polarity_set(const stmdev_ctx_t *ctx,
                                         st1vafe3bx_int_pin_polarity_t val)
 {
-  st1vafe3bx_pin_ctrl_t pin_ctrl;
-  int32_t ret;
+  st1vafe3bx_pin_ctrl_t pin_ctrl = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
 
@@ -1798,8 +1841,8 @@ int32_t st1vafe3bx_int_pin_polarity_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_int_pin_polarity_get(const stmdev_ctx_t *ctx,
                                         st1vafe3bx_int_pin_polarity_t *val)
 {
-  st1vafe3bx_pin_ctrl_t pin_ctrl;
-  int32_t ret;
+  st1vafe3bx_pin_ctrl_t pin_ctrl = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   if (ret != 0)
@@ -1836,8 +1879,8 @@ int32_t st1vafe3bx_int_pin_polarity_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_spi_mode_set(const stmdev_ctx_t *ctx,
                                 st1vafe3bx_spi_mode val)
 {
-  st1vafe3bx_pin_ctrl_t pin_ctrl;
-  int32_t ret;
+  st1vafe3bx_pin_ctrl_t pin_ctrl = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
 
@@ -1862,8 +1905,8 @@ int32_t st1vafe3bx_spi_mode_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_spi_mode_get(const stmdev_ctx_t *ctx,
                                 st1vafe3bx_spi_mode *val)
 {
-  st1vafe3bx_pin_ctrl_t pin_ctrl;
-  int32_t ret;
+  st1vafe3bx_pin_ctrl_t pin_ctrl = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   if (ret != 0)
@@ -1899,10 +1942,10 @@ int32_t st1vafe3bx_spi_mode_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_pin_int_route_set(const stmdev_ctx_t *ctx,
                                      const st1vafe3bx_pin_int_route_t *val)
 {
-  st1vafe3bx_ctrl1_t ctrl1;
-  st1vafe3bx_ctrl2_t ctrl2;
-  st1vafe3bx_md1_cfg_t md1_cfg;
-  int32_t ret;
+  st1vafe3bx_ctrl1_t ctrl1 = {0};
+  st1vafe3bx_ctrl2_t ctrl2 = {0};
+  st1vafe3bx_md1_cfg_t md1_cfg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
   if (ret != 0)
@@ -1962,9 +2005,9 @@ int32_t st1vafe3bx_pin_int_route_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_pin_int_route_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_pin_int_route_t *val)
 {
-  st1vafe3bx_ctrl2_t ctrl2;
-  st1vafe3bx_md1_cfg_t md1_cfg;
-  int32_t ret;
+  st1vafe3bx_ctrl2_t ctrl2 = {0};
+  st1vafe3bx_md1_cfg_t md1_cfg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL2, (uint8_t *)&ctrl2, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_MD1_CFG, (uint8_t *)&md1_cfg, 1);
@@ -2000,9 +2043,9 @@ int32_t st1vafe3bx_pin_int_route_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_emb_pin_int_route_set(const stmdev_ctx_t *ctx,
                                          const st1vafe3bx_emb_pin_int_route_t *val)
 {
-  st1vafe3bx_emb_func_int_t emb_func_int;
-  st1vafe3bx_md1_cfg_t md1_cfg;
-  int32_t ret;
+  st1vafe3bx_emb_func_int_t emb_func_int = {0};
+  st1vafe3bx_md1_cfg_t md1_cfg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -2044,8 +2087,8 @@ int32_t st1vafe3bx_emb_pin_int_route_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_emb_pin_int_route_get(const stmdev_ctx_t *ctx,
                                          st1vafe3bx_emb_pin_int_route_t *val)
 {
-  st1vafe3bx_emb_func_int_t emb_func_int;
-  int32_t ret;
+  st1vafe3bx_emb_func_int_t emb_func_int = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -2077,8 +2120,8 @@ int32_t st1vafe3bx_emb_pin_int_route_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_int_config_set(const stmdev_ctx_t *ctx,
                                   const st1vafe3bx_int_config_t *val)
 {
-  st1vafe3bx_interrupt_cfg_t interrupt_cfg;
-  int32_t ret;
+  st1vafe3bx_interrupt_cfg_t interrupt_cfg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_INTERRUPT_CFG,
                             (uint8_t *)&interrupt_cfg, 1);
@@ -2124,8 +2167,8 @@ int32_t st1vafe3bx_int_config_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_int_config_get(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_int_config_t *val)
 {
-  st1vafe3bx_interrupt_cfg_t interrupt_cfg;
-  int32_t ret;
+  st1vafe3bx_interrupt_cfg_t interrupt_cfg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_INTERRUPT_CFG,
                             (uint8_t *)&interrupt_cfg, 1);
@@ -2163,8 +2206,8 @@ int32_t st1vafe3bx_int_config_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_embedded_int_cfg_set(const stmdev_ctx_t *ctx,
                                         st1vafe3bx_embedded_int_config_t val)
 {
-  st1vafe3bx_page_rw_t page_rw;
-  int32_t ret;
+  st1vafe3bx_page_rw_t page_rw = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -2207,8 +2250,8 @@ int32_t st1vafe3bx_embedded_int_cfg_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_embedded_int_cfg_get(const stmdev_ctx_t *ctx,
                                         st1vafe3bx_embedded_int_config_t *val)
 {
-  st1vafe3bx_page_rw_t page_rw;
-  int32_t ret;
+  st1vafe3bx_page_rw_t page_rw = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -2257,12 +2300,12 @@ int32_t st1vafe3bx_embedded_int_cfg_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_fifo_mode_set(const stmdev_ctx_t *ctx,
                                  st1vafe3bx_fifo_mode_t val)
 {
-  st1vafe3bx_ctrl4_t ctrl4;
-  st1vafe3bx_fifo_ctrl_t fifo_ctrl;
-  st1vafe3bx_fifo_wtm_t fifo_wtm;
-  st1vafe3bx_fifo_batch_dec_t fifo_batch;
-  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
-  int32_t ret;
+  st1vafe3bx_ctrl4_t ctrl4 = {0};
+  st1vafe3bx_fifo_ctrl_t fifo_ctrl = {0};
+  st1vafe3bx_fifo_wtm_t fifo_wtm = {0};
+  st1vafe3bx_fifo_batch_dec_t fifo_batch = {0};
+  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FIFO_CTRL,
@@ -2343,11 +2386,11 @@ int32_t st1vafe3bx_fifo_mode_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_fifo_mode_get(const stmdev_ctx_t *ctx,
                                  st1vafe3bx_fifo_mode_t *val)
 {
-  st1vafe3bx_ctrl4_t ctrl4;
-  st1vafe3bx_fifo_ctrl_t fifo_ctrl;
-  st1vafe3bx_fifo_wtm_t fifo_wtm;
-  st1vafe3bx_fifo_batch_dec_t fifo_batch;
-  int32_t ret;
+  st1vafe3bx_ctrl4_t ctrl4 = {0};
+  st1vafe3bx_fifo_ctrl_t fifo_ctrl = {0};
+  st1vafe3bx_fifo_wtm_t fifo_wtm = {0};
+  st1vafe3bx_fifo_batch_dec_t fifo_batch = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FIFO_CTRL,
@@ -2396,8 +2439,8 @@ int32_t st1vafe3bx_fifo_mode_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
-  uint8_t buff;
-  int32_t ret;
+  uint8_t buff = 0;
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FIFO_STATUS2, &buff, 1);
   if (ret != 0)
@@ -2412,8 +2455,8 @@ int32_t st1vafe3bx_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
 
 int32_t st1vafe3bx_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  st1vafe3bx_fifo_status1_t fifo_status1;
-  int32_t ret;
+  st1vafe3bx_fifo_status1_t fifo_status1 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FIFO_STATUS1, (uint8_t *)&fifo_status1, 1);
   if (ret != 0)
@@ -2429,8 +2472,8 @@ int32_t st1vafe3bx_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t st1vafe3bx_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
                                        st1vafe3bx_fifo_sensor_tag_t *val)
 {
-  st1vafe3bx_fifo_data_out_tag_t fifo_tag;
-  int32_t ret;
+  st1vafe3bx_fifo_data_out_tag_t fifo_tag = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FIFO_DATA_OUT_TAG,
                             (uint8_t *)&fifo_tag, 1);
@@ -2446,7 +2489,7 @@ int32_t st1vafe3bx_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
 
 int32_t st1vafe3bx_fifo_out_raw_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FIFO_DATA_OUT_X_L, buff, 6);
 
@@ -2458,9 +2501,14 @@ int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
                                  const st1vafe3bx_fifo_mode_t *fmd,
                                  st1vafe3bx_fifo_data_t *data)
 {
-  st1vafe3bx_fifo_data_out_tag_t fifo_tag;
-  uint8_t fifo_raw[6];
-  int32_t ret, i;
+  st1vafe3bx_fifo_data_out_tag_t fifo_tag = {0};
+  uint8_t fifo_raw[6] = {0};
+  int32_t ret = 0, i = 0;
+
+  if (ctx->priv_data == NULL)
+  {
+    return -1;
+  }
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FIFO_DATA_OUT_TAG,
                             (uint8_t *)&fifo_tag, 1);
@@ -2507,10 +2555,18 @@ int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
         return ret;
       }
 
+      /*    fifo_raw[0]   fifo_raw[1]   fifo_raw[2]   fifo_raw[3]  fifo_raw[4]   fifo_raw[5]
+       * +-------------+-------------+-------------+-------------+-------------+-------------+
+       * | X0_76543210 | Y0_76543210 | Z0_76543210 | X1_76543210 | Y1_76543210 | Z1_76543210 |
+       * +-------------+-------------+-------------+-------------+-------------+-------------+
+       *  MSB       LSB MSB       LSB MSB       LSB MSB       LSB MSB       LSB MSB       LSB
+       *
+       *  8bit data (7654_3210) remapped to 16bit by <<8 or *256U (0x00 concatenated)
+       */
       for (i = 0; i < 3; i++)
       {
-        data->xl[0].raw[i] = (int16_t)fifo_raw[i] * 256U;
-        data->xl[1].raw[i] = (int16_t)fifo_raw[3 + i] * 256U;
+        data->xl[0].raw[i] = (int16_t)fifo_raw[i] * 256U;     /* PREV sample */
+        data->xl[1].raw[i] = (int16_t)fifo_raw[3 + i] * 256U; /* CURR sample */
       }
       break;
     case ST1VAFE3BX_STEP_COUNTER_TAG:
@@ -2539,8 +2595,17 @@ int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
         return ret;
       }
 
+      /*    fifo_raw[0]   fifo_raw[1]   fifo_raw[2]   fifo_raw[3]  fifo_raw[4]   fifo_raw[5]
+       * +-------------+-------------+-------------+-------------+-------------+-------------+
+       * | V_76543210  | V_FEDCBA98  |             |             |             |             |
+       * +-------------+-------------+-------------+-------------+-------------+-------------+
+       *  MSB       LSB MSB       LSB MSB       LSB MSB       LSB MSB       LSB MSB       LSB
+       *
+       *  16bit data (FEDC_BA98_7654_3210)
+       */
       data->ah_bio.raw = (int16_t)fifo_raw[0] + (int16_t)fifo_raw[1] * 256U;
-      data->ah_bio.mv = st1vafe3bx_from_lsb_to_mv(data->ah_bio.raw);
+      data->ah_bio.mv = st1vafe3bx_from_lsb_to_mv(data->ah_bio.raw,
+                                                  ((st1vafe3bx_priv_t *)(ctx->priv_data))->gain);
       break;
     case ST1VAFE3BX_XL_ONLY:
     case ST1VAFE3BX_XL_AND_AH_VAFE1_TAG:
@@ -2557,44 +2622,41 @@ int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
        */
       if (fmd->xl_only == 0x0U)
       {
-        /*
-         * data packaging in FIFO when XL and vAFE available:
-         *                 ------------- -------------
-         *                |    LSB0     | LSN1 | MSN0 |
-         *                 ------------- -------------
-         *                |    MSB1     |    LSB2     |
-         *                 ------------- -------------
-         *                | LSN3 | MSN2 |    MSB3     |
-         *                 ------------- -------------
+        /*    fifo_raw[0]   fifo_raw[1]   fifo_raw[2]   fifo_raw[3]  fifo_raw[4]   fifo_raw[5]
+         *  +-------------+-------------+-------------+-------------+-------------+-------------+
+         *  | X_76543210  |Y_3210 X_BA98| Y_BA987654  | Z_76543210  |V_3210 Z_BA98| V_BA987654  |
+         *  +-------------+-------------+-------------+-------------+-------------+-------------+
+         *   MSB       LSB MSB       LSB MSB       LSB MSB       LSB MSB       LSB MSB       LSB
          *
-         *  ------------- ------------- ------------- -------------
-         * |      X      |      Y      |      Z      |   vAFE      |
-         *  ------------- ------------- ------------- -------------
-         * | MSN0 | LSB0 | MSB1 | LSN1 | MSN2 | LSB2 | MSB3 | LSN3 |
-         *  ------ ------ ------ ------ ------ ------ ------ ------
+         *   12bit data (BA98_7654_3210) remapped to 16bit by <<4 or *16U (0x0 LSB concatenated)
          */
-        data->xl[0].raw[0] = (int16_t)fifo_raw[0];
-        data->xl[0].raw[0] = (data->xl[0].raw[0] +
-                              ((int16_t)fifo_raw[1] * 256U)) * 16U;
+        data->xl[0].raw[0] = ((int16_t)fifo_raw[0] +
+                              ((int16_t)(fifo_raw[1] & 0x0F) * 256U)) * 16U;
 
-        data->xl[0].raw[1] = (int16_t)fifo_raw[1] / 16U;
-        data->xl[0].raw[1] = (data->xl[0].raw[1] +
+        data->xl[0].raw[1] = ((int16_t)fifo_raw[1] / 16U +
                               (int16_t)fifo_raw[2] * 16U) * 16U;
 
-        data->xl[0].raw[2] = (int16_t)fifo_raw[3];
-        data->xl[0].raw[2] = (data->xl[0].raw[2] +
-                              ((int16_t)fifo_raw[4] * 256U)) * 16U;
+        data->xl[0].raw[2] = ((int16_t)fifo_raw[3] +
+                              ((int16_t)(fifo_raw[4] & 0x0F) * 256U)) * 16U;
 
-        data->ah_bio.raw = (int16_t)fifo_raw[4] / 16U;
-        data->ah_bio.raw = (data->ah_bio.raw +
+        data->ah_bio.raw = ((int16_t)fifo_raw[4] / 16U +
                             ((int16_t)fifo_raw[5] * 16U)) * 16U;
-        data->ah_bio.mv = st1vafe3bx_from_lsb_to_mv(data->ah_bio.raw);
+        data->ah_bio.mv = st1vafe3bx_from_lsb_to_mv(data->ah_bio.raw,
+                                                    ((st1vafe3bx_priv_t *)(ctx->priv_data))->gain);
       }
       else
       {
+        /*    fifo_raw[0]   fifo_raw[1]   fifo_raw[2]   fifo_raw[3]  fifo_raw[4]   fifo_raw[5]
+         * +-------------+-------------+-------------+-------------+-------------+-------------+
+         * | X_76543210  | X_FEDCBA98  | Y_76543210  | Y_FEDCBA98  | Z_76543210  | Z_FEDCBA98  |
+         * +-------------+-------------+-------------+-------------+-------------+-------------+
+         *  MSB       LSB MSB       LSB MSB       LSB MSB       LSB MSB       LSB MSB       LSB
+         *
+         *  16bit data (FEDC_BA98_7654_3210)
+         */
         data->xl[0].raw[0] = (int16_t)fifo_raw[0] + (int16_t)fifo_raw[1] * 256U;
-        data->xl[0].raw[1] = (int16_t)fifo_raw[1] + (int16_t)fifo_raw[3] * 256U;
-        data->xl[0].raw[2] = (int16_t)fifo_raw[2] + (int16_t)fifo_raw[5] * 256U;
+        data->xl[0].raw[1] = (int16_t)fifo_raw[2] + (int16_t)fifo_raw[3] * 256U;
+        data->xl[0].raw[2] = (int16_t)fifo_raw[4] + (int16_t)fifo_raw[5] * 256U;
       }
       break;
     default:
@@ -2643,10 +2705,15 @@ int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_ah_bio_config_set(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_ah_bio_config_t val)
 {
-  st1vafe3bx_ah_bio_cfg1_t cfg1;
-  st1vafe3bx_ah_bio_cfg2_t cfg2;
-  st1vafe3bx_ah_bio_cfg3_t cfg3;
-  int32_t ret;
+  st1vafe3bx_ah_bio_cfg1_t cfg1 = {0};
+  st1vafe3bx_ah_bio_cfg2_t cfg2 = {0};
+  st1vafe3bx_ah_bio_cfg3_t cfg3 = {0};
+  int32_t ret = 0;
+
+  if (ctx->priv_data == NULL)
+  {
+    return -1;
+  }
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG1, (uint8_t *)&cfg1, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
@@ -2694,6 +2761,7 @@ int32_t st1vafe3bx_ah_bio_config_set(const stmdev_ctx_t *ctx,
         cfg2.ah_bio_gain = 0x0U;
         break;
     }
+    ((st1vafe3bx_priv_t *)(ctx->priv_data))->gain = (enum st1vafe3bx_gain)cfg2.ah_bio_gain;
 
     switch (val.zin)
     {
@@ -2733,10 +2801,15 @@ int32_t st1vafe3bx_ah_bio_config_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_ah_bio_config_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_ah_bio_config_t *val)
 {
-  st1vafe3bx_ah_bio_cfg1_t cfg1;
-  st1vafe3bx_ah_bio_cfg2_t cfg2;
-  st1vafe3bx_ah_bio_cfg3_t cfg3;
-  int32_t ret;
+  st1vafe3bx_ah_bio_cfg1_t cfg1 = {0};
+  st1vafe3bx_ah_bio_cfg2_t cfg2 = {0};
+  st1vafe3bx_ah_bio_cfg3_t cfg3 = {0};
+  int32_t ret = 0;
+
+  if (ctx->priv_data == NULL)
+  {
+    return -1;
+  }
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG1, (uint8_t *)&cfg1, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
@@ -2805,6 +2878,7 @@ int32_t st1vafe3bx_ah_bio_config_get(const stmdev_ctx_t *ctx,
       val->gain = ST1VAFE3BX_GAIN_2;
       break;
   }
+  ((st1vafe3bx_priv_t *)(ctx->priv_data))->gain = val->gain;
 
   return ret;
 }
@@ -2818,8 +2892,8 @@ int32_t st1vafe3bx_ah_bio_config_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx)
 {
-  st1vafe3bx_ah_bio_cfg2_t cfg2;
-  int32_t ret;
+  st1vafe3bx_ah_bio_cfg2_t cfg2 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
   if (ret != 0)
@@ -2851,8 +2925,8 @@ int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx)
   */
 int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx)
 {
-  st1vafe3bx_ah_bio_cfg2_t cfg2;
-  int32_t ret;
+  st1vafe3bx_ah_bio_cfg2_t cfg2 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
   if (ret != 0)
@@ -2885,9 +2959,9 @@ int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx)
   */
 int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on)
 {
-  st1vafe3bx_ah_bio_cfg3_t cfg3;
-  st1vafe3bx_ctrl3_t ctrl3;
-  int32_t ret;
+  st1vafe3bx_ah_bio_cfg3_t cfg3 = {0};
+  st1vafe3bx_ctrl3_t ctrl3 = {0};
+  int32_t ret = 0;
 
   if (ctx->priv_data && ((st1vafe3bx_priv_t *)(ctx->priv_data))->vafe_only == 0)
   {
@@ -2943,11 +3017,11 @@ int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on)
 int32_t st1vafe3bx_stpcnt_mode_set(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_stpcnt_mode_t val)
 {
-  st1vafe3bx_emb_func_en_a_t emb_func_en_a;
-  st1vafe3bx_emb_func_en_b_t emb_func_en_b;
-  st1vafe3bx_emb_func_fifo_en_t emb_func_fifo_en;
-  st1vafe3bx_pedo_cmd_reg_t pedo_cmd_reg;
-  int32_t ret;
+  st1vafe3bx_emb_func_en_a_t emb_func_en_a = {0};
+  st1vafe3bx_emb_func_en_b_t emb_func_en_b = {0};
+  st1vafe3bx_emb_func_fifo_en_t emb_func_fifo_en = {0};
+  st1vafe3bx_pedo_cmd_reg_t pedo_cmd_reg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -3011,9 +3085,9 @@ int32_t st1vafe3bx_stpcnt_mode_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_stpcnt_mode_get(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_stpcnt_mode_t *val)
 {
-  st1vafe3bx_emb_func_en_a_t emb_func_en_a;
-  st1vafe3bx_pedo_cmd_reg_t pedo_cmd_reg;
-  int32_t ret;
+  st1vafe3bx_emb_func_en_a_t emb_func_en_a = {0};
+  st1vafe3bx_pedo_cmd_reg_t pedo_cmd_reg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -3050,8 +3124,8 @@ int32_t st1vafe3bx_stpcnt_mode_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_stpcnt_steps_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -3081,8 +3155,8 @@ int32_t st1vafe3bx_stpcnt_steps_get(const stmdev_ctx_t *ctx, uint16_t *val)
   */
 int32_t st1vafe3bx_stpcnt_rst_step_set(const stmdev_ctx_t *ctx)
 {
-  st1vafe3bx_emb_func_src_t emb_func_src;
-  int32_t ret;
+  st1vafe3bx_emb_func_src_t emb_func_src = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -3112,8 +3186,8 @@ int32_t st1vafe3bx_stpcnt_rst_step_set(const stmdev_ctx_t *ctx)
   */
 int32_t st1vafe3bx_stpcnt_debounce_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  st1vafe3bx_pedo_deb_steps_conf_t pedo_deb_steps_conf;
-  int32_t ret;
+  st1vafe3bx_pedo_deb_steps_conf_t pedo_deb_steps_conf = {0};
+  int32_t ret = 0;
 
   pedo_deb_steps_conf.deb_step = val;
   ret = st1vafe3bx_ln_pg_write(ctx, ST1VAFE3BX_EMB_ADV_PG_0 +
@@ -3133,8 +3207,8 @@ int32_t st1vafe3bx_stpcnt_debounce_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_stpcnt_debounce_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  st1vafe3bx_pedo_deb_steps_conf_t pedo_deb_steps_conf;
-  int32_t ret;
+  st1vafe3bx_pedo_deb_steps_conf_t pedo_deb_steps_conf = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_ln_pg_read(ctx, ST1VAFE3BX_EMB_ADV_PG_0 +
                               ST1VAFE3BX_PEDO_DEB_STEPS_CONF,
@@ -3157,8 +3231,8 @@ int32_t st1vafe3bx_stpcnt_debounce_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t st1vafe3bx_stpcnt_period_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
@@ -3180,8 +3254,8 @@ int32_t st1vafe3bx_stpcnt_period_set(const stmdev_ctx_t *ctx, uint16_t val)
   */
 int32_t st1vafe3bx_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_ln_pg_read(ctx, ST1VAFE3BX_EMB_ADV_PG_0 +
                               ST1VAFE3BX_PEDO_SC_DELTAT_L,
@@ -3218,8 +3292,8 @@ int32_t st1vafe3bx_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val)
   */
 int32_t st1vafe3bx_tilt_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  st1vafe3bx_emb_func_en_a_t emb_func_en_a;
-  int32_t ret;
+  st1vafe3bx_emb_func_en_a_t emb_func_en_a = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -3249,8 +3323,8 @@ int32_t st1vafe3bx_tilt_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_tilt_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  st1vafe3bx_emb_func_en_a_t emb_func_en_a;
-  int32_t ret;
+  st1vafe3bx_emb_func_en_a_t emb_func_en_a = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -3289,8 +3363,8 @@ int32_t st1vafe3bx_tilt_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t st1vafe3bx_sigmot_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  st1vafe3bx_emb_func_en_a_t emb_func_en_a;
-  int32_t ret;
+  st1vafe3bx_emb_func_en_a_t emb_func_en_a = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -3320,8 +3394,8 @@ int32_t st1vafe3bx_sigmot_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_sigmot_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  st1vafe3bx_emb_func_en_a_t emb_func_en_a;
-  int32_t ret;
+  st1vafe3bx_emb_func_en_a_t emb_func_en_a = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
@@ -3363,9 +3437,9 @@ int32_t st1vafe3bx_sigmot_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t st1vafe3bx_ff_duration_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  st1vafe3bx_wake_up_dur_t wake_up_dur;
-  st1vafe3bx_free_fall_t free_fall;
-  int32_t ret;
+  st1vafe3bx_wake_up_dur_t wake_up_dur = {0};
+  st1vafe3bx_free_fall_t free_fall = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_WAKE_UP_DUR,
                             (uint8_t *)&wake_up_dur, 1);
@@ -3399,9 +3473,9 @@ int32_t st1vafe3bx_ff_duration_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_ff_duration_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  st1vafe3bx_wake_up_dur_t wake_up_dur;
-  st1vafe3bx_free_fall_t free_fall;
-  int32_t ret;
+  st1vafe3bx_wake_up_dur_t wake_up_dur = {0};
+  st1vafe3bx_free_fall_t free_fall = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_WAKE_UP_DUR,
                             (uint8_t *)&wake_up_dur, 1);
@@ -3430,8 +3504,8 @@ int32_t st1vafe3bx_ff_duration_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t st1vafe3bx_ff_thresholds_set(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_ff_thresholds_t val)
 {
-  st1vafe3bx_free_fall_t free_fall;
-  int32_t ret;
+  st1vafe3bx_free_fall_t free_fall = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FREE_FALL,
                             (uint8_t *)&free_fall, 1);
@@ -3460,8 +3534,8 @@ int32_t st1vafe3bx_ff_thresholds_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_ff_thresholds_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_ff_thresholds_t *val)
 {
-  st1vafe3bx_free_fall_t free_fall;
-  int32_t ret;
+  st1vafe3bx_free_fall_t free_fall = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FREE_FALL,
                             (uint8_t *)&free_fall, 1);
@@ -3536,8 +3610,8 @@ int32_t st1vafe3bx_ff_thresholds_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_sixd_config_set(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_sixd_config_t val)
 {
-  st1vafe3bx_sixd_t sixd;
-  int32_t ret;
+  st1vafe3bx_sixd_t sixd = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_SIXD, (uint8_t *)&sixd, 1);
 
@@ -3562,8 +3636,8 @@ int32_t st1vafe3bx_sixd_config_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_sixd_config_get(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_sixd_config_t *val)
 {
-  st1vafe3bx_sixd_t sixd;
-  int32_t ret;
+  st1vafe3bx_sixd_t sixd = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_SIXD, (uint8_t *)&sixd, 1);
 
@@ -3623,13 +3697,13 @@ int32_t st1vafe3bx_sixd_config_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_wakeup_config_set(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_wakeup_config_t val)
 {
-  st1vafe3bx_wake_up_ths_t wup_ths;
-  st1vafe3bx_wake_up_dur_t wup_dur;
-  st1vafe3bx_wake_up_dur_ext_t wup_dur_ext;
-  st1vafe3bx_interrupt_cfg_t int_cfg;
-  st1vafe3bx_ctrl1_t ctrl1;
-  st1vafe3bx_ctrl4_t ctrl4;
-  int32_t ret;
+  st1vafe3bx_wake_up_ths_t wup_ths = {0};
+  st1vafe3bx_wake_up_dur_t wup_dur = {0};
+  st1vafe3bx_wake_up_dur_ext_t wup_dur_ext = {0};
+  st1vafe3bx_interrupt_cfg_t int_cfg = {0};
+  st1vafe3bx_ctrl1_t ctrl1 = {0};
+  st1vafe3bx_ctrl4_t ctrl4 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_WAKE_UP_THS,
                             (uint8_t *)&wup_ths, 1);
@@ -3692,12 +3766,12 @@ int32_t st1vafe3bx_wakeup_config_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_wakeup_config_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_wakeup_config_t *val)
 {
-  st1vafe3bx_wake_up_ths_t wup_ths;
-  st1vafe3bx_wake_up_dur_t wup_dur;
-  st1vafe3bx_wake_up_dur_ext_t wup_dur_ext;
-  st1vafe3bx_interrupt_cfg_t int_cfg;
-  st1vafe3bx_ctrl4_t ctrl4;
-  int32_t ret;
+  st1vafe3bx_wake_up_ths_t wup_ths = {0};
+  st1vafe3bx_wake_up_dur_t wup_dur = {0};
+  st1vafe3bx_wake_up_dur_ext_t wup_dur_ext = {0};
+  st1vafe3bx_interrupt_cfg_t int_cfg = {0};
+  st1vafe3bx_ctrl4_t ctrl4 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_WAKE_UP_THS,
                             (uint8_t *)&wup_ths, 1);
@@ -3754,14 +3828,14 @@ int32_t st1vafe3bx_wakeup_config_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_tap_config_set(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_tap_config_t val)
 {
-  st1vafe3bx_tap_cfg0_t tap_cfg0;
-  st1vafe3bx_tap_cfg1_t tap_cfg1;
-  st1vafe3bx_tap_cfg2_t tap_cfg2;
-  st1vafe3bx_tap_cfg3_t tap_cfg3;
-  st1vafe3bx_tap_cfg4_t tap_cfg4;
-  st1vafe3bx_tap_cfg5_t tap_cfg5;
-  st1vafe3bx_tap_cfg6_t tap_cfg6;
-  int32_t ret;
+  st1vafe3bx_tap_cfg0_t tap_cfg0 = {0};
+  st1vafe3bx_tap_cfg1_t tap_cfg1 = {0};
+  st1vafe3bx_tap_cfg2_t tap_cfg2 = {0};
+  st1vafe3bx_tap_cfg3_t tap_cfg3 = {0};
+  st1vafe3bx_tap_cfg4_t tap_cfg4 = {0};
+  st1vafe3bx_tap_cfg5_t tap_cfg5 = {0};
+  st1vafe3bx_tap_cfg6_t tap_cfg6 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
@@ -3812,14 +3886,14 @@ int32_t st1vafe3bx_tap_config_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_tap_config_get(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_tap_config_t *val)
 {
-  st1vafe3bx_tap_cfg0_t tap_cfg0;
-  st1vafe3bx_tap_cfg1_t tap_cfg1;
-  st1vafe3bx_tap_cfg2_t tap_cfg2;
-  st1vafe3bx_tap_cfg3_t tap_cfg3;
-  st1vafe3bx_tap_cfg4_t tap_cfg4;
-  st1vafe3bx_tap_cfg5_t tap_cfg5;
-  st1vafe3bx_tap_cfg6_t tap_cfg6;
-  int32_t ret;
+  st1vafe3bx_tap_cfg0_t tap_cfg0 = {0};
+  st1vafe3bx_tap_cfg1_t tap_cfg1 = {0};
+  st1vafe3bx_tap_cfg2_t tap_cfg2 = {0};
+  st1vafe3bx_tap_cfg3_t tap_cfg3 = {0};
+  st1vafe3bx_tap_cfg4_t tap_cfg4 = {0};
+  st1vafe3bx_tap_cfg5_t tap_cfg5 = {0};
+  st1vafe3bx_tap_cfg6_t tap_cfg6 = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
@@ -3874,8 +3948,8 @@ int32_t st1vafe3bx_tap_config_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  st1vafe3bx_interrupt_cfg_t int_cfg;
-  int32_t ret;
+  st1vafe3bx_interrupt_cfg_t int_cfg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_INTERRUPT_CFG,
                             (uint8_t *)&int_cfg, 1);
@@ -3900,8 +3974,8 @@ int32_t st1vafe3bx_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  st1vafe3bx_interrupt_cfg_t int_cfg;
-  int32_t ret;
+  st1vafe3bx_interrupt_cfg_t int_cfg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_INTERRUPT_CFG,
                             (uint8_t *)&int_cfg, 1);
@@ -3928,8 +4002,8 @@ int32_t st1vafe3bx_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t st1vafe3bx_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val)
 {
-  uint8_t buff[4];
-  int32_t ret;
+  uint8_t buff[4] = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_TIMESTAMP0, buff, 4);
 
@@ -3971,8 +4045,8 @@ int32_t st1vafe3bx_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val)
 int32_t st1vafe3bx_long_cnt_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                                 uint8_t *val)
 {
-  st1vafe3bx_emb_func_status_t emb_func_status;
-  int32_t ret;
+  st1vafe3bx_emb_func_status_t emb_func_status = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4002,7 +4076,7 @@ int32_t st1vafe3bx_long_cnt_flag_data_ready_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_emb_fsm_en_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   st1vafe3bx_emb_func_en_b_t emb_func_en_b;
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
@@ -4036,9 +4110,9 @@ int32_t st1vafe3bx_emb_fsm_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
-  st1vafe3bx_emb_func_en_b_t emb_func_en_b;
+  st1vafe3bx_emb_func_en_b_t emb_func_en_b = {0};
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
   if (ret == 0)
@@ -4069,8 +4143,8 @@ int32_t st1vafe3bx_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t st1vafe3bx_fsm_enable_set(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_emb_fsm_enable_t *val)
 {
-  st1vafe3bx_emb_func_en_b_t emb_func_en_b;
-  int32_t ret;
+  st1vafe3bx_emb_func_en_b_t emb_func_en_b = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4124,7 +4198,7 @@ int32_t st1vafe3bx_fsm_enable_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_fsm_enable_get(const stmdev_ctx_t *ctx,
                                   st1vafe3bx_emb_fsm_enable_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4150,8 +4224,8 @@ int32_t st1vafe3bx_fsm_enable_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4178,8 +4252,8 @@ int32_t st1vafe3bx_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val)
   */
 int32_t st1vafe3bx_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4223,7 +4297,7 @@ int32_t st1vafe3bx_fsm_status_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_fsm_out_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4248,8 +4322,8 @@ int32_t st1vafe3bx_fsm_out_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t st1vafe3bx_fsm_data_rate_set(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_fsm_val_odr_t val)
 {
-  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
-  st1vafe3bx_fsm_odr_t fsm_odr_reg;
+  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2 = {0};
+  st1vafe3bx_fsm_odr_t fsm_odr_reg = {0};
   int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2,
@@ -4291,9 +4365,9 @@ int32_t st1vafe3bx_fsm_data_rate_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_fsm_data_rate_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_fsm_val_odr_t *val)
 {
-  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
-  st1vafe3bx_fsm_odr_t fsm_odr_reg;
-  int32_t ret;
+  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2 = {0};
+  st1vafe3bx_fsm_odr_t fsm_odr_reg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4385,8 +4459,8 @@ int32_t st1vafe3bx_fsm_data_rate_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  st1vafe3bx_emb_func_init_b_t emb_func_init_b;
-  int32_t ret;
+  st1vafe3bx_emb_func_init_b_t emb_func_init_b = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4419,8 +4493,8 @@ int32_t st1vafe3bx_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  st1vafe3bx_emb_func_init_b_t emb_func_init_b;
-  int32_t ret;
+  st1vafe3bx_emb_func_init_b_t emb_func_init_b = {0};
+  int32_t ret = {0};
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4450,8 +4524,8 @@ int32_t st1vafe3bx_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t st1vafe3bx_fsm_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  st1vafe3bx_emb_func_fifo_en_t fifo_reg;
-  int32_t ret;
+  st1vafe3bx_emb_func_fifo_en_t fifo_reg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4483,8 +4557,8 @@ int32_t st1vafe3bx_fsm_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_fsm_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  st1vafe3bx_emb_func_fifo_en_t fifo_reg;
-  int32_t ret;
+  st1vafe3bx_emb_func_fifo_en_t fifo_reg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4518,8 +4592,8 @@ int32_t st1vafe3bx_fsm_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t st1vafe3bx_long_cnt_int_value_set(const stmdev_ctx_t *ctx,
                                           uint16_t val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
@@ -4542,8 +4616,8 @@ int32_t st1vafe3bx_long_cnt_int_value_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
                                           uint16_t *val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_ln_pg_read(ctx, ST1VAFE3BX_FSM_LC_TIMEOUT_L, buff, 2);
 
@@ -4568,7 +4642,7 @@ int32_t st1vafe3bx_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_fsm_programs_num_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = st1vafe3bx_ln_pg_write(ctx, ST1VAFE3BX_FSM_PROGRAMS, &val, 1);
 
@@ -4585,7 +4659,7 @@ int32_t st1vafe3bx_fsm_programs_num_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_fsm_programs_num_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = st1vafe3bx_ln_pg_read(ctx, ST1VAFE3BX_FSM_PROGRAMS, val, 1);
 
@@ -4604,8 +4678,8 @@ int32_t st1vafe3bx_fsm_programs_num_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t st1vafe3bx_fsm_start_address_set(const stmdev_ctx_t *ctx,
                                          uint16_t val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
@@ -4626,8 +4700,8 @@ int32_t st1vafe3bx_fsm_start_address_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_fsm_start_address_get(const stmdev_ctx_t *ctx,
                                          uint16_t *val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_ln_pg_read(ctx, ST1VAFE3BX_FSM_START_ADD_L, buff, 2);
   if (ret != 0)
@@ -4665,9 +4739,9 @@ int32_t st1vafe3bx_fsm_start_address_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_mlc_set(const stmdev_ctx_t *ctx, st1vafe3bx_mlc_mode_t val)
 {
-  st1vafe3bx_emb_func_en_a_t emb_en_a;
-  st1vafe3bx_emb_func_en_b_t emb_en_b;
-  int32_t ret;
+  st1vafe3bx_emb_func_en_a_t emb_en_a = {0};
+  st1vafe3bx_emb_func_en_b_t emb_en_b = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4722,9 +4796,9 @@ int32_t st1vafe3bx_mlc_set(const stmdev_ctx_t *ctx, st1vafe3bx_mlc_mode_t val)
   */
 int32_t st1vafe3bx_mlc_get(const stmdev_ctx_t *ctx, st1vafe3bx_mlc_mode_t *val)
 {
-  st1vafe3bx_emb_func_en_a_t emb_en_a;
-  st1vafe3bx_emb_func_en_b_t emb_en_b;
-  int32_t ret;
+  st1vafe3bx_emb_func_en_a_t emb_en_a = {0};
+  st1vafe3bx_emb_func_en_b_t emb_en_b = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4784,7 +4858,7 @@ int32_t st1vafe3bx_mlc_status_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4809,8 +4883,8 @@ int32_t st1vafe3bx_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 int32_t st1vafe3bx_mlc_data_rate_set(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_mlc_odr_val_t val)
 {
-  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
-  st1vafe3bx_mlc_odr_t reg;
+  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2 = {0};
+  st1vafe3bx_mlc_odr_t reg = {0};
   int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2,
@@ -4850,8 +4924,8 @@ int32_t st1vafe3bx_mlc_data_rate_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_mlc_data_rate_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_mlc_odr_val_t *val)
 {
-  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
-  st1vafe3bx_mlc_odr_t reg;
+  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2 = {0};
+  st1vafe3bx_mlc_odr_t reg = {0};
   int32_t ret = 0;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2,
@@ -4940,8 +5014,8 @@ int32_t st1vafe3bx_mlc_data_rate_get(const stmdev_ctx_t *ctx,
   */
 int32_t st1vafe3bx_mlc_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  st1vafe3bx_emb_func_fifo_en_t fifo_reg;
-  int32_t ret;
+  st1vafe3bx_emb_func_fifo_en_t fifo_reg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
@@ -4973,8 +5047,8 @@ int32_t st1vafe3bx_mlc_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t st1vafe3bx_mlc_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  st1vafe3bx_emb_func_fifo_en_t fifo_reg;
-  int32_t ret;
+  st1vafe3bx_emb_func_fifo_en_t fifo_reg = {0};
+  int32_t ret = 0;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 

@@ -108,8 +108,17 @@ typedef struct
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, const uint8_t *, uint16_t);
-typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_write_ptr)(
+  void *handle,
+  uint8_t reg,
+  const uint8_t *buf,
+  uint16_t len);
+
+typedef int32_t (*stmdev_read_ptr)(
+  void *handle,
+  uint8_t reg,
+  uint8_t *buf,
+  uint16_t len);
 typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
@@ -223,9 +232,9 @@ typedef struct
   uint8_t fifo_mode                : 3;
   uint8_t not_used_01              : 1;
   uint8_t odr_t_batch              : 2;
-  uint8_t odr_ts_batch             : 2;
+  uint8_t dec_ts_batch             : 2;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t odr_ts_batch             : 2;
+  uint8_t dec_ts_batch             : 2;
   uint8_t odr_t_batch              : 2;
   uint8_t not_used_01              : 1;
   uint8_t fifo_mode                : 3;
@@ -953,7 +962,7 @@ typedef struct
 #define ISM330DHCX_INTERNAL_FREQ_FINE           0x63U
 typedef struct
 {
-  uint8_t freq_fine                : 8;
+  int8_t freq_fine                 : 8;
 } ism330dhcx_internal_freq_fine_t;
 
 #define ISM330DHCX_INT_OIS                      0x6FU
@@ -1053,6 +1062,7 @@ typedef struct
 #define ISM330DHCX_FIFO_DATA_OUT_Y_H            0x7CU
 #define ISM330DHCX_FIFO_DATA_OUT_Z_L            0x7DU
 #define ISM330DHCX_FIFO_DATA_OUT_Z_H            0x7EU
+
 #define ISM330DHCX_PAGE_SEL                     0x02U
 typedef struct
 {
@@ -1480,388 +1490,21 @@ typedef struct
 } ism330dhcx_fsm_long_counter_clear_t;
 
 #define ISM330DHCX_FSM_OUTS1                    0x4CU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs1_t;
-
 #define ISM330DHCX_FSM_OUTS2                    0x4DU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs2_t;
-
 #define ISM330DHCX_FSM_OUTS3                    0x4EU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs3_t;
-
 #define ISM330DHCX_FSM_OUTS4                    0x4FU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs4_t;
-
 #define ISM330DHCX_FSM_OUTS5                    0x50U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs5_t;
-
 #define ISM330DHCX_FSM_OUTS6                    0x51U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs6_t;
-
 #define ISM330DHCX_FSM_OUTS7                    0x52U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs7_t;
-
 #define ISM330DHCX_FSM_OUTS8                    0x53U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs8_t;
-
 #define ISM330DHCX_FSM_OUTS9                    0x54U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs9_t;
-
 #define ISM330DHCX_FSM_OUTS10                   0x55U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs10_t;
-
 #define ISM330DHCX_FSM_OUTS11                   0x56U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs11_t;
-
 #define ISM330DHCX_FSM_OUTS12                   0x57U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs12_t;
-
 #define ISM330DHCX_FSM_OUTS13                   0x58U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs13_t;
-
 #define ISM330DHCX_FSM_OUTS14                   0x59U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs14_t;
-
 #define ISM330DHCX_FSM_OUTS15                   0x5AU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs15_t;
-
 #define ISM330DHCX_FSM_OUTS16                   0x5BU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t n_v                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_x                      : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t p_x                      : 1;
-  uint8_t n_x                      : 1;
-  uint8_t p_y                      : 1;
-  uint8_t n_y                      : 1;
-  uint8_t p_z                      : 1;
-  uint8_t n_z                      : 1;
-  uint8_t p_v                      : 1;
-  uint8_t n_v                      : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_fsm_outs16_t;
 
 #define ISM330DHCX_EMB_FUNC_ODR_CFG_B           0x5FU
 typedef struct
@@ -2015,8 +1658,7 @@ typedef struct
 #define ISM330DHCX_FSM_LC_TIMEOUT_L             0x17AU
 #define ISM330DHCX_FSM_LC_TIMEOUT_H             0x17BU
 #define ISM330DHCX_FSM_PROGRAMS                 0x17CU
-#define ISM330DHCX_FSM_START_ADD_L              0x17EU
-#define ISM330DHCX_FSM_START_ADD_H              0x17FU
+
 #define ISM330DHCX_PEDO_CMD_REG                 0x183U
 typedef struct
 {
@@ -2048,436 +1690,23 @@ typedef struct
   */
 
 #define ISM330DHCX_SENSOR_HUB_1                 0x02U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_1_t;
-
 #define ISM330DHCX_SENSOR_HUB_2                 0x03U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_2_t;
-
 #define ISM330DHCX_SENSOR_HUB_3                 0x04U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_3_t;
-
 #define ISM330DHCX_SENSOR_HUB_4                 0x05U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_4_t;
-
 #define ISM330DHCX_SENSOR_HUB_5                 0x06U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_5_t;
-
 #define ISM330DHCX_SENSOR_HUB_6                 0x07U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_6_t;
-
 #define ISM330DHCX_SENSOR_HUB_7                 0x08U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_7_t;
-
 #define ISM330DHCX_SENSOR_HUB_8                 0x09U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_8_t;
-
 #define ISM330DHCX_SENSOR_HUB_9                 0x0AU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_9_t;
-
 #define ISM330DHCX_SENSOR_HUB_10                0x0BU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_10_t;
-
 #define ISM330DHCX_SENSOR_HUB_11                0x0CU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_11_t;
-
 #define ISM330DHCX_SENSOR_HUB_12                0x0DU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_12_t;
-
 #define ISM330DHCX_SENSOR_HUB_13                0x0EU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_13_t;
-
 #define ISM330DHCX_SENSOR_HUB_14                0x0FU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_14_t;
-
 #define ISM330DHCX_SENSOR_HUB_15                0x10U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_15_t;
-
 #define ISM330DHCX_SENSOR_HUB_16                0x11U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_16_t;
-
 #define ISM330DHCX_SENSOR_HUB_17                0x12U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_17_t;
-
 #define ISM330DHCX_SENSOR_HUB_18                0x13U
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t bit0                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit7                    : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t bit7                    : 1;
-  uint8_t bit6                    : 1;
-  uint8_t bit5                    : 1;
-  uint8_t bit4                    : 1;
-  uint8_t bit3                    : 1;
-  uint8_t bit2                    : 1;
-  uint8_t bit1                    : 1;
-  uint8_t bit0                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} ism330dhcx_sensor_hub_18_t;
 
 #define ISM330DHCX_MASTER_CONFIG                0x14U
 typedef struct
@@ -2659,6 +1888,12 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } ism330dhcx_status_master_t;
 
+#define ISM330DHCX_FSM_LC_TIMEOUT_L             0x17AU
+#define ISM330DHCX_FSM_LC_TIMEOUT_H             0x17BU
+#define ISM330DHCX_FSM_PROGRAMS                 0x17CU
+#define ISM330DHCX_FSM_START_ADD_L              0x17EU
+#define ISM330DHCX_FSM_START_ADD_H              0x17FU
+
 /**
   * @}
   *
@@ -2702,7 +1937,7 @@ uint64_t ism330dhcx_from_lsb_to_nsec(uint32_t lsb);
 typedef enum
 {
   ISM330DHCX_2g   = 0,
-  ISM330DHCX_16g  = 1, /* if XL_FS_MODE = '1' -> ISM330DHCX_2g */
+  ISM330DHCX_16g  = 1,
   ISM330DHCX_4g   = 2,
   ISM330DHCX_8g   = 3,
 } ism330dhcx_fs_xl_t;
@@ -2827,19 +2062,19 @@ int32_t ism330dhcx_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                             uint8_t *val);
 
 int32_t ism330dhcx_xl_usr_offset_x_set(const stmdev_ctx_t *ctx,
-                                       uint8_t *val);
+                                       int8_t *val);
 int32_t ism330dhcx_xl_usr_offset_x_get(const stmdev_ctx_t *ctx,
-                                       uint8_t *val);
+                                       int8_t *val);
 
 int32_t ism330dhcx_xl_usr_offset_y_set(const stmdev_ctx_t *ctx,
-                                       uint8_t *val);
+                                       int8_t *val);
 int32_t ism330dhcx_xl_usr_offset_y_get(const stmdev_ctx_t *ctx,
-                                       uint8_t *val);
+                                       int8_t *val);
 
 int32_t ism330dhcx_xl_usr_offset_z_set(const stmdev_ctx_t *ctx,
-                                       uint8_t *val);
+                                       int8_t *val);
 int32_t ism330dhcx_xl_usr_offset_z_get(const stmdev_ctx_t *ctx,
-                                       uint8_t *val);
+                                       int8_t *val);
 
 int32_t ism330dhcx_xl_usr_offset_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism330dhcx_xl_usr_offset_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -2871,11 +2106,10 @@ int32_t ism330dhcx_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
 int32_t ism330dhcx_fifo_out_raw_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ism330dhcx_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *val);
-
 int32_t ism330dhcx_device_conf_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism330dhcx_device_conf_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
+int32_t ism330dhcx_odr_cal_reg_set(const stmdev_ctx_t *ctx, int8_t val);
 int32_t ism330dhcx_odr_cal_reg_get(const stmdev_ctx_t *ctx, int8_t *val);
 
 int32_t ism330dhcx_number_of_steps_get(const stmdev_ctx_t *ctx, uint16_t *val);
@@ -2893,14 +2127,12 @@ int32_t ism330dhcx_mem_bank_set(const stmdev_ctx_t *ctx,
 int32_t ism330dhcx_mem_bank_get(const stmdev_ctx_t *ctx,
                                 ism330dhcx_reg_access_t *val);
 
-int32_t ism330dhcx_ln_pg_write_byte(const stmdev_ctx_t *ctx, uint16_t address,
+int32_t ism330dhcx_ln_pg_write_byte(const stmdev_ctx_t *ctx, uint16_t add,
                                     uint8_t *val);
-int32_t ism330dhcx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
+int32_t ism330dhcx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t add,
                                uint8_t *buf, uint8_t len);
 int32_t ism330dhcx_ln_pg_read_byte(const stmdev_ctx_t *ctx, uint16_t add,
                                    uint8_t *val);
-int32_t ism330dhcx_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address,
-                              uint8_t *val);
 
 typedef enum
 {
@@ -2975,7 +2207,7 @@ int32_t ism330dhcx_xl_lp2_on_6d_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
-  ISM330DHCX_HP_PATH_DISABLE_ON_OUT    = 0x00,
+  ISM330DHCX_HP_REF_MODE               = 0x37,
   ISM330DHCX_SLOPE_ODR_DIV_4           = 0x10,
   ISM330DHCX_HP_ODR_DIV_10             = 0x11,
   ISM330DHCX_HP_ODR_DIV_20             = 0x12,
@@ -2984,20 +2216,15 @@ typedef enum
   ISM330DHCX_HP_ODR_DIV_200            = 0x15,
   ISM330DHCX_HP_ODR_DIV_400            = 0x16,
   ISM330DHCX_HP_ODR_DIV_800            = 0x17,
-  ISM330DHCX_HP_REF_MD_ODR_DIV_10      = 0x31,
-  ISM330DHCX_HP_REF_MD_ODR_DIV_20      = 0x32,
-  ISM330DHCX_HP_REF_MD_ODR_DIV_45      = 0x33,
-  ISM330DHCX_HP_REF_MD_ODR_DIV_100     = 0x34,
-  ISM330DHCX_HP_REF_MD_ODR_DIV_200     = 0x35,
-  ISM330DHCX_HP_REF_MD_ODR_DIV_400     = 0x36,
-  ISM330DHCX_HP_REF_MD_ODR_DIV_800     = 0x37,
-  ISM330DHCX_LP_ODR_DIV_10             = 0x01,
-  ISM330DHCX_LP_ODR_DIV_20             = 0x02,
-  ISM330DHCX_LP_ODR_DIV_45             = 0x03,
-  ISM330DHCX_LP_ODR_DIV_100            = 0x04,
-  ISM330DHCX_LP_ODR_DIV_200            = 0x05,
-  ISM330DHCX_LP_ODR_DIV_400            = 0x06,
-  ISM330DHCX_LP_ODR_DIV_800            = 0x07,
+  ISM330DHCX_LP_ODR_DIV_2              = 0x01,
+  ISM330DHCX_LP_ODR_DIV_4              = 0x80,
+  ISM330DHCX_LP_ODR_DIV_10             = 0x81,
+  ISM330DHCX_LP_ODR_DIV_20             = 0x82,
+  ISM330DHCX_LP_ODR_DIV_45             = 0x83,
+  ISM330DHCX_LP_ODR_DIV_100            = 0x84,
+  ISM330DHCX_LP_ODR_DIV_200            = 0x85,
+  ISM330DHCX_LP_ODR_DIV_400            = 0x86,
+  ISM330DHCX_LP_ODR_DIV_800            = 0x87,
 } ism330dhcx_hp_slope_xl_en_t;
 int32_t ism330dhcx_xl_hp_path_on_out_set(const stmdev_ctx_t *ctx,
                                          ism330dhcx_hp_slope_xl_en_t val);
@@ -3032,8 +2259,8 @@ int32_t ism330dhcx_gy_hp_path_internal_get(const stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  ISM330DHCX_AUX_PULL_UP_DISC       = 0,
-  ISM330DHCX_AUX_PULL_UP_CONNECT    = 1,
+  ISM330DHCX_AUX_PULL_UP_DISC       = 1,
+  ISM330DHCX_AUX_PULL_UP_CONNECT    = 0,
 } ism330dhcx_ois_pu_dis_t;
 int32_t ism330dhcx_aux_sdo_ocs_mode_set(const stmdev_ctx_t *ctx,
                                         ism330dhcx_ois_pu_dis_t val);
@@ -3042,8 +2269,9 @@ int32_t ism330dhcx_aux_sdo_ocs_mode_get(const stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  ISM330DHCX_AUX_ON                    = 1,
-  ISM330DHCX_AUX_ON_BY_AUX_INTERFACE   = 0,
+  ISM330DHCX_OIS_OFF                   = 0,
+  ISM330DHCX_OIS_PRIMARY_INTERFACE_ON  = 3,
+  ISM330DHCX_OIS_AUX_INTERFACE_ON      = 1,
 } ism330dhcx_ois_on_t;
 int32_t ism330dhcx_aux_pw_on_ctrl_set(const stmdev_ctx_t *ctx,
                                       ism330dhcx_ois_on_t val);
@@ -3133,10 +2361,10 @@ int32_t ism330dhcx_aux_spi_mode_get(const stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  ISM330DHCX_351Hz39 = 0,
-  ISM330DHCX_236Hz63 = 1,
-  ISM330DHCX_172Hz70 = 2,
-  ISM330DHCX_937Hz91 = 3,
+  ISM330DHCX_297Hz = 0,
+  ISM330DHCX_222Hz = 1,
+  ISM330DHCX_154Hz = 2,
+  ISM330DHCX_470Hz = 3,
 } ism330dhcx_ftype_ois_t;
 int32_t ism330dhcx_aux_gy_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
                                             ism330dhcx_ftype_ois_t val);
@@ -3186,7 +2414,7 @@ typedef enum
   ISM330DHCX_33Hz6 = 4,
   ISM330DHCX_16Hz7 = 5,
   ISM330DHCX_8Hz3  = 6,
-  ISM330DHCX_4Hz11 = 7,
+  ISM330DHCX_4Hz14 = 7,
 } ism330dhcx_filter_xl_conf_ois_t;
 int32_t ism330dhcx_aux_xl_bandwidth_set(const stmdev_ctx_t *ctx,
                                         ism330dhcx_filter_xl_conf_ois_t val);
@@ -3485,7 +2713,7 @@ int32_t ism330dhcx_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  ISM330DHCX_XL_NOT_BATCHED       =  0,
+  ISM330DHCX_XL_NOT_BATCHED        =  0,
   ISM330DHCX_XL_BATCHED_AT_12Hz5   =  1,
   ISM330DHCX_XL_BATCHED_AT_26Hz    =  2,
   ISM330DHCX_XL_BATCHED_AT_52Hz    =  3,
@@ -3496,7 +2724,7 @@ typedef enum
   ISM330DHCX_XL_BATCHED_AT_1667Hz  =  8,
   ISM330DHCX_XL_BATCHED_AT_3333Hz  =  9,
   ISM330DHCX_XL_BATCHED_AT_6667Hz  = 10,
-  ISM330DHCX_XL_BATCHED_AT_6Hz5    = 11,
+  ISM330DHCX_XL_BATCHED_AT_1Hz6    = 11,
 } ism330dhcx_bdr_xl_t;
 int32_t ism330dhcx_fifo_xl_batch_set(const stmdev_ctx_t *ctx,
                                      ism330dhcx_bdr_xl_t val);
@@ -3516,7 +2744,7 @@ typedef enum
   ISM330DHCX_GY_BATCHED_AT_1667Hz   = 8,
   ISM330DHCX_GY_BATCHED_AT_3333Hz   = 9,
   ISM330DHCX_GY_BATCHED_AT_6667Hz   = 10,
-  ISM330DHCX_GY_BATCHED_6Hz5        = 11,
+  ISM330DHCX_GY_BATCHED_AT_6Hz5     = 11,
 } ism330dhcx_bdr_gy_t;
 int32_t ism330dhcx_fifo_gy_batch_set(const stmdev_ctx_t *ctx,
                                      ism330dhcx_bdr_gy_t val);
@@ -3540,9 +2768,9 @@ int32_t ism330dhcx_fifo_mode_get(const stmdev_ctx_t *ctx,
 typedef enum
 {
   ISM330DHCX_TEMP_NOT_BATCHED        = 0,
-  ISM330DHCX_TEMP_BATCHED_AT_52Hz    = 1,
+  ISM330DHCX_TEMP_BATCHED_AT_1Hz6    = 1,
   ISM330DHCX_TEMP_BATCHED_AT_12Hz5   = 2,
-  ISM330DHCX_TEMP_BATCHED_AT_1Hz6    = 3,
+  ISM330DHCX_TEMP_BATCHED_AT_52Hz    = 3,
 } ism330dhcx_odr_t_batch_t;
 int32_t ism330dhcx_fifo_temp_batch_set(const stmdev_ctx_t *ctx,
                                        ism330dhcx_odr_t_batch_t val);
@@ -3555,11 +2783,11 @@ typedef enum
   ISM330DHCX_DEC_1         = 1,
   ISM330DHCX_DEC_8         = 2,
   ISM330DHCX_DEC_32        = 3,
-} ism330dhcx_odr_ts_batch_t;
+} ism330dhcx_dec_ts_batch_t;
 int32_t ism330dhcx_fifo_timestamp_decimation_set(const stmdev_ctx_t *ctx,
-                                                 ism330dhcx_odr_ts_batch_t val);
+                                                 ism330dhcx_dec_ts_batch_t val);
 int32_t ism330dhcx_fifo_timestamp_decimation_get(const stmdev_ctx_t *ctx,
-                                                 ism330dhcx_odr_ts_batch_t *val);
+                                                 ism330dhcx_dec_ts_batch_t *val);
 
 typedef enum
 {
@@ -3596,25 +2824,25 @@ int32_t ism330dhcx_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
-  ISM330DHCX_GYRO_NC_TAG    = 1,
-  ISM330DHCX_XL_NC_TAG,
-  ISM330DHCX_TEMPERATURE_TAG,
-  ISM330DHCX_TIMESTAMP_TAG,
-  ISM330DHCX_CFG_CHANGE_TAG,
-  ISM330DHCX_XL_NC_T_2_TAG,
-  ISM330DHCX_XL_NC_T_1_TAG,
-  ISM330DHCX_XL_2XC_TAG,
-  ISM330DHCX_XL_3XC_TAG,
-  ISM330DHCX_GYRO_NC_T_2_TAG,
-  ISM330DHCX_GYRO_NC_T_1_TAG,
-  ISM330DHCX_GYRO_2XC_TAG,
-  ISM330DHCX_GYRO_3XC_TAG,
-  ISM330DHCX_SENSORHUB_SLAVE0_TAG,
-  ISM330DHCX_SENSORHUB_SLAVE1_TAG,
-  ISM330DHCX_SENSORHUB_SLAVE2_TAG,
-  ISM330DHCX_SENSORHUB_SLAVE3_TAG,
-  ISM330DHCX_STEP_CPUNTER_TAG,
-  ISM330DHCX_SENSORHUB_NACK_TAG = 0x19,
+  ISM330DHCX_GYRO_NC_TAG           = 0x01,
+  ISM330DHCX_XL_NC_TAG             = 0x02,
+  ISM330DHCX_TEMPERATURE_TAG       = 0x03,
+  ISM330DHCX_TIMESTAMP_TAG         = 0x04,
+  ISM330DHCX_CFG_CHANGE_TAG        = 0x05,
+  ISM330DHCX_XL_NC_T_2_TAG         = 0x06,
+  ISM330DHCX_XL_NC_T_1_TAG         = 0x07,
+  ISM330DHCX_XL_2XC_TAG            = 0x08,
+  ISM330DHCX_XL_3XC_TAG            = 0x09,
+  ISM330DHCX_GYRO_NC_T_2_TAG       = 0x0A,
+  ISM330DHCX_GYRO_NC_T_1_TAG       = 0x0B,
+  ISM330DHCX_GYRO_2XC_TAG          = 0x0C,
+  ISM330DHCX_GYRO_3XC_TAG          = 0x0D,
+  ISM330DHCX_SENSORHUB_SLAVE0_TAG  = 0x0E,
+  ISM330DHCX_SENSORHUB_SLAVE1_TAG  = 0x0F,
+  ISM330DHCX_SENSORHUB_SLAVE2_TAG  = 0x10,
+  ISM330DHCX_SENSORHUB_SLAVE3_TAG  = 0x11,
+  ISM330DHCX_STEP_COUNTER_TAG      = 0x12,
+  ISM330DHCX_SENSORHUB_NACK_TAG    = 0x19,
 } ism330dhcx_fifo_tag_t;
 int32_t ism330dhcx_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
                                        ism330dhcx_fifo_tag_t *val);
@@ -3670,8 +2898,8 @@ int32_t ism330dhcx_den_polarity_get(const stmdev_ctx_t *ctx,
 typedef enum
 {
   ISM330DHCX_STAMP_IN_GY_DATA     = 0,
-  ISM330DHCX_STAMP_IN_XL_DATA     = 1,
-  ISM330DHCX_STAMP_IN_GY_XL_DATA  = 2,
+  ISM330DHCX_STAMP_IN_XL_DATA     = 2,
+  ISM330DHCX_STAMP_IN_GY_XL_DATA  = 1,
 } ism330dhcx_den_xl_g_t;
 int32_t ism330dhcx_den_enable_set(const stmdev_ctx_t *ctx,
                                   ism330dhcx_den_xl_g_t val);
@@ -3730,7 +2958,6 @@ int32_t ism330dhcx_tilt_sens_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t ism330dhcx_tilt_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                             uint8_t *val);
-
 int32_t ism330dhcx_mag_sensitivity_set(const stmdev_ctx_t *ctx,
                                        uint16_t val);
 int32_t ism330dhcx_mag_sensitivity_get(const stmdev_ctx_t *ctx,
@@ -3740,7 +2967,7 @@ int32_t ism330dhcx_mag_offset_set(const stmdev_ctx_t *ctx, int16_t *val);
 int32_t ism330dhcx_mag_offset_get(const stmdev_ctx_t *ctx, int16_t *val);
 
 int32_t ism330dhcx_mag_soft_iron_set(const stmdev_ctx_t *ctx,
-                                     uint16_t *val);
+                                     const uint16_t *val);
 int32_t ism330dhcx_mag_soft_iron_get(const stmdev_ctx_t *ctx,
                                      uint16_t *val);
 
@@ -3816,27 +3043,8 @@ int32_t ism330dhcx_long_clr_set(const stmdev_ctx_t *ctx,
 int32_t ism330dhcx_long_clr_get(const stmdev_ctx_t *ctx,
                                 ism330dhcx_fsm_lc_clr_t *val);
 
-typedef struct
-{
-  ism330dhcx_fsm_outs1_t    fsm_outs1;
-  ism330dhcx_fsm_outs2_t    fsm_outs2;
-  ism330dhcx_fsm_outs3_t    fsm_outs3;
-  ism330dhcx_fsm_outs4_t    fsm_outs4;
-  ism330dhcx_fsm_outs5_t    fsm_outs5;
-  ism330dhcx_fsm_outs6_t    fsm_outs6;
-  ism330dhcx_fsm_outs7_t    fsm_outs7;
-  ism330dhcx_fsm_outs8_t    fsm_outs8;
-  ism330dhcx_fsm_outs9_t    fsm_outs9;
-  ism330dhcx_fsm_outs10_t    fsm_outs10;
-  ism330dhcx_fsm_outs11_t    fsm_outs11;
-  ism330dhcx_fsm_outs12_t    fsm_outs12;
-  ism330dhcx_fsm_outs13_t    fsm_outs13;
-  ism330dhcx_fsm_outs14_t    fsm_outs14;
-  ism330dhcx_fsm_outs15_t    fsm_outs15;
-  ism330dhcx_fsm_outs16_t    fsm_outs16;
-} ism330dhcx_fsm_out_t;
 int32_t ism330dhcx_fsm_out_get(const stmdev_ctx_t *ctx,
-                               ism330dhcx_fsm_out_t *val);
+                               uint8_t *val);
 
 typedef enum
 {
@@ -3910,8 +3118,8 @@ int32_t ism330dhcx_sh_master_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
-  ISM330DHCX_EXT_PULL_UP      = 0,
-  ISM330DHCX_INTERNAL_PULL_UP = 1,
+  ISM330DHCX_INTERNAL_PULL_UP_OFF = 0,
+  ISM330DHCX_INTERNAL_PULL_UP_ON  = 1,
 } ism330dhcx_shub_pu_en_t;
 int32_t ism330dhcx_sh_pin_mode_set(const stmdev_ctx_t *ctx,
                                    ism330dhcx_shub_pu_en_t val);
@@ -3951,7 +3159,7 @@ typedef enum
   ISM330DHCX_SH_ODR_104Hz = 0,
   ISM330DHCX_SH_ODR_52Hz  = 1,
   ISM330DHCX_SH_ODR_26Hz  = 2,
-  ISM330DHCX_SH_ODR_13Hz  = 3,
+  ISM330DHCX_SH_ODR_12Hz5 = 3,
 } ism330dhcx_shub_odr_t;
 int32_t ism330dhcx_sh_data_rate_set(const stmdev_ctx_t *ctx,
                                     ism330dhcx_shub_odr_t val);

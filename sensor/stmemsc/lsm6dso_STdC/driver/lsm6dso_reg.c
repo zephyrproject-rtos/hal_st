@@ -39,11 +39,11 @@
 /**
   * @brief  Read generic device register
   *
-  * @param  ctx   read / write interface definitions(ptr)
-  * @param  reg   register to read
-  * @param  data  pointer to buffer that store the data read(ptr)
-  * @param  len   number of consecutive register to read
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  reg   first register address to read.
+  * @param  data  buffer for data read.(ptr)
+  * @param  len   number of consecutive register to read.
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t __weak lsm6dso_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
@@ -65,11 +65,11 @@ int32_t __weak lsm6dso_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
 /**
   * @brief  Write generic device register
   *
-  * @param  ctx   read / write interface definitions(ptr)
-  * @param  reg   register to write
-  * @param  data  pointer to data to write in register reg(ptr)
-  * @param  len   number of consecutive register to write
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  reg   first register address to write.
+  * @param  data  the buffer contains data to be written.(ptr)
+  * @param  len   number of consecutive register to write.
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t __weak lsm6dso_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
@@ -94,7 +94,7 @@ int32_t __weak lsm6dso_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
   */
 
 /**
-  * @defgroup  LSM6DSOX_Private_functions
+  * @defgroup  LSM6DSO_Private_functions
   * @brief     Section collect all the utility functions needed by APIs.
   * @{
   *
@@ -107,6 +107,11 @@ static void bytecpy(uint8_t *target, uint8_t *source)
     *target = *source;
   }
 }
+
+/**
+  * @}
+  *
+  */
 
 /**
   * @defgroup  LSM6DSO_Sensitivity
@@ -3069,7 +3074,7 @@ int32_t lsm6dso_aux_status_reg_get(const stmdev_ctx_t *ctx,
   *
   * @param  ctx      read / write interface definitions
   * @param  val      Get the values of xlda in reg STATUS_SPIAUX
-  * @retval             interface status (MANDATORY: return 0 -> no Error)
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t lsm6dso_aux_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,

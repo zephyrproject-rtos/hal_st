@@ -322,43 +322,43 @@ int32_t lis331dlh_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl_reg1.dr << 4) + ctrl_reg1.pm)
   {
-    case LIS331DLH_ODR_OFF:
+    case 0x00:
       *val = LIS331DLH_ODR_OFF;
       break;
 
-    case LIS331DLH_ODR_Hz5:
+    case 0x02:
       *val = LIS331DLH_ODR_Hz5;
       break;
 
-    case LIS331DLH_ODR_1Hz:
+    case 0x03:
       *val = LIS331DLH_ODR_1Hz;
       break;
 
-    case LIS331DLH_ODR_2Hz:
+    case 0x04:
       *val = LIS331DLH_ODR_2Hz;
       break;
 
-    case LIS331DLH_ODR_5Hz:
+    case 0x05:
       *val = LIS331DLH_ODR_5Hz;
       break;
 
-    case LIS331DLH_ODR_10Hz:
+    case 0x06:
       *val = LIS331DLH_ODR_10Hz;
       break;
 
-    case LIS331DLH_ODR_50Hz:
+    case 0x01:
       *val = LIS331DLH_ODR_50Hz;
       break;
 
-    case LIS331DLH_ODR_100Hz:
+    case 0x11:
       *val = LIS331DLH_ODR_100Hz;
       break;
 
-    case LIS331DLH_ODR_400Hz:
+    case 0x21:
       *val = LIS331DLH_ODR_400Hz;
       break;
 
-    case LIS331DLH_ODR_1kHz:
+    case 0x31:
       *val = LIS331DLH_ODR_1kHz;
       break;
 
@@ -418,11 +418,11 @@ int32_t lis331dlh_reference_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hpm)
   {
-    case LIS331DLH_NORMAL_MODE:
+    case 0x00:
       *val = LIS331DLH_NORMAL_MODE;
       break;
 
-    case LIS331DLH_REF_MODE_ENABLE:
+    case 0x01:
       *val = LIS331DLH_REF_MODE_ENABLE;
       break;
 
@@ -482,15 +482,15 @@ int32_t lis331dlh_full_scale_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4.fs)
   {
-    case LIS331DLH_2g:
+    case 0x00:
       *val = LIS331DLH_2g;
       break;
 
-    case LIS331DLH_4g:
+    case 0x01:
       *val = LIS331DLH_4g;
       break;
 
-    case LIS331DLH_8g:
+    case 0x03:
       *val = LIS331DLH_8g;
       break;
 
@@ -760,15 +760,15 @@ int32_t lis331dlh_self_test_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4.st)
   {
-    case LIS331DLH_ST_DISABLE:
+    case 0x00:
       *val = LIS331DLH_ST_DISABLE;
       break;
 
-    case LIS331DLH_ST_POSITIVE:
+    case 0x01:
       *val = LIS331DLH_ST_POSITIVE;
       break;
 
-    case LIS331DLH_ST_NEGATIVE:
+    case 0x05:
       *val = LIS331DLH_ST_NEGATIVE;
       break;
 
@@ -828,11 +828,11 @@ int32_t lis331dlh_data_format_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4.ble)
   {
-    case LIS331DLH_LSB_AT_LOW_ADD:
+    case 0x00:
       *val = LIS331DLH_LSB_AT_LOW_ADD;
       break;
 
-    case LIS331DLH_MSB_AT_LOW_ADD:
+    case 0x01:
       *val = LIS331DLH_MSB_AT_LOW_ADD;
       break;
 
@@ -905,19 +905,19 @@ int32_t lis331dlh_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hpcf)
   {
-    case LIS331DLH_CUT_OFF_8Hz:
+    case 0x00:
       *val = LIS331DLH_CUT_OFF_8Hz;
       break;
 
-    case LIS331DLH_CUT_OFF_16Hz:
+    case 0x01:
       *val = LIS331DLH_CUT_OFF_16Hz;
       break;
 
-    case LIS331DLH_CUT_OFF_32Hz:
+    case 0x02:
       *val = LIS331DLH_CUT_OFF_32Hz;
       break;
 
-    case LIS331DLH_CUT_OFF_64Hz:
+    case 0x03:
       *val = LIS331DLH_CUT_OFF_64Hz;
       break;
 
@@ -977,35 +977,35 @@ int32_t lis331dlh_hp_path_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl_reg2.fds << 2) + ctrl_reg2.hpen)
   {
-    case LIS331DLH_HP_DISABLE:
+    case 0x00:
       *val = LIS331DLH_HP_DISABLE;
       break;
 
-    case LIS331DLH_HP_ON_OUT:
+    case 0x04:
       *val = LIS331DLH_HP_ON_OUT;
       break;
 
-    case LIS331DLH_HP_ON_INT1:
+    case 0x01:
       *val = LIS331DLH_HP_ON_INT1;
       break;
 
-    case LIS331DLH_HP_ON_INT2:
+    case 0x02:
       *val = LIS331DLH_HP_ON_INT2;
       break;
 
-    case LIS331DLH_HP_ON_INT1_INT2:
+    case 0x03:
       *val = LIS331DLH_HP_ON_INT1_INT2;
       break;
 
-    case LIS331DLH_HP_ON_INT1_INT2_OUT:
+    case 0x07:
       *val = LIS331DLH_HP_ON_INT1_INT2_OUT;
       break;
 
-    case LIS331DLH_HP_ON_INT2_OUT:
+    case 0x06:
       *val = LIS331DLH_HP_ON_INT2_OUT;
       break;
 
-    case LIS331DLH_HP_ON_INT1_OUT:
+    case 0x05:
       *val = LIS331DLH_HP_ON_INT1_OUT;
       break;
 
@@ -1136,11 +1136,11 @@ int32_t lis331dlh_spi_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4.sim)
   {
-    case LIS331DLH_SPI_4_WIRE:
+    case 0x00:
       *val = LIS331DLH_SPI_4_WIRE;
       break;
 
-    case LIS331DLH_SPI_3_WIRE:
+    case 0x01:
       *val = LIS331DLH_SPI_3_WIRE;
       break;
 
@@ -1213,19 +1213,19 @@ int32_t lis331dlh_pin_int1_route_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.i1_cfg)
   {
-    case LIS331DLH_PAD1_INT1_SRC:
+    case 0x00:
       *val = LIS331DLH_PAD1_INT1_SRC;
       break;
 
-    case LIS331DLH_PAD1_INT1_OR_INT2_SRC:
+    case 0x01:
       *val = LIS331DLH_PAD1_INT1_OR_INT2_SRC;
       break;
 
-    case LIS331DLH_PAD1_DRDY:
+    case 0x02:
       *val = LIS331DLH_PAD1_DRDY;
       break;
 
-    case LIS331DLH_PAD1_BOOT:
+    case 0x03:
       *val = LIS331DLH_PAD1_BOOT;
       break;
 
@@ -1287,11 +1287,11 @@ int32_t lis331dlh_int1_notification_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.lir1)
   {
-    case LIS331DLH_INT1_PULSED:
+    case 0x00:
       *val = LIS331DLH_INT1_PULSED;
       break;
 
-    case LIS331DLH_INT1_LATCHED:
+    case 0x01:
       *val = LIS331DLH_INT1_LATCHED;
       break;
 
@@ -1351,19 +1351,19 @@ int32_t lis331dlh_pin_int2_route_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.i2_cfg)
   {
-    case LIS331DLH_PAD2_INT2_SRC:
+    case 0x00:
       *val = LIS331DLH_PAD2_INT2_SRC;
       break;
 
-    case LIS331DLH_PAD2_INT1_OR_INT2_SRC:
+    case 0x01:
       *val = LIS331DLH_PAD2_INT1_OR_INT2_SRC;
       break;
 
-    case LIS331DLH_PAD2_DRDY:
+    case 0x02:
       *val = LIS331DLH_PAD2_DRDY;
       break;
 
-    case LIS331DLH_PAD2_BOOT:
+    case 0x03:
       *val = LIS331DLH_PAD2_BOOT;
       break;
 
@@ -1425,11 +1425,11 @@ int32_t lis331dlh_int2_notification_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.lir2)
   {
-    case LIS331DLH_INT2_PULSED:
+    case 0x00:
       *val = LIS331DLH_INT2_PULSED;
       break;
 
-    case LIS331DLH_INT2_LATCHED:
+    case 0x01:
       *val = LIS331DLH_INT2_LATCHED;
       break;
 
@@ -1489,11 +1489,11 @@ int32_t lis331dlh_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.pp_od)
   {
-    case LIS331DLH_PUSH_PULL:
+    case 0x00:
       *val = LIS331DLH_PUSH_PULL;
       break;
 
-    case LIS331DLH_OPEN_DRAIN:
+    case 0x01:
       *val = LIS331DLH_OPEN_DRAIN;
       break;
 
@@ -1553,11 +1553,11 @@ int32_t lis331dlh_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.ihl)
   {
-    case LIS331DLH_ACTIVE_HIGH:
+    case 0x00:
       *val = LIS331DLH_ACTIVE_HIGH;
       break;
 
-    case LIS331DLH_ACTIVE_LOW:
+    case 0x01:
       *val = LIS331DLH_ACTIVE_LOW;
       break;
 
@@ -1691,11 +1691,11 @@ int32_t lis331dlh_int1_on_threshold_mode_get(const stmdev_ctx_t *ctx,
 
   switch (int1_cfg.aoi)
   {
-    case LIS331DLH_INT1_ON_THRESHOLD_OR:
+    case 0x00:
       *val = LIS331DLH_INT1_ON_THRESHOLD_OR;
       break;
 
-    case LIS331DLH_INT1_ON_THRESHOLD_AND:
+    case 0x01:
       *val = LIS331DLH_INT1_ON_THRESHOLD_AND;
       break;
 
@@ -1932,11 +1932,11 @@ int32_t lis331dlh_int2_on_threshold_mode_get(const stmdev_ctx_t *ctx,
 
   switch (int2_cfg.aoi)
   {
-    case LIS331DLH_INT2_ON_THRESHOLD_OR:
+    case 0x00:
       *val = LIS331DLH_INT2_ON_THRESHOLD_OR;
       break;
 
-    case LIS331DLH_INT2_ON_THRESHOLD_AND:
+    case 0x01:
       *val = LIS331DLH_INT2_ON_THRESHOLD_AND;
       break;
 
@@ -2188,15 +2188,15 @@ int32_t lis331dlh_int1_6d_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((int1_cfg.aoi << 1) + int1_cfg._6d)
   {
-    case LIS331DLH_6D_INT1_DISABLE:
+    case 0x00:
       *val = LIS331DLH_6D_INT1_DISABLE;
       break;
 
-    case LIS331DLH_6D_INT1_MOVEMENT:
+    case 0x01:
       *val = LIS331DLH_6D_INT1_MOVEMENT;
       break;
 
-    case LIS331DLH_6D_INT1_POSITION:
+    case 0x03:
       *val = LIS331DLH_6D_INT1_POSITION;
       break;
 
@@ -2325,15 +2325,15 @@ int32_t lis331dlh_int2_6d_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((int2_cfg.aoi << 1) + int2_cfg._6d)
   {
-    case LIS331DLH_6D_INT2_DISABLE:
+    case 0x00:
       *val = LIS331DLH_6D_INT2_DISABLE;
       break;
 
-    case LIS331DLH_6D_INT2_MOVEMENT:
+    case 0x01:
       *val = LIS331DLH_6D_INT2_MOVEMENT;
       break;
 
-    case LIS331DLH_6D_INT2_POSITION:
+    case 0x03:
       *val = LIS331DLH_6D_INT2_POSITION;
       break;
 

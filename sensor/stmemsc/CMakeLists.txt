@@ -1,6 +1,6 @@
 # Makefile - STMems_Standard_C_drivers
 #
-# Copyright (c) 2019 STMicroelectronics
+# Copyright (c) 2019-2026 STMicroelectronics
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -14,6 +14,7 @@ set(stmems_pids
   asm330lhb
   asm330lhbg1
   asm330lhh
+  asm330lhhg1
   asm330lhhx
   asm330lhhxg1
   h3lis100dl
@@ -28,6 +29,7 @@ set(stmems_pids
   iis328dq
   iis3dhhc
   iis3dwb
+  iis3dwbg1
   ilps22qs
   ilps28qsw
   ism303dac
@@ -82,6 +84,7 @@ set(stmems_pids
   lsm6dsv80x
   lsm6dsv
   lsm9ds1
+  mis2du12
   st1vafe3bx
   st1vafe6ax
   sths34pf80

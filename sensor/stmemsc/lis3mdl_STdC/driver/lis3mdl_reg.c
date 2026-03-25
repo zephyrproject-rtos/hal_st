@@ -191,135 +191,135 @@ int32_t lis3mdl_data_rate_get(const stmdev_ctx_t *ctx, lis3mdl_om_t *val)
 
   switch (ctrl_reg1.om)
   {
-    case LIS3MDL_LP_Hz625:
+    case 0x00:
       *val = LIS3MDL_LP_Hz625;
       break;
 
-    case LIS3MDL_LP_1kHz:
+    case 0x01:
       *val = LIS3MDL_LP_1kHz;
       break;
 
-    case LIS3MDL_MP_560Hz:
+    case 0x11:
       *val = LIS3MDL_MP_560Hz;
       break;
 
-    case LIS3MDL_HP_300Hz:
+    case 0x21:
       *val = LIS3MDL_HP_300Hz;
       break;
 
-    case LIS3MDL_UHP_155Hz:
+    case 0x31:
       *val = LIS3MDL_UHP_155Hz;
       break;
 
-    case LIS3MDL_LP_1Hz25:
+    case 0x02:
       *val = LIS3MDL_LP_1Hz25;
       break;
 
-    case LIS3MDL_LP_2Hz5:
+    case 0x04:
       *val = LIS3MDL_LP_2Hz5;
       break;
 
-    case LIS3MDL_LP_5Hz:
+    case 0x06:
       *val = LIS3MDL_LP_5Hz;
       break;
 
-    case LIS3MDL_LP_10Hz:
+    case 0x08:
       *val = LIS3MDL_LP_10Hz;
       break;
 
-    case LIS3MDL_LP_20Hz:
+    case 0x0A:
       *val = LIS3MDL_LP_20Hz;
       break;
 
-    case LIS3MDL_LP_40Hz:
+    case 0x0C:
       *val = LIS3MDL_LP_40Hz;
       break;
 
-    case LIS3MDL_LP_80Hz:
+    case 0x0E:
       *val = LIS3MDL_LP_80Hz;
       break;
 
-    case LIS3MDL_MP_1Hz25:
+    case 0x12:
       *val = LIS3MDL_MP_1Hz25;
       break;
 
-    case LIS3MDL_MP_2Hz5:
+    case 0x14:
       *val = LIS3MDL_MP_2Hz5;
       break;
 
-    case LIS3MDL_MP_5Hz:
+    case 0x16:
       *val = LIS3MDL_MP_5Hz;
       break;
 
-    case LIS3MDL_MP_10Hz:
+    case 0x18:
       *val = LIS3MDL_MP_10Hz;
       break;
 
-    case LIS3MDL_MP_20Hz:
+    case 0x1A:
       *val = LIS3MDL_MP_20Hz;
       break;
 
-    case LIS3MDL_MP_40Hz:
+    case 0x1C:
       *val = LIS3MDL_MP_40Hz;
       break;
 
-    case LIS3MDL_MP_80Hz:
+    case 0x1E:
       *val = LIS3MDL_MP_80Hz;
       break;
 
-    case LIS3MDL_HP_1Hz25:
+    case 0x22:
       *val = LIS3MDL_HP_1Hz25;
       break;
 
-    case LIS3MDL_HP_2Hz5:
+    case 0x24:
       *val = LIS3MDL_HP_2Hz5;
       break;
 
-    case LIS3MDL_HP_5Hz:
+    case 0x26:
       *val = LIS3MDL_HP_5Hz;
       break;
 
-    case LIS3MDL_HP_10Hz:
+    case 0x28:
       *val = LIS3MDL_HP_10Hz;
       break;
 
-    case LIS3MDL_HP_20Hz:
+    case 0x2A:
       *val = LIS3MDL_HP_20Hz;
       break;
 
-    case LIS3MDL_HP_40Hz:
+    case 0x2C:
       *val = LIS3MDL_HP_40Hz;
       break;
 
-    case LIS3MDL_HP_80Hz:
+    case 0x2E:
       *val = LIS3MDL_HP_80Hz;
       break;
 
-    case LIS3MDL_UHP_1Hz25:
+    case 0x32:
       *val = LIS3MDL_UHP_1Hz25;
       break;
 
-    case LIS3MDL_UHP_2Hz5:
+    case 0x34:
       *val = LIS3MDL_UHP_2Hz5;
       break;
 
-    case LIS3MDL_UHP_5Hz:
+    case 0x36:
       *val = LIS3MDL_UHP_5Hz;
       break;
 
-    case LIS3MDL_UHP_10Hz:
+    case 0x38:
       *val = LIS3MDL_UHP_10Hz;
       break;
 
-    case LIS3MDL_UHP_20Hz:
+    case 0x3A:
       *val = LIS3MDL_UHP_20Hz;
       break;
 
-    case LIS3MDL_UHP_40Hz:
+    case 0x3C:
       *val = LIS3MDL_UHP_40Hz;
       break;
 
-    case LIS3MDL_UHP_80Hz:
+    case 0x3E:
       *val = LIS3MDL_UHP_80Hz;
       break;
 
@@ -420,19 +420,19 @@ int32_t lis3mdl_full_scale_get(const stmdev_ctx_t *ctx, lis3mdl_fs_t *val)
 
   switch (ctrl_reg2.fs)
   {
-    case LIS3MDL_4_GAUSS:
+    case 0x00:
       *val = LIS3MDL_4_GAUSS;
       break;
 
-    case LIS3MDL_8_GAUSS:
+    case 0x01:
       *val = LIS3MDL_8_GAUSS;
       break;
 
-    case LIS3MDL_12_GAUSS:
+    case 0x02:
       *val = LIS3MDL_12_GAUSS;
       break;
 
-    case LIS3MDL_16_GAUSS:
+    case 0x03:
       *val = LIS3MDL_16_GAUSS;
       break;
 
@@ -489,15 +489,15 @@ int32_t lis3mdl_operating_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.md)
   {
-    case LIS3MDL_CONTINUOUS_MODE:
+    case 0x00:
       *val = LIS3MDL_CONTINUOUS_MODE;
       break;
 
-    case LIS3MDL_SINGLE_TRIGGER:
+    case 0x01:
       *val = LIS3MDL_SINGLE_TRIGGER;
       break;
 
-    case LIS3MDL_POWER_DOWN:
+    case 0x02:
       *val = LIS3MDL_POWER_DOWN;
       break;
 
@@ -952,11 +952,11 @@ int32_t lis3mdl_data_format_get(const stmdev_ctx_t *ctx, lis3mdl_ble_t *val)
 
   switch (ctrl_reg4.ble)
   {
-    case LIS3MDL_LSB_AT_LOW_ADD:
+    case 0x00:
       *val = LIS3MDL_LSB_AT_LOW_ADD;
       break;
 
-    case LIS3MDL_MSB_AT_LOW_ADD:
+    case 0x01:
       *val = LIS3MDL_MSB_AT_LOW_ADD;
       break;
 
@@ -1113,11 +1113,11 @@ int32_t lis3mdl_int_notification_mode_get(const stmdev_ctx_t *ctx,
 
   switch (int_cfg.lir)
   {
-    case LIS3MDL_INT_PULSED:
+    case 0x00:
       *val = LIS3MDL_INT_PULSED;
       break;
 
-    case LIS3MDL_INT_LATCHED:
+    case 0x01:
       *val = LIS3MDL_INT_LATCHED;
       break;
 
@@ -1173,11 +1173,11 @@ int32_t lis3mdl_int_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (int_cfg.iea)
   {
-    case LIS3MDL_ACTIVE_HIGH:
+    case 0x00:
       *val = LIS3MDL_ACTIVE_HIGH;
       break;
 
-    case LIS3MDL_ACTIVE_LOW:
+    case 0x01:
       *val = LIS3MDL_ACTIVE_LOW;
       break;
 
@@ -1613,11 +1613,11 @@ int32_t lis3mdl_spi_mode_get(const stmdev_ctx_t *ctx, lis3mdl_sim_t *val)
 
   switch (ctrl_reg3.sim)
   {
-    case LIS3MDL_SPI_4_WIRE:
+    case 0x00:
       *val = LIS3MDL_SPI_4_WIRE;
       break;
 
-    case LIS3MDL_SPI_3_WIRE:
+    case 0x01:
       *val = LIS3MDL_SPI_3_WIRE;
       break;
 

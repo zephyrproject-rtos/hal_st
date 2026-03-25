@@ -984,8 +984,8 @@ float_t lsm9ds1_from_lsb_to_celsius(int16_t lsb);
 
 typedef enum
 {
-  LSM9DS1_245dps = 0,
-  LSM9DS1_500dps = 1,
+  LSM9DS1_245dps  = 0,
+  LSM9DS1_500dps  = 1,
   LSM9DS1_2000dps = 3,
 } lsm9ds1_gy_fs_t;
 int32_t lsm9ds1_gy_full_scale_set(const stmdev_ctx_t *ctx,
@@ -1308,7 +1308,7 @@ int32_t lsm9ds1_xl_filter_out_path_get(const stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  LSM9DS1_LP_DISABLE     = 0x00,
+  LSM9DS1_LP_DISABLE        = 0x00,
   LSM9DS1_LP_ODR_DIV_50     = 0x10,
   LSM9DS1_LP_ODR_DIV_100    = 0x11,
   LSM9DS1_LP_ODR_DIV_9      = 0x12,

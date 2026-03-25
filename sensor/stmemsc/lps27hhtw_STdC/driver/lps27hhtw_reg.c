@@ -430,59 +430,59 @@ int32_t lps27hhtw_data_rate_get(const stmdev_ctx_t *ctx,
     switch (((ctrl_reg2.low_noise_en << 4) + (ctrl_reg2.one_shot << 3) +
              ctrl_reg1.odr))
     {
-      case LPS27HHTW_POWER_DOWN:
+      case 0x00:
         *val = LPS27HHTW_POWER_DOWN;
         break;
 
-      case LPS27HHTW_ONE_SHOOT:
+      case 0x08:
         *val = LPS27HHTW_ONE_SHOOT;
         break;
 
-      case LPS27HHTW_1_Hz:
+      case 0x01:
         *val = LPS27HHTW_1_Hz;
         break;
 
-      case LPS27HHTW_10_Hz:
+      case 0x02:
         *val = LPS27HHTW_10_Hz;
         break;
 
-      case LPS27HHTW_25_Hz:
+      case 0x03:
         *val = LPS27HHTW_25_Hz;
         break;
 
-      case LPS27HHTW_50_Hz:
+      case 0x04:
         *val = LPS27HHTW_50_Hz;
         break;
 
-      case LPS27HHTW_75_Hz:
+      case 0x05:
         *val = LPS27HHTW_75_Hz;
         break;
 
-      case LPS27HHTW_1_Hz_LOW_NOISE:
+      case 0x11:
         *val = LPS27HHTW_1_Hz_LOW_NOISE;
         break;
 
-      case LPS27HHTW_10_Hz_LOW_NOISE:
+      case 0x12:
         *val = LPS27HHTW_10_Hz_LOW_NOISE;
         break;
 
-      case LPS27HHTW_25_Hz_LOW_NOISE:
+      case 0x13:
         *val = LPS27HHTW_25_Hz_LOW_NOISE;
         break;
 
-      case LPS27HHTW_50_Hz_LOW_NOISE:
+      case 0x14:
         *val = LPS27HHTW_50_Hz_LOW_NOISE;
         break;
 
-      case LPS27HHTW_75_Hz_LOW_NOISE:
+      case 0x15:
         *val = LPS27HHTW_75_Hz_LOW_NOISE;
         break;
 
-      case LPS27HHTW_100_Hz:
+      case 0x06:
         *val = LPS27HHTW_100_Hz;
         break;
 
-      case LPS27HHTW_200_Hz:
+      case 0x07:
         *val = LPS27HHTW_200_Hz;
         break;
 
@@ -1032,15 +1032,15 @@ int32_t lps27hhtw_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (reg.lpfp_cfg)
   {
-    case LPS27HHTW_LPF_ODR_DIV_2:
+    case 0x00:
       *val = LPS27HHTW_LPF_ODR_DIV_2;
       break;
 
-    case LPS27HHTW_LPF_ODR_DIV_9:
+    case 0x02:
       *val = LPS27HHTW_LPF_ODR_DIV_9;
       break;
 
-    case LPS27HHTW_LPF_ODR_DIV_20:
+    case 0x03:
       *val = LPS27HHTW_LPF_ODR_DIV_20;
       break;
 
@@ -1110,11 +1110,11 @@ int32_t lps27hhtw_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   switch (reg.i2c_disable)
   {
-    case LPS27HHTW_I2C_ENABLE:
+    case 0x00:
       *val = LPS27HHTW_I2C_ENABLE;
       break;
 
-    case LPS27HHTW_I2C_DISABLE:
+    case 0x01:
       *val = LPS27HHTW_I2C_DISABLE;
       break;
 
@@ -1172,15 +1172,15 @@ int32_t lps27hhtw_i3c_interface_get(const stmdev_ctx_t *ctx,
 
   switch ((reg.int_en_i3c << 4) + reg.int_en_i3c)
   {
-    case LPS27HHTW_I3C_ENABLE:
+    case 0x00:
       *val = LPS27HHTW_I3C_ENABLE;
       break;
 
-    case LPS27HHTW_I3C_ENABLE_INT_PIN_ENABLE:
+    case 0x10:
       *val = LPS27HHTW_I3C_ENABLE_INT_PIN_ENABLE;
       break;
 
-    case LPS27HHTW_I3C_DISABLE:
+    case 0x11:
       *val = LPS27HHTW_I3C_DISABLE;
       break;
 
@@ -1237,11 +1237,11 @@ int32_t lps27hhtw_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.sdo_pu_en)
   {
-    case LPS27HHTW_PULL_UP_DISCONNECT:
+    case 0x00:
       *val = LPS27HHTW_PULL_UP_DISCONNECT;
       break;
 
-    case LPS27HHTW_PULL_UP_CONNECT:
+    case 0x01:
       *val = LPS27HHTW_PULL_UP_CONNECT;
       break;
 
@@ -1298,11 +1298,11 @@ int32_t lps27hhtw_sda_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.sda_pu_en)
   {
-    case LPS27HHTW_PULL_UP_DISCONNECT:
+    case 0x00:
       *val = LPS27HHTW_PULL_UP_DISCONNECT;
       break;
 
-    case LPS27HHTW_PULL_UP_CONNECT:
+    case 0x01:
       *val = LPS27HHTW_PULL_UP_CONNECT;
       break;
 
@@ -1358,11 +1358,11 @@ int32_t lps27hhtw_spi_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.sim)
   {
-    case LPS27HHTW_SPI_4_WIRE:
+    case 0x00:
       *val = LPS27HHTW_SPI_4_WIRE;
       break;
 
-    case LPS27HHTW_SPI_3_WIRE:
+    case 0x01:
       *val = LPS27HHTW_SPI_3_WIRE;
       break;
 
@@ -1435,11 +1435,11 @@ int32_t lps27hhtw_int_notification_get(const stmdev_ctx_t *ctx,
 
   switch (reg.lir)
   {
-    case LPS27HHTW_INT_PULSED:
+    case 0x00:
       *val = LPS27HHTW_INT_PULSED;
       break;
 
-    case LPS27HHTW_INT_LATCHED:
+    case 0x01:
       *val = LPS27HHTW_INT_LATCHED;
       break;
 
@@ -1496,11 +1496,11 @@ int32_t lps27hhtw_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.pp_od)
   {
-    case LPS27HHTW_PUSH_PULL:
+    case 0x00:
       *val = LPS27HHTW_PUSH_PULL;
       break;
 
-    case LPS27HHTW_OPEN_DRAIN:
+    case 0x01:
       *val = LPS27HHTW_OPEN_DRAIN;
       break;
 
@@ -1557,11 +1557,11 @@ int32_t lps27hhtw_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (reg.int_h_l)
   {
-    case LPS27HHTW_ACTIVE_HIGH:
+    case 0x00:
       *val = LPS27HHTW_ACTIVE_HIGH;
       break;
 
-    case LPS27HHTW_ACTIVE_LOW:
+    case 0x01:
       *val = LPS27HHTW_ACTIVE_LOW;
       break;
 
@@ -1681,19 +1681,19 @@ int32_t lps27hhtw_int_on_threshold_get(const stmdev_ctx_t *ctx,
 
   switch (reg.pe)
   {
-    case LPS27HHTW_NO_THRESHOLD:
+    case 0x00:
       *val = LPS27HHTW_NO_THRESHOLD;
       break;
 
-    case LPS27HHTW_POSITIVE:
+    case 0x01:
       *val = LPS27HHTW_POSITIVE;
       break;
 
-    case LPS27HHTW_NEGATIVE:
+    case 0x02:
       *val = LPS27HHTW_NEGATIVE;
       break;
 
-    case LPS27HHTW_BOTH:
+    case 0x03:
       *val = LPS27HHTW_BOTH;
       break;
 
@@ -1818,31 +1818,31 @@ int32_t lps27hhtw_fifo_mode_get(const stmdev_ctx_t *ctx,
 
   switch (reg.f_mode)
   {
-    case LPS27HHTW_BYPASS_MODE:
+    case 0x00:
       *val = LPS27HHTW_BYPASS_MODE;
       break;
 
-    case LPS27HHTW_FIFO_MODE:
+    case 0x01:
       *val = LPS27HHTW_FIFO_MODE;
       break;
 
-    case LPS27HHTW_STREAM_MODE:
+    case 0x02:
       *val = LPS27HHTW_STREAM_MODE;
       break;
 
-    case LPS27HHTW_DYNAMIC_STREAM_MODE:
+    case 0x03:
       *val = LPS27HHTW_DYNAMIC_STREAM_MODE;
       break;
 
-    case LPS27HHTW_BYPASS_TO_FIFO_MODE:
+    case 0x05:
       *val = LPS27HHTW_BYPASS_TO_FIFO_MODE;
       break;
 
-    case LPS27HHTW_BYPASS_TO_STREAM_MODE:
+    case 0x06:
       *val = LPS27HHTW_BYPASS_TO_STREAM_MODE;
       break;
 
-    case LPS27HHTW_STREAM_TO_FIFO_MODE:
+    case 0x07:
       *val = LPS27HHTW_STREAM_TO_FIFO_MODE;
       break;
 

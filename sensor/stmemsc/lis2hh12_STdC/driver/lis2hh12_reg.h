@@ -634,7 +634,6 @@ int32_t lis2hh12_xl_data_rate_get(const stmdev_ctx_t *ctx,
 typedef enum
 {
   LIS2HH12_2g              = 0x00,
-  LIS2HH12_16g             = 0x01,
   LIS2HH12_4g              = 0x02,
   LIS2HH12_8g              = 0x03,
 } lis2hh12_xl_fs_t;
@@ -941,9 +940,9 @@ typedef enum
   LIS2HH12_BYPASS_MODE            = 0x10,
   LIS2HH12_FIFO_MODE              = 0x11,
   LIS2HH12_STREAM_MODE            = 0x12,
-  LIS2HH12_STREAM_TO_FIFO_MODE   = 0x13,
-  LIS2HH12_BYPASS_TO_STREAM_MODE = 0x14,
-  LIS2HH12_BYPASS_TO_FIFO_MODE   = 0x17,
+  LIS2HH12_STREAM_TO_FIFO_MODE    = 0x13,
+  LIS2HH12_BYPASS_TO_STREAM_MODE  = 0x14,
+  LIS2HH12_BYPASS_TO_FIFO_MODE    = 0x17,
 } lis2hh12_fifo_md_t;
 int32_t lis2hh12_fifo_mode_set(const stmdev_ctx_t *ctx,
                                lis2hh12_fifo_md_t val);

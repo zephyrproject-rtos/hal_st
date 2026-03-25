@@ -306,39 +306,39 @@ int32_t h3lis100dl_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl_reg1.dr << 4) + ctrl_reg1.pm)
   {
-    case H3LIS100DL_ODR_OFF:
+    case 0x00:
       *val = H3LIS100DL_ODR_OFF;
       break;
 
-    case H3LIS100DL_ODR_Hz5:
+    case 0x02:
       *val = H3LIS100DL_ODR_Hz5;
       break;
 
-    case H3LIS100DL_ODR_1Hz:
+    case 0x03:
       *val = H3LIS100DL_ODR_1Hz;
       break;
 
-    case H3LIS100DL_ODR_2Hz:
+    case 0x04:
       *val = H3LIS100DL_ODR_2Hz;
       break;
 
-    case H3LIS100DL_ODR_5Hz:
+    case 0x05:
       *val = H3LIS100DL_ODR_5Hz;
       break;
 
-    case H3LIS100DL_ODR_10Hz:
+    case 0x06:
       *val = H3LIS100DL_ODR_10Hz;
       break;
 
-    case H3LIS100DL_ODR_50Hz:
+    case 0x01:
       *val = H3LIS100DL_ODR_50Hz;
       break;
 
-    case H3LIS100DL_ODR_100Hz:
+    case 0x11:
       *val = H3LIS100DL_ODR_100Hz;
       break;
 
-    case H3LIS100DL_ODR_400Hz:
+    case 0x21:
       *val = H3LIS100DL_ODR_400Hz;
       break;
 
@@ -397,11 +397,11 @@ int32_t h3lis100dl_reference_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hpm)
   {
-    case H3LIS100DL_NORMAL_MODE:
+    case 0x00:
       *val = H3LIS100DL_NORMAL_MODE;
       break;
 
-    case H3LIS100DL_REF_MODE_ENABLE:
+    case 0x01:
       *val = H3LIS100DL_REF_MODE_ENABLE;
       break;
 
@@ -631,19 +631,19 @@ int32_t h3lis100dl_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hpcf)
   {
-    case H3LIS100DL_CUT_OFF_8Hz:
+    case 0x00:
       *val = H3LIS100DL_CUT_OFF_8Hz;
       break;
 
-    case H3LIS100DL_CUT_OFF_16Hz:
+    case 0x01:
       *val = H3LIS100DL_CUT_OFF_16Hz;
       break;
 
-    case H3LIS100DL_CUT_OFF_32Hz:
+    case 0x02:
       *val = H3LIS100DL_CUT_OFF_32Hz;
       break;
 
-    case H3LIS100DL_CUT_OFF_64Hz:
+    case 0x03:
       *val = H3LIS100DL_CUT_OFF_64Hz;
       break;
 
@@ -703,35 +703,35 @@ int32_t h3lis100dl_hp_path_get(const stmdev_ctx_t *ctx,
 
   switch ((ctrl_reg2.fds << 2) + ctrl_reg2.hpen)
   {
-    case H3LIS100DL_HP_DISABLE:
+    case 0x00:
       *val = H3LIS100DL_HP_DISABLE;
       break;
 
-    case H3LIS100DL_HP_ON_OUT:
+    case 0x04:
       *val = H3LIS100DL_HP_ON_OUT;
       break;
 
-    case H3LIS100DL_HP_ON_INT1:
+    case 0x01:
       *val = H3LIS100DL_HP_ON_INT1;
       break;
 
-    case H3LIS100DL_HP_ON_INT2:
+    case 0x02:
       *val = H3LIS100DL_HP_ON_INT2;
       break;
 
-    case H3LIS100DL_HP_ON_INT1_INT2:
+    case 0x03:
       *val = H3LIS100DL_HP_ON_INT1_INT2;
       break;
 
-    case H3LIS100DL_HP_ON_INT1_INT2_OUT:
+    case 0x07:
       *val = H3LIS100DL_HP_ON_INT1_INT2_OUT;
       break;
 
-    case H3LIS100DL_HP_ON_INT2_OUT:
+    case 0x06:
       *val = H3LIS100DL_HP_ON_INT2_OUT;
       break;
 
-    case H3LIS100DL_HP_ON_INT1_OUT:
+    case 0x05:
       *val = H3LIS100DL_HP_ON_INT1_OUT;
       break;
 
@@ -862,11 +862,11 @@ int32_t h3lis100dl_spi_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4.sim)
   {
-    case H3LIS100DL_SPI_4_WIRE:
+    case 0x00:
       *val = H3LIS100DL_SPI_4_WIRE;
       break;
 
-    case H3LIS100DL_SPI_3_WIRE:
+    case 0x01:
       *val = H3LIS100DL_SPI_3_WIRE;
       break;
 
@@ -938,19 +938,19 @@ int32_t h3lis100dl_pin_int1_route_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.i1_cfg)
   {
-    case H3LIS100DL_PAD1_INT1_SRC:
+    case 0x00:
       *val = H3LIS100DL_PAD1_INT1_SRC;
       break;
 
-    case H3LIS100DL_PAD1_INT1_OR_INT2_SRC:
+    case 0x01:
       *val = H3LIS100DL_PAD1_INT1_OR_INT2_SRC;
       break;
 
-    case H3LIS100DL_PAD1_DRDY:
+    case 0x02:
       *val = H3LIS100DL_PAD1_DRDY;
       break;
 
-    case H3LIS100DL_PAD1_BOOT:
+    case 0x03:
       *val = H3LIS100DL_PAD1_BOOT;
       break;
 
@@ -1011,11 +1011,11 @@ int32_t h3lis100dl_int1_notification_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.lir1)
   {
-    case H3LIS100DL_INT1_PULSED:
+    case 0x00:
       *val = H3LIS100DL_INT1_PULSED;
       break;
 
-    case H3LIS100DL_INT1_LATCHED:
+    case 0x01:
       *val = H3LIS100DL_INT1_LATCHED;
       break;
 
@@ -1074,19 +1074,19 @@ int32_t h3lis100dl_pin_int2_route_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.i2_cfg)
   {
-    case H3LIS100DL_PAD2_INT2_SRC:
+    case 0x00:
       *val = H3LIS100DL_PAD2_INT2_SRC;
       break;
 
-    case H3LIS100DL_PAD2_INT1_OR_INT2_SRC:
+    case 0x01:
       *val = H3LIS100DL_PAD2_INT1_OR_INT2_SRC;
       break;
 
-    case H3LIS100DL_PAD2_DRDY:
+    case 0x02:
       *val = H3LIS100DL_PAD2_DRDY;
       break;
 
-    case H3LIS100DL_PAD2_BOOT:
+    case 0x03:
       *val = H3LIS100DL_PAD2_BOOT;
       break;
 
@@ -1147,11 +1147,11 @@ int32_t h3lis100dl_int2_notification_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.lir2)
   {
-    case H3LIS100DL_INT2_PULSED:
+    case 0x00:
       *val = H3LIS100DL_INT2_PULSED;
       break;
 
-    case H3LIS100DL_INT2_LATCHED:
+    case 0x01:
       *val = H3LIS100DL_INT2_LATCHED;
       break;
 
@@ -1210,11 +1210,11 @@ int32_t h3lis100dl_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.pp_od)
   {
-    case H3LIS100DL_PUSH_PULL:
+    case 0x00:
       *val = H3LIS100DL_PUSH_PULL;
       break;
 
-    case H3LIS100DL_OPEN_DRAIN:
+    case 0x01:
       *val = H3LIS100DL_OPEN_DRAIN;
       break;
 
@@ -1273,11 +1273,11 @@ int32_t h3lis100dl_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.ihl)
   {
-    case H3LIS100DL_ACTIVE_HIGH:
+    case 0x00:
       *val = H3LIS100DL_ACTIVE_HIGH;
       break;
 
-    case H3LIS100DL_ACTIVE_LOW:
+    case 0x01:
       *val = H3LIS100DL_ACTIVE_LOW;
       break;
 
@@ -1409,11 +1409,11 @@ int32_t h3lis100dl_int1_on_threshold_mode_get(const stmdev_ctx_t *ctx,
 
   switch (int1_cfg.aoi)
   {
-    case H3LIS100DL_INT1_ON_THRESHOLD_OR:
+    case 0x00:
       *val = H3LIS100DL_INT1_ON_THRESHOLD_OR;
       break;
 
-    case H3LIS100DL_INT1_ON_THRESHOLD_AND:
+    case 0x01:
       *val = H3LIS100DL_INT1_ON_THRESHOLD_AND;
       break;
 
@@ -1646,11 +1646,11 @@ int32_t h3lis100dl_int2_on_threshold_mode_get(const stmdev_ctx_t *ctx,
 
   switch (int2_cfg.aoi)
   {
-    case H3LIS100DL_INT2_ON_THRESHOLD_OR:
+    case 0x00:
       *val = H3LIS100DL_INT2_ON_THRESHOLD_OR;
       break;
 
-    case H3LIS100DL_INT2_ON_THRESHOLD_AND:
+    case 0x01:
       *val = H3LIS100DL_INT2_ON_THRESHOLD_AND;
       break;
 

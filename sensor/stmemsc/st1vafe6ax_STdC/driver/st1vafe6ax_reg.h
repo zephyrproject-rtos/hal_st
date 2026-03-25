@@ -2985,16 +2985,13 @@ int32_t st1vafe6ax_pin_polarity_get(const stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t boot                          : 1;
   uint8_t drdy_xl                       : 1;
   uint8_t drdy_gy                       : 1;
-  uint8_t drdy_temp                     : 1;
-  uint8_t drdy_ah_bio                   : 1;
+  uint8_t drdy_ah_bio                   : 1; // only INT2
   uint8_t fifo_th                       : 1;
   uint8_t fifo_ovr                      : 1;
   uint8_t fifo_full                     : 1;
   uint8_t fifo_bdr                      : 1;
-  uint8_t den_flag                      : 1;
   uint8_t timestamp                     : 1; // impact on int2 signals
   uint8_t six_d                         : 1;
   uint8_t double_tap                    : 1;
@@ -3022,6 +3019,7 @@ typedef struct
   uint8_t mlc3                          : 1;
   uint8_t mlc4                          : 1;
 } st1vafe6ax_pin_int_route_t;
+
 int32_t st1vafe6ax_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                       st1vafe6ax_pin_int_route_t val);
 int32_t st1vafe6ax_pin_int1_route_get(const stmdev_ctx_t *ctx,
@@ -3577,7 +3575,7 @@ typedef enum
   ST1VAFE6AX_2400MOhm                            = 0x0,
   ST1VAFE6AX_730MOhm                             = 0x1,
   ST1VAFE6AX_300MOhm                             = 0x2,
-  ST1VAFE6AX_255MOhm                             = 0x3,
+  ST1VAFE6AX_235MOhm                             = 0x3,
 } st1vafe6ax_ah_bio_zin_t;
 int32_t st1vafe6ax_ah_bio_zin_set(const stmdev_ctx_t *ctx,
                                   st1vafe6ax_ah_bio_zin_t val);
@@ -3607,3 +3605,4 @@ int32_t st1vafe6ax_i3c_reset_mode_get(const stmdev_ctx_t *ctx,
 #endif
 
 #endif /*ST1VAFE6AX_DRIVER_H */
+

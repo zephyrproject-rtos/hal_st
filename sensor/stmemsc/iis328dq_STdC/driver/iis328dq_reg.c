@@ -311,43 +311,43 @@ int32_t iis328dq_data_rate_get(const stmdev_ctx_t *ctx, iis328dq_dr_t *val)
 
   switch ((ctrl_reg1.dr << 4) + ctrl_reg1.pm)
   {
-    case IIS328DQ_ODR_OFF:
+    case 0x00:
       *val = IIS328DQ_ODR_OFF;
       break;
 
-    case IIS328DQ_ODR_Hz5:
+    case 0x02:
       *val = IIS328DQ_ODR_Hz5;
       break;
 
-    case IIS328DQ_ODR_1Hz:
+    case 0x03:
       *val = IIS328DQ_ODR_1Hz;
       break;
 
-    case IIS328DQ_ODR_2Hz:
+    case 0x04:
       *val = IIS328DQ_ODR_2Hz;
       break;
 
-    case IIS328DQ_ODR_5Hz:
+    case 0x05:
       *val = IIS328DQ_ODR_5Hz;
       break;
 
-    case IIS328DQ_ODR_10Hz:
+    case 0x06:
       *val = IIS328DQ_ODR_10Hz;
       break;
 
-    case IIS328DQ_ODR_50Hz:
+    case 0x01:
       *val = IIS328DQ_ODR_50Hz;
       break;
 
-    case IIS328DQ_ODR_100Hz:
+    case 0x11:
       *val = IIS328DQ_ODR_100Hz;
       break;
 
-    case IIS328DQ_ODR_400Hz:
+    case 0x21:
       *val = IIS328DQ_ODR_400Hz;
       break;
 
-    case IIS328DQ_ODR_1kHz:
+    case 0x31:
       *val = IIS328DQ_ODR_1kHz;
       break;
 
@@ -406,11 +406,11 @@ int32_t iis328dq_reference_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hpm)
   {
-    case IIS328DQ_NORMAL_MODE:
+    case 0x00:
       *val = IIS328DQ_NORMAL_MODE;
       break;
 
-    case IIS328DQ_REF_MODE_ENABLE:
+    case 0x01:
       *val = IIS328DQ_REF_MODE_ENABLE;
       break;
 
@@ -467,15 +467,15 @@ int32_t iis328dq_full_scale_get(const stmdev_ctx_t *ctx, iis328dq_fs_t *val)
 
   switch (ctrl_reg4.fs)
   {
-    case IIS328DQ_2g:
+    case 0x00:
       *val = IIS328DQ_2g;
       break;
 
-    case IIS328DQ_4g:
+    case 0x01:
       *val = IIS328DQ_4g;
       break;
 
-    case IIS328DQ_8g:
+    case 0x03:
       *val = IIS328DQ_8g;
       break;
 
@@ -737,15 +737,15 @@ int32_t iis328dq_self_test_get(const stmdev_ctx_t *ctx, iis328dq_st_t *val)
 
   switch (ctrl_reg4.st)
   {
-    case IIS328DQ_ST_DISABLE:
+    case 0x00:
       *val = IIS328DQ_ST_DISABLE;
       break;
 
-    case IIS328DQ_ST_POSITIVE:
+    case 0x01:
       *val = IIS328DQ_ST_POSITIVE;
       break;
 
-    case IIS328DQ_ST_NEGATIVE:
+    case 0x05:
       *val = IIS328DQ_ST_NEGATIVE;
       break;
 
@@ -804,11 +804,11 @@ int32_t iis328dq_data_format_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4.ble)
   {
-    case IIS328DQ_LSB_AT_LOW_ADD:
+    case 0x00:
       *val = IIS328DQ_LSB_AT_LOW_ADD;
       break;
 
-    case IIS328DQ_MSB_AT_LOW_ADD:
+    case 0x01:
       *val = IIS328DQ_MSB_AT_LOW_ADD;
       break;
 
@@ -880,19 +880,19 @@ int32_t iis328dq_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg2.hpcf)
   {
-    case IIS328DQ_CUT_OFF_8Hz:
+    case 0x00:
       *val = IIS328DQ_CUT_OFF_8Hz;
       break;
 
-    case IIS328DQ_CUT_OFF_16Hz:
+    case 0x01:
       *val = IIS328DQ_CUT_OFF_16Hz;
       break;
 
-    case IIS328DQ_CUT_OFF_32Hz:
+    case 0x02:
       *val = IIS328DQ_CUT_OFF_32Hz;
       break;
 
-    case IIS328DQ_CUT_OFF_64Hz:
+    case 0x03:
       *val = IIS328DQ_CUT_OFF_64Hz;
       break;
 
@@ -950,35 +950,35 @@ int32_t iis328dq_hp_path_get(const stmdev_ctx_t *ctx, iis328dq_hpen_t *val)
 
   switch ((ctrl_reg2.fds << 2) + ctrl_reg2.hpen)
   {
-    case IIS328DQ_HP_DISABLE:
+    case 0x00:
       *val = IIS328DQ_HP_DISABLE;
       break;
 
-    case IIS328DQ_HP_ON_OUT:
+    case 0x04:
       *val = IIS328DQ_HP_ON_OUT;
       break;
 
-    case IIS328DQ_HP_ON_INT1:
+    case 0x01:
       *val = IIS328DQ_HP_ON_INT1;
       break;
 
-    case IIS328DQ_HP_ON_INT2:
+    case 0x02:
       *val = IIS328DQ_HP_ON_INT2;
       break;
 
-    case IIS328DQ_HP_ON_INT1_INT2:
+    case 0x03:
       *val = IIS328DQ_HP_ON_INT1_INT2;
       break;
 
-    case IIS328DQ_HP_ON_INT1_INT2_OUT:
+    case 0x07:
       *val = IIS328DQ_HP_ON_INT1_INT2_OUT;
       break;
 
-    case IIS328DQ_HP_ON_INT2_OUT:
+    case 0x06:
       *val = IIS328DQ_HP_ON_INT2_OUT;
       break;
 
-    case IIS328DQ_HP_ON_INT1_OUT:
+    case 0x05:
       *val = IIS328DQ_HP_ON_INT1_OUT;
       break;
 
@@ -1107,11 +1107,11 @@ int32_t iis328dq_spi_mode_get(const stmdev_ctx_t *ctx, iis328dq_sim_t *val)
 
   switch (ctrl_reg4.sim)
   {
-    case IIS328DQ_SPI_4_WIRE:
+    case 0x00:
       *val = IIS328DQ_SPI_4_WIRE;
       break;
 
-    case IIS328DQ_SPI_3_WIRE:
+    case 0x01:
       *val = IIS328DQ_SPI_3_WIRE;
       break;
 
@@ -1183,19 +1183,19 @@ int32_t iis328dq_pin_int1_route_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.i1_cfg)
   {
-    case IIS328DQ_PAD1_INT1_SRC:
+    case 0x00:
       *val = IIS328DQ_PAD1_INT1_SRC;
       break;
 
-    case IIS328DQ_PAD1_INT1_OR_INT2_SRC:
+    case 0x01:
       *val = IIS328DQ_PAD1_INT1_OR_INT2_SRC;
       break;
 
-    case IIS328DQ_PAD1_DRDY:
+    case 0x02:
       *val = IIS328DQ_PAD1_DRDY;
       break;
 
-    case IIS328DQ_PAD1_BOOT:
+    case 0x03:
       *val = IIS328DQ_PAD1_BOOT;
       break;
 
@@ -1256,11 +1256,11 @@ int32_t iis328dq_int1_notification_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.lir1)
   {
-    case IIS328DQ_INT1_PULSED:
+    case 0x00:
       *val = IIS328DQ_INT1_PULSED;
       break;
 
-    case IIS328DQ_INT1_LATCHED:
+    case 0x01:
       *val = IIS328DQ_INT1_LATCHED;
       break;
 
@@ -1319,19 +1319,19 @@ int32_t iis328dq_pin_int2_route_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.i2_cfg)
   {
-    case IIS328DQ_PAD2_INT2_SRC:
+    case 0x00:
       *val = IIS328DQ_PAD2_INT2_SRC;
       break;
 
-    case IIS328DQ_PAD2_INT1_OR_INT2_SRC:
+    case 0x01:
       *val = IIS328DQ_PAD2_INT1_OR_INT2_SRC;
       break;
 
-    case IIS328DQ_PAD2_DRDY:
+    case 0x02:
       *val = IIS328DQ_PAD2_DRDY;
       break;
 
-    case IIS328DQ_PAD2_BOOT:
+    case 0x03:
       *val = IIS328DQ_PAD2_BOOT;
       break;
 
@@ -1392,11 +1392,11 @@ int32_t iis328dq_int2_notification_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.lir2)
   {
-    case IIS328DQ_INT2_PULSED:
+    case 0x00:
       *val = IIS328DQ_INT2_PULSED;
       break;
 
-    case IIS328DQ_INT2_LATCHED:
+    case 0x01:
       *val = IIS328DQ_INT2_LATCHED;
       break;
 
@@ -1454,11 +1454,11 @@ int32_t iis328dq_pin_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.pp_od)
   {
-    case IIS328DQ_PUSH_PULL:
+    case 0x00:
       *val = IIS328DQ_PUSH_PULL;
       break;
 
-    case IIS328DQ_OPEN_DRAIN:
+    case 0x01:
       *val = IIS328DQ_OPEN_DRAIN;
       break;
 
@@ -1517,11 +1517,11 @@ int32_t iis328dq_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg3.ihl)
   {
-    case IIS328DQ_ACTIVE_HIGH:
+    case 0x00:
       *val = IIS328DQ_ACTIVE_HIGH;
       break;
 
-    case IIS328DQ_ACTIVE_LOW:
+    case 0x01:
       *val = IIS328DQ_ACTIVE_LOW;
       break;
 
@@ -1649,11 +1649,11 @@ int32_t iis328dq_int1_on_threshold_mode_get(const stmdev_ctx_t *ctx,
 
   switch (int1_cfg.aoi)
   {
-    case IIS328DQ_INT1_ON_THRESHOLD_OR:
+    case 0x00:
       *val = IIS328DQ_INT1_ON_THRESHOLD_OR;
       break;
 
-    case IIS328DQ_INT1_ON_THRESHOLD_AND:
+    case 0x01:
       *val = IIS328DQ_INT1_ON_THRESHOLD_AND;
       break;
 
@@ -1881,11 +1881,11 @@ int32_t iis328dq_int2_on_threshold_mode_get(const stmdev_ctx_t *ctx,
 
   switch (int2_cfg.aoi)
   {
-    case IIS328DQ_INT2_ON_THRESHOLD_OR:
+    case 0x00:
       *val = IIS328DQ_INT2_ON_THRESHOLD_OR;
       break;
 
-    case IIS328DQ_INT2_ON_THRESHOLD_AND:
+    case 0x01:
       *val = IIS328DQ_INT2_ON_THRESHOLD_AND;
       break;
 
@@ -2128,15 +2128,15 @@ int32_t iis328dq_int1_6d_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((int1_cfg.aoi << 1) + int1_cfg._6d)
   {
-    case IIS328DQ_6D_INT1_DISABLE:
+    case 0x00:
       *val = IIS328DQ_6D_INT1_DISABLE;
       break;
 
-    case IIS328DQ_6D_INT1_MOVEMENT:
+    case 0x01:
       *val = IIS328DQ_6D_INT1_MOVEMENT;
       break;
 
-    case IIS328DQ_6D_INT1_POSITION:
+    case 0x03:
       *val = IIS328DQ_6D_INT1_POSITION;
       break;
 
@@ -2257,15 +2257,15 @@ int32_t iis328dq_int2_6d_mode_get(const stmdev_ctx_t *ctx,
 
   switch ((int2_cfg.aoi << 1) + int2_cfg._6d)
   {
-    case IIS328DQ_6D_INT2_DISABLE:
+    case 0x00:
       *val = IIS328DQ_6D_INT2_DISABLE;
       break;
 
-    case IIS328DQ_6D_INT2_MOVEMENT:
+    case 0x01:
       *val = IIS328DQ_6D_INT2_MOVEMENT;
       break;
 
-    case IIS328DQ_6D_INT2_POSITION:
+    case 0x03:
       *val = IIS328DQ_6D_INT2_POSITION;
       break;
 

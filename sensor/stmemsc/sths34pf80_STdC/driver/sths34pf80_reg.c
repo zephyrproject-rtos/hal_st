@@ -180,35 +180,35 @@ int32_t sths34pf80_avg_tobject_num_get(const stmdev_ctx_t *ctx, sths34pf80_avg_t
 
   switch (avg_trim.avg_tmos)
   {
-    case STHS34PF80_AVG_TMOS_2:
+    case 0x00:
       *val = STHS34PF80_AVG_TMOS_2;
       break;
 
-    case STHS34PF80_AVG_TMOS_8:
+    case 0x01:
       *val = STHS34PF80_AVG_TMOS_8;
       break;
 
-    case STHS34PF80_AVG_TMOS_32:
+    case 0x02:
       *val = STHS34PF80_AVG_TMOS_32;
       break;
 
-    case STHS34PF80_AVG_TMOS_128:
+    case 0x03:
       *val = STHS34PF80_AVG_TMOS_128;
       break;
 
-    case STHS34PF80_AVG_TMOS_256:
+    case 0x04:
       *val = STHS34PF80_AVG_TMOS_256;
       break;
 
-    case STHS34PF80_AVG_TMOS_512:
+    case 0x05:
       *val = STHS34PF80_AVG_TMOS_512;
       break;
 
-    case STHS34PF80_AVG_TMOS_1024:
+    case 0x06:
       *val = STHS34PF80_AVG_TMOS_1024;
       break;
 
-    case STHS34PF80_AVG_TMOS_2048:
+    case 0x07:
       *val = STHS34PF80_AVG_TMOS_2048;
       break;
 
@@ -261,19 +261,19 @@ int32_t sths34pf80_avg_tambient_num_get(const stmdev_ctx_t *ctx, sths34pf80_avg_
 
   switch (avg_trim.avg_t)
   {
-    case STHS34PF80_AVG_T_8:
+    case 0x00:
       *val = STHS34PF80_AVG_T_8;
       break;
 
-    case STHS34PF80_AVG_T_4:
+    case 0x01:
       *val = STHS34PF80_AVG_T_4;
       break;
 
-    case STHS34PF80_AVG_T_2:
+    case 0x02:
       *val = STHS34PF80_AVG_T_2;
       break;
 
-    case STHS34PF80_AVG_T_1:
+    case 0x03:
       *val = STHS34PF80_AVG_T_1;
       break;
 
@@ -326,11 +326,11 @@ int32_t sths34pf80_gain_mode_get(const stmdev_ctx_t *ctx, sths34pf80_gain_mode_t
 
   switch (ctrl0.gain)
   {
-    case STHS34PF80_GAIN_WIDE_MODE:
+    case 0x00:
       *val = STHS34PF80_GAIN_WIDE_MODE;
       break;
 
-    case STHS34PF80_GAIN_DEFAULT_MODE:
+    case 0x07:
       *val = STHS34PF80_GAIN_DEFAULT_MODE;
       break;
 
@@ -493,24 +493,24 @@ int32_t sths34pf80_odr_set(const stmdev_ctx_t *ctx, sths34pf80_odr_t val)
   switch (avg_trim.avg_tmos)
   {
     default:
-    case STHS34PF80_AVG_TMOS_2:
-    case STHS34PF80_AVG_TMOS_8:
-    case STHS34PF80_AVG_TMOS_32:
+    case (uint8_t)STHS34PF80_AVG_TMOS_2:
+    case (uint8_t)STHS34PF80_AVG_TMOS_8:
+    case (uint8_t)STHS34PF80_AVG_TMOS_32:
       max_odr = STHS34PF80_ODR_AT_30Hz;
       break;
-    case STHS34PF80_AVG_TMOS_128:
+    case (uint8_t)STHS34PF80_AVG_TMOS_128:
       max_odr = STHS34PF80_ODR_AT_8Hz;
       break;
-    case STHS34PF80_AVG_TMOS_256:
+    case (uint8_t)STHS34PF80_AVG_TMOS_256:
       max_odr = STHS34PF80_ODR_AT_4Hz;
       break;
-    case STHS34PF80_AVG_TMOS_512:
+    case (uint8_t)STHS34PF80_AVG_TMOS_512:
       max_odr = STHS34PF80_ODR_AT_2Hz;
       break;
-    case STHS34PF80_AVG_TMOS_1024:
+    case (uint8_t)STHS34PF80_AVG_TMOS_1024:
       max_odr = STHS34PF80_ODR_AT_1Hz;
       break;
-    case STHS34PF80_AVG_TMOS_2048:
+    case (uint8_t)STHS34PF80_AVG_TMOS_2048:
       max_odr = STHS34PF80_ODR_AT_0Hz50;
       break;
   }
@@ -543,39 +543,39 @@ int32_t sths34pf80_odr_get(const stmdev_ctx_t *ctx, sths34pf80_odr_t *val)
 
   switch (ctrl1.odr)
   {
-    case STHS34PF80_ODR_OFF:
+    case 0x00:
       *val = STHS34PF80_ODR_OFF;
       break;
 
-    case STHS34PF80_ODR_AT_0Hz25:
+    case 0x01:
       *val = STHS34PF80_ODR_AT_0Hz25;
       break;
 
-    case STHS34PF80_ODR_AT_0Hz50:
+    case 0x02:
       *val = STHS34PF80_ODR_AT_0Hz50;
       break;
 
-    case STHS34PF80_ODR_AT_1Hz:
+    case 0x03:
       *val = STHS34PF80_ODR_AT_1Hz;
       break;
 
-    case STHS34PF80_ODR_AT_2Hz:
+    case 0x04:
       *val = STHS34PF80_ODR_AT_2Hz;
       break;
 
-    case STHS34PF80_ODR_AT_4Hz:
+    case 0x05:
       *val = STHS34PF80_ODR_AT_4Hz;
       break;
 
-    case STHS34PF80_ODR_AT_8Hz:
+    case 0x06:
       *val = STHS34PF80_ODR_AT_8Hz;
       break;
 
-    case STHS34PF80_ODR_AT_15Hz:
+    case 0x07:
       *val = STHS34PF80_ODR_AT_15Hz;
       break;
 
-    case STHS34PF80_ODR_AT_30Hz:
+    case 0x08:
       *val = STHS34PF80_ODR_AT_30Hz;
       break;
 
@@ -674,11 +674,11 @@ int32_t sths34pf80_one_shot_get(const stmdev_ctx_t *ctx, sths34pf80_one_shot_t *
 
   switch (ctrl2.one_shot)
   {
-    case STHS34PF80_IDLE_MODE:
+    case 0x00:
       *val = STHS34PF80_IDLE_MODE;
       break;
 
-    case STHS34PF80_ONE_SHOT:
+    case 0x01:
       *val = STHS34PF80_ONE_SHOT;
       break;
 
@@ -731,11 +731,11 @@ int32_t sths34pf80_mem_bank_get(const stmdev_ctx_t *ctx, sths34pf80_mem_bank_t *
 
   switch (ctrl2.func_cfg_access)
   {
-    case STHS34PF80_MAIN_MEM_BANK:
+    case 0x00:
       *val = STHS34PF80_MAIN_MEM_BANK;
       break;
 
-    case STHS34PF80_EMBED_FUNC_MEM_BANK:
+    case 0x01:
       *val = STHS34PF80_EMBED_FUNC_MEM_BANK;
       break;
 
@@ -1020,31 +1020,31 @@ int32_t sths34pf80_lpf_m_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_b
 
   switch ((lpf1.lpf_m))
   {
-    case STHS34PF80_LPF_ODR_DIV_9:
+    case 0x00:
       *val = STHS34PF80_LPF_ODR_DIV_9;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_20:
+    case 0x01:
       *val = STHS34PF80_LPF_ODR_DIV_20;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_50:
+    case 0x02:
       *val = STHS34PF80_LPF_ODR_DIV_50;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_100:
+    case 0x03:
       *val = STHS34PF80_LPF_ODR_DIV_100;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_200:
+    case 0x04:
       *val = STHS34PF80_LPF_ODR_DIV_200;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_400:
+    case 0x05:
       *val = STHS34PF80_LPF_ODR_DIV_400;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_800:
+    case 0x06:
       *val = STHS34PF80_LPF_ODR_DIV_800;
       break;
 
@@ -1097,31 +1097,31 @@ int32_t sths34pf80_lpf_p_m_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf
 
   switch ((lpf1.lpf_p_m))
   {
-    case STHS34PF80_LPF_ODR_DIV_9:
+    case 0x00:
       *val = STHS34PF80_LPF_ODR_DIV_9;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_20:
+    case 0x01:
       *val = STHS34PF80_LPF_ODR_DIV_20;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_50:
+    case 0x02:
       *val = STHS34PF80_LPF_ODR_DIV_50;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_100:
+    case 0x03:
       *val = STHS34PF80_LPF_ODR_DIV_100;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_200:
+    case 0x04:
       *val = STHS34PF80_LPF_ODR_DIV_200;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_400:
+    case 0x05:
       *val = STHS34PF80_LPF_ODR_DIV_400;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_800:
+    case 0x06:
       *val = STHS34PF80_LPF_ODR_DIV_800;
       break;
 
@@ -1174,31 +1174,31 @@ int32_t sths34pf80_lpf_a_t_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf
 
   switch ((lpf2.lpf_a_t))
   {
-    case STHS34PF80_LPF_ODR_DIV_9:
+    case 0x00:
       *val = STHS34PF80_LPF_ODR_DIV_9;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_20:
+    case 0x01:
       *val = STHS34PF80_LPF_ODR_DIV_20;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_50:
+    case 0x02:
       *val = STHS34PF80_LPF_ODR_DIV_50;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_100:
+    case 0x03:
       *val = STHS34PF80_LPF_ODR_DIV_100;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_200:
+    case 0x04:
       *val = STHS34PF80_LPF_ODR_DIV_200;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_400:
+    case 0x05:
       *val = STHS34PF80_LPF_ODR_DIV_400;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_800:
+    case 0x06:
       *val = STHS34PF80_LPF_ODR_DIV_800;
       break;
 
@@ -1251,31 +1251,31 @@ int32_t sths34pf80_lpf_p_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_b
 
   switch ((lpf2.lpf_p))
   {
-    case STHS34PF80_LPF_ODR_DIV_9:
+    case 0x00:
       *val = STHS34PF80_LPF_ODR_DIV_9;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_20:
+    case 0x01:
       *val = STHS34PF80_LPF_ODR_DIV_20;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_50:
+    case 0x02:
       *val = STHS34PF80_LPF_ODR_DIV_50;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_100:
+    case 0x03:
       *val = STHS34PF80_LPF_ODR_DIV_100;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_200:
+    case 0x04:
       *val = STHS34PF80_LPF_ODR_DIV_200;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_400:
+    case 0x05:
       *val = STHS34PF80_LPF_ODR_DIV_400;
       break;
 
-    case STHS34PF80_LPF_ODR_DIV_800:
+    case 0x06:
       *val = STHS34PF80_LPF_ODR_DIV_800;
       break;
 
@@ -1343,15 +1343,15 @@ int32_t sths34pf80_route_int_get(const stmdev_ctx_t *ctx, sths34pf80_route_int_t
 
   switch ((ctrl3.ien))
   {
-    case STHS34PF80_INT_HIZ:
+    case 0x00:
       *val = STHS34PF80_INT_HIZ;
       break;
 
-    case STHS34PF80_INT_DRDY:
+    case 0x01:
       *val = STHS34PF80_INT_DRDY;
       break;
 
-    case STHS34PF80_INT_OR:
+    case 0x02:
       *val = STHS34PF80_INT_OR;
       break;
 
@@ -1404,35 +1404,35 @@ int32_t sths34pf80_int_or_get(const stmdev_ctx_t *ctx, sths34pf80_int_or_t *val)
 
   switch ((ctrl3.int_msk))
   {
-    case STHS34PF80_INT_NONE:
+    case 0x00:
       *val = STHS34PF80_INT_NONE;
       break;
 
-    case STHS34PF80_INT_TSHOCK:
+    case 0x01:
       *val = STHS34PF80_INT_TSHOCK;
       break;
 
-    case STHS34PF80_INT_MOTION:
+    case 0x02:
       *val = STHS34PF80_INT_MOTION;
       break;
 
-    case STHS34PF80_INT_TSHOCK_MOTION:
+    case 0x03:
       *val = STHS34PF80_INT_TSHOCK_MOTION;
       break;
 
-    case STHS34PF80_INT_PRESENCE:
+    case 0x04:
       *val = STHS34PF80_INT_PRESENCE;
       break;
 
-    case STHS34PF80_INT_TSHOCK_PRESENCE:
+    case 0x05:
       *val = STHS34PF80_INT_TSHOCK_PRESENCE;
       break;
 
-    case STHS34PF80_INT_MOTION_PRESENCE:
+    case 0x06:
       *val = STHS34PF80_INT_MOTION_PRESENCE;
       break;
 
-    case STHS34PF80_INT_ALL:
+    case 0x07:
       *val = STHS34PF80_INT_ALL;
       break;
 
@@ -1486,11 +1486,11 @@ int32_t sths34pf80_int_mode_get(const stmdev_ctx_t *ctx, sths34pf80_int_mode_t *
 
   switch (ctrl3.pp_od)
   {
-    case STHS34PF80_PUSH_PULL:
+    case 0x00:
       val->pin = STHS34PF80_PUSH_PULL;
       break;
 
-    case STHS34PF80_OPEN_DRAIN:
+    case 0x01:
       val->pin = STHS34PF80_OPEN_DRAIN;
       break;
 
@@ -1501,11 +1501,11 @@ int32_t sths34pf80_int_mode_get(const stmdev_ctx_t *ctx, sths34pf80_int_mode_t *
 
   switch (ctrl3.int_h_l)
   {
-    case STHS34PF80_ACTIVE_HIGH:
+    case 0x00:
       val->polarity = STHS34PF80_ACTIVE_HIGH;
       break;
 
-    case STHS34PF80_ACTIVE_LOW:
+    case 0x01:
       val->polarity = STHS34PF80_ACTIVE_LOW;
       break;
 
@@ -1559,11 +1559,11 @@ int32_t sths34pf80_drdy_mode_get(const stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t
 
   switch (ctrl3.int_latched)
   {
-    case STHS34PF80_DRDY_PULSED:
+    case 0x00:
       *val = STHS34PF80_DRDY_PULSED;
       break;
 
-    case STHS34PF80_DRDY_LATCHED:
+    case 0x01:
       *val = STHS34PF80_DRDY_LATCHED;
       break;
 

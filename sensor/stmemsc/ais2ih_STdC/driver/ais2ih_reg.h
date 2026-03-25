@@ -585,7 +585,7 @@ typedef struct
 #define AIS2IH_X_OFS_USR                   0x3CU
 #define AIS2IH_Y_OFS_USR                   0x3DU
 #define AIS2IH_Z_OFS_USR                   0x3EU
-#define AIS2IH_CTRL_REG7                   0x3FU
+#define AIS2IH_CTRL7                       0x3FU
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
@@ -607,7 +607,7 @@ typedef struct
   uint8_t hp_ref_mode                : 1;
   uint8_t lpass_on6d                 : 1;
 #endif /* DRV_BYTE_ORDER */
-} ais2ih_ctrl_reg7_t;
+} ais2ih_ctrl7_t;
 
 /**
   * @defgroup AIS2IH_Register_Union
@@ -644,7 +644,7 @@ typedef union
   ais2ih_tap_src_t                 tap_src;
   ais2ih_sixd_src_t                sixd_src;
   ais2ih_all_int_src_t             all_int_src;
-  ais2ih_ctrl_reg7_t               ctrl_reg7;
+  ais2ih_ctrl7_t                   ctrl7;
   bitwise_t                          bitwise;
   uint8_t                            byte;
 } ais2ih_reg_t;
@@ -667,7 +667,8 @@ typedef union
  * them with a custom implementation.
  */
 
-int32_t ais2ih_read_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
+int32_t ais2ih_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
+                        uint8_t *data,
                         uint16_t len);
 int32_t ais2ih_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data,
@@ -677,10 +678,12 @@ float_t ais2ih_from_fs2_to_mg(int16_t lsb);
 float_t ais2ih_from_fs4_to_mg(int16_t lsb);
 float_t ais2ih_from_fs8_to_mg(int16_t lsb);
 float_t ais2ih_from_fs16_to_mg(int16_t lsb);
+
 float_t ais2ih_from_fs2_lp1_to_mg(int16_t lsb);
 float_t ais2ih_from_fs4_lp1_to_mg(int16_t lsb);
 float_t ais2ih_from_fs8_lp1_to_mg(int16_t lsb);
 float_t ais2ih_from_fs16_lp1_to_mg(int16_t lsb);
+
 float_t ais2ih_from_lsb_to_celsius(int16_t lsb);
 
 typedef enum
@@ -704,8 +707,10 @@ typedef enum
   AIS2IH_SINGLE_LOW_PWR_LOW_NOISE_2          = 0x19,
   AIS2IH_SINGLE_LOW_LOW_NOISE_PWR_12bit      = 0x18,
 } ais2ih_mode_t;
-int32_t ais2ih_power_mode_set(const stmdev_ctx_t *ctx, ais2ih_mode_t val);
-int32_t ais2ih_power_mode_get(const stmdev_ctx_t *ctx, ais2ih_mode_t *val);
+int32_t ais2ih_power_mode_set(const stmdev_ctx_t *ctx,
+                              ais2ih_mode_t val);
+int32_t ais2ih_power_mode_get(const stmdev_ctx_t *ctx,
+                              ais2ih_mode_t *val);
 
 typedef enum
 {
@@ -719,14 +724,17 @@ typedef enum
   AIS2IH_XL_ODR_400Hz          = 0x07,
   AIS2IH_XL_ODR_800Hz          = 0x08,
   AIS2IH_XL_ODR_1k6Hz          = 0x09,
-  AIS2IH_XL_SET_SW_TRIG        = 0x32,  /* Use this only in SINGLE mode */
-  AIS2IH_XL_SET_PIN_TRIG       = 0x12,  /* Use this only in SINGLE mode */
+  AIS2IH_XL_SET_SW_TRIG        = 0x12,  /* Use this only in SINGLE mode */
+  AIS2IH_XL_SET_PIN_TRIG       = 0x22,  /* Use this only in SINGLE mode */
 } ais2ih_odr_t;
 int32_t ais2ih_data_rate_set(const stmdev_ctx_t *ctx, ais2ih_odr_t val);
-int32_t ais2ih_data_rate_get(const stmdev_ctx_t *ctx, ais2ih_odr_t *val);
+int32_t ais2ih_data_rate_get(const stmdev_ctx_t *ctx,
+                             ais2ih_odr_t *val);
 
-int32_t ais2ih_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t ais2ih_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t ais2ih_block_data_update_set(const stmdev_ctx_t *ctx,
+                                     uint8_t val);
+int32_t ais2ih_block_data_update_get(const stmdev_ctx_t *ctx,
+                                     uint8_t *val);
 
 typedef enum
 {
@@ -736,7 +744,8 @@ typedef enum
   AIS2IH_16g    = 3,
 } ais2ih_fs_t;
 int32_t ais2ih_full_scale_set(const stmdev_ctx_t *ctx, ais2ih_fs_t val);
-int32_t ais2ih_full_scale_get(const stmdev_ctx_t *ctx, ais2ih_fs_t *val);
+int32_t ais2ih_full_scale_get(const stmdev_ctx_t *ctx,
+                              ais2ih_fs_t *val);
 
 int32_t ais2ih_status_reg_get(const stmdev_ctx_t *ctx,
                               ais2ih_status_t *val);
@@ -775,17 +784,18 @@ int32_t ais2ih_offset_weight_get(const stmdev_ctx_t *ctx,
 
 int32_t ais2ih_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t ais2ih_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
+int32_t ais2ih_acceleration_raw_get(const stmdev_ctx_t *ctx,
+                                    int16_t *val);
 
 int32_t ais2ih_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
 int32_t ais2ih_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ais2ih_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ais2ih_reset_set(const stmdev_ctx_t *ctx);
 int32_t ais2ih_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ais2ih_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ais2ih_boot_set(const stmdev_ctx_t *ctx);
 int32_t ais2ih_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
@@ -813,8 +823,10 @@ typedef enum
   AIS2IH_USER_OFFSET_ON_OUT  = 0x01,
   AIS2IH_HIGH_PASS_ON_OUT    = 0x10,
 } ais2ih_fds_t;
-int32_t ais2ih_filter_path_set(const stmdev_ctx_t *ctx, ais2ih_fds_t val);
-int32_t ais2ih_filter_path_get(const stmdev_ctx_t *ctx, ais2ih_fds_t *val);
+int32_t ais2ih_filter_path_set(const stmdev_ctx_t *ctx,
+                               ais2ih_fds_t val);
+int32_t ais2ih_filter_path_get(const stmdev_ctx_t *ctx,
+                               ais2ih_fds_t *val);
 
 typedef enum
 {
@@ -884,8 +896,10 @@ typedef enum
   AIS2IH_PUSH_PULL   = 0,
   AIS2IH_OPEN_DRAIN  = 1,
 } ais2ih_pp_od_t;
-int32_t ais2ih_pin_mode_set(const stmdev_ctx_t *ctx, ais2ih_pp_od_t val);
-int32_t ais2ih_pin_mode_get(const stmdev_ctx_t *ctx, ais2ih_pp_od_t *val);
+int32_t ais2ih_pin_mode_set(const stmdev_ctx_t *ctx,
+                            ais2ih_pp_od_t val);
+int32_t ais2ih_pin_mode_get(const stmdev_ctx_t *ctx,
+                            ais2ih_pp_od_t *val);
 
 int32_t ais2ih_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                   ais2ih_ctrl4_int1_pad_ctrl_t *val);
@@ -922,7 +936,8 @@ typedef enum
   AIS2IH_DETECT_ACT_INACT    = 1,
   AIS2IH_DETECT_STAT_MOTION  = 3,
 } ais2ih_sleep_on_t;
-int32_t ais2ih_act_mode_set(const stmdev_ctx_t *ctx, ais2ih_sleep_on_t val);
+int32_t ais2ih_act_mode_set(const stmdev_ctx_t *ctx,
+                            ais2ih_sleep_on_t val);
 int32_t ais2ih_act_mode_get(const stmdev_ctx_t *ctx,
                             ais2ih_sleep_on_t *val);
 
@@ -952,15 +967,18 @@ int32_t ais2ih_tap_axis_priority_get(const stmdev_ctx_t *ctx,
 int32_t ais2ih_tap_threshold_z_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_tap_threshold_z_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ais2ih_tap_detection_on_z_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ais2ih_tap_detection_on_z_set(const stmdev_ctx_t *ctx,
+                                      uint8_t val);
 int32_t ais2ih_tap_detection_on_z_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
-int32_t ais2ih_tap_detection_on_y_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ais2ih_tap_detection_on_y_set(const stmdev_ctx_t *ctx,
+                                      uint8_t val);
 int32_t ais2ih_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
-int32_t ais2ih_tap_detection_on_x_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ais2ih_tap_detection_on_x_set(const stmdev_ctx_t *ctx,
+                                      uint8_t val);
 int32_t ais2ih_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
@@ -983,7 +1001,8 @@ int32_t ais2ih_tap_mode_set(const stmdev_ctx_t *ctx,
 int32_t ais2ih_tap_mode_get(const stmdev_ctx_t *ctx,
                             ais2ih_single_double_tap_t *val);
 
-int32_t ais2ih_tap_src_get(const stmdev_ctx_t *ctx, ais2ih_tap_src_t *val);
+int32_t ais2ih_tap_src_get(const stmdev_ctx_t *ctx,
+                           ais2ih_tap_src_t *val);
 
 int32_t ais2ih_6d_threshold_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_6d_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -991,7 +1010,8 @@ int32_t ais2ih_6d_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val);
 int32_t ais2ih_4d_mode_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t ais2ih_6d_src_get(const stmdev_ctx_t *ctx, ais2ih_sixd_src_t *val);
+int32_t ais2ih_6d_src_get(const stmdev_ctx_t *ctx,
+                          ais2ih_sixd_src_t *val);
 
 typedef enum
 {
@@ -1033,8 +1053,10 @@ typedef enum
   AIS2IH_BYPASS_TO_STREAM_MODE   = 4,
   AIS2IH_STREAM_MODE             = 6,
 } ais2ih_fmode_t;
-int32_t ais2ih_fifo_mode_set(const stmdev_ctx_t *ctx, ais2ih_fmode_t val);
-int32_t ais2ih_fifo_mode_get(const stmdev_ctx_t *ctx, ais2ih_fmode_t *val);
+int32_t ais2ih_fifo_mode_set(const stmdev_ctx_t *ctx,
+                             ais2ih_fmode_t val);
+int32_t ais2ih_fifo_mode_get(const stmdev_ctx_t *ctx,
+                             ais2ih_fmode_t *val);
 
 int32_t ais2ih_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val);
 

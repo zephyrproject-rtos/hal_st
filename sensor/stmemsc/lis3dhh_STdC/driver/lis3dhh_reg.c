@@ -213,11 +213,11 @@ int32_t lis3dhh_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg1.norm_mod_en)
   {
-    case LIS3DHH_POWER_DOWN:
+    case 0x00:
       *val = LIS3DHH_POWER_DOWN;
       break;
 
-    case LIS3DHH_1kHz1:
+    case 0x01:
       *val = LIS3DHH_1kHz1;
       break;
 
@@ -488,15 +488,15 @@ int32_t lis3dhh_self_test_get(const stmdev_ctx_t *ctx, lis3dhh_st_t *val)
 
   switch (ctrl_reg4.st)
   {
-    case LIS3DHH_ST_DISABLE:
+    case 0x00:
       *val = LIS3DHH_ST_DISABLE;
       break;
 
-    case LIS3DHH_ST_POSITIVE:
+    case 0x01:
       *val = LIS3DHH_ST_POSITIVE;
       break;
 
-    case LIS3DHH_ST_NEGATIVE:
+    case 0x02:
       *val = LIS3DHH_ST_NEGATIVE;
       break;
 
@@ -553,19 +553,19 @@ int32_t lis3dhh_filter_config_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg4.dsp)
   {
-    case LIS3DHH_LINEAR_PHASE_440Hz:
+    case 0x00:
       *val = LIS3DHH_LINEAR_PHASE_440Hz;
       break;
 
-    case LIS3DHH_LINEAR_PHASE_235Hz:
+    case 0x01:
       *val = LIS3DHH_LINEAR_PHASE_235Hz;
       break;
 
-    case LIS3DHH_NO_LINEAR_PHASE_440Hz:
+    case 0x02:
       *val = LIS3DHH_NO_LINEAR_PHASE_440Hz;
       break;
 
-    case LIS3DHH_NO_LINEAR_PHASE_235Hz:
+    case 0x03:
       *val = LIS3DHH_NO_LINEAR_PHASE_235Hz;
       break;
 
@@ -651,11 +651,11 @@ int32_t lis3dhh_drdy_notification_mode_get(const stmdev_ctx_t *ctx,
 
   switch (ctrl_reg1.drdy_pulse)
   {
-    case LIS3DHH_LATCHED:
+    case 0x00:
       *val = LIS3DHH_LATCHED;
       break;
 
-    case LIS3DHH_PULSED:
+    case 0x01:
       *val = LIS3DHH_PULSED;
       break;
 
@@ -714,11 +714,11 @@ int32_t lis3dhh_int1_mode_get(const stmdev_ctx_t *ctx,
 
   switch (int1_ctrl.int1_ext)
   {
-    case LIS3DHH_PIN_AS_INTERRUPT:
+    case 0x00:
       *val = LIS3DHH_PIN_AS_INTERRUPT;
       break;
 
-    case LIS3DHH_PIN_AS_TRIGGER:
+    case 0x01:
       *val = LIS3DHH_PIN_AS_TRIGGER;
       break;
 
@@ -1237,19 +1237,19 @@ int32_t lis3dhh_pin_mode_get(const stmdev_ctx_t *ctx, lis3dhh_pp_od_t *val)
 
   switch (ctrl_reg4.pp_od)
   {
-    case LIS3DHH_ALL_PUSH_PULL:
+    case 0x00:
       *val = LIS3DHH_ALL_PUSH_PULL;
       break;
 
-    case LIS3DHH_INT1_OD_INT2_PP:
+    case 0x01:
       *val = LIS3DHH_INT1_OD_INT2_PP;
       break;
 
-    case LIS3DHH_INT1_PP_INT2_OD:
+    case 0x02:
       *val = LIS3DHH_INT1_PP_INT2_OD;
       break;
 
-    case LIS3DHH_ALL_OPEN_DRAIN:
+    case 0x03:
       *val = LIS3DHH_ALL_OPEN_DRAIN;
       break;
 
@@ -1461,23 +1461,23 @@ int32_t lis3dhh_fifo_mode_get(const stmdev_ctx_t *ctx, lis3dhh_fmode_t *val)
 
   switch (fifo_ctrl.fmode)
   {
-    case LIS3DHH_BYPASS_MODE:
+    case 0x00:
       *val = LIS3DHH_BYPASS_MODE;
       break;
 
-    case LIS3DHH_FIFO_MODE:
+    case 0x01:
       *val = LIS3DHH_FIFO_MODE;
       break;
 
-    case LIS3DHH_STREAM_TO_FIFO_MODE:
+    case 0x03:
       *val = LIS3DHH_STREAM_TO_FIFO_MODE;
       break;
 
-    case LIS3DHH_BYPASS_TO_STREAM_MODE:
+    case 0x04:
       *val = LIS3DHH_BYPASS_TO_STREAM_MODE;
       break;
 
-    case LIS3DHH_DYNAMIC_STREAM_MODE:
+    case 0x06:
       *val = LIS3DHH_DYNAMIC_STREAM_MODE;
       break;
 
