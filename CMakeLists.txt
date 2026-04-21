@@ -31,7 +31,7 @@ zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_core_support.c)
 zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_register_funcs.c)
 endif()
 
-if(CONFIG_AUDIO_MPXXDTYY)
+if(CONFIG_AUDIO_DMIC_MPXXDTYY)
 zephyr_include_directories(audio/microphone)
 zephyr_library_sources(audio/microphone/OpenPDMFilter.c)
 endif()
