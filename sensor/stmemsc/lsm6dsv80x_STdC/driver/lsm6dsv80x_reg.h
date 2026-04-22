@@ -29,6 +29,7 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 #include <math.h>
+#include <string.h>
 
 /** @addtogroup LSM6DSV80X
   * @{
