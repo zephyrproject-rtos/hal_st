@@ -31,6 +31,12 @@ zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_core_support.c)
 zephyr_library_sources(sensor/vl53l1x/api/core/src/vl53l1_register_funcs.c)
 endif()
 
+if(CONFIG_VL6180X)
+zephyr_include_directories(sensor/vl6180x/api/core/inc
+			   ${PROJECT_SOURCE_DIR}/drivers/sensor/vl6180x)
+zephyr_library_sources(sensor/vl6180x/api/core/src/vl6180_api.c)
+endif()
+
 if(CONFIG_AUDIO_MPXXDTYY)
 zephyr_include_directories(audio/microphone)
 zephyr_library_sources(audio/microphone/OpenPDMFilter.c)
