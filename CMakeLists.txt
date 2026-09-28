@@ -34,12 +34,20 @@ endif()
 
 if(CONFIG_VL53L5CX)
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/zephyr/blobs/sensor/vl53l5cx/vl53l5cx_buffers.h")
+if(NOT CONFIG_BUILD_ONLY_NO_BLOBS)
 message(FATAL_ERROR "Missing required file: please fetch blobs using: west blobs fetch hal_st")
 endif()
+message(INFO "Building VL53L5CX driver without blobs for build only purpose")
+zephyr_include_directories(sensor/vl53l5cx/
+			   sensor/vl53l5cx/zephyr/
+			   sensor/vl53l5cx/dummy_blob/
+			   ${PROJECT_SOURCE_DIR}/drivers/sensor/st/vl53l5cx)
+else()
 zephyr_include_directories(sensor/vl53l5cx/
 			   sensor/vl53l5cx/zephyr/
 			   zephyr/blobs/sensor/vl53l5cx/
 			   ${PROJECT_SOURCE_DIR}/drivers/sensor/st/vl53l5cx)
+endif()
 zephyr_library_sources(sensor/vl53l5cx/vl53l5cx_api.c)
 zephyr_library_sources(sensor/vl53l5cx/vl53l5cx_plugin_detection_thresholds.c)
 zephyr_library_sources(sensor/vl53l5cx/vl53l5cx_plugin_motion_indicator.c)
