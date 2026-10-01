@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright The Zephyr Project Contributors
+# SPDX-License-Identifier: Apache-2.0
+#
+# REUSE.toml — REUSE Specification 3.3 bulk annotations for binary blobs
+# https://reuse.software/spec-3.3/
+#
+# This file provides SPDX license and copyright metadata for west-fetched
+# binary blobs (zephyr/blobs/), which do not carry in-file SPDX tags.
+# In-file tags always take precedence over entries below (REUSE spec §3.3).
+#
+# Licenses referenced here must have their full text under LICENSES/.
+
+version = 1
+
+# ---------------------------------------------------------------------------
+# Binary blobs — BSD-3-Clause (VL53L5CX firmware, sensor/vl53l5cx/LICENSE.md)
+# ---------------------------------------------------------------------------
+[[annotations]]
+path = "zephyr/blobs/sensor/vl53l5cx/**"
+SPDX-FileCopyrightText = "Copyright (c) STMicroelectronics"
+SPDX-License-Identifier = "BSD-3-Clause"
