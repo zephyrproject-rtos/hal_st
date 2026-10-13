@@ -1,6 +1,6 @@
 name: hal_st
 build:
-  cmake: .
+  cmake-ext: True
   kconfig-ext: True
 blobs:
   - path: sensor/vl53l5cx/vl53l5cx_buffers.h
